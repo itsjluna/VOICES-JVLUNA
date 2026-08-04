@@ -30,18 +30,7 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, initialAnimation,
           alt={`${albumName} by ${artist}`} 
           style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2px' }} 
         />
-        {/* Plastic jewel case reflection overlay */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.1) 100%)',
-          pointerEvents: 'none',
-          borderLeft: '4px solid rgba(255,255,255,0.4)',
-          borderRadius: '2px'
-        }} />
+        <JewelCaseOverlay />
       </motion.div>
 
       <AnimatePresence>
@@ -132,18 +121,7 @@ const CDModal = ({ layoutIdId, coverUrl, artist, albumName, onClose }) => {
           alt={`${albumName} by ${artist}`} 
           style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px', transform: 'translateZ(10px)' }} 
         />
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.1) 100%)',
-          pointerEvents: 'none',
-          borderLeft: '14px solid rgba(255,255,255,0.2)', // Side spine
-          borderRadius: '4px',
-          transform: 'translateZ(20px)'
-        }} />
+        <JewelCaseOverlay translateZ="20px" />
       </motion.div>
       
       <motion.div 
@@ -158,5 +136,37 @@ const CDModal = ({ layoutIdId, coverUrl, artist, albumName, onClose }) => {
     </motion.div>
   );
 };
+
+const JewelCaseOverlay = ({ translateZ = '0px' }) => (
+  <div style={{
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    pointerEvents: 'none',
+    boxShadow: 'inset 0 0 10px rgba(255,255,255,0.5), inset 2px 2px 5px rgba(255,255,255,0.8), inset -2px -2px 5px rgba(0,0,0,0.5)',
+    border: '1px solid rgba(255,255,255,0.4)',
+    borderRadius: '3px',
+    transform: translateZ !== '0px' ? `translateZ(${translateZ})` : 'none'
+  }}>
+    {/* Dark ribbed spine (hinge) on the left */}
+    <div style={{
+      position: 'absolute', left: 0, top: 0, bottom: 0, width: '12%',
+      background: 'linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(20,20,20,0.9) 20%, rgba(50,50,50,0.6) 50%, rgba(10,10,10,0.8) 80%, rgba(0,0,0,0.9) 100%)',
+      borderRight: '1px solid rgba(0,0,0,0.5)',
+      boxShadow: '1px 0 2px rgba(255,255,255,0.2) inset'
+    }} />
+    {/* High contrast glassy diagonal glare */}
+    <div style={{
+      position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+      background: 'linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 35%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.05) 65%, rgba(255,255,255,0.3) 100%)',
+      mixBlendMode: 'screen'
+    }} />
+    {/* Right-edge plastic cover holding tabs */}
+    <div style={{ position: 'absolute', right: '4px', top: '15%', width: '8%', height: '8%', background: 'rgba(255,255,255,0.15)', borderRadius: '10px 0 0 10px', border: '1px solid rgba(255,255,255,0.4)', borderRight: 'none', boxShadow: 'inset 1px 1px 2px rgba(255,255,255,0.6)' }} />
+    <div style={{ position: 'absolute', right: '4px', bottom: '15%', width: '8%', height: '8%', background: 'rgba(255,255,255,0.15)', borderRadius: '10px 0 0 10px', border: '1px solid rgba(255,255,255,0.4)', borderRight: 'none', boxShadow: 'inset 1px 1px 2px rgba(255,255,255,0.6)' }} />
+  </div>
+);
 
 export default CDJewelCase;
