@@ -35,6 +35,7 @@ function ChapterView() {
     async function fetchQuotes() {
       try {
         const popQuotes = [
+          // Original
           { quote: "Do, or do not. There is no try.", author: "Yoda" },
           { quote: "I'm not bad. I'm just drawn that way.", author: "Jessica Rabbit" },
           { quote: "To infinity, and beyond!", author: "Buzz Lightyear" },
@@ -59,7 +60,34 @@ function ChapterView() {
           { quote: "Life is like a box of chocolates.", author: "Forrest Gump" },
           { quote: "I'm the king of the world!", author: "Jack Dawson" },
           { quote: "Wakanda Forever!", author: "Black Panther" },
-          { quote: "Keep your friends close, but your enemies closer.", author: "Michael Corleone" }
+          { quote: "Keep your friends close, but your enemies closer.", author: "Michael Corleone" },
+          // Comics
+          { quote: "It's not who I am underneath, but what I do that defines me.", author: "Batman" },
+          { quote: "Whatever happened to the American Dream? It came true. You're lookin' at it.", author: "The Comedian" },
+          { quote: "I am Iron Man.", author: "Tony Stark" },
+          { quote: "Avengers, assemble!", author: "Captain America" },
+          { quote: "I can do this all day.", author: "Steve Rogers" },
+          { quote: "We're not just our failures. As much as they hurt, we learn from them.", author: "Spider-Man" },
+          // Videogames
+          { quote: "War. War never changes.", author: "Fallout Narrator" },
+          { quote: "It's dangerous to go alone! Take this.", author: "Old Man" },
+          { quote: "Would you kindly...", author: "Atlas" },
+          { quote: "I need a weapon.", author: "Master Chief" },
+          { quote: "Boy.", author: "Kratos" },
+          { quote: "Kept you waiting, huh?", author: "Solid Snake" },
+          { quote: "We can't change what's done, we can only move on.", author: "Arthur Morgan" },
+          { quote: "The cake is a lie.", author: "Ratman" },
+          { quote: "Praise the sun!", author: "Solaire of Astora" },
+          { quote: "Nothing is true, everything is permitted.", author: "Ezio Auditore" },
+          { quote: "A man chooses, a slave obeys.", author: "Andrew Ryan" },
+          { quote: "Stand in the ashes of a trillion dead souls and ask the ghosts if honor matters.", author: "Javik" },
+          // Movies & Other
+          { quote: "Get away from her, you b***h!", author: "Ellen Ripley" },
+          { quote: "There is no spoon.", author: "Spoon Boy" },
+          { quote: "You can't handle the truth!", author: "Col. Jessep" },
+          { quote: "I drink your milkshake!", author: "Daniel Plainview" },
+          { quote: "Elementary, my dear Watson.", author: "Sherlock Holmes" },
+          { quote: "To boldly go where no man has gone before.", author: "James T. Kirk" }
         ];
 
         setQuoteFictional(popQuotes[Math.floor(Math.random() * popQuotes.length)]);
@@ -73,9 +101,33 @@ function ChapterView() {
           ];
           setQuoteReal(kojimaQuotes[Math.floor(Math.random() * kojimaQuotes.length)]);
         } else {
-          const res = await fetch('https://dummyjson.com/quotes/random');
-          const data = await res.json();
-          setQuoteReal(data);
+          const blockedAuthors = [
+            "bill cosby", "adolf hitler", "joseph stalin", "harvey weinstein", 
+            "jeffrey epstein", "o.j. simpson", "r. kelly", "kevin spacey", 
+            "woody allen", "chris brown", "roman polanski", "vladimir putin",
+            "osama bin laden", "saddam hussein", "charles manson", "andrew tate"
+          ];
+          
+          let validQuote = null;
+          for (let i = 0; i < 3; i++) {
+            const res = await fetch('https://dummyjson.com/quotes/random');
+            const data = await res.json();
+            
+            const authorLower = data.author ? data.author.toLowerCase() : "";
+            const isBlocked = blockedAuthors.some(b => authorLower.includes(b));
+            
+            if (!isBlocked) {
+              validQuote = data;
+              break;
+            }
+          }
+          
+          // Fallback if all 3 random quotes were blocked (highly unlikely)
+          if (!validQuote) {
+            validQuote = { quote: "To be, or not to be, that is the question.", author: "William Shakespeare" };
+          }
+          
+          setQuoteReal(validQuote);
         }
         
         // Pick random post-it colors
