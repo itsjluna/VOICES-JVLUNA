@@ -151,13 +151,13 @@ function ChapterView() {
           console.error("Failed to fetch iTunes album", e);
         }
 
-        // Generate random scattered decorations from uploaded PNGs
+        // Generate random scattered decorations from uploaded PNGs and WEBPs
         const possibleDecorations = [
           'brioche.png', 'camera.png', 'cochinita.png', 'coffee.png', 
           'deathstranding.png', 'dualsense.png', 'glasses.png', 'inderalici.png', 
           'logitech.png', 'marvel.png', 'pen.png', 'pencil.png', 'rubik.png', 
           'slims.png', 'sw.png', 'taco.png', 'transformers.png', 'watch.png', 
-          'whisky.png', 'wine.png'
+          'whisky.png', 'wine.png', 'hummingbird.webp', 'magnolia.webp', 'origami.webp'
         ];
         
         const numItems = Math.floor(Math.random() * 2) + 2; // Pick 2 or 3 items
