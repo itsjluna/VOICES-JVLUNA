@@ -51,17 +51,18 @@ const PostIt = React.memo(({ quote, author, color, initialAnimation, style }) =>
                 top: 'auto',
                 right: 'auto',
                 rotate: 0,
-                scale: 1.5,
+                width: '300px',
+                padding: '2rem',
                 background: color,
                 pointerEvents: 'auto',
-                maxWidth: '80vw',
-                maxHeight: '80vh',
+                maxWidth: '90vw',
+                maxHeight: '90vh',
                 overflow: 'auto',
                 boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
                 zIndex: 100000
               }}
             >
-              <p style={{ fontSize: '1.2rem', lineHeight: '1.6' }}>"{quote}"</p>
+              <p style={{ fontSize: '1.5rem', lineHeight: '1.6' }}>"{quote}"</p>
               <small style={{ fontSize: '1rem', marginTop: '1rem', display: 'block' }}>— {author}</small>
             </motion.div>
           </motion.div>

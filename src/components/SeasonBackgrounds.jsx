@@ -75,7 +75,7 @@ export const Spring = React.memo(() => {
             from={`${left} ${top}`} 
             to={`${left + 1200} ${top - 200 + Math.random() * 400}`} 
             dur={`${dur}s`} 
-            begin={`${delay}s`} 
+            begin={`-${delay}s`} 
             repeatCount="indefinite" 
           />
           <g transform={`scale(${scale})`}>
@@ -208,7 +208,7 @@ export const AmbientDust = React.memo(() => {
         r={Math.random() * 0.3 + 0.1} 
         fill="#ffffff"
       >
-        <animate attributeName="opacity" values="0; 0.6; 0" dur={`${Math.random() * 5 + 4}s`} repeatCount="indefinite" begin={`${Math.random() * 5}s`} />
+        <animate attributeName="opacity" values="0; 0.6; 0" dur={`${Math.random() * 5 + 4}s`} repeatCount="indefinite" begin={`-${Math.random() * 5}s`} />
         <animateTransform attributeName="transform" type="translate" from="0 0" to={`${Math.random() * 10 - 5} ${Math.random() * 10 - 5}`} dur={`${Math.random() * 10 + 10}s`} repeatCount="indefinite" />
       </circle>
     ));
@@ -240,7 +240,7 @@ export const DawnLight = React.memo(() => {
         r={Math.random() * 0.4 + 0.1} 
         fill="#ffebd6"
       >
-        <animate attributeName="opacity" values="0; 0.8; 0" dur={`${Math.random() * 6 + 3}s`} repeatCount="indefinite" begin={`${Math.random() * 5}s`} />
+        <animate attributeName="opacity" values="0; 0.8; 0" dur={`${Math.random() * 6 + 3}s`} repeatCount="indefinite" begin={`-${Math.random() * 5}s`} />
         <animateTransform attributeName="transform" type="translate" from="0 0" to={`${Math.random() * 15 - 5} -${Math.random() * 10 + 5}`} dur={`${Math.random() * 15 + 10}s`} repeatCount="indefinite" />
       </circle>
     ));
@@ -305,7 +305,7 @@ export const Embers = React.memo(() => {
         r={Math.random() * 0.4 + 0.1} 
         fill="#ff6622"
       >
-        <animateTransform attributeName="transform" type="translate" from="0 0" to={`${Math.random() * 20 - 10} -120`} dur={`${Math.random() * 8 + 6}s`} begin={`${Math.random() * 10}s`} repeatCount="indefinite" />
+        <animateTransform attributeName="transform" type="translate" from="0 0" to={`${Math.random() * 20 - 10} -120`} dur={`${Math.random() * 8 + 6}s`} begin={`-${Math.random() * 10}s`} repeatCount="indefinite" />
         <animate attributeName="opacity" values="0; 1; 0" dur={`${Math.random() * 4 + 2}s`} repeatCount="indefinite" />
       </circle>
     ));
