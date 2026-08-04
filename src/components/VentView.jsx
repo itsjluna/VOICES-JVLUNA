@@ -32,9 +32,9 @@ function VentView() {
       const rotation = Math.random() * 360;
 
       if (isNotebook) {
-        // Notebook Scatters: Ink Blots, Coffee Rings, Paperclips
+        // Notebook Scatters: Ink Blots, Paperclips, Torn Paper, Masking Tape, Staples, Pencil
         const type = Math.random();
-        if (type > 0.7) {
+        if (type > 0.85) {
           // Paperclip
           return (
             <motion.svg 
@@ -48,19 +48,58 @@ function VentView() {
               <path d="M45,45 L45,150 A15,15 0 0,0 75,150 L75,30 A25,25 0 0,0 25,30 L25,160 A35,35 0 0,0 95,160 L95,55" fill="none" stroke="#bdc3c7" strokeWidth="8" strokeLinecap="round" />
             </motion.svg>
           );
-        } else if (type > 0.4) {
-          // Coffee Ring
-          const scale = Math.random() * 0.5 + 0.8;
+        } else if (type > 0.7) {
+          // Masking Tape
           return (
             <motion.div 
               key={i} 
-              style={{ position: 'absolute', top, left, width: '120px', height: '120px', borderRadius: '50%', border: '4px solid #6b4c3a', filter: 'blur(1px)' }}
-              initial={{ opacity: 0, scale, rotate: rotation }}
-              animate={{ opacity: 0.15, scale: [scale, scale + 0.05, scale] }}
-              transition={{ opacity: { duration: 1 }, scale: { duration: Math.random() * 6 + 4, repeat: Infinity, ease: 'easeInOut' } }}
+              style={{ position: 'absolute', top, left, width: `${Math.random() * 60 + 60}px`, height: '25px', backgroundColor: '#e2d5a3', zIndex: 0, boxShadow: '0 1px 2px rgba(0,0,0,0.1)' }}
+              initial={{ opacity: 0, rotate: rotation }}
+              animate={{ opacity: 0.6, rotate: [rotation, rotation + 2, rotation] }}
+              transition={{ opacity: { duration: 1 }, rotate: { duration: Math.random() * 6 + 4, repeat: Infinity, ease: 'easeInOut' } }}
+            ></motion.div>
+          );
+        } else if (type > 0.5) {
+          // Torn Paper Scrap
+          return (
+            <motion.svg 
+              key={i} 
+              viewBox="0 0 100 100" 
+              style={{ position: 'absolute', top, left, width: `${Math.random() * 40 + 40}px`, height: `${Math.random() * 40 + 40}px`, zIndex: 0, filter: 'drop-shadow(2px 4px 3px rgba(0,0,0,0.15))' }}
+              initial={{ opacity: 0, rotate: rotation, y: 0 }}
+              animate={{ opacity: 0.9, rotate: [rotation, rotation - 5, rotation], y: [0, -10, 0] }}
+              transition={{ opacity: { duration: 1 }, y: { duration: Math.random() * 5 + 5, repeat: Infinity, ease: 'easeInOut' }, rotate: { duration: Math.random() * 5 + 5, repeat: Infinity, ease: 'easeInOut' } }}
             >
-               <div style={{ position: 'absolute', top: '-2px', left: '-2px', width: '100%', height: '100%', borderRadius: '50%', border: '2px solid #5a3c2a', opacity: 0.5 }}></div>
-            </motion.div>
+              <polygon points="5,5 25,0 45,10 65,0 85,15 100,5 95,45 100,85 75,100 50,90 25,100 0,95 5,50" fill="#fdfdf8" />
+            </motion.svg>
+          );
+        } else if (type > 0.35) {
+          // Pencil Scribble
+          return (
+            <motion.svg 
+              key={i} 
+              viewBox="0 0 100 100" 
+              style={{ position: 'absolute', top, left, width: '60px', height: '60px', zIndex: 0 }}
+              initial={{ opacity: 0, rotate: rotation }}
+              animate={{ opacity: 0.4, rotate: [rotation, rotation + 5, rotation] }}
+              transition={{ opacity: { duration: 1 }, rotate: { duration: Math.random() * 5 + 5, repeat: Infinity, ease: 'easeInOut' } }}
+            >
+              <path d="M10,20 Q30,0 40,40 T70,20 T90,80 T50,60 T10,90" fill="none" stroke="#444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </motion.svg>
+          );
+        } else if (type > 0.2) {
+          // Staple
+          return (
+            <motion.svg 
+              key={i} 
+              viewBox="0 0 40 20" 
+              style={{ position: 'absolute', top, left, width: '30px', height: '15px', zIndex: 0, filter: 'drop-shadow(1px 2px 1px rgba(0,0,0,0.3))' }}
+              initial={{ opacity: 0, rotate: rotation }}
+              animate={{ opacity: 0.8, rotate: [rotation, rotation + 2, rotation] }}
+              transition={{ opacity: { duration: 1 }, rotate: { duration: Math.random() * 5 + 5, repeat: Infinity, ease: 'easeInOut' } }}
+            >
+              <path d="M5,15 L5,5 L35,5 L35,15" fill="none" stroke="#88929b" strokeWidth="3" strokeLinecap="square" />
+            </motion.svg>
           );
         } else {
           // Ink blot

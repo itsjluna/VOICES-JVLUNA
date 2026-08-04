@@ -50,7 +50,7 @@ function PoemView() {
       </button>
 
       <div className="editorial-margin left">
-        ENTRY Nº {id.slice(-4).toUpperCase()} — POETIC ARCHIVE
+        ENTRY Nº {id.slice(-4).toUpperCase()} — VOICES
       </div>
       <div className="book-layout book-page-aesthetic">
         <motion.div 
