@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import DockNav from './components/DockNav';
 import CustomCursor from './components/CustomCursor';
 
@@ -10,6 +11,24 @@ const PoemView = lazy(() => import('./components/PoemView'));
 const IntermissionView = lazy(() => import('./components/IntermissionView'));
 const VentView = lazy(() => import('./components/VentView'));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
+
+function AnimatedRoutes() {
+  const location = useLocation();
+  
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<WelcomeScreen />} />
+        <Route path="/index" element={<IndexView />} />
+        <Route path="/chapter/:id" element={<ChapterView />} />
+        <Route path="/intermission/:id" element={<IntermissionView />} />
+        <Route path="/vent/:id" element={<VentView />} />
+        <Route path="/poem/:id" element={<PoemView />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+      </Routes>
+    </AnimatePresence>
+  );
+}
 
 function App() {
   return (
@@ -24,15 +43,7 @@ function App() {
             <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
           </div>
         }>
-          <Routes>
-            <Route path="/" element={<WelcomeScreen />} />
-            <Route path="/index" element={<IndexView />} />
-            <Route path="/chapter/:id" element={<ChapterView />} />
-            <Route path="/intermission/:id" element={<IntermissionView />} />
-            <Route path="/vent/:id" element={<VentView />} />
-            <Route path="/poem/:id" element={<PoemView />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-          </Routes>
+          <AnimatedRoutes />
         </Suspense>
       </div>
     </Router>
