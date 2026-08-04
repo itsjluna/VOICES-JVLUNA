@@ -59,13 +59,13 @@ export const Winter = React.memo(() => {
 
 export const Spring = React.memo(() => {
   const dandelions = useMemo(() => {
-    return [...Array(40)].map((_, i) => {
+    return [...Array(100)].map((_, i) => {
       const left = -100 - Math.random() * 500;
       const top = Math.random() * 800 + 100;
       const delay = Math.random() * 10;
       const dur = Math.random() * 8 + 6;
-      const opacity = Math.random() * 0.4 + 0.3;
-      const scale = Math.random() * 0.5 + 0.5;
+      const opacity = Math.random() * 0.4 + 0.6;
+      const scale = Math.random() * 0.8 + 0.8;
 
       return (
         <g key={i} opacity={opacity}>
