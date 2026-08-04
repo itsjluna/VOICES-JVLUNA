@@ -141,12 +141,23 @@ function ChapterView() {
 
         // Fetch random album decoration
         try {
-          const belovedArtists = ['Low Roar', 'Imagine Dragons', 'Chappell Roan', 'Laufey', 'Clairo', 'Bad Bunny', 'K.Flay', 'Emjay', 'Olivia Rodrigo', 'Joey Valence & Brae', 'Tessa Ia', 'Dafna', 'Susanne Sundfør', 'Doris Day', 'Dagny', 'Taylor Swift', 'Addison Rae', 'Alice Phoebe Lou', 'Kim Petras', 'Charli XCX', 'Sigrid', 'Sabrina Carpenter'];
+          const belovedArtists = [
+            "low roar", "imagine dragons", "chappell roan", "laufey", "clairo", 
+            "bad bunny", "k.flay", "emjay", "olivia rodrigo", "joey valence & brae", 
+            "tessa ia", "dafna", "susanne sundfor", "doris day", "dagny", 
+            "taylor swift", "addison rae", "alice phoebe lou", "kim petras",
+            "charli xcx", "sigrid", "sabrina carpenter", "midnight generation", 
+            "lady gaga", "everglow", "twice", "akriila", "lana del rey", "lorde", 
+            "griff", "taichu", "rixxia", "junior varsity", "magnolian"
+          ];
           const randomArtist = belovedArtists[Math.floor(Math.random() * belovedArtists.length)];
-          const itunesRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(randomArtist)}&entity=album&limit=1`);
+          // Increase limit to get a variety of albums from the same artist
+          const itunesRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(randomArtist)}&entity=album&limit=15`);
           const itunesData = await itunesRes.json();
           if (itunesData.results && itunesData.results.length > 0) {
-            setAlbumDecoration(itunesData.results[0]);
+            // Pick a random album from the results instead of always the first one
+            const randomAlbum = itunesData.results[Math.floor(Math.random() * itunesData.results.length)];
+            setAlbumDecoration(randomAlbum);
           }
         } catch (e) {
           console.error("Failed to fetch iTunes album", e);
