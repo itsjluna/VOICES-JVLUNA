@@ -148,12 +148,12 @@ function ChapterView() {
             "taylor swift", "addison rae", "alice phoebe lou", "kim petras",
             "charli xcx", "sigrid", "sabrina carpenter", "midnight generation", 
             "lady gaga", "everglow", "twice", "akriila", "lana del rey", "lorde", 
-            "griff", "taichu", "rixxia", "junior varsity", "magnolian"
+            "griff", "taichu", "rixxia", "junior varsity", "magnolian", "blackpink", "six sex"
           ];
           const randomArtist = belovedArtists[Math.floor(Math.random() * belovedArtists.length)];
           
-          // Strict search by artist term
-          const itunesRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(randomArtist)}&entity=album&attribute=artistTerm&limit=5`);
+          // Use a massive limit so we can safely filter out false positives (like Coldplay's song "Everglow") before picking 5
+          const itunesRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(randomArtist)}&entity=album&attribute=artistTerm&limit=50`);
           const itunesData = await itunesRes.json();
           if (itunesData.results && itunesData.results.length > 0) {
             // Filter exact matches to avoid compilations or featured tracks
