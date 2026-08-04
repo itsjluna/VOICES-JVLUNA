@@ -230,6 +230,44 @@ export const AmbientDust = React.memo(() => {
   );
 });
 
+export const DawnLight = React.memo(() => {
+  const dust = useMemo(() => {
+    return [...Array(50)].map((_, i) => (
+      <circle 
+        key={i} 
+        cx={Math.random() * 100} 
+        cy={Math.random() * 100} 
+        r={Math.random() * 0.4 + 0.1} 
+        fill="#ffebd6"
+      >
+        <animate attributeName="opacity" values="0; 0.8; 0" dur={`${Math.random() * 6 + 3}s`} repeatCount="indefinite" begin={`${Math.random() * 5}s`} />
+        <animateTransform attributeName="transform" type="translate" from="0 0" to={`${Math.random() * 15 - 5} -${Math.random() * 10 + 5}`} dur={`${Math.random() * 15 + 10}s`} repeatCount="indefinite" />
+      </circle>
+    ));
+  }, []);
+
+  return (
+    <svg style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -1, pointerEvents: 'none', background: 'radial-gradient(circle at top left, #fff0e0 0%, #f4d3b6 30%, #e6a788 70%, #d8816c 100%)' }} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="sunFlare" cx="20%" cy="20%" r="50%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
+          <stop offset="30%" stopColor="#ffebb3" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="#ffebb3" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <rect x="0" y="0" width="100" height="100" fill="url(#sunFlare)" />
+      
+      {/* Lens Flares */}
+      <circle cx="30" cy="30" r="15" fill="#ffffff" opacity="0.05" />
+      <circle cx="45" cy="45" r="5" fill="#ffd599" opacity="0.1" />
+      <circle cx="60" cy="60" r="2" fill="#ffd599" opacity="0.15" />
+      <circle cx="65" cy="65" r="8" fill="#ffffff" opacity="0.05" />
+      
+      {dust}
+    </svg>
+  );
+});
+
 export const DigitalMatrix = React.memo(() => {
   const lines = useMemo(() => {
     return [...Array(40)].map((_, i) => (

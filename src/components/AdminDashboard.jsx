@@ -350,6 +350,7 @@ function AdminDashboard() {
                       <option value="digital">Digital Rain</option>
                       <option value="embers">Floating Embers</option>
                       <option value="clocks">Time & Clocks</option>
+                      <option value="dawn">Dawn Light</option>
                     </select>
                   </div>
                 </div>

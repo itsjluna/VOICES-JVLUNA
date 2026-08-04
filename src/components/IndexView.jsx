@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { FaBookOpen, FaTicketAlt, FaSun, FaMoon, FaStickyNote } from 'react-icons/fa';
 import api from '../api';
 import { IndexScatter } from './IndexScatter';
+import { useReadingProgress } from '../hooks/useReadingProgress';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -21,6 +22,9 @@ const itemVariants = {
 function IndexView() {
   const [chapters, setChapters] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeTheme, setActiveTheme] = useState('all');
+  const { readChapters } = useReadingProgress();
 
   // Time of day logic
   const hour = new Date().getHours();
@@ -60,13 +64,12 @@ function IndexView() {
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }} 
       transition={{ duration: 1 }} 
-      style={{ flex: 1, padding: '4rem 1rem', display: 'flex', flexDirection: 'column', position: 'relative' }}
+      style={{ flex: 1, padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 5vw, 2rem)', display: 'flex', flexDirection: 'column', position: 'relative', alignItems: 'center', width: '100%' }}
     >
       <IndexScatter />
       
       {/* Full-width Sky Background */}
       <motion.div 
-        className="animated-sky"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 2 }}
@@ -115,16 +118,19 @@ function IndexView() {
         maxWidth: '800px',
         margin: '0 auto',
         width: '100%',
-        padding: '3rem',
+        padding: 'clamp(1.5rem, 5vw, 3rem)',
         background: 'var(--bg-color)',
         borderRadius: '8px',
         boxShadow: '0 20px 50px rgba(0,0,0,0.08)',
         border: '1px solid var(--border-color)',
         position: 'relative',
         zIndex: 10,
-        flexShrink: 0 /* Prevent the card itself from being squeezed by flexbox */
+        flexShrink: 0,
+        boxSizing: 'border-box'
       }}>
-        <h1 style={{ fontSize: '2.5rem', textAlign: 'center', marginBottom: '4rem', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Index</h1>
+        <div style={{ marginBottom: '3rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
+          <h1 style={{ fontSize: '2.5rem', letterSpacing: '0.2em', textTransform: 'uppercase', margin: 0 }}>Index</h1>
+        </div>
         
         {isLoading ? (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column' }}>
@@ -133,9 +139,44 @@ function IndexView() {
           </div>
         ) : (
           <motion.div variants={containerVariants} initial="hidden" animate="show" style={{ width: '100%' }}>
+            {/* Filter Dropdown */}
+            <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
+              <select 
+                value={activeTheme}
+                onChange={(e) => setActiveTheme(e.target.value)}
+                style={{
+                  padding: '0.5rem 1rem',
+                  background: 'var(--bg-color)',
+                  border: '1px solid var(--border-color)',
+                  color: 'var(--text-color)',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '0.9rem',
+                  textTransform: 'uppercase',
+                  borderRadius: '2px',
+                  outline: 'none',
+                  cursor: 'pointer'
+                }}
+              >
+                <option value="all">ALL ENTRIES</option>
+                <option value="winter">WINTER</option>
+                <option value="spring">SPRING</option>
+                <option value="summer">SUMMER</option>
+                <option value="autumn">AUTUMN</option>
+                <option value="vents">VENTS</option>
+                <option value="intermissions">INTERMISSIONS</option>
+              </select>
+            </div>
+
             {chapters.length === 0 && <p style={{ textAlign: 'center', fontStyle: 'italic', opacity: 0.5 }}>The archives are empty...</p>}
             
-            {chapters.map((chapter, index) => {
+            {chapters
+              .filter(c => {
+                if (activeTheme === 'all') return true;
+                if (activeTheme === 'vents') return c.isVent;
+                if (activeTheme === 'intermissions') return c.isIntermission;
+                return c.theme === activeTheme;
+              })
+              .map((chapter, index) => {
               const isInt = chapter.isIntermission;
               const isVent = chapter.isVent;
               
@@ -167,29 +208,41 @@ function IndexView() {
                     <div style={{ 
                       display: 'flex', 
                       alignItems: 'baseline', 
+                      justifyContent: 'space-between',
                       width: '100%',
                       opacity: (isInt || isVent) ? 0.7 : 1,
                       transition: 'opacity 0.3s ease'
                     }}>
-                      <span style={{ 
-                        marginRight: '1rem',
-                        color: iconColor,
-                        fontSize: '0.9rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        transform: 'translateY(2px)'
-                      }}>
-                        {icon}
-                      </span>
+                      <div style={{ display: 'flex', alignItems: 'baseline', flexShrink: 1, paddingRight: '1rem' }}>
+                        <span style={{ 
+                          marginRight: '1rem',
+                          color: readChapters.includes(chapter._id) ? 'rgba(150, 150, 150, 0.4)' : iconColor,
+                          fontSize: '0.9rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          transform: 'translateY(2px)',
+                          flexShrink: 0
+                        }}>
+                          {icon}
+                        </span>
 
-                      <span style={{ 
-                        fontSize: '1.2rem', 
-                        fontStyle: (isInt || isVent) ? 'italic' : 'normal',
-                        fontWeight: (isInt || isVent) ? 'normal' : '500',
-                        letterSpacing: '0.05em'
-                      }}>
-                        {chapter.title}
-                      </span>
+                        <span style={{ 
+                          fontSize: '1.2rem', 
+                          fontStyle: (isInt || isVent) ? 'italic' : 'normal',
+                          fontWeight: (isInt || isVent) ? 'normal' : '500',
+                          letterSpacing: '0.05em',
+                          color: readChapters.includes(chapter._id) 
+                            ? 'var(--text-color)' 
+                            : (isInt || isVent ? iconColor : 'inherit'),
+                          opacity: readChapters.includes(chapter._id) ? 0.5 : 1,
+                          wordWrap: 'break-word',
+                          overflowWrap: 'break-word',
+                          wordBreak: 'break-word',
+                          whiteSpace: 'normal'
+                        }}>
+                          {chapter.title}
+                        </span>
+                      </div>
                       
                       <span className="toc-leader" style={{ opacity: 0.2 }}></span>
                       

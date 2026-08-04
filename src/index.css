@@ -66,9 +66,9 @@ button:hover {
 }
 
 .container {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0 2rem 6rem 2rem;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -150,6 +150,14 @@ button:hover {
   align-items: flex-start;
   overflow-y: auto;
   padding: 2rem;
+}
+
+.vent-container {
+  max-width: 1200px;
+  margin: 3rem auto;
+  min-height: 500px;
+  padding: 4rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 .modal-content {
@@ -516,6 +524,12 @@ button:hover {
   border-bottom-color: #555;
 }
 
+@media (max-width: 600px) {
+  .toc-leader {
+    display: none;
+  }
+}
+
 /* --- Intermission Ticket Physical Details --- */
 .ticket-container {
   /* ... existing styles ... */
@@ -556,32 +570,40 @@ button:hover {
 }
 
 /* --- Global Custom Cursor --- */
-body {
-  cursor: none;
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: none;
+  }
+
+  a, button, input, select {
+    cursor: none;
+  }
+
+  .custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--text-color);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, background 0.2s ease, mix-blend-mode 0.2s ease;
+    mix-blend-mode: difference;
+  }
+
+  .custom-cursor.hover {
+    transform: translate(-50%, -50%) scale(1.5);
+    background: var(--text-color);
+  }
 }
 
-a, button, input, select {
-  cursor: none;
-}
-
-.custom-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--text-color);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease, background 0.2s ease, mix-blend-mode 0.2s ease;
-  mix-blend-mode: difference;
-}
-
-.custom-cursor.hover {
-  transform: translate(-50%, -50%) scale(1.5);
-  background: var(--text-color);
+@media (hover: none), (pointer: coarse) {
+  .custom-cursor {
+    display: none !important;
+  }
 }
 
 /* --- Sky Animations --- */
@@ -604,7 +626,7 @@ a, button, input, select {
   font-family: var(--font-serif);
   min-height: 100vh;
   width: 100%;
-  padding: 4rem 5vw 4rem 100px;
+  padding: 4rem 5vw clamp(2rem, 5vw, 4rem) clamp(2rem, 15vw, 100px);
   position: relative;
 }
 
@@ -613,7 +635,7 @@ a, button, input, select {
   background-image: radial-gradient(circle at 50% 50%, #2a2a2a 0%, #111 100%);
   min-height: 100vh;
   width: 100%;
-  padding: 4rem 5vw;
+  padding: clamp(2rem, 5vw, 4rem) 5vw;
   position: relative;
   display: flex;
   flex-direction: column;

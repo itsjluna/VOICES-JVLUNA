@@ -5,14 +5,17 @@ import api from '../api';
 import { Winter, Spring, Summer, Autumn } from './SeasonBackgrounds';
 import { SeasonDebris } from './SeasonDebris';
 import Polaroid from './Polaroid';
+import PostIt from './PostIt';
 
 function ChapterView() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [chapter, setChapter] = useState(null);
   const [poems, setPoems] = useState([]);
-  const [quote, setQuote] = useState(null);
-  const [postItColor, setPostItColor] = useState('#fdfd96');
+  const [quoteReal, setQuoteReal] = useState(null);
+  const [quoteFictional, setQuoteFictional] = useState(null);
+  const [postItColor1, setPostItColor1] = useState('#fdfd96');
+  const [postItColor2, setPostItColor2] = useState('#ffb7b2');
 
   useEffect(() => {
     async function fetchData() {
@@ -29,22 +32,63 @@ function ChapterView() {
       }
     }
     
-    async function fetchQuote() {
+    async function fetchQuotes() {
       try {
-        const res = await fetch('https://dummyjson.com/quotes/random');
-        const data = await res.json();
-        setQuote(data);
+        const popQuotes = [
+          { quote: "Do, or do not. There is no try.", author: "Yoda" },
+          { quote: "I'm not bad. I'm just drawn that way.", author: "Jessica Rabbit" },
+          { quote: "To infinity, and beyond!", author: "Buzz Lightyear" },
+          { quote: "I solemnly swear that I am up to no good.", author: "Harry Potter" },
+          { quote: "Just keep swimming.", author: "Dory" },
+          { quote: "You shall not pass!", author: "Gandalf" },
+          { quote: "Why so serious?", author: "The Joker" },
+          { quote: "With great power comes great responsibility.", author: "Uncle Ben" },
+          { quote: "Winter is coming.", author: "Ned Stark" },
+          { quote: "Hello, friend.", author: "Elliot Alderson" },
+          { quote: "I am Groot.", author: "Groot" },
+          { quote: "I have a bad feeling about this.", author: "Han Solo" },
+          { quote: "I see dead people.", author: "Cole Sear" },
+          { quote: "There's no place like home.", author: "Dorothy Gale" },
+          { quote: "E.T. phone home.", author: "E.T." },
+          { quote: "May the Force be with you.", author: "Obi-Wan Kenobi" },
+          { quote: "I am your father.", author: "Darth Vader" },
+          { quote: "It's alive! It's alive!", author: "Henry Frankenstein" },
+          { quote: "Here's Johnny!", author: "Jack Torrance" },
+          { quote: "Hasta la vista, baby.", author: "The Terminator" },
+          { quote: "My precious.", author: "Gollum" },
+          { quote: "Life is like a box of chocolates.", author: "Forrest Gump" },
+          { quote: "I'm the king of the world!", author: "Jack Dawson" },
+          { quote: "Wakanda Forever!", author: "Black Panther" },
+          { quote: "Keep your friends close, but your enemies closer.", author: "Michael Corleone" }
+        ];
+
+        setQuoteFictional(popQuotes[Math.floor(Math.random() * popQuotes.length)]);
+
+        if (Math.random() > 0.7) {
+          const kojimaQuotes = [
+            { quote: "Building the future and keeping the past alive are one and the same thing.", author: "Hideo Kojima" },
+            { quote: "Half of me is made of movies.", author: "Hideo Kojima" },
+            { quote: "Games shouldn't just be fun. They should teach or spark an interest in other things.", author: "Hideo Kojima" },
+            { quote: "I want to create things that people will remember forever.", author: "Hideo Kojima" }
+          ];
+          setQuoteReal(kojimaQuotes[Math.floor(Math.random() * kojimaQuotes.length)]);
+        } else {
+          const res = await fetch('https://dummyjson.com/quotes/random');
+          const data = await res.json();
+          setQuoteReal(data);
+        }
         
-        // Pick random post-it color
+        // Pick random post-it colors
         const colors = ['#fdfd96', '#ffb7b2', '#c1e1c1', '#b5ead7', '#e2f0cb'];
-        setPostItColor(colors[Math.floor(Math.random() * colors.length)]);
+        setPostItColor1(colors[Math.floor(Math.random() * colors.length)]);
+        setPostItColor2(colors[Math.floor(Math.random() * colors.length)]);
       } catch (err) {
         console.error(err);
       }
     }
 
     fetchData();
-    fetchQuote();
+    fetchQuotes();
   }, [id]);
 
   if (!chapter) return <div style={{ padding: '2rem' }}>Loading...</div>;
@@ -91,17 +135,31 @@ function ChapterView() {
             >
               <Polaroid src={chapter.image} alt={chapter.title} containerStyle={{ margin: 0 }} />
               
-              {quote && (
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.8, rotate: 10 }}
-                  animate={{ opacity: 1, scale: 1, rotate: -5 }}
-                  transition={{ delay: 1.2, duration: 0.5 }}
-                  className="post-it"
-                  style={{ background: postItColor }}
-                >
-                  <p>"{quote.quote}"</p>
-                  <small>— {quote.author}</small>
-                </motion.div>
+              {quoteReal && (
+                <PostIt 
+                  quote={quoteReal.quote}
+                  author={quoteReal.author}
+                  color={postItColor1}
+                  style={{ zIndex: 5 }}
+                  initialAnimation={{
+                    initial: { opacity: 0, scale: 0.8, rotate: 10, y: 0 },
+                    animate: { opacity: 1, scale: 1, rotate: -5, y: -20 },
+                    transition: { delay: 1.2, duration: 0.5 }
+                  }}
+                />
+              )}
+              {quoteFictional && (
+                <PostIt 
+                  quote={quoteFictional.quote}
+                  author={quoteFictional.author}
+                  color={postItColor2}
+                  style={{ zIndex: 6 }}
+                  initialAnimation={{
+                    initial: { opacity: 0, scale: 0.8, rotate: -10, y: 0, x: 0 },
+                    animate: { opacity: 1, scale: 1, rotate: 8, y: 80, x: -40 },
+                    transition: { delay: 1.4, duration: 0.5 }
+                  }}
+                />
               )}
             </motion.div>
           )}

@@ -3,11 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import api from '../api';
 import Polaroid from './Polaroid';
+import { useReadingProgress } from '../hooks/useReadingProgress';
 
 function VentView() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [vent, setVent] = useState(null);
+  const { markAsRead } = useReadingProgress();
 
   useEffect(() => {
     async function fetchData() {
@@ -18,6 +20,7 @@ function VentView() {
       } catch (err) {
         console.error(err);
       }
+      if (id) markAsRead(id);
     }
     fetchData();
   }, [id]);
@@ -174,7 +177,7 @@ function VentView() {
           ...(isNotebook ? {} : {
             // Giant Post-it Styling
             backgroundColor: '#fdfd96',
-            padding: '4rem 5vw',
+            padding: 'clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 5vw)',
             boxShadow: '0 10px 30px rgba(0,0,0,0.3), inset 0 0 50px rgba(0,0,0,0.02)',
             borderRadius: '2px',
             transform: 'rotate(1deg)',
@@ -188,11 +191,15 @@ function VentView() {
         </div>
 
         <h1 style={{ 
-          fontSize: '3rem', // Replaced clamp
-          marginBottom: '3rem', 
+          fontSize: '3rem',
+          marginBottom: '2rem', 
           borderBottom: isNotebook ? 'none' : '2px solid #555', 
-          paddingBottom: '1rem',
-          lineHeight: '1.2'
+          paddingBottom: isNotebook ? '1rem' : '1rem',
+          lineHeight: isNotebook ? '3rem' : '1.2',
+          wordWrap: 'break-word',
+          overflowWrap: 'break-word',
+          wordBreak: 'break-word',
+          whiteSpace: 'normal'
         }}>
           {vent.title}
         </h1>
@@ -209,9 +216,12 @@ function VentView() {
           className="vent-content" 
           dangerouslySetInnerHTML={{ __html: vent.content || '' }} 
           style={{ 
-            fontSize: '1.2rem', // Replaced clamp
+            fontSize: '1.2rem',
             lineHeight: isNotebook ? '2rem' : '1.8',
-            fontWeight: isNotebook ? '400' : '500'
+            fontWeight: isNotebook ? '400' : '500',
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word',
+            wordBreak: 'break-word'
           }} 
         />
         

@@ -5,8 +5,9 @@ import { FaPlane, FaTrain, FaBus } from 'react-icons/fa';
 import api from '../api';
 import Polaroid from './Polaroid';
 import { TravelGraphics } from './TravelGraphics';
+import { useReadingProgress } from '../hooks/useReadingProgress';
 
-const ticketTypes = ['plane', 'train', 'bus'];
+const ticketTypes = ['plane', 'train', 'train-cherry', 'bus'];
 const accentColors = ['#e63946', '#2a9d8f', '#e9c46a', '#f4a261', '#264653', '#8338ec', '#ff006e', '#fb8500', '#023047', '#8ecae6'];
 
 function IntermissionView() {
@@ -14,6 +15,7 @@ function IntermissionView() {
   const navigate = useNavigate();
   const [intermission, setIntermission] = useState(null);
   const [passenger, setPassenger] = useState('WANDERING SOUL');
+  const { markAsRead } = useReadingProgress();
   
   const ticketType = useMemo(() => {
     if (intermission?.theme && ticketTypes.includes(intermission.theme)) {
@@ -39,6 +41,7 @@ function IntermissionView() {
       } catch (err) {
         console.error(err);
       }
+      if (id) markAsRead(id);
     }
     
     async function fetchIp() {
@@ -81,7 +84,7 @@ function IntermissionView() {
           <div className="ticket-header" style={{ background: accentColor, color: '#fff' }}>
             <span className="ticket-logo" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               {ticketType === 'plane' && <><FaPlane /> AIRWAYS BOARDING PASS</>}
-              {ticketType === 'train' && <><FaTrain /> RAILWAY EXPRESS TICKET</>}
+              {ticketType.startsWith('train') && <><FaTrain /> RAILWAY EXPRESS TICKET</>}
               {ticketType === 'bus'   && <><FaBus /> INTERCITY COACH PASS</>}
             </span>
             <span className="ticket-class">FIRST CLASS</span>

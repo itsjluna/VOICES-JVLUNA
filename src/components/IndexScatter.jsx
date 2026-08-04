@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 
 export const IndexScatter = React.memo(() => {
@@ -13,7 +13,8 @@ export const IndexScatter = React.memo(() => {
       
       return (
         <motion.div key={`card-${i}`} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 0.4, scale: 1 }} transition={{ duration: 1.5, delay }}
-          style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, width: '200px', height: '120px', background: '#fff', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', transform: `rotate(${rotate}deg)`, pointerEvents: 'none', zIndex: 1, borderRadius: '2px', display: 'flex', flexDirection: 'column', padding: '10px' }}>
+          drag dragConstraints={{ left: -300, right: 300, top: -300, bottom: 300 }} whileDrag={{ scale: 1.1, opacity: 0.8 }}
+          style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, width: '200px', height: '120px', background: '#fff', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', transform: `rotate(${rotate}deg)`, pointerEvents: 'auto', cursor: 'grab', zIndex: 1, borderRadius: '2px', display: 'flex', flexDirection: 'column', padding: '10px' }}>
           <div style={{ borderBottom: '1px solid rgba(255, 0, 0, 0.2)', height: '20px', width: '100%', marginBottom: '5px' }}></div>
           <div style={{ borderBottom: '1px solid rgba(0, 0, 255, 0.1)', height: '15px', width: '100%' }}></div>
           <div style={{ borderBottom: '1px solid rgba(0, 0, 255, 0.1)', height: '15px', width: '100%' }}></div>
@@ -75,11 +76,9 @@ export const IndexScatter = React.memo(() => {
       const top = 20 + Math.random() * 60;
       const left = 10 + Math.random() * 70;
       const rotate = Math.random() * 60 - 30;
+      
       return (
-        <motion.div key={`blank-pol-${i}`} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.2 }}
-          style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, width: '140px', height: '170px', backgroundColor: '#fafafa', boxShadow: '0 5px 15px rgba(0,0,0,0.1)', transform: `rotate(${rotate}deg)`, pointerEvents: 'none', zIndex: 2, padding: '10px 10px 35px 10px', boxSizing: 'border-box' }}>
-          <div style={{ width: '100%', height: '100%', backgroundColor: '#222' }}></div>
-        </motion.div>
+        <PolaroidScatter key={`blank-pol-${i}`} top={top} left={left} rotate={rotate} index={i} />
       );
     });
   }, []);
@@ -100,7 +99,7 @@ export const IndexScatter = React.memo(() => {
   }, []);
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: -1, overflow: 'hidden' }}>
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
       {coffeeRings}
       {scribbles}
       {indexCards}
@@ -109,3 +108,25 @@ export const IndexScatter = React.memo(() => {
     </div>
   );
 });
+
+function PolaroidScatter({ top, left, rotate, index }) {
+  const [revealed, setRevealed] = useState(false);
+  
+  return (
+    <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.2 }}
+      drag dragConstraints={{ left: -400, right: 400, top: -400, bottom: 400 }} whileDrag={{ scale: 1.1, zIndex: 100 }}
+      onClick={() => setRevealed(!revealed)}
+      style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, width: '140px', height: '170px', backgroundColor: '#fafafa', boxShadow: '0 5px 15px rgba(0,0,0,0.1)', transform: `rotate(${rotate}deg)`, pointerEvents: 'auto', cursor: 'grab', zIndex: 2, padding: '10px 10px 35px 10px', boxSizing: 'border-box' }}>
+      <div style={{ width: '100%', height: '100%', backgroundColor: '#222', position: 'relative', overflow: 'hidden' }}>
+        {revealed && index === 0 && (
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: '#fff', color: '#111', padding: '10px', boxSizing: 'border-box', fontSize: '0.65rem', fontStyle: 'italic', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            Todo es arte<br/>
+            También este poema,<br/>
+            Que se lee cerrando los ojos.<br/>
+            Para vivir fuera del agua
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+}

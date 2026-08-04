@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { IndexScatter } from './IndexScatter';
+import { useReadingProgress } from '../hooks/useReadingProgress';
 import api from '../api';
 import Polaroid from './Polaroid';
 import Marginalia from './Marginalia';
-import { Winter, Spring, Summer, Autumn, AmbientDust, DigitalMatrix, Embers, Clocks } from './SeasonBackgrounds';
+import { Winter, Spring, Summer, Autumn, AmbientDust, DigitalMatrix, Embers, Clocks, DawnLight } from './SeasonBackgrounds';
 
 function PoemView() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [poem, setPoem] = useState(null);
+  const { markAsRead } = useReadingProgress();
 
   useEffect(() => {
     async function fetchData() {
@@ -19,6 +22,7 @@ function PoemView() {
       } catch (err) {
         console.error(err);
       }
+      if (id) markAsRead(id);
     }
     fetchData();
   }, [id]);
@@ -35,6 +39,7 @@ function PoemView() {
       case 'digital': return <DigitalMatrix />;
       case 'embers': return <Embers />;
       case 'clocks': return <Clocks />;
+      case 'dawn': return <DawnLight />;
       default: return null;
     }
   };

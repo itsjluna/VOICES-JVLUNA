@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ThemeToggle from './components/ThemeToggle';
+import DockNav from './components/DockNav';
 import CustomCursor from './components/CustomCursor';
 
 const WelcomeScreen = lazy(() => import('./components/WelcomeScreen'));
@@ -15,7 +15,7 @@ function App() {
   return (
     <Router>
       <CustomCursor />
-      <ThemeToggle />
+      <DockNav />
       <div className="container">
         <Suspense fallback={
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
