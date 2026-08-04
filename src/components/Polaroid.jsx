@@ -13,7 +13,6 @@ const Polaroid = React.memo(({ src, alt, containerStyle = {}, wrapperClass = "",
         style={{ cursor: 'pointer', ...containerStyle }}
       >
         <motion.div 
-          layoutId={`polaroid-${src}`} 
           className={`polaroid-container ${polaroidClass}`}
           style={{ rotate: rotation }}
         >
@@ -45,14 +44,18 @@ const Polaroid = React.memo(({ src, alt, containerStyle = {}, wrapperClass = "",
             }}
           >
             <motion.div 
-              layoutId={`polaroid-${src}`}
+              initial={{ scale: 0.5, rotateZ: (Math.random() * 30) - 15, rotateX: 60, rotateY: 20, y: 300, opacity: 0 }}
+              animate={{ scale: 1, rotateZ: 0, rotateX: 0, rotateY: 0, y: 0, opacity: 1 }}
+              exit={{ scale: 0.7, rotateZ: -20, rotateX: 45, rotateY: -20, y: 300, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 250, damping: 20, mass: 1.2 }}
               className="polaroid-container"
               style={{
                 margin: 0,
-                rotate: 0,
                 maxWidth: '90vw',
                 maxHeight: '90vh',
-                pointerEvents: 'auto'
+                pointerEvents: 'auto',
+                boxShadow: '0 30px 60px rgba(0,0,0,0.6)',
+                transformStyle: 'preserve-3d'
               }}
             >
               <img src={src} alt={alt} style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain' }} className="polaroid-img" loading="lazy" decoding="async" />
