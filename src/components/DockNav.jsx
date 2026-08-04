@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { FaSun, FaMoon, FaHome, FaBookOpen } from 'react-icons/fa';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -78,38 +78,13 @@ function DockButton({ icon, active, onClick, label, isDark }) {
   const activeBg = isDark ? '#fdfdf8' : '#121212';
   const inactiveBg = 'transparent';
 
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  
-  const springConfig = { stiffness: 150, damping: 15, mass: 0.1 };
-  const springX = useSpring(x, springConfig);
-  const springY = useSpring(y, springConfig);
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    // Magnetic pull effect
-    x.set((e.clientX - centerX) * 0.4);
-    y.set((e.clientY - centerY) * 0.4);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
   return (
     <motion.button
       onClick={onClick}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       whileHover={{ scale: 1.15 }}
       whileTap={{ scale: 0.9 }}
       title={label}
       style={{
-        x: springX,
-        y: springY,
         width: '45px',
         height: '45px',
         borderRadius: '50%',
