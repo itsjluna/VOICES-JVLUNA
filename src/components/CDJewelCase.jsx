@@ -29,6 +29,8 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, initialAnimation,
           src={coverUrl} 
           alt={`${albumName} by ${artist}`} 
           style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2px' }} 
+          loading="lazy"
+          decoding="async"
         />
         <JewelCaseOverlay />
       </motion.div>
@@ -120,6 +122,8 @@ const CDModal = ({ layoutIdId, coverUrl, artist, albumName, onClose }) => {
           src={coverUrl.replace('100x100bb', '600x600bb')} // Request high res from iTunes API
           alt={`${albumName} by ${artist}`} 
           style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px', transform: 'translateZ(10px)' }} 
+          loading="lazy"
+          decoding="async"
         />
         <JewelCaseOverlay translateZ="20px" />
       </motion.div>

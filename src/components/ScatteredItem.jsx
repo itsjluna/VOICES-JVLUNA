@@ -16,6 +16,8 @@ const ScatteredItem = React.memo(({ src, alt, initialAnimation, style, className
         style={{ ...style, cursor: 'pointer' }}
         onClick={() => setIsOpen(true)}
         whileHover={{ scale: 1.05, filter: 'brightness(1.1)' }}
+        loading="lazy"
+        decoding="async"
       />
 
       <AnimatePresence>
@@ -56,6 +58,8 @@ const ScatteredItem = React.memo(({ src, alt, initialAnimation, style, className
                 zIndex: 100000,
                 transformStyle: 'preserve-3d'
               }}
+              loading="lazy"
+              decoding="async"
             />
           </motion.div>
         )}

@@ -236,7 +236,13 @@ function ChapterView() {
           style={{ position: 'relative' }}
         >
           <SeasonDebris theme={chapter.theme} />
-          <h1 style={{ fontSize: '2.5rem', marginBottom: '2rem', position: 'relative', zIndex: 10 }}>{chapter.title}</h1>
+          <h1 style={{ 
+            fontSize: '2.5rem', 
+            marginBottom: '4rem', 
+            letterSpacing: '0.15em',
+            position: 'relative', 
+            zIndex: 10 
+          }}>{chapter.title}</h1>
           
           {chapter.image && (
             <motion.div 
