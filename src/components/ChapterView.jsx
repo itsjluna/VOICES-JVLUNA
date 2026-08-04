@@ -158,9 +158,20 @@ function ChapterView() {
           if (itunesData.results && itunesData.results.length > 0) {
             // Filter exact matches to avoid compilations or featured tracks
             const exactMatches = itunesData.results.filter(a => a.artistName.toLowerCase() === randomArtist.toLowerCase());
-            const pool = exactMatches.length > 0 ? exactMatches : itunesData.results;
             
-            // Shrink coincidences per artist to 4 or 5
+            // Filter out remixes, live albums, and karaoke versions to focus on main popular studio albums
+            const cleanMatches = exactMatches.filter(a => {
+              const name = a.collectionName ? a.collectionName.toLowerCase() : '';
+              return !name.includes('remix') && 
+                     !name.includes('live') && 
+                     !name.includes('karaoke') && 
+                     !name.includes('instrumental');
+            });
+            
+            // Fallback to exactMatches if cleanMatches is empty
+            const pool = cleanMatches.length > 0 ? cleanMatches : (exactMatches.length > 0 ? exactMatches : itunesData.results);
+            
+            // Shrink coincidences per artist to 4 or 5 (iTunes sorts by popularity by default)
             const shrunkPool = pool.slice(0, 5);
             const randomAlbum = shrunkPool[Math.floor(Math.random() * shrunkPool.length)];
             setAlbumDecoration(randomAlbum);
