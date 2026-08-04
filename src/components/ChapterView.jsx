@@ -142,22 +142,22 @@ function ChapterView() {
         // Fetch random album decoration
         try {
           const belovedArtists = [
-            "low roar", "imagine dragons", "chappell roan", "laufey", "clairo", 
-            "bad bunny", "k.flay", "emjay", "olivia rodrigo", "joey valence & brae", 
-            "tessa ia", "dafna", "susanne sundfør", "doris day", "dagny", 
-            "taylor swift", "addison rae", "alice phoebe lou", "kim petras",
-            "charli xcx", "sigrid", "sabrina carpenter", "midnight generation", 
-            "lady gaga", "everglow", "twice", "akriila", "lana del rey", "lorde", 
-            "griff", "taichu", "rixxia", "junior varsity", "magnolian", "blackpink", "six sex"
+            "Low Roar", "Imagine Dragons", "Chappell Roan", "Laufey", "Clairo", 
+            "Bad Bunny", "K.Flay", "EMJAY", "Olivia Rodrigo", "Joey Valence & Brae", 
+            "Tessa Ia", "Dafna", "Susanne Sundfør", "Doris Day", "Dagny", 
+            "Taylor Swift", "Addison Rae", "Alice Phoebe Lou", "Kim Petras",
+            "Charli XCX", "Sigrid", "Sabrina Carpenter", "Midnight Generation", 
+            "Lady Gaga", "EVERGLOW", "TWICE", "AKRIILA", "Lana Del Rey", "Lorde", 
+            "Griff", "Taichu", "RIXXIA", "Junior Varsity", "Magnolian", "BLACKPINK", "Six Sex"
           ];
           const randomArtist = belovedArtists[Math.floor(Math.random() * belovedArtists.length)];
           
-          // Use a massive limit so we can safely filter out false positives (like Coldplay's song "Everglow") before picking 5
+          // Use a massive limit so we can safely filter out false positives before picking 3
           const itunesRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(randomArtist)}&entity=album&attribute=artistTerm&limit=50`);
           const itunesData = await itunesRes.json();
           if (itunesData.results && itunesData.results.length > 0) {
-            // Filter exact matches to avoid compilations or featured tracks
-            const exactMatches = itunesData.results.filter(a => a.artistName.toLowerCase() === randomArtist.toLowerCase());
+            // Strict case-sensitive match to perfectly isolate the correct artist
+            const exactMatches = itunesData.results.filter(a => a.artistName === randomArtist);
             
             // Filter out remixes, live albums, karaoke, compilations, deluxe editions, and strictly reject Singles
             const cleanMatches = exactMatches.filter(a => {
@@ -186,9 +186,22 @@ function ChapterView() {
             // Fallback to exactMatches if cleanMatches is empty
             const pool = cleanMatches.length > 0 ? cleanMatches : (exactMatches.length > 0 ? exactMatches : itunesData.results);
             
-            // Shrink coincidences per artist to 4 or 5 (iTunes sorts by popularity by default)
-            const shrunkPool = pool.slice(0, 5);
+            // Shrink coincidences per artist to 3 for top popularity
+            const shrunkPool = pool.slice(0, 3);
             const randomAlbum = shrunkPool[Math.floor(Math.random() * shrunkPool.length)];
+            
+            // Fetch track list to get preview audio
+            try {
+              const tracksRes = await fetch(`https://itunes.apple.com/lookup?id=${randomAlbum.collectionId}&entity=song`);
+              const tracksData = await tracksRes.json();
+              const track = tracksData.results.find(t => t.wrapperType === 'track' && t.previewUrl);
+              if (track) {
+                randomAlbum.previewUrl = track.previewUrl;
+              }
+            } catch (e) {
+              console.error("Failed to fetch album tracks for preview", e);
+            }
+            
             setAlbumDecoration(randomAlbum);
           }
         } catch (e) {
@@ -292,6 +305,7 @@ function ChapterView() {
                   coverUrl={albumDecoration.artworkUrl100}
                   artist={albumDecoration.artistName}
                   albumName={albumDecoration.collectionName}
+                  previewUrl={albumDecoration.previewUrl}
                   style={{ zIndex: 12, top: '-50px', left: '-70px', transform: 'rotate(-15deg)', width: '160px', height: '160px' }}
                   initialAnimation={{
                     initial: { opacity: 0, y: 50, rotate: -35 },

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
-const CDJewelCase = React.memo(({ coverUrl, artist, albumName, initialAnimation, style }) => {
+const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initialAnimation, style }) => {
   const [isOpen, setIsOpen] = useState(false);
   const layoutIdId = `cd-${albumName}-${artist}`.replace(/\s+/g, '-'); 
 
@@ -42,6 +42,7 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, initialAnimation,
             coverUrl={coverUrl} 
             artist={artist} 
             albumName={albumName} 
+            previewUrl={previewUrl}
             onClose={() => setIsOpen(false)} 
           />
         )}
@@ -51,7 +52,7 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, initialAnimation,
 });
 
 // Extracted Modal component to manage 3D mouse state cleanly
-const CDModal = ({ layoutIdId, coverUrl, artist, albumName, onClose }) => {
+const CDModal = ({ layoutIdId, coverUrl, artist, albumName, previewUrl, onClose }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
@@ -136,7 +137,10 @@ const CDModal = ({ layoutIdId, coverUrl, artist, albumName, onClose }) => {
       >
         <strong style={{ fontSize: '1.2rem' }}>{albumName}</strong><br/>
         <span style={{ opacity: 0.7 }}>{artist}</span>
+        {previewUrl && <div style={{ fontSize: '0.8rem', marginTop: '0.5rem', opacity: 0.8 }}>Now Playing Preview... 🎵</div>}
       </motion.div>
+      
+      {previewUrl && <audio src={previewUrl} autoPlay />}
     </motion.div>
   );
 };
