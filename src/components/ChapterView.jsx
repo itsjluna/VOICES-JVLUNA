@@ -18,6 +18,7 @@ function ChapterView() {
   const [postItColor1, setPostItColor1] = useState('#fdfd96');
   const [postItColor2, setPostItColor2] = useState('#ffb7b2');
   const [albumDecoration, setAlbumDecoration] = useState(null);
+  const [randomDecorations, setRandomDecorations] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -150,6 +151,39 @@ function ChapterView() {
           console.error("Failed to fetch iTunes album", e);
         }
 
+        // Generate random scattered decorations from uploaded PNGs
+        const possibleDecorations = [
+          'brioche.png', 'camera.png', 'cochinita.png', 'coffee.png', 
+          'deathstranding.png', 'dualsense.png', 'glasses.png', 'inderalici.png', 
+          'logitech.png', 'marvel.png', 'pen.png', 'pencil.png', 'rubik.png', 
+          'slims.png', 'sw.png', 'taco.png', 'transformers.png', 'watch.png', 
+          'whisky.png', 'wine.png'
+        ];
+        
+        const numItems = Math.floor(Math.random() * 2) + 2; // Pick 2 or 3 items
+        const selectedDecs = [];
+        const availableDecs = [...possibleDecorations];
+        for (let i = 0; i < numItems; i++) {
+          if (availableDecs.length === 0) break;
+          const idx = Math.floor(Math.random() * availableDecs.length);
+          const item = availableDecs.splice(idx, 1)[0];
+          
+          const isTop = Math.random() > 0.5;
+          const isLeft = Math.random() > 0.5;
+          selectedDecs.push({
+            src: `/${item}`,
+            top: isTop ? `${Math.floor(Math.random() * 120) - 60}px` : 'auto',
+            bottom: !isTop ? `${Math.floor(Math.random() * 120) - 60}px` : 'auto',
+            left: isLeft ? `${Math.floor(Math.random() * 120) - 60}px` : 'auto',
+            right: !isLeft ? `${Math.floor(Math.random() * 120) - 60}px` : 'auto',
+            rotate: Math.floor(Math.random() * 120) - 60,
+            width: `${Math.floor(Math.random() * 60) + 90}px`, // 90px to 150px
+            zIndex: Math.floor(Math.random() * 8) + 1, // Behind or above elements
+            delay: 1.5 + (Math.random() * 0.5)
+          });
+        }
+        setRandomDecorations(selectedDecs);
+
       } catch (err) {
         console.error(err);
       }
@@ -232,6 +266,26 @@ function ChapterView() {
                 }}
               />
               
+              {randomDecorations.map((dec, idx) => (
+                <motion.img 
+                  key={idx}
+                  src={dec.src}
+                  alt="Decoration"
+                  initial={{ opacity: 0, scale: 0.8, rotate: dec.rotate }}
+                  animate={{ opacity: 1, scale: 1, rotate: dec.rotate }}
+                  transition={{ delay: dec.delay, duration: 0.5 }}
+                  style={{ 
+                    position: 'absolute', 
+                    top: dec.top,
+                    bottom: dec.bottom,
+                    left: dec.left,
+                    right: dec.right,
+                    width: dec.width, 
+                    zIndex: dec.zIndex
+                  }}
+                />
+              ))}
+
               {quoteReal && (
                 <PostIt 
                   quote={quoteReal.quote}
