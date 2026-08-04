@@ -144,19 +144,25 @@ function ChapterView() {
           const belovedArtists = [
             "low roar", "imagine dragons", "chappell roan", "laufey", "clairo", 
             "bad bunny", "k.flay", "emjay", "olivia rodrigo", "joey valence & brae", 
-            "tessa ia", "dafna", "susanne sundfor", "doris day", "dagny", 
+            "tessa ia", "dafna", "susanne sundfør", "doris day", "dagny", 
             "taylor swift", "addison rae", "alice phoebe lou", "kim petras",
             "charli xcx", "sigrid", "sabrina carpenter", "midnight generation", 
             "lady gaga", "everglow", "twice", "akriila", "lana del rey", "lorde", 
             "griff", "taichu", "rixxia", "junior varsity", "magnolian"
           ];
           const randomArtist = belovedArtists[Math.floor(Math.random() * belovedArtists.length)];
-          // Increase limit to get a variety of albums from the same artist
-          const itunesRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(randomArtist)}&entity=album&limit=15`);
+          
+          // Strict search by artist term
+          const itunesRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(randomArtist)}&entity=album&attribute=artistTerm&limit=15`);
           const itunesData = await itunesRes.json();
           if (itunesData.results && itunesData.results.length > 0) {
-            // Pick a random album from the results instead of always the first one
-            const randomAlbum = itunesData.results[Math.floor(Math.random() * itunesData.results.length)];
+            // Filter exact matches to avoid compilations or featured tracks
+            const exactMatches = itunesData.results.filter(a => a.artistName.toLowerCase() === randomArtist.toLowerCase());
+            const pool = exactMatches.length > 0 ? exactMatches : itunesData.results;
+            
+            // Shrink coincidences per artist to 4 or 5
+            const shrunkPool = pool.slice(0, 5);
+            const randomAlbum = shrunkPool[Math.floor(Math.random() * shrunkPool.length)];
             setAlbumDecoration(randomAlbum);
           }
         } catch (e) {

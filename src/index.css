@@ -671,3 +671,10 @@ button:hover {
   mix-blend-mode: screen;
   filter: invert(1) hue-rotate(180deg);
 }
+
+/* 5. Custom Text Highlight */
+::selection {
+  background-color: #ffd700; /* Highlighter yellow */
+  color: #111;
+  text-shadow: none;
+}
