@@ -159,13 +159,16 @@ function ChapterView() {
             // Filter exact matches to avoid compilations or featured tracks
             const exactMatches = itunesData.results.filter(a => a.artistName.toLowerCase() === randomArtist.toLowerCase());
             
-            // Filter out remixes, live albums, and karaoke versions to focus on main popular studio albums
+            // Filter out remixes, live albums, karaoke, and strictly reject Singles
             const cleanMatches = exactMatches.filter(a => {
               const name = a.collectionName ? a.collectionName.toLowerCase() : '';
+              // Reject if it has 'single' in the name, or has 3 or fewer tracks (unless explicitly marked as an EP)
+              const isSingle = name.includes('- single') || name.endsWith(' single') || (a.trackCount && a.trackCount <= 3 && !name.includes('ep'));
               return !name.includes('remix') && 
                      !name.includes('live') && 
                      !name.includes('karaoke') && 
-                     !name.includes('instrumental');
+                     !name.includes('instrumental') &&
+                     !isSingle;
             });
             
             // Fallback to exactMatches if cleanMatches is empty
