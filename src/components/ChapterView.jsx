@@ -6,6 +6,7 @@ import { Winter, Spring, Summer, Autumn } from './SeasonBackgrounds';
 import { SeasonDebris } from './SeasonDebris';
 import Polaroid from './Polaroid';
 import PostIt from './PostIt';
+import CDJewelCase from './CDJewelCase';
 
 function ChapterView() {
   const { id } = useParams();
@@ -16,6 +17,7 @@ function ChapterView() {
   const [quoteFictional, setQuoteFictional] = useState(null);
   const [postItColor1, setPostItColor1] = useState('#fdfd96');
   const [postItColor2, setPostItColor2] = useState('#ffb7b2');
+  const [albumDecoration, setAlbumDecoration] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -134,6 +136,20 @@ function ChapterView() {
         const colors = ['#fdfd96', '#ffb7b2', '#c1e1c1', '#b5ead7', '#e2f0cb'];
         setPostItColor1(colors[Math.floor(Math.random() * colors.length)]);
         setPostItColor2(colors[Math.floor(Math.random() * colors.length)]);
+
+        // Fetch random album decoration
+        try {
+          const belovedArtists = ['Low Roar', 'Imagine Dragons', 'Chappell Roan', 'Laufey', 'Clairo', 'Bad Bunny', 'K.Flay', 'Emjay', 'Olivia Rodrigo', 'Joey Valence & Brae', 'Tessa Ia', 'Dafna', 'Susanne Sundfør', 'Doris Day', 'Dagny', 'Taylor Swift', 'Addison Rae', 'Alice Phoebe Lou', 'Kim Petras', 'Charli XCX', 'Sigrid', 'Sabrina Carpenter'];
+          const randomArtist = belovedArtists[Math.floor(Math.random() * belovedArtists.length)];
+          const itunesRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(randomArtist)}&entity=album&limit=1`);
+          const itunesData = await itunesRes.json();
+          if (itunesData.results && itunesData.results.length > 0) {
+            setAlbumDecoration(itunesData.results[0]);
+          }
+        } catch (e) {
+          console.error("Failed to fetch iTunes album", e);
+        }
+
       } catch (err) {
         console.error(err);
       }
@@ -185,7 +201,38 @@ function ChapterView() {
               className="book-media"
               style={{ position: 'relative' }}
             >
-              <Polaroid src={chapter.image} alt={chapter.title} containerStyle={{ margin: 0 }} />
+              {albumDecoration && (
+                <CDJewelCase
+                  coverUrl={albumDecoration.artworkUrl100}
+                  artist={albumDecoration.artistName}
+                  albumName={albumDecoration.collectionName}
+                  style={{ zIndex: 4, top: '-40px', left: '-50px', transform: 'rotate(-10deg)' }}
+                  initialAnimation={{
+                    initial: { opacity: 0, y: 50, rotate: -25 },
+                    animate: { opacity: 1, y: 0, rotate: -10 },
+                    transition: { delay: 1.0, duration: 0.6 }
+                  }}
+                />
+              )}
+              
+              <Polaroid src={chapter.image} alt={chapter.title} containerStyle={{ margin: 0, position: 'relative', zIndex: 5 }} />
+              
+              <motion.img 
+                src="/earbuds.jpg" 
+                alt="Earbuds Case"
+                className="earbuds-case"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.6, duration: 0.5 }}
+                style={{ 
+                  position: 'absolute', 
+                  bottom: '-40px', 
+                  right: '-60px', 
+                  width: '90px', 
+                  zIndex: 3,
+                  rotate: '25deg'
+                }}
+              />
               
               {quoteReal && (
                 <PostIt 

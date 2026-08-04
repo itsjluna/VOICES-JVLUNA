@@ -641,3 +641,11 @@ button:hover {
   flex-direction: column;
   align-items: center;
 }
+
+.earbuds-case {
+  mix-blend-mode: multiply;
+}
+:root.dark .earbuds-case {
+  mix-blend-mode: screen;
+  filter: invert(1) hue-rotate(180deg);
+}
