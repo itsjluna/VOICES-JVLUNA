@@ -22,9 +22,7 @@ function VentView() {
     fetchData();
   }, [id]);
 
-  if (!vent) return <div style={{ padding: '2rem' }}>Loading...</div>;
-
-  const isNotebook = vent.theme !== 'postits';
+  const isNotebook = vent?.theme !== 'postits';
 
   // SCATTER GENERATION
   const scatters = useMemo(() => {
@@ -83,6 +81,8 @@ function VentView() {
       }
     });
   }, [isNotebook]);
+
+  if (!vent) return <div style={{ padding: '2rem' }}>Loading...</div>;
 
   return (
     <motion.div 
