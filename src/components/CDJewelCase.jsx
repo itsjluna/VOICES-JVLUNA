@@ -14,14 +14,14 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, initialAnimation,
         transition={{ ...initialAnimation.transition, layout: { type: "spring", stiffness: 1000, damping: 35 } }}
         className="cd-jewel-case"
         style={{ 
-          ...style, 
           cursor: 'pointer',
           width: '120px',
           height: '120px',
           position: 'absolute',
           boxShadow: '2px 5px 15px rgba(0,0,0,0.3)',
           borderRadius: '2px',
-          backgroundColor: '#111'
+          backgroundColor: '#111',
+          ...style
         }}
         onClick={() => setIsOpen(true)}
       >

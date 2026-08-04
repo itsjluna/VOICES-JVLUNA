@@ -160,7 +160,8 @@ function ChapterView() {
           'whisky.png', 'wine.png', 'hummingbird.webp', 'magnolia.webp', 'origami.webp'
         ];
         
-        const numItems = Math.floor(Math.random() * 2) + 2; // Pick 2 or 3 items
+        const isDesktop = typeof window !== 'undefined' && window.innerWidth > 768;
+        const numItems = Math.floor(Math.random() * 3) + 2; // Pick 2 to 4 items
         const selectedDecs = [];
         const availableDecs = [...possibleDecorations];
         for (let i = 0; i < numItems; i++) {
@@ -170,14 +171,21 @@ function ChapterView() {
           
           const isTop = Math.random() > 0.5;
           const isLeft = Math.random() > 0.5;
+          
+          const maxSpread = isDesktop ? 250 : 120;
+          const minSpread = isDesktop ? 80 : 60;
+          
+          const minSize = 70;
+          const maxSize = isDesktop ? 250 : 140;
+          
           selectedDecs.push({
             src: `/${item}`,
-            top: isTop ? `${Math.floor(Math.random() * 120) - 60}px` : 'auto',
-            bottom: !isTop ? `${Math.floor(Math.random() * 120) - 60}px` : 'auto',
-            left: isLeft ? `${Math.floor(Math.random() * 120) - 60}px` : 'auto',
-            right: !isLeft ? `${Math.floor(Math.random() * 120) - 60}px` : 'auto',
+            top: isTop ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
+            bottom: !isTop ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
+            left: isLeft ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
+            right: !isLeft ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
             rotate: Math.floor(Math.random() * 120) - 60,
-            width: `${Math.floor(Math.random() * 60) + 90}px`, // 90px to 150px
+            width: `${Math.floor(Math.random() * (maxSize - minSize)) + minSize}px`,
             zIndex: Math.floor(Math.random() * 8) + 1, // Behind or above elements
             delay: 1.5 + (Math.random() * 0.5)
           });
@@ -240,10 +248,10 @@ function ChapterView() {
                   coverUrl={albumDecoration.artworkUrl100}
                   artist={albumDecoration.artistName}
                   albumName={albumDecoration.collectionName}
-                  style={{ zIndex: 4, top: '-40px', left: '-50px', transform: 'rotate(-10deg)' }}
+                  style={{ zIndex: 12, top: '-50px', left: '-70px', transform: 'rotate(-15deg)', width: '160px', height: '160px' }}
                   initialAnimation={{
-                    initial: { opacity: 0, y: 50, rotate: -25 },
-                    animate: { opacity: 1, y: 0, rotate: -10 },
+                    initial: { opacity: 0, y: 50, rotate: -35 },
+                    animate: { opacity: 1, y: 0, rotate: -15 },
                     transition: { delay: 1.0, duration: 0.6 }
                   }}
                 />
