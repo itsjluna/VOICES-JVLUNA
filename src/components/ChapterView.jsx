@@ -218,9 +218,8 @@ function ChapterView() {
               <Polaroid src={chapter.image} alt={chapter.title} containerStyle={{ margin: 0, position: 'relative', zIndex: 5 }} />
               
               <motion.img 
-                src="/earbuds.jpg" 
+                src="/earbuds.png" 
                 alt="Earbuds Case"
-                className="earbuds-case"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.6, duration: 0.5 }}
