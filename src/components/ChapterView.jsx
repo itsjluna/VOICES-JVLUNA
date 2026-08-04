@@ -7,6 +7,7 @@ import { SeasonDebris } from './SeasonDebris';
 import Polaroid from './Polaroid';
 import PostIt from './PostIt';
 import CDJewelCase from './CDJewelCase';
+import ScatteredItem from './ScatteredItem';
 
 function ChapterView() {
   const { id } = useParams();
@@ -172,11 +173,11 @@ function ChapterView() {
           const isTop = Math.random() > 0.5;
           const isLeft = Math.random() > 0.5;
           
-          const maxSpread = isDesktop ? 250 : 120;
-          const minSpread = isDesktop ? 80 : 60;
+          const maxSpread = isDesktop ? 400 : 140;
+          const minSpread = isDesktop ? 120 : 70;
           
           const minSize = 70;
-          const maxSize = isDesktop ? 250 : 140;
+          const maxSize = isDesktop ? 260 : 150;
           
           selectedDecs.push({
             src: `/${item}`,
@@ -259,12 +260,14 @@ function ChapterView() {
               
               <Polaroid src={chapter.image} alt={chapter.title} containerStyle={{ margin: 0, position: 'relative', zIndex: 5 }} />
               
-              <motion.img 
+              <ScatteredItem 
                 src="/earbuds.png" 
                 alt="Earbuds Case"
-                initial={{ opacity: 0, scale: 0.8, rotate: 25 }}
-                animate={{ opacity: 1, scale: 1, rotate: 25 }}
-                transition={{ delay: 1.6, duration: 0.5 }}
+                initialAnimation={{
+                  initial: { opacity: 0, scale: 0.8, rotate: 25 },
+                  animate: { opacity: 1, scale: 1, rotate: 25 },
+                  transition: { delay: 1.6, duration: 0.5 }
+                }}
                 style={{ 
                   position: 'absolute', 
                   bottom: '-50px', 
@@ -275,13 +278,15 @@ function ChapterView() {
               />
               
               {randomDecorations.map((dec, idx) => (
-                <motion.img 
+                <ScatteredItem 
                   key={idx}
                   src={dec.src}
                   alt="Decoration"
-                  initial={{ opacity: 0, scale: 0.8, rotate: dec.rotate }}
-                  animate={{ opacity: 1, scale: 1, rotate: dec.rotate }}
-                  transition={{ delay: dec.delay, duration: 0.5 }}
+                  initialAnimation={{
+                    initial: { opacity: 0, scale: 0.8, rotate: dec.rotate },
+                    animate: { opacity: 1, scale: 1, rotate: dec.rotate },
+                    transition: { delay: dec.delay, duration: 0.5 }
+                  }}
                   style={{ 
                     position: 'absolute', 
                     top: dec.top,
