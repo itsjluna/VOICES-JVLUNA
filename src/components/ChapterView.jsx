@@ -225,9 +225,9 @@ function ChapterView() {
                 transition={{ delay: 1.6, duration: 0.5 }}
                 style={{ 
                   position: 'absolute', 
-                  bottom: '-40px', 
-                  right: '-60px', 
-                  width: '90px', 
+                  bottom: '-50px', 
+                  right: '-80px', 
+                  width: '140px', 
                   zIndex: 20
                 }}
               />
