@@ -5,6 +5,7 @@ import { FaBookOpen, FaTicketAlt, FaSun, FaMoon, FaStickyNote } from 'react-icon
 import api from '../api';
 import { IndexScatter } from './IndexScatter';
 import { useReadingProgress } from '../hooks/useReadingProgress';
+import AmbientAudio from './AmbientAudio';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -66,6 +67,7 @@ function IndexView() {
       transition={{ duration: 1 }} 
       style={{ flex: 1, padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 5vw, 2rem)', display: 'flex', flexDirection: 'column', position: 'relative', alignItems: 'center', width: '100%' }}
     >
+      <AmbientAudio src="/vinyl-crackle.mp3" volume={0.05} />
       <IndexScatter />
       
       {/* Full-width Sky Background */}

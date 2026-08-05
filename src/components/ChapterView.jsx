@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import api from '../api';
@@ -8,6 +8,7 @@ import Polaroid from './Polaroid';
 import PostIt from './PostIt';
 import CDJewelCase from './CDJewelCase';
 import ScatteredItem from './ScatteredItem';
+import AmbientAudio from './AmbientAudio';
 
 function ChapterView() {
   const { id } = useParams();
@@ -275,6 +276,7 @@ function ChapterView() {
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}
       style={{ flex: 1, padding: '2rem 0', position: 'relative' }}
     >
+      <AmbientAudio src={`/${chapter?.theme || 'spring'}-ambient.mp3`} volume={0.03} />
       {renderSeason()}
       <button style={{ marginBottom: '2rem', border: 'none', padding: '0', textDecoration: 'underline', position: 'relative', zIndex: 10 }} onClick={() => navigate(-1)}>
         &larr; Back

@@ -23,7 +23,7 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
         transition={{ ...initialAnimation.transition, layout: { type: "spring", stiffness: 1000, damping: 35 } }}
         className="cd-jewel-case"
         style={{ 
-          cursor: 'pointer',
+          cursor: 'grab',
           width: '120px',
           height: '120px',
           position: 'absolute',
@@ -32,6 +32,10 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
           backgroundColor: '#111',
           ...style
         }}
+        drag
+        dragConstraints={{ left: -500, right: 500, top: -500, bottom: 500 }}
+        dragElastic={0.2}
+        whileDrag={{ scale: 1.1, cursor: 'grabbing', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }}
         onClick={() => setIsOpen(true)}
       >
         <img 

@@ -22,7 +22,11 @@ const ScatteredItem = React.memo(({ src, alt, initialAnimation, style, className
         initial={initialAnimation.initial}
         animate={initialAnimation.animate}
         transition={initialAnimation.transition}
-        style={{ ...style, cursor: 'pointer' }}
+        style={{ ...style, cursor: 'grab' }}
+        drag
+        dragConstraints={{ left: -500, right: 500, top: -500, bottom: 500 }}
+        dragElastic={0.2}
+        whileDrag={{ scale: 1.1, cursor: 'grabbing', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }}
         onClick={() => setIsOpen(true)}
         whileHover={{ scale: 1.05, filter: 'brightness(1.1)' }}
         loading="lazy"

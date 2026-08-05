@@ -22,7 +22,11 @@ const PostIt = React.memo(({ quote, author, color, initialAnimation, style }) =>
         animate={initialAnimation.animate}
         transition={{ ...initialAnimation.transition, layout: { type: "spring", stiffness: 1000, damping: 35 } }}
         className="post-it"
-        style={{ ...style, background: color, cursor: 'pointer' }}
+        style={{ ...style, background: color, cursor: 'grab' }}
+        drag
+        dragConstraints={{ left: -500, right: 500, top: -500, bottom: 500 }}
+        dragElastic={0.2}
+        whileDrag={{ scale: 1.05, cursor: 'grabbing', filter: 'drop-shadow(5px 15px 20px rgba(0,0,0,0.3))' }}
         onClick={() => setIsOpen(true)}
       >
         <p>"{quote}"</p>

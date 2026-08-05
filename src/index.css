@@ -40,13 +40,34 @@ body {
 
 /* ... keep existing styles until modal ... */
 a {
-  color: inherit;
+  color: var(--text-color);
   text-decoration: none;
-  transition: opacity 0.3s;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
 a:hover {
-  opacity: 0.6;
+  filter: url('#ink-bleed');
+}
+
+a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--text-color);
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+  border-radius: 2px;
+}
+
+a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
 
 h1, h2, h3, h4 {
