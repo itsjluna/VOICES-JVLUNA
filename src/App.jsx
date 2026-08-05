@@ -4,7 +4,6 @@ import { AnimatePresence } from 'framer-motion';
 import DockNav from './components/DockNav';
 import CustomCursor from './components/CustomCursor';
 import TypewriterLoader from './components/TypewriterLoader';
-import PageTransition from './components/PageTransition';
 import FlashlightOverlay from './components/FlashlightOverlay';
 
 const WelcomeScreen = lazy(() => import('./components/WelcomeScreen'));
@@ -21,13 +20,13 @@ function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<PageTransition><WelcomeScreen /></PageTransition>} />
-        <Route path="/index" element={<PageTransition><IndexView /></PageTransition>} />
-        <Route path="/chapter/:id" element={<PageTransition><ChapterView /></PageTransition>} />
-        <Route path="/intermission/:id" element={<PageTransition><IntermissionView /></PageTransition>} />
-        <Route path="/vent/:id" element={<PageTransition><VentView /></PageTransition>} />
-        <Route path="/poem/:id" element={<PageTransition><PoemView /></PageTransition>} />
-        <Route path="/admin" element={<PageTransition><AdminDashboard /></PageTransition>} />
+        <Route path="/" element={<WelcomeScreen />} />
+        <Route path="/index" element={<IndexView />} />
+        <Route path="/chapter/:id" element={<ChapterView />} />
+        <Route path="/intermission/:id" element={<IntermissionView />} />
+        <Route path="/vent/:id" element={<VentView />} />
+        <Route path="/poem/:id" element={<PoemView />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </AnimatePresence>
   );
