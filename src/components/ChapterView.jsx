@@ -172,8 +172,14 @@ function ChapterView() {
               return !isSingle && !isNonMain && !isBlockedChappell && !isBlockedBadBunny && isAlbumType;
             });
             
-            // Fallback to exactMatches if cleanMatches is empty
-            const pool = cleanMatches.length > 0 ? cleanMatches : (exactMatches.length > 0 ? exactMatches : itunesData.results);
+            // Fallback to exactMatches if cleanMatches is empty, but NEVER include hard-blocked items
+            const safeExactMatches = exactMatches.filter(a => {
+              const name = a.collectionName ? a.collectionName.toLowerCase() : '';
+              const isBlockedChappell = a.artistName === 'Chappell Roan' && (name.includes('school nights') || name.includes('good hurt'));
+              const isBlockedBadBunny = a.artistName === 'Bad Bunny' && name.includes('super bowl');
+              return !isBlockedChappell && !isBlockedBadBunny;
+            });
+            const pool = cleanMatches.length > 0 ? cleanMatches : (safeExactMatches.length > 0 ? safeExactMatches : itunesData.results);
             
             // Shrink coincidences per artist to 5 for top popularity while maintaining variety
             const shrunkPool = pool.slice(0, 5);
