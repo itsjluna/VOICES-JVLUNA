@@ -54,6 +54,7 @@ export const IndexScatter = React.memo(() => {
         <motion.svg key={`coffee-${i}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2, delay: 1 }}
           drag whileDrag={{ scale: 1.05, cursor: 'grabbing' }}
           width={size} height={size} viewBox="0 0 100 100" style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, cursor: 'grab', zIndex: 0, opacity: 0.15, mixBlendMode: 'multiply', pointerEvents: 'auto', touchAction: 'none' }}>
+          <rect width="100%" height="100%" fill="transparent" />
           <circle cx="50" cy="50" r="45" fill="none" stroke="#795548" strokeWidth="2" opacity="0.5" />
           <circle cx="52" cy="48" r="45" fill="none" stroke="#6d4c41" strokeWidth="1" opacity="0.3" />
           <path d="M 10 50 A 40 40 0 0 1 50 10" fill="none" stroke="#5d4037" strokeWidth="3" opacity="0.4" />
@@ -81,6 +82,7 @@ export const IndexScatter = React.memo(() => {
         <motion.svg key={`scribble-${i}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.5, delay: 0.5 + Math.random() }}
           drag whileDrag={{ scale: 1.05, cursor: 'grabbing' }}
           width="100" height="100" viewBox="0 0 100 100" style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, transform: `rotate(${rotate}deg)`, cursor: 'grab', zIndex: 1, opacity: 0.3, pointerEvents: 'auto', touchAction: 'none' }}>
+          <rect width="100%" height="100%" fill="transparent" />
           <path d={pathData} fill="none" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" />
         </motion.svg>
       );
@@ -97,7 +99,9 @@ export const IndexScatter = React.memo(() => {
         <motion.svg key={`clip-${i}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.5, delay: 0.8 }}
           drag whileDrag={{ scale: 1.05, cursor: 'grabbing' }}
           width="35" height="70" viewBox="0 0 120 200" style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, transform: `rotate(${rotate}deg)`, cursor: 'grab', zIndex: 3, opacity: 0.8, filter: 'drop-shadow(2px 4px 3px rgba(0,0,0,0.3))', pointerEvents: 'auto', touchAction: 'none' }}>
+          <rect width="100%" height="100%" fill="transparent" />
           <path d="M45,45 L45,150 A15,15 0 0,0 75,150 L75,30 A25,25 0 0,0 25,30 L25,160 A35,35 0 0,0 95,160 L95,55" fill="none" stroke="#bdc3c7" strokeWidth="8" strokeLinecap="round" />
+          <rect width="100%" height="100%" fill="transparent" />
           <path d="M45,45 L45,150 A15,15 0 0,0 75,150 L75,30 A25,25 0 0,0 25,30 L25,160 A35,35 0 0,0 95,160 L95,55" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" opacity="0.5" transform="translate(-1, -1)" />
         </motion.svg>
       );
@@ -172,7 +176,7 @@ export const IndexScatter = React.memo(() => {
   }, [positions]);
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'visible', pointerEvents: 'none', zIndex: -1 }}>
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'visible', pointerEvents: 'none', zIndex: 0 }}>
       {coffeeRings}
       {scribbles}
       {indexCards}
