@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 import api from '../api';
 
 export const IndexScatter = React.memo(() => {
@@ -135,24 +135,24 @@ export const IndexScatter = React.memo(() => {
       const width = 120 + Math.random() * 60; // random width between 120px and 180px
 
       return (
-        <motion.div
-          key={`media-${i}`}
-          initial={{ opacity: 0, y: 50 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 1.2, delay: 0.5 + Math.random() }}
-          drag dragConstraints={{ left: -400, right: 400, top: -400, bottom: 400 }} 
-          whileDrag={{ scale: 1.1, zIndex: 100 }}
-          style={{ 
-            position: 'absolute', top: `${top}%`, left: `${left}%`, 
-            width: `${width}px`, transform: `rotate(${rotate}deg)`, 
-            pointerEvents: 'auto', cursor: 'grab', zIndex: 2
-          }}
-        >
-          <img src={`/media/${img}`} alt="scatter media" draggable="false" style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '4px', boxShadow: '0 10px 30px rgba(0,0,0,0.15)' }} />
-        </motion.div>
+        <PrismScatter key={`media-${i}`} top={top} left={left} rotate={rotate} width={width} image={`/media/${img}`} />
       );
     });
   }, []);
+
+  // 5. Polaroids (from database) -> Now also PrismScatter
+  const polaroids = useMemo(() => {
+    return [...Array(2)].map((_, i) => {
+      if (!randomPoemImages[i]) return null;
+      const top = 20 + Math.random() * 60;
+      const left = 10 + Math.random() * 70;
+      const rotate = Math.random() * 60 - 30;
+      
+      return (
+        <PrismScatter key={`poem-prism-${i}`} top={top} left={left} rotate={rotate} width={140} image={randomPoemImages[i]} />
+      );
+    });
+  }, [randomPoemImages]);
 
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
@@ -166,27 +166,49 @@ export const IndexScatter = React.memo(() => {
   );
 });
 
-function PolaroidScatter({ top, left, rotate, index, image }) {
-  const [revealed, setRevealed] = useState(false);
+function PrismScatter({ top, left, rotate, width, image }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useTransform(y, [-200, 200], [25, -25]);
+  const rotateY = useTransform(x, [-200, 200], [-25, 25]);
   
+  // Calculate glare/holographic position based on mouse
+  const shineX = useTransform(x, [-200, 200], ['-50%', '0%']);
+  const shineY = useTransform(y, [-200, 200], ['-50%', '0%']);
+
   return (
-    <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.2 }}
+    <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.2 + Math.random() * 0.5 }}
       drag dragConstraints={{ left: -400, right: 400, top: -400, bottom: 400 }} whileDrag={{ scale: 1.1, zIndex: 100 }}
-      onClick={() => setRevealed(!revealed)}
-      style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, width: '140px', height: '170px', backgroundColor: '#fafafa', boxShadow: '0 5px 15px rgba(0,0,0,0.1)', transform: `rotate(${rotate}deg)`, pointerEvents: 'auto', cursor: 'grab', zIndex: 3, padding: '10px 10px 35px 10px', boxSizing: 'border-box' }}>
-      <div style={{ width: '100%', height: '120px', backgroundColor: '#222', position: 'relative', overflow: 'hidden' }}>
-        {image ? (
-          <img src={image} alt="poem polaroid" draggable="false" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        ) : (
-          revealed && index === 0 && (
-            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: '#fff', color: '#111', padding: '10px', boxSizing: 'border-box', fontSize: '0.65rem', fontStyle: 'italic', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              Todo es arte<br/>
-              Tambi&eacute;n este poema,<br/>
-              Que se lee cerrando los ojos.<br/>
-              Para vivir fuera del agua
-            </div>
-          )
-        )}
+      onMouseMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        x.set(e.clientX - rect.left - rect.width / 2);
+        y.set(e.clientY - rect.top - rect.height / 2);
+      }}
+      onMouseLeave={() => {
+        x.set(0);
+        y.set(0);
+      }}
+      style={{ 
+        position: 'absolute', top: `${top}%`, left: `${left}%`, 
+        width: `${width}px`, transform: `rotate(${rotate}deg)`, 
+        pointerEvents: 'auto', cursor: 'grab', zIndex: 3, 
+        rotateX, rotateY, perspective: 1000,
+        borderRadius: '8px',
+        boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+      }}>
+      
+      <div style={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden', borderRadius: '8px', backgroundColor: '#111' }}>
+        <img src={image} alt="prism scatter" draggable="false" style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }} />
+        
+        {/* Holographic / Glass prism overlay */}
+        <motion.div style={{
+          position: 'absolute', top: 0, left: 0, width: '200%', height: '200%',
+          background: 'linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.4) 30%, rgba(255, 100, 200, 0.2) 40%, rgba(100, 200, 255, 0.3) 60%, transparent 80%)',
+          mixBlendMode: 'color-dodge',
+          x: shineX,
+          y: shineY,
+          pointerEvents: 'none'
+        }} />
       </div>
     </motion.div>
   );
