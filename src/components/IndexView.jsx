@@ -130,7 +130,7 @@ function IndexView() {
         boxSizing: 'border-box'
       }}>
         <div style={{ marginBottom: '3rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
-          <h1 style={{ fontSize: '2.5rem', letterSpacing: '0.2em', textTransform: 'uppercase', margin: 0 }}>
+          <h1 style={{ fontSize: 'clamp(1.5rem, 8vw, 2.5rem)', letterSpacing: '0.2em', textTransform: 'uppercase', margin: 0 }}>
             {language === 'EN' ? 'Index' : 'Índice'}
           </h1>
         </div>
@@ -198,8 +198,17 @@ function IndexView() {
                   const ventColors = ['#e6d15a', '#ff948d', '#8fc58f', '#7ec4a8', '#bed69b']; // slightly darker versions of post-its so text is readable
                   iconColor = ventColors[sum % ventColors.length];
                 } else {
-                  const ticketColors = ['#e63946', '#2a9d8f', '#e9c46a', '#f4a261', '#8ecae6'];
-                  iconColor = ticketColors[sum % ticketColors.length];
+                  const t = (chapter.transport || '').toLowerCase();
+                  if (t.includes('plane')) iconColor = '#8ecae6';
+                  else if (t.includes('train')) iconColor = '#e63946';
+                  else if (t.includes('bus')) iconColor = '#e9c46a';
+                  else if (t.includes('boat')) iconColor = '#2a9d8f';
+                  else if (t.includes('walking')) iconColor = '#f4a261';
+                  else if (t.includes('car')) iconColor = '#e63946';
+                  else {
+                    const ticketColors = ['#e63946', '#2a9d8f', '#e9c46a', '#f4a261', '#8ecae6'];
+                    iconColor = ticketColors[sum % ticketColors.length];
+                  }
                 }
               }
               

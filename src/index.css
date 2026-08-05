@@ -288,6 +288,8 @@ button:hover {
 .ticket-info {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
   margin-bottom: 2rem;
 }
 

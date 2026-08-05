@@ -195,37 +195,44 @@ function PolaroidScatter({ top, left, rotate, index, image }) {
   return (
     <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.2 + Math.random() * 0.5 }}
       drag dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }} dragElastic={0.2} whileDrag={{ scale: 1.1, zIndex: 100, cursor: 'grabbing' }}
-      onMouseMove={(e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        x.set(e.clientX - rect.left - rect.width / 2);
-        y.set(e.clientY - rect.top - rect.height / 2);
-      }}
-      onMouseLeave={() => {
-        x.set(0);
-        y.set(0);
-      }}
-      onClick={() => setRevealed(!revealed)}
       style={{ 
         position: 'absolute', top: `${top}%`, left: `${left}%`, width: '140px', height: '170px', 
-        backgroundColor: '#fafafa', boxShadow: '0 5px 15px rgba(0,0,0,0.1)', 
         rotate: rotate, pointerEvents: 'auto', cursor: 'grab', 
-        zIndex: 4, padding: '10px 10px 35px 10px', boxSizing: 'border-box',
-        rotateX, rotateY, perspective: 1000
+        zIndex: 4, perspective: 1000
       }}>
-      <div style={{ width: '100%', height: '120px', backgroundColor: '#222', position: 'relative', overflow: 'hidden' }}>
-        {image ? (
-          <img src={image} alt="poem polaroid" draggable="false" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        ) : (
-          revealed && index === 0 && (
-            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: '#fff', color: '#111', padding: '10px', boxSizing: 'border-box', fontSize: '0.65rem', fontStyle: 'italic', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              Todo es arte<br/>
-              Tambi&eacute;n este poema,<br/>
-              Que se lee cerrando los ojos.<br/>
-              Para vivir fuera del agua
-            </div>
-          )
-        )}
-      </div>
+      <motion.div 
+        onMouseMove={(e) => {
+          const rect = e.currentTarget.getBoundingClientRect();
+          x.set(e.clientX - rect.left - rect.width / 2);
+          y.set(e.clientY - rect.top - rect.height / 2);
+        }}
+        onMouseLeave={() => {
+          x.set(0);
+          y.set(0);
+        }}
+        onClick={() => setRevealed(!revealed)}
+        style={{
+          width: '100%', height: '100%',
+          backgroundColor: '#fafafa', boxShadow: '0 5px 15px rgba(0,0,0,0.1)', 
+          padding: '10px 10px 35px 10px', boxSizing: 'border-box',
+          rotateX, rotateY
+        }}
+      >
+        <div style={{ width: '100%', height: '120px', backgroundColor: '#222', position: 'relative', overflow: 'hidden' }}>
+          {image ? (
+            <img src={image} alt="poem polaroid" draggable="false" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ) : (
+            revealed && index === 0 && (
+              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: '#fff', color: '#111', padding: '10px', boxSizing: 'border-box', fontSize: '0.65rem', fontStyle: 'italic', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                Todo es arte<br/>
+                Tambi&eacute;n este poema,<br/>
+                Que se lee cerrando los ojos.<br/>
+                Para vivir fuera del agua
+              </div>
+            )
+          )}
+        </div>
+      </motion.div>
     </motion.div>
   );
 }

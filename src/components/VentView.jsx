@@ -205,7 +205,7 @@ function VentView() {
         <div className="entry-header">
           <h1 style={{ 
             fontFamily: isNotebook ? '"Permanent Marker", cursive' : '"Reenie Beanie", cursive',
-            fontSize: isNotebook ? '2.5rem' : '3rem',
+            fontSize: isNotebook ? 'clamp(1.8rem, 8vw, 2.5rem)' : 'clamp(2rem, 10vw, 3rem)',
             color: isNotebook ? '#111' : '#222',
             margin: 0,
             wordBreak: 'break-word',
@@ -236,7 +236,7 @@ function VentView() {
         </div>
         
         {vent.image && (
-          <div style={{ float: 'right', margin: '0 0 2rem 3vw', transform: `rotate(${Math.random() * 8 - 4}deg)`, maxWidth: '400px', width: '40%' }}>
+          <div className="vent-image" style={{ transform: `rotate(${Math.random() * 8 - 4}deg)` }}>
             <Polaroid src={vent.image} alt={vent.title} />
             {/* Tape */}
             {!isNotebook && <div style={{ position: 'absolute', top: '-15px', left: '50%', transform: 'translateX(-50%) rotate(-5deg)', width: '80px', height: '25px', backgroundColor: 'rgba(255,255,255,0.5)', border: '1px solid rgba(0,0,0,0.05)', backdropFilter: 'blur(2px)' }}></div>}
