@@ -119,18 +119,6 @@ export const IndexScatter = React.memo(() => {
     return [...scribblesList, ...brushes];
   }, []);
 
-  // 5. Polaroids (from database)
-  const polaroids = useMemo(() => {
-    return [...Array(2)].map((_, i) => {
-      const top = 20 + Math.random() * 60;
-      const left = 10 + Math.random() * 70;
-      const rotate = Math.random() * 60 - 30;
-      
-      return (
-        <PolaroidScatter key={`blank-pol-${i}`} top={top} left={left} rotate={rotate} index={i} image={randomPoemImages[i]} />
-      );
-    });
-  }, [randomPoemImages]);
 
   // 6. User Media Clutter
   const mediaScatter = useMemo(() => {
