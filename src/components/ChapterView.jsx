@@ -147,7 +147,7 @@ function ChapterView() {
             const universallySafeResults = itunesData.results.filter(a => {
               const name = a.collectionName ? a.collectionName.toLowerCase() : '';
               const isBlockedChappell = a.artistName === 'Chappell Roan' && (name.includes('school nights') || name.includes('good hurt'));
-              const isBlockedBadBunny = a.artistName === 'Bad Bunny' && name.includes('super bowl');
+              const isBlockedBadBunny = (a.artistName === 'Bad Bunny' || a.artistName === 'Drake') && (name.includes('super bowl') || name.includes('mia'));
               
               const isAllowedUpsahl = a.artistName === 'UPSAHL' && name.includes('i like it');
               const isGarbage = name.includes('karaoke') || name.includes('instrumental') || name.includes('tribute') || name.includes('cover');
@@ -159,7 +159,10 @@ function ChapterView() {
             universallySafeResults.sort((a, b) => new Date(b.releaseDate || 0) - new Date(a.releaseDate || 0));
 
             // 2. Try to get exact artist matches (strict case-sensitive equal to prevent collisions like EmJay vs EMJAY)
-            const exactMatches = universallySafeResults.filter(a => a.artistName === randomArtist);
+            const exactMatches = universallySafeResults.filter(a => {
+              if (randomArtist === 'Dafna') return a.artistId === 1450666890;
+              return a.artistName === randomArtist;
+            });
             
             // 3. Categorize matches
             const albums = [];
