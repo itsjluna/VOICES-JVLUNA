@@ -197,12 +197,11 @@ function ChapterView() {
           console.error("Failed to fetch iTunes album", e);
         }
 
-        // Generate random scattered decorations from uploaded PNGs and WEBPs
         const possibleDecorations = [
           'brioche.png', 'camera.png', 'cochinita.png', 'coffee.png', 
           'deathstranding.png', 'dualsense.png', 'glasses.png', 'inderalici.png', 
           'logitech.png', 'marvel.png', 'pen.png', 'pencil.png', 'pepsi.png', 'rubik.png', 
-          'slims.png', 'sw.png', 'taco.png', 'transformers.png', 'watch.png', 
+          'slims.png', 'sw.png', 'transformers.png', 'watch.png', 
           'whisky.png', 'wine.png', 'hummingbird.webp', 'magnolia.webp', 'origami.webp'
         ];
         
@@ -223,7 +222,6 @@ function ChapterView() {
           'rubik.png': { titleEn: 'Rubik\'s Cube', titleEs: 'Cubo Rubik', descEn: 'Colored plastic squares.', descEs: 'Cuadrados de plástico de colores.' },
           'slims.png': { titleEn: 'China Superslims', titleEs: 'China Superslims', descEn: 'Thin white cigarettes.', descEs: 'Cigarrillos delgados y blancos.' },
           'sw.png': { titleEn: 'Rey', titleEs: 'Rey', descEn: 'Star Wars figure.', descEs: 'Figura de Star Wars.' },
-          'taco.png': { titleEn: 'Taco al Pastor', titleEs: 'Taco al Pastor', descEn: 'Corn tortilla and pineapple.', descEs: 'Tortilla de maíz y piña.' },
           'transformers.png': { titleEn: 'Autobot Emblem', titleEs: 'Emblema Autobot', descEn: 'Die-cast metal badge.', descEs: 'Insignia de metal fundido.' },
           'watch.png': { titleEn: 'CMF Watch Pro', titleEs: 'CMF Watch Pro', descEn: 'Digital smartwatch.', descEs: 'Reloj inteligente digital.' },
           'whisky.png': { titleEn: 'Aged Whisky', titleEs: 'Whisky Añejo', descEn: 'Amber liquid on ice.', descEs: 'Líquido ámbar en hielo.' },
