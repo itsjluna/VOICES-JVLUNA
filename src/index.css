@@ -729,8 +729,8 @@ button:hover {
 /* --- Glassmorphism Panel (for readability over backgrounds) --- */
 .glass-panel {
   background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 16px;
   padding: 2rem;
