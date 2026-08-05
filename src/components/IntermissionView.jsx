@@ -41,8 +41,8 @@ function IntermissionView() {
     for (let i = 0; i < id.length; i++) {
       sum += id.charCodeAt(i);
     }
-    const hue = sum % 360;
-    return `hsl(${hue}, 70%, 55%)`;
+    const ticketColors = ['#e63946', '#2a9d8f', '#e9c46a', '#f4a261', '#8ecae6'];
+    return ticketColors[sum % ticketColors.length];
   }, [id]);
 
   useEffect(() => {

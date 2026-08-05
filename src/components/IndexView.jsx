@@ -194,8 +194,13 @@ function IndexView() {
                 for (let i = 0; i < chapter._id.length; i++) {
                   sum += chapter._id.charCodeAt(i);
                 }
-                const hue = sum % 360;
-                iconColor = `hsl(${hue}, 70%, 55%)`;
+                if (isVent) {
+                  const ventColors = ['#e6d15a', '#ff948d', '#8fc58f', '#7ec4a8', '#bed69b']; // slightly darker versions of post-its so text is readable
+                  iconColor = ventColors[sum % ventColors.length];
+                } else {
+                  const ticketColors = ['#e63946', '#2a9d8f', '#e9c46a', '#f4a261', '#8ecae6'];
+                  iconColor = ticketColors[sum % ticketColors.length];
+                }
               }
               
               if (isInt) { 

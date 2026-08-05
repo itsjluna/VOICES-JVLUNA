@@ -28,7 +28,7 @@ export const IndexScatter = React.memo(() => {
   }, []);
 
   const [positions] = useState(() => {
-    return [...Array(10)].map(() => ({
+    return [...Array(20)].map(() => ({
       top: Math.random() * 90,
       left: Math.random() * 90,
       rotate: Math.random() * 60 - 30,
@@ -52,7 +52,8 @@ export const IndexScatter = React.memo(() => {
       const size = 150 + Math.random() * 50;
       return (
         <motion.svg key={`coffee-${i}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2, delay: 1 }}
-          width={size} height={size} viewBox="0 0 100 100" style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, pointerEvents: 'none', zIndex: 0, opacity: 0.15, mixBlendMode: 'multiply' }}>
+          drag dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }} dragElastic={0.2} whileDrag={{ scale: 1.05, cursor: 'grabbing' }}
+          width={size} height={size} viewBox="0 0 100 100" style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, cursor: 'grab', zIndex: 0, opacity: 0.15, mixBlendMode: 'multiply' }}>
           <circle cx="50" cy="50" r="45" fill="none" stroke="#795548" strokeWidth="2" opacity="0.5" />
           <circle cx="52" cy="48" r="45" fill="none" stroke="#6d4c41" strokeWidth="1" opacity="0.3" />
           <path d="M 10 50 A 40 40 0 0 1 50 10" fill="none" stroke="#5d4037" strokeWidth="3" opacity="0.4" />
@@ -61,7 +62,7 @@ export const IndexScatter = React.memo(() => {
         </motion.svg>
       );
     });
-  }, []);
+  }, [positions]);
 
   const scribbles = useMemo(() => {
     return [...Array(3)].map((_, i) => {
@@ -72,18 +73,19 @@ export const IndexScatter = React.memo(() => {
       const paths = [
         "M 10 50 Q 25 10, 50 50 T 90 50",
         "M 20 20 Q 80 20, 50 50 T 80 80",
-        "M 10 10 L 90 90 M 90 10 L 10 90",
-        "M 50 10 C 20 10, 10 40, 50 50 C 90 60, 80 90, 50 90"
+        "M 10 80 C 40 10, 60 90, 90 20"
       ];
-      const path = paths[Math.floor(Math.random() * paths.length)];
+      const pathData = paths[i % paths.length];
+      const strokeColor = i % 2 === 0 ? '#777' : '#5D8AA8'; // softened scribbles
       return (
         <motion.svg key={`scribble-${i}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.5, delay: 0.5 + Math.random() }}
-          width="120" height="120" viewBox="0 0 100 100" style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, transform: `rotate(${rotate}deg)`, pointerEvents: 'none', zIndex: 1, opacity: 0.1 }}>
-          <path d={path} fill="none" stroke="#111" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          drag dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }} dragElastic={0.2} whileDrag={{ scale: 1.05, cursor: 'grabbing' }}
+          width="100" height="100" viewBox="0 0 100 100" style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, transform: `rotate(${rotate}deg)`, cursor: 'grab', zIndex: 1, opacity: 0.3 }}>
+          <path d={pathData} fill="none" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" />
         </motion.svg>
       );
     });
-  }, []);
+  }, [positions]);
 
   const paperClips = useMemo(() => {
     return [...Array(2)].map((_, i) => {
@@ -93,14 +95,14 @@ export const IndexScatter = React.memo(() => {
       const rotate = pos.rotate * 6;
       return (
         <motion.svg key={`clip-${i}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.5, delay: 0.8 }}
-          width="40" height="40" viewBox="0 0 100 100" style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, transform: `rotate(${rotate}deg)`, pointerEvents: 'none', zIndex: 3, opacity: 0.7, filter: 'drop-shadow(2px 4px 4px rgba(0,0,0,0.3))' }}>
-          <path d="M40 20 L40 70 A 15 15 0 0 0 70 70 L70 30 A 10 10 0 0 0 50 30 L50 60 A 5 5 0 0 0 60 60 L60 40" fill="none" stroke="#ddd" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
-          {/* Metallic highlight */}
-          <path d="M41 21 L41 68" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
+          drag dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }} dragElastic={0.2} whileDrag={{ scale: 1.05, cursor: 'grabbing' }}
+          width="35" height="70" viewBox="0 0 120 200" style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, transform: `rotate(${rotate}deg)`, cursor: 'grab', zIndex: 3, opacity: 0.8, filter: 'drop-shadow(2px 4px 3px rgba(0,0,0,0.3))' }}>
+          <path d="M45,45 L45,150 A15,15 0 0,0 75,150 L75,30 A25,25 0 0,0 25,30 L25,160 A35,35 0 0,0 95,160 L95,55" fill="none" stroke="#bdc3c7" strokeWidth="8" strokeLinecap="round" />
+          <path d="M45,45 L45,150 A15,15 0 0,0 75,150 L75,30 A25,25 0 0,0 25,30 L25,160 A35,35 0 0,0 95,160 L95,55" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" opacity="0.5" transform="translate(-1, -1)" />
         </motion.svg>
       );
     });
-  }, []);
+  }, [positions]);
 
   const washitapes = useMemo(() => {
     return [...Array(2)].map((_, i) => {
@@ -108,14 +110,15 @@ export const IndexScatter = React.memo(() => {
       const top = pos.top;
       const left = pos.left;
       const rotate = pos.rotate;
-      const colors = ['rgba(255,200,200,0.6)', 'rgba(200,255,200,0.6)', 'rgba(200,200,255,0.6)', 'rgba(255,255,200,0.6)'];
+      const colors = ['rgba(253, 253, 150, 0.6)', 'rgba(255, 183, 178, 0.6)', 'rgba(193, 225, 193, 0.6)', 'rgba(181, 234, 215, 0.6)']; // post-it pastel colors
       const bg = colors[Math.floor(Math.random() * colors.length)];
       return (
-        <motion.div key={`tape-${i}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.5 }}
-          style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, width: '120px', height: '30px', backgroundColor: bg, transform: `rotate(${rotate}deg)`, zIndex: 5, pointerEvents: 'none', opacity: 0.8, filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.1))' }} />
+        <motion.div key={`washi-${i}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.2 }}
+          drag dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }} dragElastic={0.2} whileDrag={{ scale: 1.05, cursor: 'grabbing' }}
+          style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, width: '120px', height: '25px', backgroundColor: bg, transform: `rotate(${rotate}deg)`, zIndex: 5, cursor: 'grab', backdropFilter: 'blur(2px)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }} />
       );
     });
-  }, []);
+  }, [positions]);
 
   const indexCards = useMemo(() => {
     return [...Array(1)].map((_, i) => {
@@ -125,16 +128,56 @@ export const IndexScatter = React.memo(() => {
       const rotate = pos.rotate / 3;
       return (
         <motion.div key={`indexcard-${i}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5, delay: 0.3 }}
-          style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, width: '200px', height: '140px', backgroundColor: '#fcfcfc', borderTop: '30px solid #ff7b7b', boxShadow: '0 4px 15px rgba(0,0,0,0.08)', transform: `rotate(${rotate}deg)`, zIndex: 1, pointerEvents: 'none', backgroundImage: 'repeating-linear-gradient(transparent, transparent 19px, #e0e0e0 20px)' }} />
+          drag dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }} dragElastic={0.2} whileDrag={{ scale: 1.05, cursor: 'grabbing' }}
+          style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, width: '200px', height: '140px', backgroundColor: '#fcfcfc', borderTop: '30px solid #e08b8b', boxShadow: '0 4px 15px rgba(0,0,0,0.08)', transform: `rotate(${rotate}deg)`, cursor: 'grab', zIndex: 1, backgroundImage: 'repeating-linear-gradient(transparent, transparent 19px, #e0e0e0 20px)' }} />
       );
     });
-  }, []);
+  }, [positions]);
+
+  const postIts = useMemo(() => {
+    return [...Array(2)].map((_, i) => {
+      const pos = positions[i + 10] || positions[6];
+      const top = pos.top;
+      const left = pos.left;
+      const rotate = pos.rotate;
+      const colors = ['#fdfd96', '#ffb7b2', '#c1e1c1', '#b5ead7', '#e2f0cb'];
+      const bg = colors[i % colors.length];
+      return (
+        <motion.div key={`postit-${i}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5, delay: 0.4 }}
+          drag dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }} dragElastic={0.2} whileDrag={{ scale: 1.05, cursor: 'grabbing' }}
+          style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, width: '100px', height: '100px', backgroundColor: bg, boxShadow: '2px 5px 10px rgba(0,0,0,0.15)', transform: `rotate(${rotate}deg)`, cursor: 'grab', zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Reenie Beanie", cursive', fontSize: '1.2rem', color: 'rgba(0,0,0,0.6)', padding: '10px', textAlign: 'center' }}>
+          {i === 0 ? "read me" : "don't forget"}
+        </motion.div>
+      );
+    });
+  }, [positions]);
+
+  const tickets = useMemo(() => {
+    return [...Array(2)].map((_, i) => {
+      const pos = positions[i + 12] || positions[7];
+      const top = pos.top;
+      const left = pos.left;
+      const rotate = pos.rotate;
+      const colors = ['#e63946', '#2a9d8f', '#e9c46a', '#f4a261', '#8ecae6'];
+      const bg = colors[i % colors.length];
+      return (
+        <motion.div key={`ticket-${i}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5, delay: 0.6 }}
+          drag dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }} dragElastic={0.2} whileDrag={{ scale: 1.05, cursor: 'grabbing' }}
+          style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, width: '160px', height: '60px', backgroundColor: '#fafafa', borderLeft: `8px solid ${bg}`, boxShadow: '0 4px 12px rgba(0,0,0,0.1)', transform: `rotate(${rotate}deg)`, cursor: 'grab', zIndex: 2, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 15px', fontFamily: 'monospace', fontSize: '0.65rem', color: '#555' }}>
+          <div style={{ fontWeight: 'bold', fontSize: '0.75rem', marginBottom: '2px', color: bg }}>ADMIT ONE</div>
+          <div>NO. {Math.floor(Math.random() * 9000) + 1000}</div>
+        </motion.div>
+      );
+    });
+  }, [positions]);
 
   return (
-    <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0, overflow: 'visible' }}>
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'visible', pointerEvents: 'none', zIndex: -1 }}>
       {coffeeRings}
       {scribbles}
       {indexCards}
+      {tickets}
+      {postIts}
       {polaroids}
       {paperClips}
       {washitapes}
@@ -151,7 +194,7 @@ function PolaroidScatter({ top, left, rotate, index, image }) {
   
   return (
     <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.2 + Math.random() * 0.5 }}
-      drag dragConstraints={{ left: -1200, right: 1200, top: -1200, bottom: 1200 }} whileDrag={{ scale: 1.1, zIndex: 100 }}
+      drag dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }} dragElastic={0.2} whileDrag={{ scale: 1.1, zIndex: 100, cursor: 'grabbing' }}
       onMouseMove={(e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         x.set(e.clientX - rect.left - rect.width / 2);
@@ -165,7 +208,7 @@ function PolaroidScatter({ top, left, rotate, index, image }) {
       style={{ 
         position: 'absolute', top: `${top}%`, left: `${left}%`, width: '140px', height: '170px', 
         backgroundColor: '#fafafa', boxShadow: '0 5px 15px rgba(0,0,0,0.1)', 
-        transform: `rotate(${rotate}deg)`, pointerEvents: 'auto', cursor: 'grab', 
+        rotate: rotate, pointerEvents: 'auto', cursor: 'grab', 
         zIndex: 4, padding: '10px 10px 35px 10px', boxSizing: 'border-box',
         rotateX, rotateY, perspective: 1000
       }}>
