@@ -150,10 +150,9 @@ function ChapterView() {
               const isBlockedBadBunny = a.artistName === 'Bad Bunny' && name.includes('super bowl');
               
               const isAllowedUpsahl = a.artistName === 'UPSAHL' && name.includes('i like it');
-              const isSingle = !isAllowedUpsahl && name.includes('single'); // More aggressive catch-all
               const isGarbage = name.includes('karaoke') || name.includes('instrumental') || name.includes('tribute') || name.includes('cover');
               
-              return !isBlockedChappell && !isBlockedBadBunny && !isSingle && !isGarbage;
+              return !isBlockedChappell && !isBlockedBadBunny && !isGarbage;
             });
 
             // 2. Try to get exact artist matches (strict case-sensitive equal to prevent collisions like EmJay vs EMJAY)
@@ -164,6 +163,7 @@ function ChapterView() {
               const name = a.collectionName ? a.collectionName.toLowerCase() : '';
               const isAllowedUpsahl = a.artistName === 'UPSAHL' && name.includes('i like it');
               const isSmall = !isAllowedUpsahl && (a.trackCount && a.trackCount <= 3 && !name.includes('ep'));
+              const isSingle = !isAllowedUpsahl && name.includes('single');
               const isAltVersion = name.includes('remix') || 
                                    name.includes('live') || 
                                    name.includes('deluxe') || 
@@ -175,7 +175,7 @@ function ChapterView() {
                                    name.includes('the best of');
               const isAlbumType = a.collectionType === 'Album';
               
-              return !isSmall && !isAltVersion && isAlbumType;
+              return !isSmall && !isSingle && !isAltVersion && isAlbumType;
             });
 
             // 4. Fallback chain
