@@ -374,23 +374,27 @@ function ChapterView() {
             </motion.div>
           )}
 
-          <div style={{ marginTop: '2rem' }}>
-            <h3 style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', letterSpacing: '0.05em', marginBottom: '1rem' }}>
+          <div className="glass-panel" style={{ marginTop: '3rem' }}>
+            <h3 style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', letterSpacing: '0.05em', marginBottom: '1.5rem', opacity: 0.8 }}>
               {language === 'EN' ? 'POEMS IN THIS CHAPTER' : 'POEMAS EN ESTE CAPÍTULO'}
             </h3>
-            <ul style={{ listStyle: 'none' }}>
+            <ul style={{ listStyle: 'none', padding: 0 }}>
               {poems.map((poem, index) => (
                 <li key={poem._id} style={{ margin: '1rem 0' }}>
                   <Link 
                     to={`/poem/${poem._id}`} 
                     onMouseEnter={() => api.get(`/poems/${poem._id}`)}
-                    style={{ fontSize: '1.2rem' }}
+                    style={{ fontSize: '1.2rem', textDecoration: 'none', transition: 'opacity 0.2s' }}
+                    className="hover-opacity"
                   >
-                    {index + 1}. {language === 'EN' && poem.titleEn ? poem.titleEn : poem.title}
+                    <span style={{ opacity: 0.5, marginRight: '0.5rem', fontFamily: 'monospace' }}>
+                      {String(index + 1).padStart(2, '0')}.
+                    </span>
+                    {language === 'EN' && poem.titleEn ? poem.titleEn : poem.title}
                   </Link>
                 </li>
               ))}
-              {poems.length === 0 && <p style={{ fontStyle: 'italic' }}>{language === 'EN' ? 'No poems yet.' : 'Aún no hay poemas.'}</p>}
+              {poems.length === 0 && <p style={{ fontStyle: 'italic', opacity: 0.6 }}>{language === 'EN' ? 'No poems yet.' : 'Aún no hay poemas.'}</p>}
             </ul>
           </div>
         </motion.div>
