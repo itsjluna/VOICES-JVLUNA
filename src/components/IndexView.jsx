@@ -146,15 +146,14 @@ function IndexView() {
               <select 
                 value={activeTheme}
                 onChange={(e) => setActiveTheme(e.target.value)}
+                className="glass-panel"
                 style={{
-                  padding: '0.5rem 1rem',
-                  background: 'var(--bg-color)',
-                  border: '1px solid var(--border-color)',
+                  padding: '0.75rem 1.25rem',
                   color: 'var(--text-color)',
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '0.9rem',
+                  fontSize: '0.85rem',
+                  letterSpacing: '0.1em',
                   textTransform: 'uppercase',
-                  borderRadius: '2px',
                   outline: 'none',
                   cursor: 'pointer'
                 }}

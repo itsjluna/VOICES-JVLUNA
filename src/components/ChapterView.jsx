@@ -156,8 +156,8 @@ function ChapterView() {
               return !isBlockedChappell && !isBlockedBadBunny && !isSingle && !isGarbage;
             });
 
-            // 2. Try to get exact artist matches (using includes to catch collabs like "Bad Bunny & Jhay Cortez")
-            const exactMatches = universallySafeResults.filter(a => a.artistName.toLowerCase().includes(randomArtist.toLowerCase()));
+            // 2. Try to get exact artist matches (strict equal to prevent compilations or albums by other artists where they are featured)
+            const exactMatches = universallySafeResults.filter(a => a.artistName.toLowerCase() === randomArtist.toLowerCase());
             
             // 3. Try to get "clean" main albums (no deluxe, remixes, live, etc.)
             const cleanMatches = exactMatches.filter(a => {
