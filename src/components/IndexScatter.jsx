@@ -186,12 +186,9 @@ export const IndexScatter = React.memo(() => {
 });
 
 function PolaroidScatter({ top, left, rotate, index, image }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useTransform(y, [-200, 200], [15, -15]);
-  const rotateY = useTransform(x, [-200, 200], [-15, 15]);
   const [revealed, setRevealed] = useState(false);
   
+
   return (
     <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.2 + Math.random() * 0.5 }}
       drag dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }} dragElastic={0.2} whileDrag={{ scale: 1.1, zIndex: 100, cursor: 'grabbing' }}
@@ -202,20 +199,10 @@ function PolaroidScatter({ top, left, rotate, index, image }) {
         zIndex: 4, perspective: 1000
       }}>
       <motion.div 
-        onMouseMove={(e) => {
-          const rect = e.currentTarget.getBoundingClientRect();
-          x.set(e.clientX - rect.left - rect.width / 2);
-          y.set(e.clientY - rect.top - rect.height / 2);
-        }}
-        onMouseLeave={() => {
-          x.set(0);
-          y.set(0);
-        }}
         style={{
           width: '100%', height: '100%',
           backgroundColor: '#fafafa', boxShadow: '0 5px 15px rgba(0,0,0,0.1)', 
-          padding: '10px 10px 35px 10px', boxSizing: 'border-box',
-          rotateX, rotateY
+          padding: '10px 10px 35px 10px', boxSizing: 'border-box'
         }}
       >
         <div style={{ width: '100%', height: '120px', backgroundColor: '#222', position: 'relative', overflow: 'hidden' }}>

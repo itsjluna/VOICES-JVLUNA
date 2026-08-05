@@ -43,6 +43,7 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
           src={coverUrl.replace('100x100bb', '600x600bb')} 
           alt={`${albumName} by ${artist}`} 
           style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2px' }} 
+          draggable="false"
           loading="lazy"
           decoding="async"
         />
