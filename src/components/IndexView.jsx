@@ -119,15 +119,11 @@ function IndexView() {
       </motion.div>
 
       {/* Main Content Card */}
-      <div style={{
+      <div className="glass-panel" style={{
         maxWidth: '800px',
         margin: '0 auto',
         width: '100%',
         padding: 'clamp(1.5rem, 5vw, 3rem)',
-        background: 'var(--bg-color)',
-        borderRadius: '8px',
-        boxShadow: '0 20px 50px rgba(0,0,0,0.08)',
-        border: '1px solid var(--border-color)',
         position: 'relative',
         zIndex: 10,
         flexShrink: 0,

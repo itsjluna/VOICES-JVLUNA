@@ -22,11 +22,9 @@ function WelcomeScreen() {
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.5, duration: 1.2, ease: "easeOut" }}
+        className="glass-panel"
         style={{
-          background: 'var(--bg-color)',
           padding: 'clamp(2rem, 5vw, 4rem) clamp(2rem, 8vw, 5rem)',
-          border: '1px solid var(--border-color)',
-          boxShadow: '0 20px 40px rgba(0,0,0,0.08)',
           textAlign: 'center',
           maxWidth: '90%',
           width: '600px',
