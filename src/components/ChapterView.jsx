@@ -234,7 +234,7 @@ function ChapterView() {
           'rubik.png': { titleEn: 'Rubik\'s Cube', titleEs: 'Cubo Rubik', descEn: 'Colored plastic squares.', descEs: 'Cuadrados de plástico de colores.' },
           'slims.png': { titleEn: 'China Superslims', titleEs: 'China Superslims', descEn: 'Thin white cigarettes.', descEs: 'Cigarrillos delgados y blancos.' },
           'sw.png': { titleEn: 'Rey', titleEs: 'Rey', descEn: 'Star Wars figure.', descEs: 'Figura de Star Wars.' },
-          'transformers.png': { titleEn: 'Autobot Emblem', titleEs: 'Emblema Autobot', descEn: 'Die-cast metal badge.', descEs: 'Insignia de metal fundido.' },
+          'transformers.png': { titleEn: 'Autobot Blaster', titleEs: 'Autobot Blaster', descEn: 'Transformers action figure.', descEs: 'Figura de acción Transformers.' },
           'watch.png': { titleEn: 'CMF Watch Pro', titleEs: 'CMF Watch Pro', descEn: 'Digital smartwatch.', descEs: 'Reloj inteligente digital.' },
           'whisky.png': { titleEn: 'Aged Whisky', titleEs: 'Whisky Añejo', descEn: 'Amber liquid on ice.', descEs: 'Líquido ámbar en hielo.' },
           'wine.png': { titleEn: 'Rosé Wine', titleEs: 'Vino Rosado', descEn: 'Light pink glass.', descEs: 'Copa color rosa claro.' },
