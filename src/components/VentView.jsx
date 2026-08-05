@@ -5,6 +5,7 @@ import api from '../api';
 import Polaroid from './Polaroid';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import { useLanguage } from '../contexts/LanguageContext';
+import { FaLanguage } from 'react-icons/fa';
 
 function VentView() {
   const { id } = useParams();
@@ -12,6 +13,11 @@ function VentView() {
   const [vent, setVent] = useState(null);
   const { markAsRead } = useReadingProgress();
   const { language } = useLanguage();
+  const [ventLanguage, setVentLanguage] = useState(language);
+
+  useEffect(() => {
+    setVentLanguage(language);
+  }, [language]);
 
   useEffect(() => {
     async function fetchData() {
@@ -165,7 +171,7 @@ function VentView() {
       </div>
 
       <button style={{ marginBottom: '3rem', border: 'none', padding: '0', textDecoration: 'underline', color: isNotebook ? '#333' : '#fff', position: 'relative', zIndex: 10, alignSelf: 'flex-start' }} onClick={() => navigate(-1)}>
-        &larr; {language === 'EN' ? 'Back' : 'Volver'}
+        &larr; {ventLanguage === 'EN' ? 'Back' : 'Volver'}
       </button>
 
       {/* Main Content Container */}
@@ -189,22 +195,41 @@ function VentView() {
         }}
       >
         <div className="editorial-margin left" style={{ color: isNotebook ? '#777' : '#555', left: isNotebook ? '-60px' : '-40px' }}>
-          {language === 'EN' ? 'VENT Nº ' : 'DESAHOGO Nº '}{id ? id.slice(-4).toUpperCase() : 'XXXX'}
+          {ventLanguage === 'EN' ? 'VENT Nº ' : 'DESAHOGO Nº '}{id ? id.slice(-4).toUpperCase() : 'XXXX'}
         </div>
 
-        <h1 style={{ 
-          fontSize: '3rem',
-          marginBottom: '2rem', 
-          borderBottom: isNotebook ? 'none' : '2px solid #555', 
-          paddingBottom: isNotebook ? '1rem' : '1rem',
-          lineHeight: isNotebook ? '3rem' : '1.2',
-          wordWrap: 'break-word',
-          overflowWrap: 'break-word',
-          wordBreak: 'break-word',
-          whiteSpace: 'normal'
-        }}>
-          {language === 'EN' && vent.titleEn ? vent.titleEn : vent.title}
-        </h1>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
+          <h1 style={{ 
+            fontFamily: isNotebook ? '"Permanent Marker", cursive' : '"Reenie Beanie", cursive',
+            fontSize: isNotebook ? '2.5rem' : '3rem',
+            color: isNotebook ? '#111' : '#222',
+            margin: 0,
+            wordBreak: 'break-word',
+            whiteSpace: 'normal'
+          }}>
+            {ventLanguage === 'EN' && vent.titleEn ? vent.titleEn : vent.title}
+          </h1>
+          <button 
+            onClick={() => setVentLanguage(prev => prev === 'EN' ? 'ES' : 'EN')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              background: 'transparent',
+              border: `1px solid ${isNotebook ? '#333' : '#333'}`,
+              color: isNotebook ? '#333' : '#333',
+              padding: '0.5rem 1rem',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontFamily: 'monospace',
+              fontSize: '0.9rem',
+              opacity: 0.8
+            }}
+          >
+            <FaLanguage size={16} />
+            {ventLanguage === 'EN' ? 'EN' : 'ES'}
+          </button>
+        </div>
         
         {vent.image && (
           <div style={{ float: 'right', margin: '0 0 2rem 3vw', transform: `rotate(${Math.random() * 8 - 4}deg)`, maxWidth: '400px', width: '40%' }}>
@@ -216,7 +241,7 @@ function VentView() {
 
         <div 
           className="vent-content" 
-          dangerouslySetInnerHTML={{ __html: (language === 'EN' && vent.contentEn ? vent.contentEn : vent.content) || '' }} 
+          dangerouslySetInnerHTML={{ __html: (ventLanguage === 'EN' && vent.contentEn ? vent.contentEn : vent.content) || '' }} 
           style={{ 
             fontSize: '1.2rem',
             lineHeight: isNotebook ? '2rem' : '1.8',

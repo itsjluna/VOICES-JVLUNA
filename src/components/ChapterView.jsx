@@ -43,98 +43,80 @@ function ChapterView() {
       try {
         const popQuotes = [
           // Original
-          { quote: "Do, or do not. There is no try.", author: "Yoda" },
-          { quote: "I'm not bad. I'm just drawn that way.", author: "Jessica Rabbit" },
-          { quote: "To infinity, and beyond!", author: "Buzz Lightyear" },
-          { quote: "I solemnly swear that I am up to no good.", author: "Harry Potter" },
-          { quote: "Just keep swimming.", author: "Dory" },
-          { quote: "You shall not pass!", author: "Gandalf" },
-          { quote: "Why so serious?", author: "The Joker" },
-          { quote: "With great power comes great responsibility.", author: "Uncle Ben" },
-          { quote: "Winter is coming.", author: "Ned Stark" },
-          { quote: "Hello, friend.", author: "Elliot Alderson" },
-          { quote: "I am Groot.", author: "Groot" },
-          { quote: "I have a bad feeling about this.", author: "Han Solo" },
-          { quote: "I see dead people.", author: "Cole Sear" },
-          { quote: "There's no place like home.", author: "Dorothy Gale" },
-          { quote: "E.T. phone home.", author: "E.T." },
-          { quote: "May the Force be with you.", author: "Obi-Wan Kenobi" },
-          { quote: "I am your father.", author: "Darth Vader" },
-          { quote: "It's alive! It's alive!", author: "Henry Frankenstein" },
-          { quote: "Here's Johnny!", author: "Jack Torrance" },
-          { quote: "Hasta la vista, baby.", author: "The Terminator" },
-          { quote: "My precious.", author: "Gollum" },
-          { quote: "Life is like a box of chocolates.", author: "Forrest Gump" },
-          { quote: "I'm the king of the world!", author: "Jack Dawson" },
-          { quote: "Wakanda Forever!", author: "Black Panther" },
-          { quote: "Keep your friends close, but your enemies closer.", author: "Michael Corleone" },
+          { quoteEn: "Do, or do not. There is no try.", quoteEs: "Hazlo, o no lo hagas. Pero no lo intentes.", author: "Yoda" },
+          { quoteEn: "I'm not bad. I'm just drawn that way.", quoteEs: "No soy mala, es que me han dibujado así.", author: "Jessica Rabbit" },
+          { quoteEn: "To infinity, and beyond!", quoteEs: "¡Al infinito, y más allá!", author: "Buzz Lightyear" },
+          { quoteEn: "I solemnly swear that I am up to no good.", quoteEs: "Juro solemnemente que mis intenciones no son buenas.", author: "Harry Potter" },
+          { quoteEn: "Just keep swimming.", quoteEs: "Sigue nadando.", author: "Dory" },
+          { quoteEn: "You shall not pass!", quoteEs: "¡No puedes pasar!", author: "Gandalf" },
+          { quoteEn: "Why so serious?", quoteEs: "¿Por qué tan serio?", author: "The Joker" },
+          { quoteEn: "With great power comes great responsibility.", quoteEs: "Un gran poder conlleva una gran responsabilidad.", author: "Uncle Ben" },
+          { quoteEn: "Winter is coming.", quoteEs: "El invierno se acerca.", author: "Ned Stark" },
+          { quoteEn: "Hello, friend.", quoteEs: "Hola, amigo.", author: "Elliot Alderson" },
+          { quoteEn: "I am Groot.", quoteEs: "Yo soy Groot.", author: "Groot" },
+          { quoteEn: "I have a bad feeling about this.", quoteEs: "Tengo un mal presentimiento sobre esto.", author: "Han Solo" },
+          { quoteEn: "I see dead people.", quoteEs: "Veo gente muerta.", author: "Cole Sear" },
+          { quoteEn: "There's no place like home.", quoteEs: "No hay lugar como el hogar.", author: "Dorothy Gale" },
+          { quoteEn: "E.T. phone home.", quoteEs: "E.T. llamar a casa.", author: "E.T." },
+          { quoteEn: "May the Force be with you.", quoteEs: "Que la Fuerza te acompañe.", author: "Obi-Wan Kenobi" },
+          { quoteEn: "I am your father.", quoteEs: "Yo soy tu padre.", author: "Darth Vader" },
+          { quoteEn: "It's alive! It's alive!", quoteEs: "¡Está vivo! ¡Está vivo!", author: "Henry Frankenstein" },
+          { quoteEn: "Here's Johnny!", quoteEs: "¡Aquí está Johnny!", author: "Jack Torrance" },
+          { quoteEn: "Hasta la vista, baby.", quoteEs: "Hasta la vista, baby.", author: "The Terminator" },
+          { quoteEn: "My precious.", quoteEs: "Mi tesoro.", author: "Gollum" },
+          { quoteEn: "Life is like a box of chocolates.", quoteEs: "La vida es como una caja de bombones.", author: "Forrest Gump" },
+          { quoteEn: "I'm the king of the world!", quoteEs: "¡Soy el rey del mundo!", author: "Jack Dawson" },
+          { quoteEn: "Wakanda Forever!", quoteEs: "¡Wakanda por siempre!", author: "Black Panther" },
+          { quoteEn: "Keep your friends close, but your enemies closer.", quoteEs: "Mantén a tus amigos cerca, pero a tus enemigos más cerca.", author: "Michael Corleone" },
           // Comics
-          { quote: "It's not who I am underneath, but what I do that defines me.", author: "Batman" },
-          { quote: "Whatever happened to the American Dream? It came true. You're lookin' at it.", author: "The Comedian" },
-          { quote: "I am Iron Man.", author: "Tony Stark" },
-          { quote: "Avengers, assemble!", author: "Captain America" },
-          { quote: "I can do this all day.", author: "Steve Rogers" },
-          { quote: "We're not just our failures. As much as they hurt, we learn from them.", author: "Spider-Man" },
+          { quoteEn: "It's not who I am underneath, but what I do that defines me.", quoteEs: "No es quien soy debajo, sino lo que hago lo que me define.", author: "Batman" },
+          { quoteEn: "Whatever happened to the American Dream? It came true. You're lookin' at it.", quoteEs: "¿Qué le pasó al Sueño Americano? Se hizo realidad. Lo estás mirando.", author: "The Comedian" },
+          { quoteEn: "I am Iron Man.", quoteEs: "Yo soy Iron Man.", author: "Tony Stark" },
+          { quoteEn: "Avengers, assemble!", quoteEs: "¡Vengadores, reúnanse!", author: "Captain America" },
+          { quoteEn: "I can do this all day.", quoteEs: "Podría hacer esto todo el día.", author: "Steve Rogers" },
+          { quoteEn: "We're not just our failures. As much as they hurt, we learn from them.", quoteEs: "No somos solo nuestros fracasos. Por mucho que duelan, aprendemos de ellos.", author: "Spider-Man" },
           // Videogames
-          { quote: "War. War never changes.", author: "Fallout Narrator" },
-          { quote: "It's dangerous to go alone! Take this.", author: "Old Man" },
-          { quote: "Would you kindly...", author: "Atlas" },
-          { quote: "I need a weapon.", author: "Master Chief" },
-          { quote: "Boy.", author: "Kratos" },
-          { quote: "Kept you waiting, huh?", author: "Solid Snake" },
-          { quote: "We can't change what's done, we can only move on.", author: "Arthur Morgan" },
-          { quote: "The cake is a lie.", author: "Ratman" },
-          { quote: "Praise the sun!", author: "Solaire of Astora" },
-          { quote: "Nothing is true, everything is permitted.", author: "Ezio Auditore" },
-          { quote: "A man chooses, a slave obeys.", author: "Andrew Ryan" },
-          { quote: "Stand in the ashes of a trillion dead souls and ask the ghosts if honor matters.", author: "Javik" },
+          { quoteEn: "War. War never changes.", quoteEs: "La guerra. La guerra nunca cambia.", author: "Fallout Narrator" },
+          { quoteEn: "It's dangerous to go alone! Take this.", quoteEs: "¡Es peligroso ir solo! Toma esto.", author: "Old Man" },
+          { quoteEn: "Would you kindly...", quoteEs: "Serías tan amable...", author: "Atlas" },
+          { quoteEn: "I need a weapon.", quoteEs: "Necesito un arma.", author: "Master Chief" },
+          { quoteEn: "Boy.", quoteEs: "Chico.", author: "Kratos" },
+          { quoteEn: "Kept you waiting, huh?", quoteEs: "Te hice esperar, ¿eh?", author: "Solid Snake" },
+          { quoteEn: "We can't change what's done, we can only move on.", quoteEs: "No podemos cambiar lo que está hecho, solo podemos seguir adelante.", author: "Arthur Morgan" },
+          { quoteEn: "The cake is a lie.", quoteEs: "El pastel es una mentira.", author: "Ratman" },
+          { quoteEn: "Praise the sun!", quoteEs: "¡Alabado sea el sol!", author: "Solaire of Astora" },
+          { quoteEn: "Nothing is true, everything is permitted.", quoteEs: "Nada es verdad, todo está permitido.", author: "Ezio Auditore" },
+          { quoteEn: "A man chooses, a slave obeys.", quoteEs: "Un hombre elige, un esclavo obedece.", author: "Andrew Ryan" },
+          { quoteEn: "Stand in the ashes of a trillion dead souls and ask the ghosts if honor matters.", quoteEs: "Párate en las cenizas de un billón de almas muertas y pregúntale a los fantasmas si el honor importa.", author: "Javik" },
           // Movies & Other
-          { quote: "Get away from her, you b***h!", author: "Ellen Ripley" },
-          { quote: "There is no spoon.", author: "Spoon Boy" },
-          { quote: "You can't handle the truth!", author: "Col. Jessep" },
-          { quote: "I drink your milkshake!", author: "Daniel Plainview" },
-          { quote: "Elementary, my dear Watson.", author: "Sherlock Holmes" },
-          { quote: "To boldly go where no man has gone before.", author: "James T. Kirk" }
+          { quoteEn: "Get away from her, you b***h!", quoteEs: "¡Aléjate de ella, perra!", author: "Ellen Ripley" },
+          { quoteEn: "There is no spoon.", quoteEs: "No hay cuchara.", author: "Spoon Boy" },
+          { quoteEn: "You can't handle the truth!", quoteEs: "¡No puedes soportar la verdad!", author: "Col. Jessep" },
+          { quoteEn: "I drink your milkshake!", quoteEs: "¡Me bebo tu batido!", author: "Daniel Plainview" },
+          { quoteEn: "Elementary, my dear Watson.", quoteEs: "Elemental, mi querido Watson.", author: "Sherlock Holmes" },
+          { quoteEn: "To boldly go where no man has gone before.", quoteEs: "Audazmente ir a donde ningún hombre ha ido antes.", author: "James T. Kirk" }
         ];
 
         setQuoteFictional(popQuotes[Math.floor(Math.random() * popQuotes.length)]);
 
-        if (Math.random() > 0.7) {
+        if (Math.random() > 0.3) {
           const kojimaQuotes = [
-            { quote: "Building the future and keeping the past alive are one and the same thing.", author: "Hideo Kojima" },
-            { quote: "Half of me is made of movies.", author: "Hideo Kojima" },
-            { quote: "Games shouldn't just be fun. They should teach or spark an interest in other things.", author: "Hideo Kojima" },
-            { quote: "I want to create things that people will remember forever.", author: "Hideo Kojima" }
+            { quoteEn: "Building the future and keeping the past alive are one and the same thing.", quoteEs: "Construir el futuro y mantener vivo el pasado son la misma cosa.", author: "Hideo Kojima" },
+            { quoteEn: "Half of me is made of movies.", quoteEs: "El setenta por ciento de mi cuerpo está hecho de películas.", author: "Hideo Kojima" },
+            { quoteEn: "Games shouldn't just be fun. They should teach or spark an interest in other things.", quoteEs: "Los juegos no solo deberían ser divertidos. Deberían enseñar o despertar un interés en otras cosas.", author: "Hideo Kojima" },
+            { quoteEn: "I want to create things that people will remember forever.", quoteEs: "Quiero crear cosas que la gente recuerde para siempre.", author: "Hideo Kojima" }
           ];
           setQuoteReal(kojimaQuotes[Math.floor(Math.random() * kojimaQuotes.length)]);
         } else {
-          const blockedAuthors = [
-            "bill cosby", "adolf hitler", "joseph stalin", "harvey weinstein", 
-            "jeffrey epstein", "o.j. simpson", "r. kelly", "kevin spacey", 
-            "woody allen", "chris brown", "roman polanski", "vladimir putin",
-            "osama bin laden", "saddam hussein", "charles manson", "andrew tate"
+          // Use more hardcoded dual-language quotes instead of english-only dummyjson
+          const realQuotes = [
+            { quoteEn: "To be, or not to be, that is the question.", quoteEs: "Ser o no ser, esa es la cuestión.", author: "William Shakespeare" },
+            { quoteEn: "I think, therefore I am.", quoteEs: "Pienso, luego existo.", author: "René Descartes" },
+            { quoteEn: "The only thing we have to fear is fear itself.", quoteEs: "Lo único que debemos temer es al miedo mismo.", author: "Franklin D. Roosevelt" },
+            { quoteEn: "That's one small step for a man, one giant leap for mankind.", quoteEs: "Es un pequeño paso para un hombre, un gran salto para la humanidad.", author: "Neil Armstrong" }
           ];
           
-          let validQuote = null;
-          for (let i = 0; i < 3; i++) {
-            const res = await fetch('https://dummyjson.com/quotes/random');
-            const data = await res.json();
-            
-            const authorLower = data.author ? data.author.toLowerCase() : "";
-            const isBlocked = blockedAuthors.some(b => authorLower.includes(b));
-            
-            if (!isBlocked) {
-              validQuote = data;
-              break;
-            }
-          }
-          
-          // Fallback if all 3 random quotes were blocked (highly unlikely)
-          if (!validQuote) {
-            validQuote = { quote: "To be, or not to be, that is the question.", author: "William Shakespeare" };
-          }
-          
-          setQuoteReal(validQuote);
+          setQuoteReal(realQuotes[Math.floor(Math.random() * realQuotes.length)]);
         }
         
         // Pick random post-it colors
@@ -362,7 +344,7 @@ function ChapterView() {
 
               {quoteReal && (
                 <PostIt 
-                  quote={quoteReal.quote}
+                  quote={language === 'EN' && quoteReal.quoteEn ? quoteReal.quoteEn : (quoteReal.quoteEs || quoteReal.quoteEn)}
                   author={quoteReal.author}
                   color={postItColor1}
                   style={{ zIndex: 5 }}
@@ -375,7 +357,7 @@ function ChapterView() {
               )}
               {quoteFictional && (
                 <PostIt 
-                  quote={quoteFictional.quote}
+                  quote={language === 'EN' && quoteFictional.quoteEn ? quoteFictional.quoteEn : (quoteFictional.quoteEs || quoteFictional.quoteEn)}
                   author={quoteFictional.author}
                   color={postItColor2}
                   style={{ zIndex: 6 }}

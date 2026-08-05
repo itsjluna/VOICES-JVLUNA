@@ -7,6 +7,7 @@ import Polaroid from './Polaroid';
 import { TravelGraphics } from './TravelGraphics';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import { useLanguage } from '../contexts/LanguageContext';
+import { FaLanguage } from 'react-icons/fa';
 
 const ticketTypes = ['plane', 'train', 'train-cherry', 'bus'];
 const accentColors = ['#e63946', '#2a9d8f', '#e9c46a', '#f4a261', '#264653', '#8338ec', '#ff006e', '#fb8500', '#023047', '#8ecae6'];
@@ -18,6 +19,11 @@ function IntermissionView() {
   const [passenger, setPassenger] = useState('WANDERING SOUL');
   const { markAsRead } = useReadingProgress();
   const { language } = useLanguage();
+  const [intermissionLanguage, setIntermissionLanguage] = useState(language);
+
+  useEffect(() => {
+    setIntermissionLanguage(language);
+  }, [language]);
   
   const ticketType = useMemo(() => {
     if (intermission?.theme && ticketTypes.includes(intermission.theme)) {
@@ -60,7 +66,7 @@ function IntermissionView() {
     fetchIp();
   }, [id]);
 
-  if (!intermission) return <div style={{ padding: '2rem' }}>{language === 'EN' ? 'Loading Intermission...' : 'Cargando Intermedio...'}</div>;
+  if (!intermission) return <div style={{ padding: '2rem' }}>{intermissionLanguage === 'EN' ? 'Loading Intermission...' : 'Cargando Intermedio...'}</div>;
 
   return (
     <motion.div 
@@ -69,7 +75,7 @@ function IntermissionView() {
     >
       <TravelGraphics type={ticketType} />
       <button style={{ alignSelf: 'flex-start', marginBottom: '2rem', border: 'none', padding: '0', textDecoration: 'underline', position: 'relative', zIndex: 10 }} onClick={() => navigate(-1)}>
-        &larr; {language === 'EN' ? 'Back' : 'Volver'}
+        &larr; {intermissionLanguage === 'EN' ? 'Back' : 'Volver'}
       </button>
 
       <div className="intermission-collage">
@@ -79,34 +85,58 @@ function IntermissionView() {
           style={{ borderLeft: `8px solid ${accentColor}` }}
         >
           <div className="passport-stamp" style={{ borderColor: accentColor, color: accentColor }}>
-            {language === 'EN' ? 'BOARDED' : 'ABORDADO'}
+            {intermissionLanguage === 'EN' ? 'BOARDED' : 'ABORDADO'}
             <br />
             {id.toUpperCase().slice(-4)}
           </div>
           <div className="ticket-header" style={{ background: accentColor, color: '#fff' }}>
             <span className="ticket-logo" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              {ticketType === 'plane' && <><FaPlane /> {language === 'EN' ? 'AIRWAYS BOARDING PASS' : 'TARJETA DE EMBARQUE'}</>}
-              {ticketType.startsWith('train') && <><FaTrain /> {language === 'EN' ? 'RAILWAY EXPRESS TICKET' : 'BOLETO DE TREN EXPRÉS'}</>}
-              {ticketType === 'bus'   && <><FaBus /> {language === 'EN' ? 'INTERCITY COACH PASS' : 'PASE DE AUTOBÚS'}</>}
+              {ticketType === 'plane' && <><FaPlane /> {intermissionLanguage === 'EN' ? 'AIRWAYS BOARDING PASS' : 'TARJETA DE EMBARQUE'}</>}
+              {ticketType.startsWith('train') && <><FaTrain /> {intermissionLanguage === 'EN' ? 'RAILWAY EXPRESS TICKET' : 'BOLETO DE TREN EXPRÉS'}</>}
+              {ticketType === 'bus'   && <><FaBus /> {intermissionLanguage === 'EN' ? 'INTERCITY COACH PASS' : 'PASE DE AUTOBÚS'}</>}
             </span>
-            <span className="ticket-class">{language === 'EN' ? 'FIRST CLASS' : 'PRIMERA CLASE'}</span>
+            <span className="ticket-class">{intermissionLanguage === 'EN' ? 'FIRST CLASS' : 'PRIMERA CLASE'}</span>
           </div>
           
           <div className="ticket-body">
             <div className="ticket-info">
               <div className="ticket-field">
-                <label>{language === 'EN' ? 'PASSENGER' : 'PASAJERO'}</label>
+                <label>{intermissionLanguage === 'EN' ? 'PASSENGER' : 'PASAJERO'}</label>
                 <div className="value">{passenger}</div>
               </div>
               <div className="ticket-field">
-                <label style={{ color: accentColor }}>{language === 'EN' ? 'DESTINATION' : 'DESTINO'}</label>
-                <div className="value">{(language === 'EN' && intermission.titleEn ? intermission.titleEn : intermission.title).toUpperCase()}</div>
+                <label style={{ color: accentColor }}>{intermissionLanguage === 'EN' ? 'DESTINATION' : 'DESTINO'}</label>
+                <div className="value">{(intermissionLanguage === 'EN' && intermission.titleEn ? intermission.titleEn : intermission.title).toUpperCase()}</div>
               </div>
             </div>
 
             <div className="ticket-content">
-              <h1 className="intermission-title">{language === 'EN' && intermission.titleEn ? intermission.titleEn : intermission.title}</h1>
-              <div className="poem-text" dangerouslySetInnerHTML={{ __html: (language === 'EN' && intermission.contentEn ? intermission.contentEn : intermission.content) || '' }} />
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <h1 className="intermission-title" style={{ margin: 0 }}>
+                  {intermissionLanguage === 'EN' && intermission.titleEn ? intermission.titleEn : intermission.title}
+                </h1>
+                <button 
+                  onClick={() => setIntermissionLanguage(prev => prev === 'EN' ? 'ES' : 'EN')}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    background: 'transparent',
+                    border: '1px solid #333',
+                    color: '#333',
+                    padding: '0.4rem 0.8rem',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontFamily: 'monospace',
+                    fontSize: '0.8rem',
+                    opacity: 0.8
+                  }}
+                >
+                  <FaLanguage size={16} />
+                  {intermissionLanguage === 'EN' ? 'EN' : 'ES'}
+                </button>
+              </div>
+              <div className="poem-text" dangerouslySetInnerHTML={{ __html: (intermissionLanguage === 'EN' && intermission.contentEn ? intermission.contentEn : intermission.content) || '' }} />
             </div>
           </div>
           
