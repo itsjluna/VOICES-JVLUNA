@@ -68,9 +68,9 @@ export const IndexScatter = React.memo(() => {
     });
   }, []);
 
-  // 3. Coffee Rings
+  // 3. Coffee Rings & Stains
   const coffeeRings = useMemo(() => {
-    return [...Array(2)].map((_, i) => {
+    return [...Array(4)].map((_, i) => {
       const top = Math.random() * 80;
       const left = Math.random() * 80;
       const size = 150 + Math.random() * 50;
@@ -87,9 +87,9 @@ export const IndexScatter = React.memo(() => {
     });
   }, []);
 
-  // 4. Ink Scribbles
+  // 4. Ink Scribbles & Brush Strokes
   const scribbles = useMemo(() => {
-    return [...Array(3)].map((_, i) => {
+    const scribblesList = [...Array(3)].map((_, i) => {
       const top = Math.random() * 90;
       const left = Math.random() * 90;
       return (
@@ -100,6 +100,23 @@ export const IndexScatter = React.memo(() => {
         </motion.svg>
       );
     });
+
+    const brushes = [...Array(4)].map((_, i) => {
+      const top = Math.random() * 90;
+      const left = Math.random() * 90;
+      const rotate = Math.random() * 360;
+      const colors = ['#e74c3c', '#3498db', '#f1c40f', '#2ecc71', '#9b59b6', '#34495e'];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      return (
+        <motion.svg key={`brush-${i}`} initial={{ opacity: 0 }} animate={{ opacity: 0.2 }} transition={{ duration: 1, delay: 0.5 }}
+          width="150" height="50" viewBox="0 0 150 50" style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, transform: `rotate(${rotate}deg)`, pointerEvents: 'none', zIndex: 0, mixBlendMode: 'multiply' }}>
+          <path d={`M 10 25 Q 40 ${10 + Math.random()*30} 75 25 T 140 25`} fill="none" stroke={color} strokeWidth={15 + Math.random()*10} strokeLinecap="round" opacity="0.6" style={{ filter: 'blur(1px)' }} />
+          <path d={`M 15 25 Q 45 ${15 + Math.random()*20} 75 25 T 135 25`} fill="none" stroke={color} strokeWidth={8 + Math.random()*5} strokeLinecap="round" opacity="0.8" />
+        </motion.svg>
+      );
+    });
+
+    return [...scribblesList, ...brushes];
   }, []);
 
   // 5. Polaroids (from database)
@@ -124,9 +141,9 @@ export const IndexScatter = React.memo(() => {
       'OIP (7).webp', 'OIP (8).webp', 'OIP (9).webp', 'R (3).jpg', 
       'Wipeout-2097-PAL-PSX-FRONT.jpg', 'llorona-poster-ok.jpg'
     ];
-    // Pick 3 random media images to scatter
+    // Pick 1 or 2 random media images to scatter
     const shuffled = [...allMedia].sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, 3);
+    const selected = shuffled.slice(0, 2);
     
     return selected.map((img, i) => {
       const top = 10 + Math.random() * 70;
@@ -173,8 +190,8 @@ function PrismScatter({ top, left, rotate, width, image }) {
   const rotateY = useTransform(x, [-200, 200], [-25, 25]);
   
   // Calculate glare/holographic position based on mouse
-  const shineX = useTransform(x, [-200, 200], ['-50%', '0%']);
-  const shineY = useTransform(y, [-200, 200], ['-50%', '0%']);
+  const shineX = useTransform(x, [-200, 200], ['-100%', '100%']);
+  const shineY = useTransform(y, [-200, 200], ['-100%', '100%']);
 
   return (
     <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.2 + Math.random() * 0.5 }}
@@ -193,21 +210,39 @@ function PrismScatter({ top, left, rotate, width, image }) {
         width: `${width}px`, transform: `rotate(${rotate}deg)`, 
         pointerEvents: 'auto', cursor: 'grab', zIndex: 3, 
         rotateX, rotateY, perspective: 1000,
-        borderRadius: '8px',
-        boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+        borderRadius: '12px',
+        boxShadow: '0 15px 35px rgba(0,0,0,0.4), 0 5px 15px rgba(0,0,0,0.2)',
       }}>
       
-      <div style={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden', borderRadius: '8px', backgroundColor: '#111' }}>
-        <img src={image} alt="prism scatter" draggable="false" style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }} />
+      {/* Thick plastic box container */}
+      <div style={{ 
+        width: '100%', height: '100%', position: 'relative', overflow: 'hidden', 
+        borderRadius: '12px', backgroundColor: '#111',
+        boxShadow: 'inset 0 0 0 2px rgba(255,255,255,0.5), inset 0 0 20px rgba(255,255,255,0.4)',
+        border: '1px solid rgba(255,255,255,0.8)'
+      }}>
+        {/* Inner image */}
+        <div style={{ padding: '6px', width: '100%', height: '100%', boxSizing: 'border-box' }}>
+          <img src={image} alt="prism scatter" draggable="false" style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover', borderRadius: '6px' }} />
+        </div>
         
         {/* Holographic / Glass prism overlay */}
         <motion.div style={{
           position: 'absolute', top: 0, left: 0, width: '200%', height: '200%',
-          background: 'linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.4) 30%, rgba(255, 100, 200, 0.2) 40%, rgba(100, 200, 255, 0.3) 60%, transparent 80%)',
-          mixBlendMode: 'color-dodge',
+          background: 'linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.03) 30%, rgba(255,255,255,0.8) 45%, rgba(255,100,200,0.4) 50%, rgba(100,200,255,0.4) 55%, rgba(255,255,255,0.8) 60%, rgba(255,255,255,0.03) 70%, rgba(255,255,255,0) 100%)',
+          mixBlendMode: 'screen',
           x: shineX,
           y: shineY,
-          pointerEvents: 'none'
+          pointerEvents: 'none',
+          opacity: 0.9
+        }} />
+        
+        {/* Secondary glare for plastic reflection */}
+        <motion.div style={{
+          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+          background: 'linear-gradient(to bottom, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 40%)',
+          pointerEvents: 'none',
+          opacity: 0.5
         }} />
       </div>
     </motion.div>
