@@ -680,7 +680,7 @@ button:hover {
   font-family: var(--font-serif);
   min-height: 100vh;
   width: 100%;
-  padding: 4rem 5vw clamp(2rem, 5vw, 4rem) clamp(2rem, 15vw, 100px);
+  padding: 4rem 3vw clamp(2rem, 5vw, 4rem) clamp(1.5rem, 10vw, 100px);
   position: relative;
 }
 
@@ -689,7 +689,7 @@ button:hover {
   background-image: radial-gradient(circle at 50% 50%, #2a2a2a 0%, #111 100%);
   min-height: 100vh;
   width: 100%;
-  padding: clamp(2rem, 5vw, 4rem) 5vw;
+  padding: clamp(2rem, 5vw, 4rem) 2vw;
   position: relative;
   display: flex;
   flex-direction: column;
