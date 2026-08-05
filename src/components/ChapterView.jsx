@@ -220,7 +220,7 @@ function ChapterView() {
           'pencil.png': { titleEn: 'Graphite Pencil', titleEs: 'Lápiz de Grafito', descEn: 'Soft lead and wood shavings.', descEs: 'Grafito suave.' },
           'pepsi.png': { titleEn: 'Diet Pepsi', titleEs: 'Pepsi Light', descEn: 'Diet Pepsi 0 cal.', descEs: 'Diet Pepsi 0 cal.' },
           'rubik.png': { titleEn: 'Rubik\'s Cube', titleEs: 'Cubo Rubik', descEn: 'Colored plastic squares.', descEs: 'Cuadrados de plástico de colores.' },
-          'slims.png': { titleEn: 'Virginia Slims', titleEs: 'Virginia Slims', descEn: 'Thin white cigarettes.', descEs: 'Cigarrillos delgados y blancos.' },
+          'slims.png': { titleEn: 'China Superslims', titleEs: 'China Superslims', descEn: 'Thin white cigarettes.', descEs: 'Cigarrillos delgados y blancos.' },
           'sw.png': { titleEn: 'Rey', titleEs: 'Rey', descEn: 'Star Wars figure.', descEs: 'Figura de Star Wars.' },
           'taco.png': { titleEn: 'Taco al Pastor', titleEs: 'Taco al Pastor', descEn: 'Corn tortilla and pineapple.', descEs: 'Tortilla de maíz y piña.' },
           'transformers.png': { titleEn: 'Autobot Emblem', titleEs: 'Emblema Autobot', descEn: 'Die-cast metal badge.', descEs: 'Insignia de metal fundido.' },
