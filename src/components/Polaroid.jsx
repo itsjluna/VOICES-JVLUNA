@@ -100,6 +100,8 @@ const PolaroidModal = ({ src, alt, onClose }) => {
         className="polaroid-container"
         style={{
           margin: 0,
+          display: 'inline-block',
+          width: 'auto',
           maxWidth: '90vw',
           maxHeight: '90vh',
           pointerEvents: 'auto',
