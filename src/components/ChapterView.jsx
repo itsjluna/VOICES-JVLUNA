@@ -165,38 +165,41 @@ function ChapterView() {
               return a.artistName === randomArtist;
             });
             
-            // 3. Categorize matches
-            const albums = [];
-            const eps = [];
-            const singles = [];
+            // 3. Categorize matches into 5 Tiers
+            const tier1_StudioAlbums = [];
+            const tier2_StudioEPs = [];
+            const tier3_MultiTrackSingles = [];
+            const tier4_PureSingles = [];
+            const tier5_AltVersions = [];
 
             exactMatches.forEach(a => {
               const name = a.collectionName ? a.collectionName.toLowerCase() : '';
               const isAllowedUpsahl = a.artistName === 'UPSAHL' && name.includes('i like it');
               
+              const isAltVersion = name.includes('remix') || name.includes('live') || name.includes('deluxe') || name.includes('bonus') || name.includes('tour edition') || name.includes('greatest hits') || name.includes('essential') || name.includes('anthology') || name.includes('the best of') || name.includes('acoustic');
               const isExplicitSingle = name.includes('- single') || name.includes('(single)') || name.endsWith(' single');
-              const isSmall = a.trackCount && a.trackCount <= 3 && !name.includes('ep');
               
-              const isAltVersion = name.includes('remix') || name.includes('live') || name.includes('deluxe') || name.includes('bonus') || name.includes('tour edition') || name.includes('greatest hits') || name.includes('essential') || name.includes('anthology') || name.includes('the best of');
-              
-              if (isAllowedUpsahl) {
-                albums.push(a);
-              } else if (isExplicitSingle || a.trackCount === 1 || (isSmall && !name.includes('ep'))) {
-                singles.push(a);
+              if (isAltVersion && !isAllowedUpsahl) {
+                tier5_AltVersions.push(a);
+              } else if (isExplicitSingle || a.trackCount === 1) {
+                tier4_PureSingles.push(a);
               } else if (name.includes('ep') || (a.trackCount && a.trackCount <= 6)) {
-                eps.push(a);
-              } else if (!isAltVersion && a.collectionType === 'Album') {
-                albums.push(a);
+                if (a.trackCount && a.trackCount <= 3 && !name.includes('ep')) {
+                  tier3_MultiTrackSingles.push(a);
+                } else {
+                  tier2_StudioEPs.push(a);
+                }
               } else {
-                // If it falls through, put it in EPs/misc
-                eps.push(a);
+                tier1_StudioAlbums.push(a);
               }
             });
 
-            // 4. Fallback chain: Albums -> EPs -> Singles
-            let pool = albums;
-            if (pool.length === 0) pool = eps;
-            if (pool.length === 0) pool = singles;
+            // 4. Fallback chain: Tier 1 -> Tier 5
+            let pool = tier1_StudioAlbums;
+            if (pool.length === 0) pool = tier2_StudioEPs;
+            if (pool.length === 0) pool = tier3_MultiTrackSingles;
+            if (pool.length === 0) pool = tier4_PureSingles;
+            if (pool.length === 0) pool = tier5_AltVersions;
             
             if (pool.length > 0) {
               // Shrink coincidences per artist to 5 for top popularity while maintaining variety
