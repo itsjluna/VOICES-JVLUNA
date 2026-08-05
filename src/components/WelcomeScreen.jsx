@@ -2,9 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { IndexScatter } from './IndexScatter';
+import { useLanguage } from '../contexts/LanguageContext';
 
 function WelcomeScreen() {
   const navigate = useNavigate();
+  const { language } = useLanguage();
 
   return (
     <motion.div 
@@ -37,7 +39,10 @@ function WelcomeScreen() {
         <h1 style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)', letterSpacing: '0.15em', marginBottom: '2rem', textTransform: 'uppercase', lineHeight: '1.2' }}>VOICES</h1>
         
         <p style={{ fontStyle: 'italic', marginBottom: '3rem', fontSize: 'clamp(0.9rem, 2vw, 1.1rem)', opacity: 0.8, lineHeight: '1.8' }}>
-          A curated collection of poetry, memories,<br/>ropes and sticks
+          {language === 'EN' 
+            ? <React.Fragment>A curated collection of poetry, memories,<br/>ropes and sticks</React.Fragment>
+            : <React.Fragment>Una cuidada colección de poesía, memorias,<br/>cuerdas y palos</React.Fragment>
+          }
         </p>
 
         <motion.button 
@@ -56,13 +61,13 @@ function WelcomeScreen() {
             transition: 'background 0.3s ease, color 0.3s ease'
           }}
         >
-          Enter
+          {language === 'EN' ? 'Enter' : 'Entrar'}
         </motion.button>
       </motion.div>
       
       {/* Decorative Marginalia */}
-      <div className="editorial-margin left" style={{ opacity: 0.5 }}>ARCHIVE ENTRY — SEASONS</div>
-      <div className="editorial-margin right" style={{ opacity: 0.5 }}>EDITION ONE</div>
+      <div className="editorial-margin left" style={{ opacity: 0.5 }}>{language === 'EN' ? 'ARCHIVE ENTRY — SEASONS' : 'ENTRADA DE ARCHIVO — TEMPORADAS'}</div>
+      <div className="editorial-margin right" style={{ opacity: 0.5 }}>{language === 'EN' ? 'EDITION ONE' : 'EDICIÓN UNO'}</div>
     </motion.div>
   );
 }

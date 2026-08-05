@@ -6,6 +6,7 @@ import api from '../api';
 import { IndexScatter } from './IndexScatter';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import AmbientAudio from './AmbientAudio';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -26,6 +27,7 @@ function IndexView() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTheme, setActiveTheme] = useState('all');
   const { readChapters } = useReadingProgress();
+  const { language } = useLanguage();
 
   // Time of day logic
   const hour = new Date().getHours();
@@ -131,13 +133,17 @@ function IndexView() {
         boxSizing: 'border-box'
       }}>
         <div style={{ marginBottom: '3rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
-          <h1 style={{ fontSize: '2.5rem', letterSpacing: '0.2em', textTransform: 'uppercase', margin: 0 }}>Index</h1>
+          <h1 style={{ fontSize: '2.5rem', letterSpacing: '0.2em', textTransform: 'uppercase', margin: 0 }}>
+            {language === 'EN' ? 'Index' : 'Índice'}
+          </h1>
         </div>
         
         {isLoading ? (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column' }}>
             <div style={{ width: '30px', height: '30px', border: '2px solid var(--text-color)', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', opacity: 0.3 }}></div>
-            <p style={{ marginTop: '1rem', fontFamily: 'monospace', letterSpacing: '2px', opacity: 0.3, fontSize: '0.8rem' }}>RETRIEVING ARCHIVES...</p>
+            <p style={{ marginTop: '1rem', fontFamily: 'monospace', letterSpacing: '2px', opacity: 0.3, fontSize: '0.8rem' }}>
+              {language === 'EN' ? 'RETRIEVING ARCHIVES...' : 'RECUPERANDO ARCHIVOS...'}
+            </p>
           </div>
         ) : (
           <motion.div variants={containerVariants} initial="hidden" animate="show" style={{ width: '100%' }}>
@@ -159,17 +165,17 @@ function IndexView() {
                   cursor: 'pointer'
                 }}
               >
-                <option value="all">ALL ENTRIES</option>
-                <option value="winter">WINTER</option>
-                <option value="spring">SPRING</option>
-                <option value="summer">SUMMER</option>
-                <option value="autumn">AUTUMN</option>
-                <option value="vents">VENTS</option>
-                <option value="intermissions">INTERMISSIONS</option>
+                <option value="all">{language === 'EN' ? 'ALL ENTRIES' : 'TODAS LAS ENTRADAS'}</option>
+                <option value="winter">{language === 'EN' ? 'WINTER' : 'INVIERNO'}</option>
+                <option value="spring">{language === 'EN' ? 'SPRING' : 'PRIMAVERA'}</option>
+                <option value="summer">{language === 'EN' ? 'SUMMER' : 'VERANO'}</option>
+                <option value="autumn">{language === 'EN' ? 'AUTUMN' : 'OTOÑO'}</option>
+                <option value="vents">{language === 'EN' ? 'VENTS' : 'DESAHOGOS'}</option>
+                <option value="intermissions">{language === 'EN' ? 'INTERMISSIONS' : 'INTERMEDIOS'}</option>
               </select>
             </div>
 
-            {chapters.length === 0 && <p style={{ textAlign: 'center', fontStyle: 'italic', opacity: 0.5 }}>The archives are empty...</p>}
+            {chapters.length === 0 && <p style={{ textAlign: 'center', fontStyle: 'italic', opacity: 0.5 }}>{language === 'EN' ? 'The archives are empty...' : 'Los archivos están vacíos...'}</p>}
             
             {chapters
               .filter(c => {
@@ -242,7 +248,7 @@ function IndexView() {
                           wordBreak: 'break-word',
                           whiteSpace: 'normal'
                         }}>
-                          {chapter.title}
+                          {language === 'EN' && chapter.titleEn ? chapter.titleEn : chapter.title}
                         </span>
                       </div>
                       

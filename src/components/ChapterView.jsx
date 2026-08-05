@@ -9,6 +9,7 @@ import PostIt from './PostIt';
 import CDJewelCase from './CDJewelCase';
 import ScatteredItem from './ScatteredItem';
 import AmbientAudio from './AmbientAudio';
+import { useLanguage } from '../contexts/LanguageContext';
 
 function ChapterView() {
   const { id } = useParams();
@@ -21,6 +22,7 @@ function ChapterView() {
   const [postItColor2, setPostItColor2] = useState('#ffb7b2');
   const [albumDecoration, setAlbumDecoration] = useState(null);
   const [randomDecorations, setRandomDecorations] = useState([]);
+  const { language } = useLanguage();
 
   useEffect(() => {
     async function fetchData() {
@@ -279,11 +281,11 @@ function ChapterView() {
       <AmbientAudio src={`/${chapter?.theme || 'spring'}-ambient.mp3`} volume={0.03} />
       {renderSeason()}
       <button style={{ marginBottom: '2rem', border: 'none', padding: '0', textDecoration: 'underline', position: 'relative', zIndex: 10 }} onClick={() => navigate(-1)}>
-        &larr; Back
+        &larr; {language === 'EN' ? 'Back' : 'Volver'}
       </button>
 
       <div className="editorial-margin left">
-        VOL. {id.slice(-4).toUpperCase()} — CHAPTER
+        VOL. {id.slice(-4).toUpperCase()} — {language === 'EN' ? 'CHAPTER' : 'CAPÍTULO'}
       </div>
 
 
@@ -294,7 +296,7 @@ function ChapterView() {
           style={{ position: 'relative' }}
         >
           <SeasonDebris theme={chapter.theme} />
-          <h1 className="chapter-title">{chapter.title}</h1>
+          <h1 className="chapter-title">{language === 'EN' && chapter.titleEn ? chapter.titleEn : chapter.title}</h1>
           
           {chapter.image && (
             <motion.div 
@@ -388,16 +390,18 @@ function ChapterView() {
           )}
 
           <div style={{ marginTop: '2rem' }}>
-            <h3 style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', letterSpacing: '0.05em', marginBottom: '1rem' }}>POEMS IN THIS CHAPTER</h3>
+            <h3 style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', letterSpacing: '0.05em', marginBottom: '1rem' }}>
+              {language === 'EN' ? 'POEMS IN THIS CHAPTER' : 'POEMAS EN ESTE CAPÍTULO'}
+            </h3>
             <ul style={{ listStyle: 'none' }}>
               {poems.map((poem, index) => (
                 <li key={poem._id} style={{ margin: '1rem 0' }}>
                   <Link to={`/poem/${poem._id}`} style={{ fontSize: '1.2rem' }}>
-                    {index + 1}. {poem.title}
+                    {index + 1}. {language === 'EN' && poem.titleEn ? poem.titleEn : poem.title}
                   </Link>
                 </li>
               ))}
-              {poems.length === 0 && <p style={{ fontStyle: 'italic' }}>No poems yet.</p>}
+              {poems.length === 0 && <p style={{ fontStyle: 'italic' }}>{language === 'EN' ? 'No poems yet.' : 'Aún no hay poemas.'}</p>}
             </ul>
           </div>
         </motion.div>

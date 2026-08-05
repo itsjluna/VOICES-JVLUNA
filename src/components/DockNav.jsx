@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaSun, FaMoon, FaHome, FaBookOpen } from 'react-icons/fa';
+import { FaSun, FaMoon, FaHome, FaBookOpen, FaLanguage } from 'react-icons/fa';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
 
 function DockNav() {
   const [isDark, setIsDark] = useState(() => {
@@ -11,6 +12,7 @@ function DockNav() {
   
   const navigate = useNavigate();
   const location = useLocation();
+  const { language, toggleLanguage } = useLanguage();
 
   useEffect(() => {
     if (isDark) {
@@ -68,6 +70,14 @@ function DockNav() {
         label={isDark ? 'Light Mode' : 'Dark Mode'}
         active={false} 
         onClick={() => setIsDark(!isDark)} 
+        isDark={isDark}
+      />
+      
+      <DockButton 
+        icon={<div style={{ fontSize: '14px', fontWeight: 'bold', color: inactiveColor }}>{language}</div>} 
+        label="Toggle Language"
+        active={false} 
+        onClick={toggleLanguage} 
         isDark={isDark}
       />
     </motion.div>

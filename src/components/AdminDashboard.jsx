@@ -13,16 +13,16 @@ function AdminDashboard() {
   
   const [newChapterTitle, setNewChapterTitle] = useState('');
   
-  const [poemForm, setPoemForm] = useState({ _id: null, title: '', content: '', chapterId: '', image: '' });
+  const [poemForm, setPoemForm] = useState({ _id: null, title: '', titleEn: '', content: '', contentEn: '', chapterId: '', image: '' });
   const [isPoemModalOpen, setIsPoemModalOpen] = useState(false);
 
-  const [intermissionForm, setIntermissionForm] = useState({ _id: null, title: '', content: '', image: '', isIntermission: true });
+  const [intermissionForm, setIntermissionForm] = useState({ _id: null, title: '', titleEn: '', content: '', contentEn: '', image: '', isIntermission: true });
   const [isIntermissionModalOpen, setIsIntermissionModalOpen] = useState(false);
 
-  const [ventForm, setVentForm] = useState({ _id: null, title: '', content: '', image: '', isVent: true });
+  const [ventForm, setVentForm] = useState({ _id: null, title: '', titleEn: '', content: '', contentEn: '', image: '', isVent: true });
   const [isVentModalOpen, setIsVentModalOpen] = useState(false);
 
-  const [chapterForm, setChapterForm] = useState({ _id: null, title: '', image: '', theme: 'winter' });
+  const [chapterForm, setChapterForm] = useState({ _id: null, title: '', titleEn: '', image: '', theme: 'winter' });
   const [isChapterModalOpen, setIsChapterModalOpen] = useState(false);
 
   useEffect(() => {
@@ -88,7 +88,7 @@ function AdminDashboard() {
   };
 
   const openChapterModalForEdit = (c) => {
-    setChapterForm({ _id: c._id, title: c.title, image: c.image || '', theme: c.theme || 'winter' });
+    setChapterForm({ _id: c._id, title: c.title, titleEn: c.titleEn || '', image: c.image || '', theme: c.theme || 'winter' });
     setIsChapterModalOpen(true);
   };
 
@@ -145,7 +145,7 @@ function AdminDashboard() {
   };
 
   const openPoemModalForNew = (chapterId) => {
-    setPoemForm({ _id: null, title: '', content: '', chapterId: chapterId, image: '' });
+    setPoemForm({ _id: null, title: '', titleEn: '', content: '', contentEn: '', chapterId: chapterId, image: '' });
     setIsPoemModalOpen(true);
   };
 
@@ -164,7 +164,7 @@ function AdminDashboard() {
   };
 
   const openIntermissionModalForNew = () => {
-    setIntermissionForm({ _id: null, title: '', content: '', image: '', isIntermission: true });
+    setIntermissionForm({ _id: null, title: '', titleEn: '', content: '', contentEn: '', image: '', isIntermission: true });
     setIsIntermissionModalOpen(true);
   };
 
@@ -183,7 +183,7 @@ function AdminDashboard() {
   };
 
   const openVentModalForNew = () => {
-    setVentForm({ _id: null, title: '', content: '', image: '', isVent: true });
+    setVentForm({ _id: null, title: '', titleEn: '', content: '', contentEn: '', image: '', isVent: true });
     setIsVentModalOpen(true);
   };
 
@@ -212,7 +212,7 @@ function AdminDashboard() {
       </div>
 
       <div style={{ display: 'flex', gap: '1rem', marginBottom: '3rem' }}>
-        <button onClick={() => { setChapterForm({ _id: null, title: '', image: '', theme: 'winter' }); setIsChapterModalOpen(true); }} style={{ padding: '0.5rem 1rem' }}>
+        <button onClick={() => { setChapterForm({ _id: null, title: '', titleEn: '', image: '', theme: 'winter' }); setIsChapterModalOpen(true); }} style={{ padding: '0.5rem 1rem' }}>
           + Add Chapter
         </button>
         <button onClick={openIntermissionModalForNew} style={{ background: 'var(--text-color)', color: 'var(--bg-color)' }}>
@@ -291,7 +291,8 @@ function AdminDashboard() {
               <button className="modal-close" onClick={() => setIsChapterModalOpen(false)}>&times;</button>
               <h2 style={{ marginBottom: '2rem' }}>{chapterForm._id ? 'Edit Chapter' : 'Create Chapter'}</h2>
               <form onSubmit={saveChapter} className="admin-form" style={{ border: 'none', padding: 0 }}>
-                <input type="text" placeholder="Chapter Title" value={chapterForm.title} onChange={e => setChapterForm({...chapterForm, title: e.target.value})} required />
+                <input type="text" placeholder="Chapter Title (ES)" value={chapterForm.title} onChange={e => setChapterForm({...chapterForm, title: e.target.value})} required />
+                <input type="text" placeholder="Chapter Title (EN)" value={chapterForm.titleEn} onChange={e => setChapterForm({...chapterForm, titleEn: e.target.value})} />
                 
                 <label>Room Aesthetic Theme</label>
                 <select value={chapterForm.theme || 'winter'} onChange={e => setChapterForm({...chapterForm, theme: e.target.value})} required>
@@ -329,7 +330,8 @@ function AdminDashboard() {
               <button className="modal-close" onClick={() => setIsPoemModalOpen(false)}>&times;</button>
               <h2 style={{ marginBottom: '2rem' }}>{poemForm._id ? 'Edit Poem' : 'Create Poem'}</h2>
               <form onSubmit={savePoem} className="admin-form" style={{ border: 'none', padding: 0 }}>
-                <input type="text" placeholder="Poem Title" value={poemForm.title} onChange={e => setPoemForm({...poemForm, title: e.target.value})} required />
+                <input type="text" placeholder="Poem Title (ES)" value={poemForm.title} onChange={e => setPoemForm({...poemForm, title: e.target.value})} required />
+                <input type="text" placeholder="Poem Title (EN)" value={poemForm.titleEn} onChange={e => setPoemForm({...poemForm, titleEn: e.target.value})} />
                 
                 <div style={{ display: 'flex', gap: '1rem', margin: '1rem 0' }}>
                   <div style={{ flex: 1 }}>
@@ -355,8 +357,13 @@ function AdminDashboard() {
                   </div>
                 </div>
 
-                <div style={{ background: 'white', color: 'black', marginBottom: '1.5rem', minHeight: '400px' }}>
-                  <Editor value={poemForm.content} onChange={e => setPoemForm({...poemForm, content: e.target.value})} style={{ height: '400px' }} />
+                <div style={{ background: 'white', color: 'black', marginBottom: '1.5rem', minHeight: '300px' }}>
+                  <label style={{color: '#111'}}>Content (ES)</label>
+                  <Editor value={poemForm.content} onChange={e => setPoemForm({...poemForm, content: e.target.value})} style={{ height: '300px' }} />
+                </div>
+                <div style={{ background: 'white', color: 'black', marginBottom: '1.5rem', minHeight: '300px' }}>
+                  <label style={{color: '#111'}}>Content (EN)</label>
+                  <Editor value={poemForm.contentEn} onChange={e => setPoemForm({...poemForm, contentEn: e.target.value})} style={{ height: '300px' }} />
                 </div>
                 <label>Image (optional)</label>
                 <input type="file" accept="image/*" onChange={e => handleFileChange(e, setPoemForm)} />
@@ -385,7 +392,8 @@ function AdminDashboard() {
               <button className="modal-close" onClick={() => setIsIntermissionModalOpen(false)}>&times;</button>
               <h2 style={{ marginBottom: '2rem' }}>{intermissionForm._id ? 'Edit Intermission' : 'Create Intermission'}</h2>
               <form onSubmit={saveIntermission} className="admin-form" style={{ border: 'none', padding: 0 }}>
-                <input type="text" placeholder="Intermission Title (e.g. Stop 1: Nowhere)" value={intermissionForm.title} onChange={e => setIntermissionForm({...intermissionForm, title: e.target.value})} required />
+                <input type="text" placeholder="Intermission Title (ES)" value={intermissionForm.title} onChange={e => setIntermissionForm({...intermissionForm, title: e.target.value})} required />
+                <input type="text" placeholder="Intermission Title (EN)" value={intermissionForm.titleEn} onChange={e => setIntermissionForm({...intermissionForm, titleEn: e.target.value})} />
                 
                 <label>Transport Type</label>
                 <select value={intermissionForm.theme || 'plane'} onChange={e => setIntermissionForm({...intermissionForm, theme: e.target.value})} required>
@@ -395,8 +403,13 @@ function AdminDashboard() {
                   <option value="train-cherry">Train (Cherry Yum Yum)</option>
                 </select>
 
-                <div style={{ background: 'white', color: 'black', margin: '1.5rem 0', minHeight: '400px' }}>
-                  <Editor value={intermissionForm.content} onChange={e => setIntermissionForm({...intermissionForm, content: e.target.value})} style={{ height: '400px' }} />
+                <div style={{ background: 'white', color: 'black', margin: '1.5rem 0', minHeight: '300px' }}>
+                  <label style={{color: '#111'}}>Content (ES)</label>
+                  <Editor value={intermissionForm.content} onChange={e => setIntermissionForm({...intermissionForm, content: e.target.value})} style={{ height: '300px' }} />
+                </div>
+                <div style={{ background: 'white', color: 'black', margin: '1.5rem 0', minHeight: '300px' }}>
+                  <label style={{color: '#111'}}>Content (EN)</label>
+                  <Editor value={intermissionForm.contentEn} onChange={e => setIntermissionForm({...intermissionForm, contentEn: e.target.value})} style={{ height: '300px' }} />
                 </div>
                 <label>Image (optional)</label>
                 <input type="file" accept="image/*" onChange={e => handleFileChange(e, setIntermissionForm)} />
@@ -424,7 +437,8 @@ function AdminDashboard() {
               <button className="modal-close" onClick={() => setIsVentModalOpen(false)}>&times;</button>
               <h2 style={{ marginBottom: '2rem' }}>{ventForm._id ? 'Edit Vent' : 'Create Vent'}</h2>
               <form onSubmit={saveVent} className="admin-form" style={{ border: 'none', padding: 0 }}>
-                <input type="text" placeholder="Vent Title (e.g. Brain Dump 1)" value={ventForm.title} onChange={e => setVentForm({...ventForm, title: e.target.value})} required />
+                <input type="text" placeholder="Vent Title (ES)" value={ventForm.title} onChange={e => setVentForm({...ventForm, title: e.target.value})} required />
+                <input type="text" placeholder="Vent Title (EN)" value={ventForm.titleEn} onChange={e => setVentForm({...ventForm, titleEn: e.target.value})} />
                 
                 <label>Vent Aesthetic Theme</label>
                 <select value={ventForm.theme || 'notebook'} onChange={e => setVentForm({...ventForm, theme: e.target.value})} required>
@@ -432,8 +446,13 @@ function AdminDashboard() {
                   <option value="postits">Post-its (Scattered)</option>
                 </select>
 
-                <div style={{ background: 'white', color: 'black', margin: '1.5rem 0', minHeight: '400px' }}>
-                  <Editor value={ventForm.content} onChange={e => setVentForm({...ventForm, content: e.target.value})} style={{ height: '400px' }} />
+                <div style={{ background: 'white', color: 'black', margin: '1.5rem 0', minHeight: '300px' }}>
+                  <label style={{color: '#111'}}>Content (ES)</label>
+                  <Editor value={ventForm.content} onChange={e => setVentForm({...ventForm, content: e.target.value})} style={{ height: '300px' }} />
+                </div>
+                <div style={{ background: 'white', color: 'black', margin: '1.5rem 0', minHeight: '300px' }}>
+                  <label style={{color: '#111'}}>Content (EN)</label>
+                  <Editor value={ventForm.contentEn} onChange={e => setVentForm({...ventForm, contentEn: e.target.value})} style={{ height: '300px' }} />
                 </div>
                 <label>Cover Image (optional)</label>
                 <input type="file" accept="image/*" onChange={e => handleFileChange(e, setVentForm)} />

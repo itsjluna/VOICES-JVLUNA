@@ -36,17 +36,21 @@ app.use(async (req, res, next) => {
 // Schemas
 const chapterSchema = new mongoose.Schema({
   title: String,
+  titleEn: String,
   order: { type: Number, default: 0 },
   image: String,
   isIntermission: { type: Boolean, default: false },
   isVent: { type: Boolean, default: false },
   content: String,
+  contentEn: String,
   theme: { type: String, default: 'winter' }
 });
 
 const poemSchema = new mongoose.Schema({
   title: String,
+  titleEn: String,
   content: String,
+  contentEn: String,
   chapterId: mongoose.Schema.Types.ObjectId,
   order: { type: Number, default: 0 },
   image: String,

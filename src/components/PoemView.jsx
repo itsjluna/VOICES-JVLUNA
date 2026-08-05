@@ -7,12 +7,21 @@ import api from '../api';
 import Polaroid from './Polaroid';
 import Marginalia from './Marginalia';
 import { Winter, Spring, Summer, Autumn, AmbientDust, DigitalMatrix, Embers, Clocks, DawnLight } from './SeasonBackgrounds';
+import { useLanguage } from '../contexts/LanguageContext';
+import { FaLanguage } from 'react-icons/fa';
 
 function PoemView() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [poem, setPoem] = useState(null);
   const { markAsRead } = useReadingProgress();
+  const { language } = useLanguage();
+  const [poemLanguage, setPoemLanguage] = useState(language);
+
+  // Sync poemLanguage with global language when global language changes
+  useEffect(() => {
+    setPoemLanguage(language);
+  }, [language]);
 
   useEffect(() => {
     async function fetchData() {
@@ -51,11 +60,11 @@ function PoemView() {
     >
       {renderBackground()}
       <button style={{ marginBottom: '2rem', border: 'none', padding: '0', textDecoration: 'underline', position: 'relative', zIndex: 10 }} onClick={() => navigate(-1)}>
-        &larr; Back
+        &larr; {poemLanguage === 'EN' ? 'Back' : 'Volver'}
       </button>
 
       <div className="editorial-margin left">
-        ENTRY Nº {id.slice(-4).toUpperCase()} — VOICES
+        {poemLanguage === 'EN' ? 'ENTRY Nº ' : 'ENTRADA Nº '}{id.slice(-4).toUpperCase()} — VOICES
       </div>
       <div className="book-layout book-page-aesthetic">
         <motion.div 
@@ -64,7 +73,31 @@ function PoemView() {
           style={{ position: 'relative' }}
         >
           <Marginalia />
-          <h1 style={{ fontSize: '2rem', marginBottom: '3rem', position: 'relative', zIndex: 10 }}>{poem.title}</h1>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '3rem', position: 'relative', zIndex: 10 }}>
+            <h1 style={{ fontSize: '2rem', margin: 0 }}>
+              {poemLanguage === 'EN' && poem.titleEn ? poem.titleEn : poem.title}
+            </h1>
+            <button 
+              onClick={() => setPoemLanguage(prev => prev === 'EN' ? 'ES' : 'EN')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                background: 'transparent',
+                border: '1px solid var(--text-color)',
+                color: 'var(--text-color)',
+                padding: '0.5rem 1rem',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontFamily: 'monospace',
+                fontSize: '0.9rem',
+                opacity: 0.8
+              }}
+            >
+              <FaLanguage size={16} />
+              {poemLanguage === 'EN' ? 'EN' : 'ES'}
+            </button>
+          </div>
 
           {poem.image && (
             <motion.div 
@@ -126,7 +159,10 @@ function PoemView() {
             </motion.div>
           )}
 
-          <div className="poem-text" dangerouslySetInnerHTML={{ __html: poem.content }} />
+          <div 
+            className="poem-text" 
+            dangerouslySetInnerHTML={{ __html: (poemLanguage === 'EN' && poem.contentEn ? poem.contentEn : poem.content) || '' }} 
+          />
         </motion.div>
         <div style={{ clear: 'both' }}></div>
       </div>

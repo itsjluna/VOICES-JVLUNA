@@ -4,12 +4,14 @@ import { motion } from 'framer-motion';
 import api from '../api';
 import Polaroid from './Polaroid';
 import { useReadingProgress } from '../hooks/useReadingProgress';
+import { useLanguage } from '../contexts/LanguageContext';
 
 function VentView() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [vent, setVent] = useState(null);
   const { markAsRead } = useReadingProgress();
+  const { language } = useLanguage();
 
   useEffect(() => {
     async function fetchData() {
@@ -163,7 +165,7 @@ function VentView() {
       </div>
 
       <button style={{ marginBottom: '3rem', border: 'none', padding: '0', textDecoration: 'underline', color: isNotebook ? '#333' : '#fff', position: 'relative', zIndex: 10, alignSelf: 'flex-start' }} onClick={() => navigate(-1)}>
-        &larr; Back
+        &larr; {language === 'EN' ? 'Back' : 'Volver'}
       </button>
 
       {/* Main Content Container */}
@@ -187,7 +189,7 @@ function VentView() {
         }}
       >
         <div className="editorial-margin left" style={{ color: isNotebook ? '#777' : '#555', left: isNotebook ? '-60px' : '-40px' }}>
-          VENT Nº {id ? id.slice(-4).toUpperCase() : 'XXXX'}
+          {language === 'EN' ? 'VENT Nº ' : 'DESAHOGO Nº '}{id ? id.slice(-4).toUpperCase() : 'XXXX'}
         </div>
 
         <h1 style={{ 
@@ -201,7 +203,7 @@ function VentView() {
           wordBreak: 'break-word',
           whiteSpace: 'normal'
         }}>
-          {vent.title}
+          {language === 'EN' && vent.titleEn ? vent.titleEn : vent.title}
         </h1>
         
         {vent.image && (
@@ -214,7 +216,7 @@ function VentView() {
 
         <div 
           className="vent-content" 
-          dangerouslySetInnerHTML={{ __html: vent.content || '' }} 
+          dangerouslySetInnerHTML={{ __html: (language === 'EN' && vent.contentEn ? vent.contentEn : vent.content) || '' }} 
           style={{ 
             fontSize: '1.2rem',
             lineHeight: isNotebook ? '2rem' : '1.8',
