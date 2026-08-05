@@ -161,6 +161,7 @@ function ChapterView() {
             // 2. Try to get exact artist matches (strict case-sensitive equal to prevent collisions like EmJay vs EMJAY)
             const exactMatches = universallySafeResults.filter(a => {
               if (randomArtist === 'Dafna') return a.artistId === 1450666890;
+              if (randomArtist === 'Junior Varsity') return a.artistId === 1561201891;
               return a.artistName === randomArtist;
             });
             
