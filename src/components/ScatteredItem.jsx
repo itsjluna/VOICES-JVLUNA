@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
-const ScatteredItem = React.memo(({ src, alt, initialAnimation, style, className }) => {
+const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimation, style, className }) => {
   const [isOpen, setIsOpen] = useState(false);
   
   useEffect(() => {
@@ -37,46 +37,14 @@ const ScatteredItem = React.memo(({ src, alt, initialAnimation, style, className
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
           {isOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-              style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: 'rgba(0,0,0,0.85)',
-                zIndex: 99999,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer'
-              }}
-            >
-              <motion.img 
-                src={src}
-                alt={alt}
-                className={className}
-                initial={{ scale: 0.5, rotateZ: (Math.random() * 30) - 15, rotateX: 60, rotateY: 20, y: 300, opacity: 0 }}
-                animate={{ scale: 1, rotateZ: 0, rotateX: 0, rotateY: 0, y: 0, opacity: 1 }}
-                exit={{ scale: 0.7, rotateZ: -20, rotateX: 45, rotateY: -20, y: 300, opacity: 0 }}
-                transition={{ type: "spring", stiffness: 250, damping: 20, mass: 1.2 }}
-                style={{
-                  maxWidth: '90vw',
-                  maxHeight: '90vh',
-                  objectFit: 'contain',
-                  pointerEvents: 'auto',
-                  filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.6))',
-                  zIndex: 100000,
-                  transformStyle: 'preserve-3d'
-                }}
-                loading="lazy"
-                decoding="async"
-              />
-            </motion.div>
+            <ScatteredModal 
+              src={src} 
+              alt={alt} 
+              title={title}
+              description={description}
+              className={className} 
+              onClose={() => setIsOpen(false)} 
+            />
           )}
         </AnimatePresence>,
         document.body
@@ -84,5 +52,107 @@ const ScatteredItem = React.memo(({ src, alt, initialAnimation, style, className
     </>
   );
 });
+
+const ScatteredModal = ({ src, alt, title, description, className, onClose }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  
+  const rotateX = useTransform(y, [-100, 100], [15, -15]);
+  const rotateY = useTransform(x, [-100, 100], [-15, 15]);
+  
+  const handleMouseMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    x.set((mouseX - centerX) / centerX * 100);
+    y.set((mouseY - centerY) / centerY * 100);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'rgba(0,0,0,0.6)',
+        backdropFilter: 'blur(15px)',
+        WebkitBackdropFilter: 'blur(15px)',
+        zIndex: 99999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        cursor: 'pointer',
+        perspective: '1200px'
+      }}
+    >
+      <motion.div
+        initial={{ scale: 0.5, y: 300, opacity: 0 }}
+        animate={{ scale: 1, y: 0, opacity: 1 }}
+        exit={{ scale: 0.7, y: 300, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 250, damping: 20, mass: 1.2 }}
+        style={{
+          rotateX: rotateX,
+          rotateY: rotateY,
+          transformStyle: 'preserve-3d',
+          pointerEvents: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}
+      >
+        <img 
+          src={src}
+          alt={alt}
+          className={className}
+          style={{
+            maxWidth: '90vw',
+            maxHeight: '75vh',
+            objectFit: 'contain',
+            filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.6))',
+            transform: 'translateZ(20px)'
+          }}
+          loading="lazy"
+          decoding="async"
+        />
+        
+        {(title || description) && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            style={{
+              marginTop: '2rem',
+              color: '#fff',
+              textAlign: 'center',
+              maxWidth: '400px',
+              fontFamily: 'var(--font-serif)',
+              transform: 'translateZ(30px)',
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)'
+            }}
+          >
+            {title && <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.5rem', fontWeight: 'normal', letterSpacing: '2px', textTransform: 'uppercase' }}>{title}</h3>}
+            {description && <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.8, fontStyle: 'italic', fontFamily: 'var(--font-sans)', lineHeight: '1.5' }}>{description}</p>}
+          </motion.div>
+        )}
+      </motion.div>
+    </motion.div>
+  );
+};
 
 export default ScatteredItem;

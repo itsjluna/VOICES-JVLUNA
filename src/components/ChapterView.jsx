@@ -205,6 +205,32 @@ function ChapterView() {
           'whisky.png', 'wine.png', 'hummingbird.webp', 'magnolia.webp', 'origami.webp'
         ];
         
+        const decorationMeta = {
+          'brioche.png': { title: 'Sweet Brioche', desc: 'A fleeting moment of comfort.' },
+          'camera.png': { title: 'Vintage Lens', desc: 'Capturing what we cannot hold.' },
+          'cochinita.png': { title: 'Late Night Taco', desc: 'Spices and streetlights.' },
+          'coffee.png': { title: 'Morning Ritual', desc: 'Awakening the soul.' },
+          'deathstranding.png': { title: 'Fragile Cargo', desc: 'Bridges across the void.' },
+          'dualsense.png': { title: 'Haptic Feedback', desc: 'Feeling the digital pulse.' },
+          'glasses.png': { title: 'Reading Glasses', desc: 'To see the world anew.' },
+          'inderalici.png': { title: 'Prescription Bottle', desc: 'A bitter pill to swallow.' },
+          'logitech.png': { title: 'Wired Mouse', desc: 'Clicking through the past.' },
+          'marvel.png': { title: 'Comic Issue', desc: 'Heroes in primary colors.' },
+          'pen.png': { title: 'Fountain Pen', desc: 'Bleeding ink onto paper.' },
+          'pencil.png': { title: 'Graphite Tool', desc: 'Drafts, sketches, and mistakes.' },
+          'rubik.png': { title: 'Rubik\'s Cube', desc: 'Unsolvable puzzles.' },
+          'slims.png': { title: 'Virginia Slims', desc: 'Smoke rings in the dark.' },
+          'sw.png': { title: 'Action Figure', desc: 'A relic from a galaxy far away.' },
+          'taco.png': { title: 'Al Pastor', desc: 'Neon lights and late dinners.' },
+          'transformers.png': { title: 'Autobot Badge', desc: 'More than meets the eye.' },
+          'watch.png': { title: 'Analog Watch', desc: 'Counting the seconds down.' },
+          'whisky.png': { title: 'Aged Whisky', desc: 'Burning warmth on ice.' },
+          'wine.png': { title: 'Red Wine', desc: 'Stained lips and confessions.' },
+          'hummingbird.webp': { title: 'Hummingbird', desc: 'A frantic flutter of life.' },
+          'magnolia.webp': { title: 'Magnolia Bloom', desc: 'Delicate petals in the wind.' },
+          'origami.webp': { title: 'Paper Crane', desc: 'A folded wish for peace.' }
+        };
+
         const isDesktop = typeof window !== 'undefined' && window.innerWidth > 768;
         const numItems = Math.floor(Math.random() * 3) + 2; // Pick 2 to 4 items
         const selectedDecs = [];
@@ -225,6 +251,8 @@ function ChapterView() {
           
           selectedDecs.push({
             src: `/${item}`,
+            title: decorationMeta[item]?.title,
+            description: decorationMeta[item]?.desc,
             top: isTop ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
             bottom: !isTop ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
             left: isLeft ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
@@ -309,6 +337,8 @@ function ChapterView() {
               <ScatteredItem 
                 src="/earbuds.png" 
                 alt="Earbuds Case"
+                title="Wired Earbuds"
+                description="Tangled memories of old playlists."
                 initialAnimation={{
                   initial: { opacity: 0, scale: 0.8, rotate: 25 },
                   animate: { opacity: 1, scale: 1, rotate: 25 },
@@ -327,7 +357,9 @@ function ChapterView() {
                 <ScatteredItem 
                   key={idx}
                   src={dec.src}
-                  alt="Decoration"
+                  alt={dec.title || "Decoration"}
+                  title={dec.title}
+                  description={dec.description}
                   initialAnimation={{
                     initial: { opacity: 0, scale: 0.8, rotate: dec.rotate },
                     animate: { opacity: 1, scale: 1, rotate: dec.rotate },

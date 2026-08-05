@@ -6,7 +6,7 @@ const WindowFrame = ({ children, isNight }) => {
   const windowFill = isNight ? "#050510" : "#e0e5ec";
 
   return (
-    <svg style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -1, opacity: 0.8 }} preserveAspectRatio="xMidYMid slice" viewBox="0 0 1000 1000">
+    <svg style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: -1, opacity: 0.8 }} preserveAspectRatio="xMidYMid slice" viewBox="0 0 1000 1000">
       {/* Base Background color for the outside */}
       <rect x="0" y="0" width="1000" height="1000" fill={windowFill} />
       
@@ -215,7 +215,7 @@ export const AmbientDust = React.memo(() => {
   }, []);
 
   return (
-    <svg style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -1, pointerEvents: 'none', background: 'radial-gradient(circle at center, #1a1a24 0%, #0d0d12 100%)' }} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+    <svg style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: -1, pointerEvents: 'none', background: 'radial-gradient(circle at center, #1a1a24 0%, #0d0d12 100%)' }} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
       <g opacity="0.3">
         <polygon points="0,0 100,0 50,100" fill="url(#lightRay)" />
       </g>
@@ -247,7 +247,7 @@ export const DawnLight = React.memo(() => {
   }, []);
 
   return (
-    <svg style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -1, pointerEvents: 'none', background: 'radial-gradient(circle at top left, #fff0e0 0%, #f4d3b6 30%, #e6a788 70%, #d8816c 100%)' }} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+    <svg style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: -1, pointerEvents: 'none', background: 'radial-gradient(circle at top left, #fff0e0 0%, #f4d3b6 30%, #e6a788 70%, #d8816c 100%)' }} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
       <defs>
         <radialGradient id="sunFlare" cx="20%" cy="20%" r="50%">
           <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
@@ -287,7 +287,7 @@ export const DigitalMatrix = React.memo(() => {
   }, []);
 
   return (
-    <svg style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -1, pointerEvents: 'none', background: '#050a05' }} viewBox="0 0 100 100" preserveAspectRatio="none">
+    <svg style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: -1, pointerEvents: 'none', background: '#050a05' }} viewBox="0 0 100 100" preserveAspectRatio="none">
       <g opacity="0.4">
         {lines}
       </g>
@@ -312,7 +312,7 @@ export const Embers = React.memo(() => {
   }, []);
 
   return (
-    <svg style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -1, pointerEvents: 'none', background: '#0a0500' }} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+    <svg style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: -1, pointerEvents: 'none', background: '#0a0500' }} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
       <defs>
         <radialGradient id="glow" cx="50%" cy="100%" r="50%">
           <stop offset="0%" stopColor="#ff4400" stopOpacity="0.15" />
@@ -345,7 +345,7 @@ export const Clocks = React.memo(() => {
     ));
   }, []);
   return (
-    <svg style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -1, pointerEvents: 'none', background: '#0a0908' }} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+    <svg style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: -1, pointerEvents: 'none', background: '#0a0908' }} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
       {clocks}
     </svg>
   );

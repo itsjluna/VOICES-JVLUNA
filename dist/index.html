@@ -5,11 +5,18 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VOICES By Joshua V Luna</title>
-    <script type="module" crossorigin src="/assets/index-CGkryR30.js"></script>
+    <script type="module" crossorigin src="/assets/index-Bv2ZhcFx.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/rolldown-runtime-B0Z9INg1.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-D4ExpoUV.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-BsgWhFa_.css">
   </head>
   <body>
+    <!-- SVG filters for ink bleed effect -->
+    <svg style="width: 0; height: 0; position: absolute; pointer-events: none;" aria-hidden="true">
+      <filter id="ink-bleed" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
     <div id="root"></div>
   </body>
 </html>

@@ -160,8 +160,10 @@ function PoemView() {
             </motion.div>
           )}
 
+          <div className="paper-texture"></div>
           <div 
-            className="poem-text" 
+            className="poem-text drop-cap" 
+            style={{ position: 'relative', zIndex: 10 }}
             dangerouslySetInnerHTML={{ __html: (poemLanguage === 'EN' && poem.contentEn ? poem.contentEn : poem.content) || '' }} 
           />
         </motion.div>
