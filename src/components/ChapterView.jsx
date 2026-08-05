@@ -142,63 +142,66 @@ function ChapterView() {
           const itunesRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(randomArtist)}&entity=album&attribute=artistTerm&limit=50`);
           const itunesData = await itunesRes.json();
           if (itunesData.results && itunesData.results.length > 0) {
-            // Strict case-sensitive match to perfectly isolate the correct artist
-            const exactMatches = itunesData.results.filter(a => a.artistName === randomArtist);
             
-            // Filter out remixes, live albums, karaoke, compilations, deluxe editions, and strictly reject Singles
+            // 1. Filter ALL results to remove hard-blocked items universally
+            const universallySafeResults = itunesData.results.filter(a => {
+              const name = a.collectionName ? a.collectionName.toLowerCase() : '';
+              const isBlockedChappell = a.artistName === 'Chappell Roan' && (name.includes('school nights') || name.includes('good hurt'));
+              const isBlockedBadBunny = a.artistName === 'Bad Bunny' && name.includes('super bowl');
+              
+              const isAllowedUpsahl = a.artistName === 'UPSAHL' && name.includes('i like it');
+              const isSingle = !isAllowedUpsahl && name.includes('single'); // More aggressive catch-all
+              const isGarbage = name.includes('karaoke') || name.includes('instrumental') || name.includes('tribute') || name.includes('cover');
+              
+              return !isBlockedChappell && !isBlockedBadBunny && !isSingle && !isGarbage;
+            });
+
+            // 2. Try to get exact artist matches
+            const exactMatches = universallySafeResults.filter(a => a.artistName.toLowerCase() === randomArtist.toLowerCase());
+            
+            // 3. Try to get "clean" main albums (no deluxe, remixes, live, etc.)
             const cleanMatches = exactMatches.filter(a => {
               const name = a.collectionName ? a.collectionName.toLowerCase() : '';
               const isAllowedUpsahl = a.artistName === 'UPSAHL' && name.includes('i like it');
-              // Reject if it has 'single' in the name, or has 3 or fewer tracks (unless explicitly marked as an EP), excepting explicitly allowed singles
-              const isSingle = !isAllowedUpsahl && (name.includes('- single') || name.endsWith(' single') || (a.trackCount && a.trackCount <= 3 && !name.includes('ep')));
-              
-              // Reject compilations, deluxe editions, live, remixes, etc. to isolate MAIN albums
-              const isNonMain = name.includes('remix') || 
-                                name.includes('live') || 
-                                name.includes('karaoke') || 
-                                name.includes('instrumental') ||
-                                name.includes('deluxe') ||
-                                name.includes('bonus') ||
-                                name.includes('tour edition') ||
-                                name.includes('greatest hits') ||
-                                name.includes('essential') ||
-                                name.includes('anthology') ||
-                                name.includes('the best of');
-                                
-              const isBlockedChappell = a.artistName === 'Chappell Roan' && (name.includes('school nights') || name.includes('good hurt'));
-              const isBlockedBadBunny = a.artistName === 'Bad Bunny' && name.includes('super bowl');
-                                
+              const isSmall = !isAllowedUpsahl && (a.trackCount && a.trackCount <= 3 && !name.includes('ep'));
+              const isAltVersion = name.includes('remix') || 
+                                   name.includes('live') || 
+                                   name.includes('deluxe') || 
+                                   name.includes('bonus') || 
+                                   name.includes('tour edition') || 
+                                   name.includes('greatest hits') || 
+                                   name.includes('essential') || 
+                                   name.includes('anthology') || 
+                                   name.includes('the best of');
               const isAlbumType = a.collectionType === 'Album';
               
-              return !isSingle && !isNonMain && !isBlockedChappell && !isBlockedBadBunny && isAlbumType;
+              return !isSmall && !isAltVersion && isAlbumType;
             });
+
+            // 4. Fallback chain
+            let pool = cleanMatches;
+            if (pool.length === 0) pool = exactMatches;
+            if (pool.length === 0) pool = universallySafeResults;
             
-            // Fallback to exactMatches if cleanMatches is empty, but NEVER include hard-blocked items
-            const safeExactMatches = exactMatches.filter(a => {
-              const name = a.collectionName ? a.collectionName.toLowerCase() : '';
-              const isBlockedChappell = a.artistName === 'Chappell Roan' && (name.includes('school nights') || name.includes('good hurt'));
-              const isBlockedBadBunny = a.artistName === 'Bad Bunny' && name.includes('super bowl');
-              return !isBlockedChappell && !isBlockedBadBunny;
-            });
-            const pool = cleanMatches.length > 0 ? cleanMatches : (safeExactMatches.length > 0 ? safeExactMatches : itunesData.results);
-            
-            // Shrink coincidences per artist to 5 for top popularity while maintaining variety
-            const shrunkPool = pool.slice(0, 5);
-            const randomAlbum = shrunkPool[Math.floor(Math.random() * shrunkPool.length)];
-            
-            // Fetch track list to get preview audio
-            try {
-              const tracksRes = await fetch(`https://itunes.apple.com/lookup?id=${randomAlbum.collectionId}&entity=song`);
-              const tracksData = await tracksRes.json();
-              const track = tracksData.results.find(t => t.wrapperType === 'track' && t.previewUrl);
-              if (track) {
-                randomAlbum.previewUrl = track.previewUrl;
+            if (pool.length > 0) {
+              // Shrink coincidences per artist to 5 for top popularity while maintaining variety
+              const shrunkPool = pool.slice(0, 5);
+              const randomAlbum = shrunkPool[Math.floor(Math.random() * shrunkPool.length)];
+              
+              // Fetch track list to get preview audio
+              try {
+                const tracksRes = await fetch(`https://itunes.apple.com/lookup?id=${randomAlbum.collectionId}&entity=song`);
+                const tracksData = await tracksRes.json();
+                const track = tracksData.results.find(t => t.wrapperType === 'track' && t.previewUrl);
+                if (track) {
+                  randomAlbum.previewUrl = track.previewUrl;
+                }
+              } catch (e) {
+                console.error("Failed to fetch album tracks for preview", e);
               }
-            } catch (e) {
-              console.error("Failed to fetch album tracks for preview", e);
+              
+              setAlbumDecoration(randomAlbum);
             }
-            
-            setAlbumDecoration(randomAlbum);
           }
         } catch (e) {
           console.error("Failed to fetch iTunes album", e);
