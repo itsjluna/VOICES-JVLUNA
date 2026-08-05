@@ -228,7 +228,7 @@ function ChapterView() {
           'wine.png': { titleEn: 'Rosé Wine', titleEs: 'Vino Rosado', descEn: 'Light pink glass.', descEs: 'Copa color rosa claro.' },
           'hummingbird.webp': { titleEn: 'Hummingbird', titleEs: 'Colibrí', descEn: 'Iridescent green feathers.', descEs: 'Plumas verdes iridiscentes.' },
           'magnolia.webp': { titleEn: 'Magnolia', titleEs: 'Magnolia', descEn: 'Smooth white petals.', descEs: 'Pétalos blancos suaves.' },
-          'origami.webp': { titleEn: 'Paper Crane', titleEs: 'Grulla de Papel', descEn: 'Folded paper edges.', descEs: 'Bordes de papel doblado.' }
+          'origami.webp': { titleEn: 'Origami Bunny', titleEs: 'Conejito de Origami', descEn: 'Folded paper edges.', descEs: 'Bordes de papel doblado.' }
         };
 
         const isDesktop = typeof window !== 'undefined' && window.innerWidth > 768;
