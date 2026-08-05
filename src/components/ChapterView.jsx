@@ -200,35 +200,36 @@ function ChapterView() {
         const possibleDecorations = [
           'brioche.png', 'camera.png', 'cochinita.png', 'coffee.png', 
           'deathstranding.png', 'dualsense.png', 'glasses.png', 'inderalici.png', 
-          'logitech.png', 'marvel.png', 'pen.png', 'pencil.png', 'rubik.png', 
+          'logitech.png', 'marvel.png', 'pen.png', 'pencil.png', 'pepsi.png', 'rubik.png', 
           'slims.png', 'sw.png', 'taco.png', 'transformers.png', 'watch.png', 
           'whisky.png', 'wine.png', 'hummingbird.webp', 'magnolia.webp', 'origami.webp'
         ];
         
         const decorationMeta = {
-          'brioche.png': { title: 'Sweet Brioche', desc: 'Soft bread for the morning.' },
-          'camera.png': { title: 'Analog Camera', desc: 'Mechanical film body.' },
-          'cochinita.png': { title: 'Cochinita Pibil', desc: 'Late night street food.' },
-          'coffee.png': { title: 'Black Coffee', desc: 'Roasted morning brew.' },
-          'deathstranding.png': { title: 'Bridges Case', desc: 'Aluminum cargo container.' },
-          'dualsense.png': { title: 'DualSense', desc: 'Textured white plastic.' },
-          'glasses.png': { title: 'Reading Glasses', desc: 'Tortoiseshell frames.' },
-          'inderalici.png': { title: 'Inderalici', desc: 'Small white tablets.' },
-          'logitech.png': { title: 'G733 K/DA Edition', desc: 'Wireless gaming headset.' },
-          'marvel.png': { title: 'Marvel Comic', desc: 'Glossy printed pages.' },
-          'pen.png': { title: 'Fountain Pen', desc: 'Metal nib and black ink.' },
-          'pencil.png': { title: 'Graphite Pencil', desc: 'Soft lead and wood shavings.' },
-          'rubik.png': { title: 'Rubik\'s Cube', desc: 'Colored plastic squares.' },
-          'slims.png': { title: 'Virginia Slims', desc: 'Thin white cigarettes.' },
-          'sw.png': { title: 'Action Figure', desc: 'Articulated plastic joints.' },
-          'taco.png': { title: 'Taco al Pastor', desc: 'Corn tortilla and pineapple.' },
-          'transformers.png': { title: 'Autobot Emblem', desc: 'Die-cast metal badge.' },
-          'watch.png': { title: 'Analog Watch', desc: 'Leather strap and ticking hands.' },
-          'whisky.png': { title: 'Aged Whisky', desc: 'Amber liquid on ice.' },
-          'wine.png': { title: 'Red Wine', desc: 'Dark glass and stained cork.' },
-          'hummingbird.webp': { title: 'Hummingbird', desc: 'Iridescent green feathers.' },
-          'magnolia.webp': { title: 'Magnolia', desc: 'Smooth white petals.' },
-          'origami.webp': { title: 'Paper Crane', desc: 'Folded paper edges.' }
+          'brioche.png': { titleEn: 'Sweet Brioche', titleEs: 'Pan Brioche', descEn: 'Soft bread for the morning.', descEs: 'Pan suave para la mañana.' },
+          'camera.png': { titleEn: 'Sony DSC-V1', titleEs: 'Sony DSC-V1', descEn: 'Vintage digital camera.', descEs: 'Cámara digital antigua.' },
+          'cochinita.png': { titleEn: 'Taco de Cochinita', titleEs: 'Taco de Cochinita', descEn: 'Cochinita pibil from Yucatan.', descEs: 'Cochinita pibil de Yucatán.' },
+          'coffee.png': { titleEn: 'Black Coffee', titleEs: 'Café Negro', descEn: 'Roasted morning brew.', descEs: 'Café tostado de la mañana.' },
+          'deathstranding.png': { titleEn: 'Death Stranding', titleEs: 'Death Stranding', descEn: 'A physical copy of the game.', descEs: 'Copia física del juego.' },
+          'dualsense.png': { titleEn: 'DualSense', titleEs: 'DualSense', descEn: 'Textured white plastic.', descEs: 'Plástico blanco texturizado.' },
+          'glasses.png': { titleEn: 'Reading Glasses', titleEs: 'Gafas de Lectura', descEn: 'Tortoiseshell frames.', descEs: 'Armazones de carey.' },
+          'inderalici.png': { titleEn: 'Inderalici', titleEs: 'Inderalici', descEn: 'Small white tablets.', descEs: 'Pequeñas tabletas blancas.' },
+          'logitech.png': { titleEn: 'G733 K/DA Edition', titleEs: 'G733 K/DA Edition', descEn: 'Wireless gaming headset.', descEs: 'Auriculares inalámbricos.' },
+          'marvel.png': { titleEn: 'Captain Marvel', titleEs: 'Capitana Marvel', descEn: 'Action figure.', descEs: 'Figura de acción.' },
+          'pen.png': { titleEn: 'Fountain Pen', titleEs: 'Pluma Estilográfica', descEn: 'Metal nib and black ink.', descEs: 'Punta de metal y tinta negra.' },
+          'pencil.png': { titleEn: 'Graphite Pencil', titleEs: 'Lápiz de Grafito', descEn: 'Soft lead and wood shavings.', descEs: 'Grafito suave.' },
+          'pepsi.png': { titleEn: 'Diet Pepsi', titleEs: 'Pepsi Light', descEn: 'Diet Pepsi 0 cal.', descEs: 'Diet Pepsi 0 cal.' },
+          'rubik.png': { titleEn: 'Rubik\'s Cube', titleEs: 'Cubo Rubik', descEn: 'Colored plastic squares.', descEs: 'Cuadrados de plástico de colores.' },
+          'slims.png': { titleEn: 'Virginia Slims', titleEs: 'Virginia Slims', descEn: 'Thin white cigarettes.', descEs: 'Cigarrillos delgados y blancos.' },
+          'sw.png': { titleEn: 'Rey', titleEs: 'Rey', descEn: 'Star Wars figure.', descEs: 'Figura de Star Wars.' },
+          'taco.png': { titleEn: 'Taco al Pastor', titleEs: 'Taco al Pastor', descEn: 'Corn tortilla and pineapple.', descEs: 'Tortilla de maíz y piña.' },
+          'transformers.png': { titleEn: 'Autobot Emblem', titleEs: 'Emblema Autobot', descEn: 'Die-cast metal badge.', descEs: 'Insignia de metal fundido.' },
+          'watch.png': { titleEn: 'CMF Watch Pro', titleEs: 'CMF Watch Pro', descEn: 'Digital smartwatch.', descEs: 'Reloj inteligente digital.' },
+          'whisky.png': { titleEn: 'Aged Whisky', titleEs: 'Whisky Añejo', descEn: 'Amber liquid on ice.', descEs: 'Líquido ámbar en hielo.' },
+          'wine.png': { titleEn: 'Rosé Wine', titleEs: 'Vino Rosado', descEn: 'Light pink glass.', descEs: 'Copa color rosa claro.' },
+          'hummingbird.webp': { titleEn: 'Hummingbird', titleEs: 'Colibrí', descEn: 'Iridescent green feathers.', descEs: 'Plumas verdes iridiscentes.' },
+          'magnolia.webp': { titleEn: 'Magnolia', titleEs: 'Magnolia', descEn: 'Smooth white petals.', descEs: 'Pétalos blancos suaves.' },
+          'origami.webp': { titleEn: 'Paper Crane', titleEs: 'Grulla de Papel', descEn: 'Folded paper edges.', descEs: 'Bordes de papel doblado.' }
         };
 
         const isDesktop = typeof window !== 'undefined' && window.innerWidth > 768;
@@ -251,8 +252,10 @@ function ChapterView() {
           
           selectedDecs.push({
             src: `/${item}`,
-            title: decorationMeta[item]?.title,
-            description: decorationMeta[item]?.desc,
+            titleEn: decorationMeta[item]?.titleEn,
+            titleEs: decorationMeta[item]?.titleEs,
+            descEn: decorationMeta[item]?.descEn,
+            descEs: decorationMeta[item]?.descEs,
             top: isTop ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
             bottom: !isTop ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
             left: isLeft ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
@@ -338,7 +341,7 @@ function ChapterView() {
                 src="/earbuds.png" 
                 alt="Nothing Ear"
                 title="Nothing Ear"
-                description="Transparent wireless audio."
+                description={language === 'EN' ? "Transparent wireless audio." : "Audio inalámbrico transparente."}
                 initialAnimation={{
                   initial: { opacity: 0, scale: 0.8, rotate: 25 },
                   animate: { opacity: 1, scale: 1, rotate: 25 },
@@ -357,9 +360,9 @@ function ChapterView() {
                 <ScatteredItem 
                   key={idx}
                   src={dec.src}
-                  alt={dec.title || "Decoration"}
-                  title={dec.title}
-                  description={dec.description}
+                  alt={(language === 'EN' ? dec.titleEn : dec.titleEs) || "Decoration"}
+                  title={language === 'EN' ? dec.titleEn : dec.titleEs}
+                  description={language === 'EN' ? dec.descEn : dec.descEs}
                   initialAnimation={{
                     initial: { opacity: 0, scale: 0.8, rotate: dec.rotate },
                     animate: { opacity: 1, scale: 1, rotate: dec.rotate },
