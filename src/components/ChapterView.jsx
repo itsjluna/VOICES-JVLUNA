@@ -214,7 +214,7 @@ function ChapterView() {
           'dualsense.png': { title: 'DualSense', desc: 'Textured white plastic.' },
           'glasses.png': { title: 'Reading Glasses', desc: 'Tortoiseshell frames.' },
           'inderalici.png': { title: 'Inderalici', desc: 'Small white tablets.' },
-          'logitech.png': { title: 'Logitech Mouse', desc: 'Wired optical sensor.' },
+          'logitech.png': { title: 'G733 K/DA Edition', desc: 'Wireless gaming headset.' },
           'marvel.png': { title: 'Marvel Comic', desc: 'Glossy printed pages.' },
           'pen.png': { title: 'Fountain Pen', desc: 'Metal nib and black ink.' },
           'pencil.png': { title: 'Graphite Pencil', desc: 'Soft lead and wood shavings.' },
