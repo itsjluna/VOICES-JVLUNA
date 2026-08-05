@@ -36,14 +36,14 @@ function IntermissionView() {
   }, [id, intermission]);
 
   const accentColor = useMemo(() => {
-    if (!id) return '#2a9d8f';
-    let sum = 0;
-    for (let i = 0; i < id.length; i++) {
-      sum += id.charCodeAt(i);
+    switch (ticketType) {
+      case 'plane': return '#8ecae6';
+      case 'train': 
+      case 'train-cherry': return '#e63946';
+      case 'bus': return '#e9c46a';
+      default: return '#f4a261';
     }
-    const ticketColors = ['#e63946', '#2a9d8f', '#e9c46a', '#f4a261', '#8ecae6'];
-    return ticketColors[sum % ticketColors.length];
-  }, [id]);
+  }, [ticketType]);
 
   useEffect(() => {
     async function fetchData() {

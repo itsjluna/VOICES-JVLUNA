@@ -198,7 +198,7 @@ function IndexView() {
                   const ventColors = ['#e6d15a', '#ff948d', '#8fc58f', '#7ec4a8', '#bed69b']; // slightly darker versions of post-its so text is readable
                   iconColor = ventColors[sum % ventColors.length];
                 } else {
-                  const t = (chapter.transport || '').toLowerCase();
+                  const t = (chapter.theme || '').toLowerCase();
                   if (t.includes('plane')) iconColor = '#8ecae6';
                   else if (t.includes('train')) iconColor = '#e63946';
                   else if (t.includes('bus')) iconColor = '#e9c46a';
