@@ -411,7 +411,7 @@ function ChapterView() {
 
           <div className="glass-panel" style={{ marginTop: '3rem' }}>
             <h3 style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', letterSpacing: '0.05em', marginBottom: '1.5rem', opacity: 0.8 }}>
-              {language === 'EN' ? 'POEMS IN THIS CHAPTER' : 'POEMAS EN ESTE CAPÍTULO'}
+              {language === 'EN' ? 'IN THIS CHAPTER' : 'EN ESTE CAPÍTULO'}
             </h3>
             <ul style={{ listStyle: 'none', padding: 0 }}>
               {poems.map((poem, index) => (
