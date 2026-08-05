@@ -134,7 +134,7 @@ function ChapterView() {
             "Taylor Swift", "Addison Rae", "Alice Phoebe Lou", "Kim Petras",
             "Charli XCX", "Sigrid", "Sabrina Carpenter", "Midnight Generation", 
             "Lady Gaga", "EVERGLOW", "TWICE", "AKRIILA", "Lana Del Rey", "Lorde", 
-            "Griff", "Taichu", "RIXXIA", "Junior Varsity", "Magnolian", "BLACKPINK", "Six Sex"
+            "Griff", "Taichu", "RIXXIA", "Junior Varsity", "Magnolian", "BLACKPINK", "Six Sex", "UPSAHL"
           ];
           const randomArtist = belovedArtists[Math.floor(Math.random() * belovedArtists.length)];
           

@@ -1,8 +1,25 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import api from '../api';
 
 export const IndexScatter = React.memo(() => {
-  
+  const [randomPoemImages, setRandomPoemImages] = useState([]);
+
+  useEffect(() => {
+    async function fetchPoems() {
+      try {
+        const res = await api.get('/poems');
+        const poemsWithImages = res.data.filter(p => p.image);
+        // Shuffle and pick 2
+        const shuffled = poemsWithImages.sort(() => 0.5 - Math.random());
+        setRandomPoemImages(shuffled.slice(0, 2).map(p => p.image));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchPoems();
+  }, []);
+
   // 1. Index Cards
   const indexCards = useMemo(() => {
     return [...Array(3)].map((_, i) => {
@@ -70,20 +87,7 @@ export const IndexScatter = React.memo(() => {
     });
   }, []);
 
-  // 4. Blank Polaroids
-  const blankPolaroids = useMemo(() => {
-    return [...Array(2)].map((_, i) => {
-      const top = 20 + Math.random() * 60;
-      const left = 10 + Math.random() * 70;
-      const rotate = Math.random() * 60 - 30;
-      
-      return (
-        <PolaroidScatter key={`blank-pol-${i}`} top={top} left={left} rotate={rotate} index={i} />
-      );
-    });
-  }, []);
-
-  // 5. Ink Scribbles
+  // 4. Ink Scribbles
   const scribbles = useMemo(() => {
     return [...Array(3)].map((_, i) => {
       const top = Math.random() * 90;
@@ -98,33 +102,90 @@ export const IndexScatter = React.memo(() => {
     });
   }, []);
 
+  // 5. Polaroids (from database)
+  const polaroids = useMemo(() => {
+    return [...Array(2)].map((_, i) => {
+      const top = 20 + Math.random() * 60;
+      const left = 10 + Math.random() * 70;
+      const rotate = Math.random() * 60 - 30;
+      
+      return (
+        <PolaroidScatter key={`blank-pol-${i}`} top={top} left={left} rotate={rotate} index={i} image={randomPoemImages[i]} />
+      );
+    });
+  }, [randomPoemImages]);
+
+  // 6. User Media Clutter
+  const mediaScatter = useMemo(() => {
+    const allMedia = [
+      '51ylQXnrobL.jpg', '53304_Florence.webp', '61qynEC9FAL._SL1421_.jpg', 
+      '71xBLSCGDTL._SL1500_.jpg', '71xEY+ZI8kL.jpg', '81WCblz7GnL._SL1500_.jpg', 
+      '9780062641540-xlpreview.jpg', 'OIP (10).webp', 'OIP (6).webp', 
+      'OIP (7).webp', 'OIP (8).webp', 'OIP (9).webp', 'R (3).jpg', 
+      'Wipeout-2097-PAL-PSX-FRONT.jpg', 'llorona-poster-ok.jpg'
+    ];
+    // Pick 3 random media images to scatter
+    const shuffled = [...allMedia].sort(() => 0.5 - Math.random());
+    const selected = shuffled.slice(0, 3);
+    
+    return selected.map((img, i) => {
+      const top = 10 + Math.random() * 70;
+      const left = 5 + Math.random() * 80;
+      const rotate = Math.random() * 60 - 30;
+      const width = 120 + Math.random() * 60; // random width between 120px and 180px
+
+      return (
+        <motion.div
+          key={`media-${i}`}
+          initial={{ opacity: 0, y: 50 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 1.2, delay: 0.5 + Math.random() }}
+          drag dragConstraints={{ left: -400, right: 400, top: -400, bottom: 400 }} 
+          whileDrag={{ scale: 1.1, zIndex: 100 }}
+          style={{ 
+            position: 'absolute', top: `${top}%`, left: `${left}%`, 
+            width: `${width}px`, transform: `rotate(${rotate}deg)`, 
+            pointerEvents: 'auto', cursor: 'grab', zIndex: 2
+          }}
+        >
+          <img src={`/media/${img}`} alt="scatter media" draggable="false" style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '4px', boxShadow: '0 10px 30px rgba(0,0,0,0.15)' }} />
+        </motion.div>
+      );
+    });
+  }, []);
+
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
       {coffeeRings}
       {scribbles}
       {indexCards}
-      {blankPolaroids}
+      {mediaScatter}
+      {polaroids}
       {washitapes}
     </div>
   );
 });
 
-function PolaroidScatter({ top, left, rotate, index }) {
+function PolaroidScatter({ top, left, rotate, index, image }) {
   const [revealed, setRevealed] = useState(false);
   
   return (
     <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.2 }}
       drag dragConstraints={{ left: -400, right: 400, top: -400, bottom: 400 }} whileDrag={{ scale: 1.1, zIndex: 100 }}
       onClick={() => setRevealed(!revealed)}
-      style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, width: '140px', height: '170px', backgroundColor: '#fafafa', boxShadow: '0 5px 15px rgba(0,0,0,0.1)', transform: `rotate(${rotate}deg)`, pointerEvents: 'auto', cursor: 'grab', zIndex: 2, padding: '10px 10px 35px 10px', boxSizing: 'border-box' }}>
-      <div style={{ width: '100%', height: '100%', backgroundColor: '#222', position: 'relative', overflow: 'hidden' }}>
-        {revealed && index === 0 && (
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: '#fff', color: '#111', padding: '10px', boxSizing: 'border-box', fontSize: '0.65rem', fontStyle: 'italic', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            Todo es arte<br/>
-            También este poema,<br/>
-            Que se lee cerrando los ojos.<br/>
-            Para vivir fuera del agua
-          </div>
+      style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, width: '140px', height: '170px', backgroundColor: '#fafafa', boxShadow: '0 5px 15px rgba(0,0,0,0.1)', transform: `rotate(${rotate}deg)`, pointerEvents: 'auto', cursor: 'grab', zIndex: 3, padding: '10px 10px 35px 10px', boxSizing: 'border-box' }}>
+      <div style={{ width: '100%', height: '120px', backgroundColor: '#222', position: 'relative', overflow: 'hidden' }}>
+        {image ? (
+          <img src={image} alt="poem polaroid" draggable="false" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        ) : (
+          revealed && index === 0 && (
+            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: '#fff', color: '#111', padding: '10px', boxSizing: 'border-box', fontSize: '0.65rem', fontStyle: 'italic', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              Todo es arte<br/>
+              Tambi&eacute;n este poema,<br/>
+              Que se lee cerrando los ojos.<br/>
+              Para vivir fuera del agua
+            </div>
+          )
         )}
       </div>
     </motion.div>
