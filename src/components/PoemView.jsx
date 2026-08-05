@@ -60,11 +60,11 @@ function PoemView() {
     >
       {renderBackground()}
       <button style={{ marginBottom: '2rem', border: 'none', padding: '0', textDecoration: 'underline', position: 'relative', zIndex: 10 }} onClick={() => navigate(-1)}>
-        &larr; {poemLanguage === 'EN' ? 'Back' : 'Volver'}
+        &larr; {language === 'EN' ? 'Back' : 'Volver'}
       </button>
 
       <div className="editorial-margin left">
-        {poemLanguage === 'EN' ? 'ENTRY Nº ' : 'ENTRADA Nº '}{id.slice(-4).toUpperCase()} — VOICES
+        {language === 'EN' ? 'ENTRY Nº ' : 'ENTRADA Nº '}{id.slice(-4).toUpperCase()} — VOICES
       </div>
       <div className="book-layout book-page-aesthetic">
         <motion.div 

@@ -171,7 +171,7 @@ function VentView() {
       </div>
 
       <button style={{ marginBottom: '3rem', border: 'none', padding: '0', textDecoration: 'underline', color: isNotebook ? '#333' : '#fff', position: 'relative', zIndex: 10, alignSelf: 'flex-start' }} onClick={() => navigate(-1)}>
-        &larr; {ventLanguage === 'EN' ? 'Back' : 'Volver'}
+        &larr; {language === 'EN' ? 'Back' : 'Volver'}
       </button>
 
       {/* Main Content Container */}
@@ -195,7 +195,7 @@ function VentView() {
         }}
       >
         <div className="editorial-margin left" style={{ color: isNotebook ? '#777' : '#555', left: isNotebook ? '-60px' : '-40px' }}>
-          {ventLanguage === 'EN' ? 'VENT Nº ' : 'DESAHOGO Nº '}{id ? id.slice(-4).toUpperCase() : 'XXXX'}
+          {language === 'EN' ? 'VENT Nº ' : 'DESAHOGO Nº '}{id ? id.slice(-4).toUpperCase() : 'XXXX'}
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>

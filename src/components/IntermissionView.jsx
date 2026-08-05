@@ -75,7 +75,7 @@ function IntermissionView() {
     >
       <TravelGraphics type={ticketType} />
       <button style={{ alignSelf: 'flex-start', marginBottom: '2rem', border: 'none', padding: '0', textDecoration: 'underline', position: 'relative', zIndex: 10 }} onClick={() => navigate(-1)}>
-        &larr; {intermissionLanguage === 'EN' ? 'Back' : 'Volver'}
+        &larr; {language === 'EN' ? 'Back' : 'Volver'}
       </button>
 
       <div className="intermission-collage">
@@ -85,27 +85,27 @@ function IntermissionView() {
           style={{ borderLeft: `8px solid ${accentColor}` }}
         >
           <div className="passport-stamp" style={{ borderColor: accentColor, color: accentColor }}>
-            {intermissionLanguage === 'EN' ? 'BOARDED' : 'ABORDADO'}
+            {language === 'EN' ? 'BOARDED' : 'ABORDADO'}
             <br />
             {id.toUpperCase().slice(-4)}
           </div>
           <div className="ticket-header" style={{ background: accentColor, color: '#fff' }}>
             <span className="ticket-logo" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              {ticketType === 'plane' && <><FaPlane /> {intermissionLanguage === 'EN' ? 'AIRWAYS BOARDING PASS' : 'TARJETA DE EMBARQUE'}</>}
-              {ticketType.startsWith('train') && <><FaTrain /> {intermissionLanguage === 'EN' ? 'RAILWAY EXPRESS TICKET' : 'BOLETO DE TREN EXPRÉS'}</>}
-              {ticketType === 'bus'   && <><FaBus /> {intermissionLanguage === 'EN' ? 'INTERCITY COACH PASS' : 'PASE DE AUTOBÚS'}</>}
+              {ticketType === 'plane' && <><FaPlane /> {language === 'EN' ? 'AIRWAYS BOARDING PASS' : 'TARJETA DE EMBARQUE'}</>}
+              {ticketType.startsWith('train') && <><FaTrain /> {language === 'EN' ? 'RAILWAY EXPRESS TICKET' : 'BOLETO DE TREN EXPRÉS'}</>}
+              {ticketType === 'bus'   && <><FaBus /> {language === 'EN' ? 'INTERCITY COACH PASS' : 'PASE DE AUTOBÚS'}</>}
             </span>
-            <span className="ticket-class">{intermissionLanguage === 'EN' ? 'FIRST CLASS' : 'PRIMERA CLASE'}</span>
+            <span className="ticket-class">{language === 'EN' ? 'FIRST CLASS' : 'PRIMERA CLASE'}</span>
           </div>
           
           <div className="ticket-body">
             <div className="ticket-info">
               <div className="ticket-field">
-                <label>{intermissionLanguage === 'EN' ? 'PASSENGER' : 'PASAJERO'}</label>
+                <label>{language === 'EN' ? 'PASSENGER' : 'PASAJERO'}</label>
                 <div className="value">{passenger}</div>
               </div>
               <div className="ticket-field">
-                <label style={{ color: accentColor }}>{intermissionLanguage === 'EN' ? 'DESTINATION' : 'DESTINO'}</label>
+                <label style={{ color: accentColor }}>{language === 'EN' ? 'DESTINATION' : 'DESTINO'}</label>
                 <div className="value">{(intermissionLanguage === 'EN' && intermission.titleEn ? intermission.titleEn : intermission.title).toUpperCase()}</div>
               </div>
             </div>
