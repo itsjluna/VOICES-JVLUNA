@@ -7,6 +7,7 @@ import { IndexScatter } from './IndexScatter';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import AmbientAudio from './AmbientAudio';
 import { useLanguage } from '../contexts/LanguageContext';
+import TypewriterLoader from './TypewriterLoader';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -139,11 +140,8 @@ function IndexView() {
         </div>
         
         {isLoading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, flexDirection: 'column' }}>
-            <div style={{ width: '30px', height: '30px', border: '2px solid var(--text-color)', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', opacity: 0.3 }}></div>
-            <p style={{ marginTop: '1rem', fontFamily: 'monospace', letterSpacing: '2px', opacity: 0.3, fontSize: '0.8rem' }}>
-              {language === 'EN' ? 'RETRIEVING ARCHIVES...' : 'RECUPERANDO ARCHIVOS...'}
-            </p>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, minHeight: '300px' }}>
+            <TypewriterLoader text={language === 'EN' ? 'RETRIEVING ARCHIVES...' : 'RECUPERANDO ARCHIVOS...'} />
           </div>
         ) : (
           <motion.div variants={containerVariants} initial="hidden" animate="show" style={{ width: '100%' }}>
@@ -210,6 +208,15 @@ function IndexView() {
                 <motion.div variants={itemVariants} key={chapter._id} style={{ marginBottom: '1.5rem' }}>
                   <Link 
                     to={linkPath} 
+                    onMouseEnter={() => {
+                      if (!isInt && !isVent) {
+                        api.get(`/poems?chapterId=${chapter._id}`);
+                      } else if (isInt) {
+                        api.get(`/intermissions/${chapter._id}`);
+                      } else if (isVent) {
+                        api.get(`/vents/${chapter._id}`);
+                      }
+                    }}
                     style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}
                     className="index-item"
                   >

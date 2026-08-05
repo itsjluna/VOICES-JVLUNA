@@ -6,6 +6,7 @@ import Polaroid from './Polaroid';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import { useLanguage } from '../contexts/LanguageContext';
 import { FaLanguage } from 'react-icons/fa';
+import TypewriterLoader from './TypewriterLoader';
 
 function VentView() {
   const { id } = useParams();
@@ -159,7 +160,7 @@ function VentView() {
     });
   }, [isNotebook]);
 
-  if (!vent) return <div style={{ padding: '2rem' }}>Loading...</div>;
+  if (!vent) return <TypewriterLoader text={language === 'EN' ? 'Opening vent...' : 'Abriendo desahogo...'} />;
 
   return (
     <motion.div 
@@ -198,7 +199,7 @@ function VentView() {
           {language === 'EN' ? 'VENT Nº ' : 'DESAHOGO Nº '}{id ? id.slice(-4).toUpperCase() : 'XXXX'}
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
+        <div className="entry-header">
           <h1 style={{ 
             fontFamily: isNotebook ? '"Permanent Marker", cursive' : '"Reenie Beanie", cursive',
             fontSize: isNotebook ? '2.5rem' : '3rem',

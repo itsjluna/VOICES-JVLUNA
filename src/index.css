@@ -708,3 +708,21 @@ button:hover {
   color: #111;
   text-shadow: none;
 }
+
+/* --- Entry Header (Title and Toggle) --- */
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 10;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .entry-header {
+    flex-direction: column;
+  }
+}
+

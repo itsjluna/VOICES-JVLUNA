@@ -9,6 +9,7 @@ import Marginalia from './Marginalia';
 import { Winter, Spring, Summer, Autumn, AmbientDust, DigitalMatrix, Embers, Clocks, DawnLight } from './SeasonBackgrounds';
 import { useLanguage } from '../contexts/LanguageContext';
 import { FaLanguage } from 'react-icons/fa';
+import TypewriterLoader from './TypewriterLoader';
 
 function PoemView() {
   const { id } = useParams();
@@ -36,7 +37,7 @@ function PoemView() {
     fetchData();
   }, [id]);
 
-  if (!poem) return <div style={{ padding: '2rem' }}>Loading...</div>;
+  if (!poem) return <TypewriterLoader text={language === 'EN' ? 'Opening poem...' : 'Abriendo poema...'} />;
 
   const renderBackground = () => {
     switch (poem.theme) {
@@ -73,7 +74,7 @@ function PoemView() {
           style={{ position: 'relative' }}
         >
           <Marginalia />
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '3rem', position: 'relative', zIndex: 10 }}>
+          <div className="entry-header">
             <h1 style={{ fontSize: '2rem', margin: 0 }}>
               {poemLanguage === 'EN' && poem.titleEn ? poem.titleEn : poem.title}
             </h1>

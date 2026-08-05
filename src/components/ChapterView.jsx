@@ -10,6 +10,7 @@ import CDJewelCase from './CDJewelCase';
 import ScatteredItem from './ScatteredItem';
 import AmbientAudio from './AmbientAudio';
 import { useLanguage } from '../contexts/LanguageContext';
+import TypewriterLoader from './TypewriterLoader';
 
 function ChapterView() {
   const { id } = useParams();
@@ -243,7 +244,7 @@ function ChapterView() {
     fetchQuotes();
   }, [id]);
 
-  if (!chapter) return <div style={{ padding: '2rem' }}>Loading...</div>;
+  if (!chapter) return <TypewriterLoader text={language === 'EN' ? 'Opening chapter...' : 'Abriendo capítulo...'} />;
 
   const renderSeason = () => {
     switch (chapter?.theme) {
@@ -378,7 +379,11 @@ function ChapterView() {
             <ul style={{ listStyle: 'none' }}>
               {poems.map((poem, index) => (
                 <li key={poem._id} style={{ margin: '1rem 0' }}>
-                  <Link to={`/poem/${poem._id}`} style={{ fontSize: '1.2rem' }}>
+                  <Link 
+                    to={`/poem/${poem._id}`} 
+                    onMouseEnter={() => api.get(`/poems/${poem._id}`)}
+                    style={{ fontSize: '1.2rem' }}
+                  >
                     {index + 1}. {language === 'EN' && poem.titleEn ? poem.titleEn : poem.title}
                   </Link>
                 </li>

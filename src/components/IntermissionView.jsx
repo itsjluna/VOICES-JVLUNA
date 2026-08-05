@@ -8,6 +8,7 @@ import { TravelGraphics } from './TravelGraphics';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import { useLanguage } from '../contexts/LanguageContext';
 import { FaLanguage } from 'react-icons/fa';
+import TypewriterLoader from './TypewriterLoader';
 
 const ticketTypes = ['plane', 'train', 'train-cherry', 'bus'];
 const accentColors = ['#e63946', '#2a9d8f', '#e9c46a', '#f4a261', '#264653', '#8338ec', '#ff006e', '#fb8500', '#023047', '#8ecae6'];
@@ -66,7 +67,7 @@ function IntermissionView() {
     fetchIp();
   }, [id]);
 
-  if (!intermission) return <div style={{ padding: '2rem' }}>{intermissionLanguage === 'EN' ? 'Loading Intermission...' : 'Cargando Intermedio...'}</div>;
+  if (!intermission) return <TypewriterLoader text={language === 'EN' ? 'Opening intermission...' : 'Abriendo intermedio...'} />;
 
   return (
     <motion.div 
@@ -111,7 +112,7 @@ function IntermissionView() {
             </div>
 
             <div className="ticket-content">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <div className="entry-header" style={{ marginBottom: '1rem' }}>
                 <h1 className="intermission-title" style={{ margin: 0 }}>
                   {intermissionLanguage === 'EN' && intermission.titleEn ? intermission.titleEn : intermission.title}
                 </h1>

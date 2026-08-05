@@ -39,7 +39,7 @@ function App() {
       <FlashlightOverlay />
       <DockNav />
       <div className="container">
-        <Suspense fallback={<TypewriterLoader />}>
+        <Suspense fallback={null}>
           <AnimatedRoutes />
         </Suspense>
       </div>
