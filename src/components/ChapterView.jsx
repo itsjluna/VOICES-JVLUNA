@@ -186,8 +186,8 @@ function ChapterView() {
             // Fallback to exactMatches if cleanMatches is empty
             const pool = cleanMatches.length > 0 ? cleanMatches : (exactMatches.length > 0 ? exactMatches : itunesData.results);
             
-            // Shrink coincidences per artist to 3 for top popularity
-            const shrunkPool = pool.slice(0, 3);
+            // Shrink coincidences per artist to 5 for top popularity while maintaining variety
+            const shrunkPool = pool.slice(0, 5);
             const randomAlbum = shrunkPool[Math.floor(Math.random() * shrunkPool.length)];
             
             // Fetch track list to get preview audio
