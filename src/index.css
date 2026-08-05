@@ -728,24 +728,18 @@ button:hover {
 
 /* --- Glassmorphism Panel (for readability over backgrounds) --- */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 16px;
   padding: 2rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   transition: background 0.3s ease, border 0.3s ease;
-  
-  /* Fix for desktop hardware acceleration bugs with backdrop-filter */
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 }
 
 :root.dark .glass-panel {
-  background: rgba(15, 15, 15, 0.75);
+  background: rgba(15, 15, 15, 0.82);
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
