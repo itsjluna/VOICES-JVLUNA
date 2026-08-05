@@ -206,29 +206,29 @@ function ChapterView() {
         ];
         
         const decorationMeta = {
-          'brioche.png': { title: 'Sweet Brioche', desc: 'A fleeting moment of comfort.' },
-          'camera.png': { title: 'Vintage Lens', desc: 'Capturing what we cannot hold.' },
-          'cochinita.png': { title: 'Late Night Taco', desc: 'Spices and streetlights.' },
-          'coffee.png': { title: 'Morning Ritual', desc: 'Awakening the soul.' },
-          'deathstranding.png': { title: 'Fragile Cargo', desc: 'Bridges across the void.' },
-          'dualsense.png': { title: 'Haptic Feedback', desc: 'Feeling the digital pulse.' },
-          'glasses.png': { title: 'Reading Glasses', desc: 'To see the world anew.' },
-          'inderalici.png': { title: 'Prescription Bottle', desc: 'A bitter pill to swallow.' },
-          'logitech.png': { title: 'Wired Mouse', desc: 'Clicking through the past.' },
-          'marvel.png': { title: 'Comic Issue', desc: 'Heroes in primary colors.' },
-          'pen.png': { title: 'Fountain Pen', desc: 'Bleeding ink onto paper.' },
-          'pencil.png': { title: 'Graphite Tool', desc: 'Drafts, sketches, and mistakes.' },
-          'rubik.png': { title: 'Rubik\'s Cube', desc: 'Unsolvable puzzles.' },
-          'slims.png': { title: 'Virginia Slims', desc: 'Smoke rings in the dark.' },
-          'sw.png': { title: 'Action Figure', desc: 'A relic from a galaxy far away.' },
-          'taco.png': { title: 'Al Pastor', desc: 'Neon lights and late dinners.' },
-          'transformers.png': { title: 'Autobot Badge', desc: 'More than meets the eye.' },
-          'watch.png': { title: 'Analog Watch', desc: 'Counting the seconds down.' },
-          'whisky.png': { title: 'Aged Whisky', desc: 'Burning warmth on ice.' },
-          'wine.png': { title: 'Red Wine', desc: 'Stained lips and confessions.' },
-          'hummingbird.webp': { title: 'Hummingbird', desc: 'A frantic flutter of life.' },
-          'magnolia.webp': { title: 'Magnolia Bloom', desc: 'Delicate petals in the wind.' },
-          'origami.webp': { title: 'Paper Crane', desc: 'A folded wish for peace.' }
+          'brioche.png': { title: 'Sweet Brioche', desc: 'Soft bread for the morning.' },
+          'camera.png': { title: 'Analog Camera', desc: 'Mechanical film body.' },
+          'cochinita.png': { title: 'Cochinita Pibil', desc: 'Late night street food.' },
+          'coffee.png': { title: 'Black Coffee', desc: 'Roasted morning brew.' },
+          'deathstranding.png': { title: 'Bridges Case', desc: 'Aluminum cargo container.' },
+          'dualsense.png': { title: 'DualSense', desc: 'Textured white plastic.' },
+          'glasses.png': { title: 'Reading Glasses', desc: 'Tortoiseshell frames.' },
+          'inderalici.png': { title: 'Inderalici', desc: 'Small white tablets.' },
+          'logitech.png': { title: 'Logitech Mouse', desc: 'Wired optical sensor.' },
+          'marvel.png': { title: 'Marvel Comic', desc: 'Glossy printed pages.' },
+          'pen.png': { title: 'Fountain Pen', desc: 'Metal nib and black ink.' },
+          'pencil.png': { title: 'Graphite Pencil', desc: 'Soft lead and wood shavings.' },
+          'rubik.png': { title: 'Rubik\'s Cube', desc: 'Colored plastic squares.' },
+          'slims.png': { title: 'Virginia Slims', desc: 'Thin white cigarettes.' },
+          'sw.png': { title: 'Action Figure', desc: 'Articulated plastic joints.' },
+          'taco.png': { title: 'Taco al Pastor', desc: 'Corn tortilla and pineapple.' },
+          'transformers.png': { title: 'Autobot Emblem', desc: 'Die-cast metal badge.' },
+          'watch.png': { title: 'Analog Watch', desc: 'Leather strap and ticking hands.' },
+          'whisky.png': { title: 'Aged Whisky', desc: 'Amber liquid on ice.' },
+          'wine.png': { title: 'Red Wine', desc: 'Dark glass and stained cork.' },
+          'hummingbird.webp': { title: 'Hummingbird', desc: 'Iridescent green feathers.' },
+          'magnolia.webp': { title: 'Magnolia', desc: 'Smooth white petals.' },
+          'origami.webp': { title: 'Paper Crane', desc: 'Folded paper edges.' }
         };
 
         const isDesktop = typeof window !== 'undefined' && window.innerWidth > 768;
@@ -336,9 +336,9 @@ function ChapterView() {
               
               <ScatteredItem 
                 src="/earbuds.png" 
-                alt="Earbuds Case"
-                title="Wired Earbuds"
-                description="Tangled memories of old playlists."
+                alt="Nothing Ear"
+                title="Nothing Ear"
+                description="Transparent wireless audio."
                 initialAnimation={{
                   initial: { opacity: 0, scale: 0.8, rotate: 25 },
                   animate: { opacity: 1, scale: 1, rotate: 25 },
