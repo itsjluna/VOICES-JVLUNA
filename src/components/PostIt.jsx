@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const PostIt = React.memo(({ quote, author, color, initialAnimation, style }) => {
@@ -33,54 +34,57 @@ const PostIt = React.memo(({ quote, author, color, initialAnimation, style }) =>
         <small>— {author}</small>
       </motion.div>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: 'rgba(0,0,0,0.8)',
-              zIndex: 99999,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer'
-            }}
-          >
-            <motion.div 
-              layoutId={layoutIdId}
-              transition={{ type: "spring", stiffness: 1000, damping: 35 }}
-              className="post-it"
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
               style={{
-                margin: 0,
-                position: 'relative',
-                top: 'auto',
-                right: 'auto',
-                rotate: 0,
-                width: '300px',
-                padding: '2rem',
-                background: color,
-                pointerEvents: 'auto',
-                maxWidth: '90vw',
-                maxHeight: '90vh',
-                overflow: 'auto',
-                boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
-                zIndex: 100000
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'rgba(0,0,0,0.8)',
+                zIndex: 99999,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer'
               }}
             >
-              <p style={{ fontSize: '1.5rem', lineHeight: '1.6' }}>"{quote}"</p>
-              <small style={{ fontSize: '1rem', marginTop: '1rem', display: 'block' }}>— {author}</small>
+              <motion.div 
+                layoutId={layoutIdId}
+                transition={{ type: "spring", stiffness: 1000, damping: 35 }}
+                className="post-it"
+                style={{
+                  margin: 0,
+                  position: 'relative',
+                  top: 'auto',
+                  right: 'auto',
+                  rotate: 0,
+                  width: '300px',
+                  padding: '2rem',
+                  background: color,
+                  pointerEvents: 'auto',
+                  maxWidth: '90vw',
+                  maxHeight: '90vh',
+                  overflow: 'auto',
+                  boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
+                  zIndex: 100000
+                }}
+              >
+                <p style={{ fontSize: '1.5rem', lineHeight: '1.6' }}>"{quote}"</p>
+                <small style={{ fontSize: '1rem', marginTop: '1rem', display: 'block' }}>— {author}</small>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   );
 });

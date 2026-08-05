@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
 const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initialAnimation, style }) => {
@@ -48,18 +49,21 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
         <JewelCaseOverlay />
       </motion.div>
 
-      <AnimatePresence>
-        {isOpen && (
-          <CDModal 
-            layoutIdId={layoutIdId} 
-            coverUrl={coverUrl} 
-            artist={artist} 
-            albumName={albumName} 
-            previewUrl={previewUrl}
-            onClose={() => setIsOpen(false)} 
-          />
-        )}
-      </AnimatePresence>
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {isOpen && (
+            <CDModal 
+              layoutIdId={layoutIdId} 
+              coverUrl={coverUrl} 
+              artist={artist} 
+              albumName={albumName} 
+              previewUrl={previewUrl}
+              onClose={() => setIsOpen(false)} 
+            />
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   );
 });
