@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const PostIt = React.memo(({ quote, author, color, initialAnimation, style }) => {
   const [isOpen, setIsOpen] = useState(false);
   const layoutIdId = `postit-${quote.substring(0, 20)}-${author}`; 
+  
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [isOpen]);
 
   return (
     <>

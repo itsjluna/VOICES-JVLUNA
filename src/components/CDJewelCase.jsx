@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
 const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initialAnimation, style }) => {
   const [isOpen, setIsOpen] = useState(false);
   const layoutIdId = `cd-${albumName}-${artist}`.replace(/\s+/g, '-'); 
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [isOpen]);
 
   return (
     <>

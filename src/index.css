@@ -451,6 +451,8 @@ button:hover {
   top: 150px;
   right: -60px;
   width: 200px;
+  max-height: 220px;
+  overflow: hidden;
   background: #fdfd96;
   padding: 1.5rem;
   box-shadow: 2px 4px 6px rgba(0,0,0,0.1), inset 0 -10px 10px rgba(0,0,0,0.02);
