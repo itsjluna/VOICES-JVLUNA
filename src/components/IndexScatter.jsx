@@ -27,22 +27,28 @@ export const IndexScatter = React.memo(() => {
     fetchImages();
   }, []);
 
+  const [positions] = useState(() => {
+    return [...Array(10)].map(() => ({
+      top: Math.random() * 90,
+      left: Math.random() * 90,
+      rotate: Math.random() * 60 - 30,
+    }));
+  });
+
   const polaroids = useMemo(() => {
     return randomImages.map((image, i) => {
-      const top = 5 + Math.random() * 70;
-      const left = 5 + Math.random() * 75;
-      const rotate = Math.random() * 60 - 30;
-      
+      const pos = positions[i] || positions[0];
       return (
-        <PolaroidScatter key={`polaroid-${i}`} top={top} left={left} rotate={rotate} index={i} image={image} />
+        <PolaroidScatter key={`polaroid-${i}`} top={pos.top} left={pos.left} rotate={pos.rotate} index={i} image={image} />
       );
     });
-  }, [randomImages]);
+  }, [randomImages, positions]);
 
   const coffeeRings = useMemo(() => {
     return [...Array(2)].map((_, i) => {
-      const top = Math.random() * 80;
-      const left = Math.random() * 80;
+      const pos = positions[i + 5] || positions[1];
+      const top = pos.top;
+      const left = pos.left;
       const size = 150 + Math.random() * 50;
       return (
         <motion.svg key={`coffee-${i}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2, delay: 1 }}
@@ -59,9 +65,10 @@ export const IndexScatter = React.memo(() => {
 
   const scribbles = useMemo(() => {
     return [...Array(3)].map((_, i) => {
-      const top = 10 + Math.random() * 80;
-      const left = 10 + Math.random() * 80;
-      const rotate = Math.random() * 360;
+      const pos = positions[i + 7] || positions[2];
+      const top = pos.top;
+      const left = pos.left;
+      const rotate = pos.rotate * 6;
       const paths = [
         "M 10 50 Q 25 10, 50 50 T 90 50",
         "M 20 20 Q 80 20, 50 50 T 80 80",
@@ -80,9 +87,10 @@ export const IndexScatter = React.memo(() => {
 
   const paperClips = useMemo(() => {
     return [...Array(2)].map((_, i) => {
-      const top = 10 + Math.random() * 80;
-      const left = 10 + Math.random() * 80;
-      const rotate = Math.random() * 360;
+      const pos = positions[i + 2] || positions[3];
+      const top = pos.top;
+      const left = pos.left;
+      const rotate = pos.rotate * 6;
       return (
         <motion.svg key={`clip-${i}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.5, delay: 0.8 }}
           width="40" height="40" viewBox="0 0 100 100" style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, transform: `rotate(${rotate}deg)`, pointerEvents: 'none', zIndex: 3, opacity: 0.7, filter: 'drop-shadow(2px 4px 4px rgba(0,0,0,0.3))' }}>
@@ -96,9 +104,10 @@ export const IndexScatter = React.memo(() => {
 
   const washitapes = useMemo(() => {
     return [...Array(2)].map((_, i) => {
-      const top = Math.random() * 90;
-      const left = Math.random() * 90;
-      const rotate = Math.random() * 40 - 20;
+      const pos = positions[i + 4] || positions[4];
+      const top = pos.top;
+      const left = pos.left;
+      const rotate = pos.rotate;
       const colors = ['rgba(255,200,200,0.6)', 'rgba(200,255,200,0.6)', 'rgba(200,200,255,0.6)', 'rgba(255,255,200,0.6)'];
       const bg = colors[Math.floor(Math.random() * colors.length)];
       return (
@@ -110,9 +119,10 @@ export const IndexScatter = React.memo(() => {
 
   const indexCards = useMemo(() => {
     return [...Array(1)].map((_, i) => {
-      const top = Math.random() * 70;
-      const left = Math.random() * 70;
-      const rotate = Math.random() * 20 - 10;
+      const pos = positions[i + 1] || positions[5];
+      const top = pos.top;
+      const left = pos.left;
+      const rotate = pos.rotate / 3;
       return (
         <motion.div key={`indexcard-${i}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5, delay: 0.3 }}
           style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, width: '200px', height: '140px', backgroundColor: '#fcfcfc', borderTop: '30px solid #ff7b7b', boxShadow: '0 4px 15px rgba(0,0,0,0.08)', transform: `rotate(${rotate}deg)`, zIndex: 1, pointerEvents: 'none', backgroundImage: 'repeating-linear-gradient(transparent, transparent 19px, #e0e0e0 20px)' }} />
