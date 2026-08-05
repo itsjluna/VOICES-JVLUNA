@@ -36,9 +36,13 @@ function IntermissionView() {
   }, [id, intermission]);
 
   const accentColor = useMemo(() => {
-    if (!id) return accentColors[0];
-    const sum = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return accentColors[sum % accentColors.length];
+    if (!id) return '#2a9d8f';
+    let sum = 0;
+    for (let i = 0; i < id.length; i++) {
+      sum += id.charCodeAt(i);
+    }
+    const hue = sum % 360;
+    return `hsl(${hue}, 70%, 55%)`;
   }, [id]);
 
   useEffect(() => {

@@ -155,34 +155,44 @@ function ChapterView() {
               return !isBlockedChappell && !isBlockedBadBunny && !isGarbage;
             });
 
+            // Sort by release date descending (newest first) to fix artists like Six Sex
+            universallySafeResults.sort((a, b) => new Date(b.releaseDate || 0) - new Date(a.releaseDate || 0));
+
             // 2. Try to get exact artist matches (strict case-sensitive equal to prevent collisions like EmJay vs EMJAY)
             const exactMatches = universallySafeResults.filter(a => a.artistName === randomArtist);
             
-            // 3. Try to get "clean" main albums (no deluxe, remixes, live, etc.)
-            const cleanMatches = exactMatches.filter(a => {
+            // 3. Categorize matches
+            const albums = [];
+            const eps = [];
+            const singles = [];
+
+            exactMatches.forEach(a => {
               const name = a.collectionName ? a.collectionName.toLowerCase() : '';
               const isAllowedUpsahl = a.artistName === 'UPSAHL' && name.includes('i like it');
-              const isSmall = !isAllowedUpsahl && (a.trackCount && a.trackCount <= 3 && !name.includes('ep'));
-              const isSingle = !isAllowedUpsahl && name.includes('single');
-              const isAltVersion = name.includes('remix') || 
-                                   name.includes('live') || 
-                                   name.includes('deluxe') || 
-                                   name.includes('bonus') || 
-                                   name.includes('tour edition') || 
-                                   name.includes('greatest hits') || 
-                                   name.includes('essential') || 
-                                   name.includes('anthology') || 
-                                   name.includes('the best of');
-              const isAlbumType = a.collectionType === 'Album';
               
-              return !isSmall && !isSingle && !isAltVersion && isAlbumType;
+              const isExplicitSingle = name.includes('- single') || name.includes('(single)') || name.endsWith(' single');
+              const isSmall = a.trackCount && a.trackCount <= 3 && !name.includes('ep');
+              
+              const isAltVersion = name.includes('remix') || name.includes('live') || name.includes('deluxe') || name.includes('bonus') || name.includes('tour edition') || name.includes('greatest hits') || name.includes('essential') || name.includes('anthology') || name.includes('the best of');
+              
+              if (isAllowedUpsahl) {
+                albums.push(a);
+              } else if (isExplicitSingle || a.trackCount === 1 || (isSmall && !name.includes('ep'))) {
+                singles.push(a);
+              } else if (name.includes('ep') || (a.trackCount && a.trackCount <= 6)) {
+                eps.push(a);
+              } else if (!isAltVersion && a.collectionType === 'Album') {
+                albums.push(a);
+              } else {
+                // If it falls through, put it in EPs/misc
+                eps.push(a);
+              }
             });
 
-            // 4. Fallback chain
-            let pool = cleanMatches;
-            if (pool.length === 0) pool = exactMatches;
-            // Removed fallback to universallySafeResults because if exactMatches is empty, 
-            // the remaining results belong to completely unrelated artists (like Yangnara).
+            // 4. Fallback chain: Albums -> EPs -> Singles
+            let pool = albums;
+            if (pool.length === 0) pool = eps;
+            if (pool.length === 0) pool = singles;
             
             if (pool.length > 0) {
               // Shrink coincidences per artist to 5 for top popularity while maintaining variety
@@ -276,8 +286,8 @@ function ChapterView() {
             bottom: !isTop ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
             left: isLeft ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
             right: !isLeft ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
-            rotate: Math.floor(Math.random() * 120) - 60,
-            width: `${Math.floor(Math.random() * (maxSize - minSize)) + minSize}px`,
+            rotate: Math.random() * 60 - 30,
+            width: `${130 + Math.random() * 80}px`,
             zIndex: Math.floor(Math.random() * 8) + 1, // Behind or above elements
             delay: 1.5 + (Math.random() * 0.5)
           });
@@ -425,7 +435,7 @@ function ChapterView() {
             </motion.div>
           )}
 
-          <div className="glass-panel" style={{ marginTop: '3rem' }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 1.5 }} className="glass-panel" style={{ marginTop: '3rem' }}>
             <h3 style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', letterSpacing: '0.05em', marginBottom: '1.5rem', opacity: 0.8 }}>
               {language === 'EN' ? 'IN THIS CHAPTER' : 'EN ESTE CAPÍTULO'}
             </h3>
@@ -460,7 +470,7 @@ function ChapterView() {
               ))}
               {poems.length === 0 && <p style={{ fontStyle: 'italic', opacity: 0.6 }}>{language === 'EN' ? 'No poems yet.' : 'Aún no hay poemas.'}</p>}
             </ul>
-          </div>
+          </motion.div>
         </motion.div>
         <div style={{ clear: 'both' }}></div>
       </div>

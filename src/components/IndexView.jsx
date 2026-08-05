@@ -189,13 +189,20 @@ function IndexView() {
               let iconColor = 'var(--text-color)';
               let numberText = String(index + 1).padStart(2, '0');
               
+              if (isInt || isVent) {
+                let sum = 0;
+                for (let i = 0; i < chapter._id.length; i++) {
+                  sum += chapter._id.charCodeAt(i);
+                }
+                const hue = sum % 360;
+                iconColor = `hsl(${hue}, 70%, 55%)`;
+              }
+              
               if (isInt) { 
                 icon = <FaTicketAlt />; 
-                iconColor = '#8ecae6'; 
                 numberText = 'INT';
               } else if (isVent) {
                 icon = <FaStickyNote />;
-                iconColor = '#cfcf2b'; // Darker yellow for visibility on light/dark
                 numberText = 'VNT';
               }
 
@@ -220,13 +227,13 @@ function IndexView() {
                       alignItems: 'baseline', 
                       justifyContent: 'space-between',
                       width: '100%',
-                      opacity: (isInt || isVent) ? 0.7 : 1,
+                      opacity: 1,
                       transition: 'opacity 0.3s ease'
                     }}>
                       <div style={{ display: 'flex', alignItems: 'baseline', flexShrink: 1, paddingRight: '1rem' }}>
                         <span style={{ 
                           marginRight: '1rem',
-                          color: readChapters.includes(chapter._id) ? 'rgba(150, 150, 150, 0.4)' : iconColor,
+                          color: (isInt || isVent) ? iconColor : (readChapters.includes(chapter._id) ? 'rgba(150, 150, 150, 0.4)' : iconColor),
                           fontSize: '0.9rem',
                           display: 'flex',
                           alignItems: 'center',
@@ -241,10 +248,10 @@ function IndexView() {
                           fontStyle: (isInt || isVent) ? 'italic' : 'normal',
                           fontWeight: (isInt || isVent) ? 'normal' : '500',
                           letterSpacing: '0.05em',
-                          color: readChapters.includes(chapter._id) 
+                          color: readChapters.includes(chapter._id) && !isInt && !isVent 
                             ? 'var(--text-color)' 
                             : (isInt || isVent ? iconColor : 'inherit'),
-                          opacity: readChapters.includes(chapter._id) ? 0.5 : 1,
+                          opacity: readChapters.includes(chapter._id) && !isInt && !isVent ? 0.5 : 1,
                           wordWrap: 'break-word',
                           overflowWrap: 'break-word',
                           wordBreak: 'break-word',
@@ -256,14 +263,19 @@ function IndexView() {
                       
                       <span className="toc-leader" style={{ opacity: 0.2 }}></span>
                       
-                      <span style={{ 
-                        fontSize: '1rem', 
-                        fontFamily: 'monospace', 
-                        color: iconColor,
-                        opacity: 0.8
-                      }}>
-                        {numberText}
-                      </span>
+                      {/* Only display numbers for chapters, not int/vents */}
+                      {!isInt && !isVent && (
+                        <span style={{ 
+                          fontFamily: 'var(--font-mono)', 
+                          fontSize: '1rem', 
+                          opacity: readChapters.includes(chapter._id) ? 0.3 : 0.8,
+                          letterSpacing: '0.1em',
+                          color: iconColor,
+                          flexShrink: 0
+                        }}>
+                          {numberText}
+                        </span>
+                      )}
                     </div>
                   </Link>
                 </motion.div>

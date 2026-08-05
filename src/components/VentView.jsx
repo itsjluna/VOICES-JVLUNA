@@ -183,7 +183,10 @@ function VentView() {
           zIndex: 10,
           width: '100%',
           maxWidth: isNotebook ? '1200px' : '900px',
-          ...(isNotebook ? {} : {
+          ...(isNotebook ? {
+            marginTop: '3rem',
+            padding: 'clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 5vw)',
+          } : {
             // Giant Post-it Styling
             backgroundColor: '#fdfd96',
             padding: 'clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 5vw)',
