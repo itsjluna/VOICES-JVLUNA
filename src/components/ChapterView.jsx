@@ -156,8 +156,8 @@ function ChapterView() {
               return !isBlockedChappell && !isBlockedBadBunny && !isSingle && !isGarbage;
             });
 
-            // 2. Try to get exact artist matches (strict equal to prevent compilations or albums by other artists where they are featured)
-            const exactMatches = universallySafeResults.filter(a => a.artistName.toLowerCase() === randomArtist.toLowerCase());
+            // 2. Try to get exact artist matches (strict case-sensitive equal to prevent collisions like EmJay vs EMJAY)
+            const exactMatches = universallySafeResults.filter(a => a.artistName === randomArtist);
             
             // 3. Try to get "clean" main albums (no deluxe, remixes, live, etc.)
             const cleanMatches = exactMatches.filter(a => {
