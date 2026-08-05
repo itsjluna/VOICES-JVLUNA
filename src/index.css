@@ -736,6 +736,12 @@ button:hover {
   padding: 2rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   transition: background 0.3s ease, border 0.3s ease;
+  
+  /* Fix for desktop hardware acceleration bugs with backdrop-filter */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 :root.dark .glass-panel {
