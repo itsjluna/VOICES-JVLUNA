@@ -156,8 +156,8 @@ function ChapterView() {
               return !isBlockedChappell && !isBlockedBadBunny && !isSingle && !isGarbage;
             });
 
-            // 2. Try to get exact artist matches
-            const exactMatches = universallySafeResults.filter(a => a.artistName.toLowerCase() === randomArtist.toLowerCase());
+            // 2. Try to get exact artist matches (using includes to catch collabs like "Bad Bunny & Jhay Cortez")
+            const exactMatches = universallySafeResults.filter(a => a.artistName.toLowerCase().includes(randomArtist.toLowerCase()));
             
             // 3. Try to get "clean" main albums (no deluxe, remixes, live, etc.)
             const cleanMatches = exactMatches.filter(a => {
@@ -181,7 +181,8 @@ function ChapterView() {
             // 4. Fallback chain
             let pool = cleanMatches;
             if (pool.length === 0) pool = exactMatches;
-            if (pool.length === 0) pool = universallySafeResults;
+            // Removed fallback to universallySafeResults because if exactMatches is empty, 
+            // the remaining results belong to completely unrelated artists (like Yangnara).
             
             if (pool.length > 0) {
               // Shrink coincidences per artist to 5 for top popularity while maintaining variety
