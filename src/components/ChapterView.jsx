@@ -165,10 +165,11 @@ function ChapterView() {
                                 name.includes('the best of');
                                 
               const isBlockedChappell = a.artistName === 'Chappell Roan' && (name.includes('school nights') || name.includes('good hurt'));
+              const isBlockedBadBunny = a.artistName === 'Bad Bunny' && name.includes('super bowl');
                                 
               const isAlbumType = a.collectionType === 'Album';
               
-              return !isSingle && !isNonMain && !isBlockedChappell && isAlbumType;
+              return !isSingle && !isNonMain && !isBlockedChappell && !isBlockedBadBunny && isAlbumType;
             });
             
             // Fallback to exactMatches if cleanMatches is empty
