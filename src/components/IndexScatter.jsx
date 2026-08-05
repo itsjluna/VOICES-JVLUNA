@@ -119,33 +119,33 @@ export const IndexScatter = React.memo(() => {
     return [...scribblesList, ...brushes];
   }, []);
 
-
-  // 6. User Media Clutter
-  const mediaScatter = useMemo(() => {
-    const allMedia = [
-      '51ylQXnrobL.jpg', '53304_Florence.webp', '61qynEC9FAL._SL1421_.jpg', 
-      '71xBLSCGDTL._SL1500_.jpg', '71xEY+ZI8kL.jpg', '81WCblz7GnL._SL1500_.jpg', 
-      '9780062641540-xlpreview.jpg', 'OIP (10).webp', 'OIP (6).webp', 
-      'OIP (7).webp', 'OIP (8).webp', 'OIP (9).webp', 'R (3).jpg', 
-      'Wipeout-2097-PAL-PSX-FRONT.jpg', 'llorona-poster-ok.jpg'
+  // 5. Public Folder Clutter (Replaces mediaScatter)
+  const publicScatter = useMemo(() => {
+    const mainImages = [
+      'brioche.png', 'camera.png', 'cochinita.png', 'coffee.png', 
+      'deathstranding.png', 'dualsense.png', 'glasses.png', 'inderalici.png', 
+      'logitech.png', 'marvel.png', 'pen.png', 'pencil.png', 'pepsi.png', 'rubik.png', 
+      'slims.png', 'sw.png', 'transformers.png', 'watch.png', 
+      'whisky.png', 'wine.png', 'hummingbird.webp', 'magnolia.webp', 'origami.webp',
+      'pulparindo.png', 'lgbtflag.png', 'munecalele.png', 'vynilplayer.png', 'mazapan.png'
     ];
-    // Pick 1 or 2 random media images to scatter
-    const shuffled = [...allMedia].sort(() => 0.5 - Math.random());
+    // Pick 1 or 2 random images
+    const shuffled = [...mainImages].sort(() => 0.5 - Math.random());
     const selected = shuffled.slice(0, 2);
     
     return selected.map((img, i) => {
       const top = 10 + Math.random() * 70;
       const left = 5 + Math.random() * 80;
       const rotate = Math.random() * 60 - 30;
-      const width = 120 + Math.random() * 60; // random width between 120px and 180px
+      const width = 100 + Math.random() * 80;
 
       return (
-        <PrismScatter key={`media-${i}`} top={top} left={left} rotate={rotate} width={width} image={`/media/${img}`} />
+        <TiltScatter key={`public-${i}`} top={top} left={left} rotate={rotate} width={width} image={`/${img}`} />
       );
     });
   }, []);
 
-  // 5. Polaroids (from database) -> Now also PrismScatter
+  // 6. Polaroids (from database) -> Restored to Polaroid aesthetic
   const polaroids = useMemo(() => {
     return [...Array(2)].map((_, i) => {
       if (!randomPoemImages[i]) return null;
@@ -154,7 +154,7 @@ export const IndexScatter = React.memo(() => {
       const rotate = Math.random() * 60 - 30;
       
       return (
-        <PrismScatter key={`poem-prism-${i}`} top={top} left={left} rotate={rotate} width={140} image={randomPoemImages[i]} />
+        <PolaroidScatter key={`poem-polaroid-${i}`} top={top} left={left} rotate={rotate} index={i} image={randomPoemImages[i]} />
       );
     });
   }, [randomPoemImages]);
@@ -164,22 +164,18 @@ export const IndexScatter = React.memo(() => {
       {coffeeRings}
       {scribbles}
       {indexCards}
-      {mediaScatter}
+      {publicScatter}
       {polaroids}
       {washitapes}
     </div>
   );
 });
 
-function PrismScatter({ top, left, rotate, width, image }) {
+function TiltScatter({ top, left, rotate, width, image }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const rotateX = useTransform(y, [-200, 200], [25, -25]);
-  const rotateY = useTransform(x, [-200, 200], [-25, 25]);
-  
-  // Calculate glare/holographic position based on mouse
-  const shineX = useTransform(x, [-200, 200], ['-100%', '100%']);
-  const shineY = useTransform(y, [-200, 200], ['-100%', '100%']);
+  const rotateX = useTransform(y, [-200, 200], [15, -15]);
+  const rotateY = useTransform(x, [-200, 200], [-15, 15]);
 
   return (
     <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.2 + Math.random() * 0.5 }}
@@ -197,41 +193,53 @@ function PrismScatter({ top, left, rotate, width, image }) {
         position: 'absolute', top: `${top}%`, left: `${left}%`, 
         width: `${width}px`, transform: `rotate(${rotate}deg)`, 
         pointerEvents: 'auto', cursor: 'grab', zIndex: 3, 
-        rotateX, rotateY, perspective: 1000,
-        borderRadius: '12px',
-        boxShadow: '0 15px 35px rgba(0,0,0,0.4), 0 5px 15px rgba(0,0,0,0.2)',
+        rotateX, rotateY, perspective: 1000
       }}>
-      
-      {/* Thick plastic box container */}
-      <div style={{ 
-        width: '100%', height: '100%', position: 'relative', overflow: 'hidden', 
-        borderRadius: '12px', backgroundColor: '#111',
-        boxShadow: 'inset 0 0 0 2px rgba(255,255,255,0.5), inset 0 0 20px rgba(255,255,255,0.4)',
-        border: '1px solid rgba(255,255,255,0.8)'
+      <img src={image} alt="scatter" draggable="false" style={{ width: '100%', height: 'auto', display: 'block', filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.15))' }} />
+    </motion.div>
+  );
+}
+
+function PolaroidScatter({ top, left, rotate, index, image }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useTransform(y, [-200, 200], [15, -15]);
+  const rotateY = useTransform(x, [-200, 200], [-15, 15]);
+  const [revealed, setRevealed] = useState(false);
+  
+  return (
+    <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.2 }}
+      drag dragConstraints={{ left: -400, right: 400, top: -400, bottom: 400 }} whileDrag={{ scale: 1.1, zIndex: 100 }}
+      onMouseMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        x.set(e.clientX - rect.left - rect.width / 2);
+        y.set(e.clientY - rect.top - rect.height / 2);
+      }}
+      onMouseLeave={() => {
+        x.set(0);
+        y.set(0);
+      }}
+      onClick={() => setRevealed(!revealed)}
+      style={{ 
+        position: 'absolute', top: `${top}%`, left: `${left}%`, width: '140px', height: '170px', 
+        backgroundColor: '#fafafa', boxShadow: '0 5px 15px rgba(0,0,0,0.1)', 
+        transform: `rotate(${rotate}deg)`, pointerEvents: 'auto', cursor: 'grab', 
+        zIndex: 4, padding: '10px 10px 35px 10px', boxSizing: 'border-box',
+        rotateX, rotateY, perspective: 1000
       }}>
-        {/* Inner image */}
-        <div style={{ padding: '6px', width: '100%', height: '100%', boxSizing: 'border-box' }}>
-          <img src={image} alt="prism scatter" draggable="false" style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover', borderRadius: '6px' }} />
-        </div>
-        
-        {/* Holographic / Glass prism overlay */}
-        <motion.div style={{
-          position: 'absolute', top: 0, left: 0, width: '200%', height: '200%',
-          background: 'linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.03) 30%, rgba(255,255,255,0.8) 45%, rgba(255,100,200,0.4) 50%, rgba(100,200,255,0.4) 55%, rgba(255,255,255,0.8) 60%, rgba(255,255,255,0.03) 70%, rgba(255,255,255,0) 100%)',
-          mixBlendMode: 'screen',
-          x: shineX,
-          y: shineY,
-          pointerEvents: 'none',
-          opacity: 0.9
-        }} />
-        
-        {/* Secondary glare for plastic reflection */}
-        <motion.div style={{
-          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-          background: 'linear-gradient(to bottom, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 40%)',
-          pointerEvents: 'none',
-          opacity: 0.5
-        }} />
+      <div style={{ width: '100%', height: '120px', backgroundColor: '#222', position: 'relative', overflow: 'hidden' }}>
+        {image ? (
+          <img src={image} alt="poem polaroid" draggable="false" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        ) : (
+          revealed && index === 0 && (
+            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: '#fff', color: '#111', padding: '10px', boxSizing: 'border-box', fontSize: '0.65rem', fontStyle: 'italic', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              Todo es arte<br/>
+              Tambi&eacute;n este poema,<br/>
+              Que se lee cerrando los ojos.<br/>
+              Para vivir fuera del agua
+            </div>
+          )
+        )}
       </div>
     </motion.div>
   );
