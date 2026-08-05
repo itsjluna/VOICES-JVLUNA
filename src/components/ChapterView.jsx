@@ -209,7 +209,8 @@ function ChapterView() {
           'deathstranding.png', 'dualsense.png', 'glasses.png', 'inderalici.png', 
           'logitech.png', 'marvel.png', 'pen.png', 'pencil.png', 'pepsi.png', 'rubik.png', 
           'slims.png', 'sw.png', 'transformers.png', 'watch.png', 
-          'whisky.png', 'wine.png', 'hummingbird.webp', 'magnolia.webp', 'origami.webp'
+          'whisky.png', 'wine.png', 'hummingbird.webp', 'magnolia.webp', 'origami.webp',
+          'pulparindo.png', 'lgbtflag.png', 'munecalele.png', 'vynilplayer.png', 'mazapan.png'
         ];
         
         const decorationMeta = {
@@ -235,7 +236,12 @@ function ChapterView() {
           'wine.png': { titleEn: 'Rosé Wine', titleEs: 'Vino Rosado', descEn: 'Light pink glass.', descEs: 'Copa color rosa claro.' },
           'hummingbird.webp': { titleEn: 'Hummingbird', titleEs: 'Colibrí', descEn: 'Iridescent green feathers.', descEs: 'Plumas verdes iridiscentes.' },
           'magnolia.webp': { titleEn: 'Magnolia', titleEs: 'Magnolia', descEn: 'Smooth white petals.', descEs: 'Pétalos blancos suaves.' },
-          'origami.webp': { titleEn: 'Origami Bunny', titleEs: 'Conejito de Origami', descEn: 'Folded paper edges.', descEs: 'Bordes de papel doblado.' }
+          'origami.webp': { titleEn: 'Origami Bunny', titleEs: 'Conejito de Origami', descEn: 'Folded paper edges.', descEs: 'Bordes de papel doblado.' },
+          'pulparindo.png': { titleEn: 'Pulparindo', titleEs: 'Pulparindo', descEn: 'Tamarind candy.', descEs: 'Dulce de tamarindo.' },
+          'lgbtflag.png': { titleEn: 'Pride Flag', titleEs: 'Bandera del Orgullo', descEn: 'Colored fabric.', descEs: 'Tela de colores.' },
+          'munecalele.png': { titleEn: 'Muñeca Lele', titleEs: 'Muñeca Lele', descEn: 'Traditional rag doll.', descEs: 'Muñeca de trapo tradicional.' },
+          'vynilplayer.png': { titleEn: 'Record Player', titleEs: 'Tocadiscos', descEn: 'Turntable and needle.', descEs: 'Plato y aguja.' },
+          'mazapan.png': { titleEn: 'De la Rosa Mazapán', titleEs: 'Mazapán de la Rosa', descEn: 'Peanut confection.', descEs: 'Dulce de cacahuate.' }
         };
 
         const isDesktop = typeof window !== 'undefined' && window.innerWidth > 768;
