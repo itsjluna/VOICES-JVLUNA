@@ -34,7 +34,7 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
           ...style
         }}
         drag
-        dragConstraints={{ left: -500, right: 500, top: -500, bottom: 500 }}
+        dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }}
         dragElastic={0.2}
         whileDrag={{ scale: 1.1, cursor: 'grabbing', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }}
         onClick={() => setIsOpen(true)}

@@ -380,17 +380,30 @@ function ChapterView() {
             </h3>
             <ul style={{ listStyle: 'none', padding: 0 }}>
               {poems.map((poem, index) => (
-                <li key={poem._id} style={{ margin: '1rem 0' }}>
+                <li key={poem._id} style={{ margin: '0' }}>
                   <Link 
                     to={`/poem/${poem._id}`} 
                     onMouseEnter={() => api.get(`/poems/${poem._id}`)}
-                    style={{ fontSize: '1.2rem', textDecoration: 'none', transition: 'opacity 0.2s' }}
-                    className="hover-opacity"
+                    style={{ 
+                      display: 'flex', 
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      padding: '1rem',
+                      fontSize: '1.2rem', 
+                      textDecoration: 'none', 
+                      transition: 'background 0.2s, transform 0.2s',
+                      borderRadius: '8px',
+                      color: 'inherit'
+                    }}
+                    className="chapter-list-item"
                   >
-                    <span style={{ opacity: 0.5, marginRight: '0.5rem', fontFamily: 'monospace' }}>
-                      {String(index + 1).padStart(2, '0')}.
-                    </span>
-                    {language === 'EN' && poem.titleEn ? poem.titleEn : poem.title}
+                    <div>
+                      <span style={{ opacity: 0.5, marginRight: '1rem', fontFamily: 'monospace' }}>
+                        {String(index + 1).padStart(2, '0')}.
+                      </span>
+                      {language === 'EN' && poem.titleEn ? poem.titleEn : poem.title}
+                    </div>
+                    <span style={{ opacity: 0.3 }}>&rarr;</span>
                   </Link>
                 </li>
               ))}

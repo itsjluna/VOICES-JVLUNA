@@ -748,3 +748,13 @@ button:hover {
   opacity: 0.7;
 }
 
+/* --- Chapter List Item (makes poems look clickable) --- */
+.chapter-list-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+  transform: translateX(5px);
+}
+
+:root.dark .chapter-list-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
