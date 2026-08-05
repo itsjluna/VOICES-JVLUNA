@@ -148,8 +148,9 @@ function ChapterView() {
             // Filter out remixes, live albums, karaoke, compilations, deluxe editions, and strictly reject Singles
             const cleanMatches = exactMatches.filter(a => {
               const name = a.collectionName ? a.collectionName.toLowerCase() : '';
-              // Reject if it has 'single' in the name, or has 3 or fewer tracks (unless explicitly marked as an EP)
-              const isSingle = name.includes('- single') || name.endsWith(' single') || (a.trackCount && a.trackCount <= 3 && !name.includes('ep'));
+              const isAllowedUpsahl = a.artistName === 'UPSAHL' && name.includes('i like it');
+              // Reject if it has 'single' in the name, or has 3 or fewer tracks (unless explicitly marked as an EP), excepting explicitly allowed singles
+              const isSingle = !isAllowedUpsahl && (name.includes('- single') || name.endsWith(' single') || (a.trackCount && a.trackCount <= 3 && !name.includes('ep')));
               
               // Reject compilations, deluxe editions, live, remixes, etc. to isolate MAIN albums
               const isNonMain = name.includes('remix') || 
