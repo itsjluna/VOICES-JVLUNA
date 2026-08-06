@@ -171,6 +171,7 @@ function ChapterView() {
             let exactMatches = universallySafeResults.filter(a => {
               if (randomArtist === 'Dafna') return a.artistId === 1450666890;
               if (randomArtist === 'Junior Varsity') return a.artistId === 1561201891;
+              if (randomArtist === 'EMJAY') return a.artistId === 1628172822;
               return a.artistName === randomArtist || a.artistName.toLowerCase() === randomArtist.toLowerCase();
             });
             
