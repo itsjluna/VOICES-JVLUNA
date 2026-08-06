@@ -130,29 +130,40 @@ const CDModal = ({ layoutIdId, coverUrl, artist, albumName, previewUrl, onClose 
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onClick={onClose}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: 'rgba(0,0,0,0.85)',
-        zIndex: 99999,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        cursor: 'pointer',
-        perspective: '1000px'
-      }}
-    >
+    <>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0,0,0,0.85)',
+          zIndex: 99998
+        }}
+      />
+      <div
+        onClick={onClose}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 99999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          cursor: 'pointer',
+          perspective: '1000px'
+        }}
+      >
       <motion.div 
         layoutId={layoutIdId}
         transition={{ type: "spring", stiffness: 1000, damping: 35 }}
@@ -193,7 +204,8 @@ const CDModal = ({ layoutIdId, coverUrl, artist, albumName, previewUrl, onClose 
       </motion.div>
       
       {previewUrl && <audio src={previewUrl} autoPlay />}
-    </motion.div>
+      </div>
+    </>
   );
 };
 
