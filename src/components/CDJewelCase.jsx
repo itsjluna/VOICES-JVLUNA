@@ -184,7 +184,7 @@ const CDModal = ({ layoutIdId, coverUrl, artist, albumName, previewUrl, onClose 
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
+        transition={{ delay: 0.05 }}
         style={{ textAlign: 'center', color: '#fff', marginTop: '2rem', fontFamily: 'var(--font-sans)', letterSpacing: '1px', zIndex: 100000 }}
       >
         <strong style={{ fontSize: '1.2rem' }}>{albumName}</strong><br/>
@@ -201,8 +201,6 @@ const JewelCaseOverlay = ({ translateZ = '0px' }) => (
   <img 
     src="/jewelcase.png"
     alt=""
-    loading="lazy"
-    decoding="async"
     style={{
       position: 'absolute',
       top: 0,
