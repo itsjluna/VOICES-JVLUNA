@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-mo
 
 const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimation, style, className, draggable = true }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const layoutId = `scattered-${src}-${title}`.replace(/\s+/g, '-');
   
   useEffect(() => {
     if (isOpen) {
@@ -28,13 +29,14 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
   return (
     <>
       <motion.img 
+        layoutId={layoutId}
         src={src}
         alt={alt}
         className={className}
         initial={initialAnimation.initial}
         animate={initialAnimation.animate}
         transition={initialAnimation.transition}
-        style={{ ...style, cursor: draggable ? 'grab' : 'pointer' }}
+        style={{ ...style, cursor: draggable ? 'grab' : 'pointer', opacity: isOpen ? 0 : (style?.opacity ?? 1) }}
         drag={draggable}
         dragConstraints={draggable ? { left: -100, right: 100, top: -100, bottom: 100 } : undefined}
         dragElastic={draggable ? 0.2 : undefined}
