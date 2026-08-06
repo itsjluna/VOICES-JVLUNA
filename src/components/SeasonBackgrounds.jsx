@@ -351,8 +351,12 @@ export const Spring = React.memo(() => {
       <motion.g style={{ y: midScrollY }}>
         <path d="M -200 650 Q 250 520 550 630 T 1200 580 L 1200 1000 L -200 1000 Z" fill={hillFg} />
         {/* Budding Trees */}
-        <path d="M 300 590 L 300 560 M 300 560 A 15 15 0 1 1 300.1 560" fill={coast} stroke="none" />
-        <path d="M 750 600 L 750 550 M 750 550 A 25 25 0 1 1 750.1 550" fill={coast} stroke="none" />
+        <path d="M 300 600 L 300 550" stroke={hillBg} strokeWidth="6" strokeLinecap="round" />
+        <circle cx="300" cy="535" r="25" fill={coast} />
+        <circle cx="290" cy="545" r="15" fill={hillFg} />
+        <path d="M 750 610 L 750 540" stroke={hillBg} strokeWidth="8" strokeLinecap="round" />
+        <circle cx="750" cy="515" r="35" fill={coast} />
+        <circle cx="735" cy="530" r="20" fill={hillFg} />
       </motion.g>
     </motion.g>
   );
@@ -644,8 +648,16 @@ export const Autumn = React.memo(() => {
     <motion.g style={{ x: mouseMidX, y: mouseMidY }}>
       <motion.g style={{ y: midScrollY }}>
         <path d="M -200 670 Q 250 550 550 670 T 1200 620 L 1200 1000 L -200 1000 Z" fill={hillFg} />
-        <path d="M 200 600 L 200 550 M 200 550 Q 220 530 200 500 Q 180 530 200 550 Z" fill={coast} />
-        <path d="M 800 620 L 800 500 M 800 500 Q 840 460 800 400 Q 760 460 800 500 Z" fill={coast} />
+        {/* Autumn Trees */}
+        <path d="M 200 610 L 200 540" stroke={hillBg} strokeWidth="8" strokeLinecap="round" />
+        <circle cx="200" cy="520" r="35" fill={coast} />
+        <circle cx="185" cy="535" r="20" fill={isDark ? "#733e24" : "#c97b5f"} />
+        <circle cx="215" cy="525" r="25" fill={hillFg} />
+        
+        <path d="M 800 630 L 800 500" stroke={hillBg} strokeWidth="10" strokeLinecap="round" />
+        <circle cx="800" cy="460" r="50" fill={coast} />
+        <circle cx="770" cy="485" r="30" fill={isDark ? "#733e24" : "#c97b5f"} />
+        <circle cx="830" cy="470" r="35" fill={hillFg} />
       </motion.g>
     </motion.g>
   );
