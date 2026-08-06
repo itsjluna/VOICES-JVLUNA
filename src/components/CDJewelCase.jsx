@@ -46,7 +46,11 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
           layoutId={layoutIdId}
           initial={hasOpened.current ? false : initialAnimation.initial}
           animate={initialAnimation.animate}
-          transition={{ ...initialAnimation.transition, layout: { type: "spring", stiffness: 1000, damping: 35 } }}
+          transition={{ 
+          ...initialAnimation.transition, 
+          delay: hasOpened.current ? 0 : (initialAnimation.transition?.delay || 0),
+          layout: { type: "spring", stiffness: 1000, damping: 35 } 
+        }}
           className="cd-jewel-case"
           style={{ 
             cursor: 'grab',
@@ -137,7 +141,7 @@ const CDModal = ({ layoutIdId, coverUrl, artist, albumName, previewUrl, onClose 
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      exit={{ opacity: 0, transition: { duration: 0.3 } }}
       onClick={onClose}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
