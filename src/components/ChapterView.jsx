@@ -146,8 +146,8 @@ function ChapterView() {
           ];
           const randomArtist = belovedArtists[Math.floor(Math.random() * belovedArtists.length)];
           
-          // Use a massive limit so we can safely filter out false positives before picking 3
-          const itunesRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(randomArtist)}&entity=album&attribute=artistTerm&limit=50`);
+          // Use a massive limit so we can safely filter out false positives before picking
+          const itunesRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(randomArtist)}&entity=song&attribute=artistTerm&limit=50`);
           const itunesData = await itunesRes.json();
           if (itunesData.results && itunesData.results.length > 0) {
             

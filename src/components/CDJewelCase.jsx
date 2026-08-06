@@ -24,10 +24,23 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
     return () => { document.body.style.overflow = 'unset'; };
   }, [isOpen]);
 
+  const handleOpen = async () => {
+    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+      try {
+        const permissionState = await DeviceOrientationEvent.requestPermission();
+        // If granted, the event listener in CDModal will just work
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    setIsOpen(true);
+  };
+
   return (
     <>
-      <motion.div 
-        layoutId={layoutIdId}
+      {!isOpen && (
+        <motion.div 
+          layoutId={layoutIdId}
         initial={initialAnimation.initial}
         animate={initialAnimation.animate}
         transition={{ ...initialAnimation.transition, layout: { type: "spring", stiffness: 1000, damping: 35 } }}
@@ -46,7 +59,7 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
         dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }}
         dragElastic={0.2}
         whileDrag={{ scale: 1.1, cursor: 'grabbing', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }}
-        onClick={() => setIsOpen(true)}
+        onClick={handleOpen}
       >
         <img 
           src={coverUrl ? coverUrl.replace('100x100bb', '600x600bb') : ''} 
@@ -56,6 +69,7 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
         />
         <JewelCaseOverlay />
       </motion.div>
+      )}
 
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
