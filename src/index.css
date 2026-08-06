@@ -816,3 +816,13 @@ button:hover {
     display: block;
   }
 }
+
+/* Vent Postit back button fix for light mode */
+:root:not(.dark) .vent-postit .back-button {
+  color: #e0e0e0;
+  border-color: #e0e0e0;
+}
+:root:not(.dark) .vent-postit .back-button:hover {
+  background: #e0e0e0;
+  color: #1a1a1a;
+}

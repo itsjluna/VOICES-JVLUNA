@@ -7,6 +7,15 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
   const layoutIdId = `cd-${albumName}-${artist}`.replace(/\s+/g, '-'); 
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const img1 = new Image();
+      img1.src = coverUrl ? coverUrl.replace('100x100bb', '600x600bb') : '';
+      const img2 = new Image();
+      img2.src = "/jewelcase.png";
+    }
+  }, [coverUrl]);
+
+  useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -40,7 +49,7 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
         onClick={() => setIsOpen(true)}
       >
         <img 
-          src={coverUrl.replace('100x100bb', '600x600bb')} 
+          src={coverUrl ? coverUrl.replace('100x100bb', '600x600bb') : ''} 
           alt={`${albumName} by ${artist}`} 
           style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2px' }} 
           draggable="false"
@@ -76,6 +85,22 @@ const CDModal = ({ layoutIdId, coverUrl, artist, albumName, previewUrl, onClose 
   const rotateX = useTransform(y, [-100, 100], [15, -15]);
   const rotateY = useTransform(x, [-100, 100], [-15, 15]);
   
+  useEffect(() => {
+    const handleOrientation = (e) => {
+      if (e.beta !== null && e.gamma !== null) {
+        let g = Math.max(-45, Math.min(45, e.gamma));
+        let b = Math.max(0, Math.min(90, e.beta)) - 45;
+        x.set((g / 45) * 100);
+        y.set((b / 45) * 100);
+      }
+    };
+    
+    if (typeof window !== 'undefined' && window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', handleOrientation);
+      return () => window.removeEventListener('deviceorientation', handleOrientation);
+    }
+  }, [x, y]);
+
   const handleMouseMove = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;
@@ -136,7 +161,7 @@ const CDModal = ({ layoutIdId, coverUrl, artist, albumName, previewUrl, onClose 
         }}
       >
         <img 
-          src={coverUrl.replace('100x100bb', '600x600bb')} // Request high res from iTunes API
+          src={coverUrl ? coverUrl.replace('100x100bb', '600x600bb') : ''} // Request high res from iTunes API
           alt={`${albumName} by ${artist}`} 
           style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px', transform: 'translateZ(10px)' }} 
         />
