@@ -145,8 +145,9 @@ button:hover {
 
 @media (max-width: 767px) {
   .chapter-title {
-    margin-bottom: 6rem; /* Extra space for mobile clutter */
     font-size: 2rem;
+    margin-bottom: 6rem; /* Extra space for mobile clutter */
+    text-shadow: 0 0 5px var(--bg-color), 0 0 10px var(--bg-color), 0 0 15px var(--bg-color);
   }
 }
 

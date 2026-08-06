@@ -48,14 +48,22 @@ function VentView() {
       const idx = Math.floor(Math.random() * available.length);
       const img = available.splice(idx, 1)[0];
       
-      const isTop = Math.random() > 0.5;
-      
-      // limit to top or bottom borders to prevent overlapping with text
-      const topPos = isTop ? `-${Math.random() * 4 + 2}%` : 'auto';
-      const bottomPos = !isTop ? `-${Math.random() * 4 + 2}%` : 'auto';
-      
-      // place randomly along the horizontal edge
-      const leftPos = `${Math.random() * 80 + 10}%`;
+      const region = Math.floor(Math.random() * 4); // 0: top, 1: bottom, 2: left, 3: right
+      let topPos = 'auto', bottomPos = 'auto', leftPos = 'auto', rightPos = 'auto';
+
+      if (region === 0) { // Top
+        topPos = `-${Math.random() * 4 + 2}%`;
+        leftPos = `${Math.random() * 80 + 10}%`;
+      } else if (region === 1) { // Bottom
+        bottomPos = `-${Math.random() * 4 + 2}%`;
+        leftPos = `${Math.random() * 80 + 10}%`;
+      } else if (region === 2) { // Left
+        topPos = `${Math.random() * 80 + 10}%`;
+        leftPos = `-${Math.random() * 30 + 40}px`;
+      } else { // Right
+        topPos = `${Math.random() * 80 + 10}%`;
+        rightPos = `-${Math.random() * 30 + 40}px`;
+      }
       
       items.push({
         id: `sticker-${i}`,
@@ -63,7 +71,7 @@ function VentView() {
         top: topPos,
         bottom: bottomPos,
         left: leftPos,
-        right: 'auto',
+        right: rightPos,
         rotate: Math.random() * 60 - 30,
         width: `${Math.random() * 40 + 60}px`
       });
