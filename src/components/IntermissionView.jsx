@@ -32,6 +32,14 @@ function IntermissionView() {
   const [intermissionLanguage, setIntermissionLanguage] = useState(language);
   const [randomSouvenir, setRandomSouvenir] = useState(null);
 
+  const handleBack = () => {
+    if (window.history.length > 2) {
+      navigate(-1);
+    } else {
+      navigate('/index');
+    }
+  };
+
   useEffect(() => {
     setIntermissionLanguage(language);
   }, [language]);
@@ -90,7 +98,7 @@ function IntermissionView() {
       style={{ flex: 1, padding: '2rem 0', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}
     >
       <TravelGraphics type={ticketType} />
-      <button className="back-button" style={{ marginBottom: '2rem', alignSelf: 'flex-start' }} onClick={() => navigate(-1)}>
+      <button className="back-button" style={{ marginBottom: '2rem', alignSelf: 'flex-start' }} onClick={handleBack}>
         &larr; {language === 'EN' ? 'Back' : 'Volver'}
       </button>
 

@@ -24,6 +24,14 @@ function PoemView() {
     setPoemLanguage(language);
   }, [language]);
 
+  const handleBack = () => {
+    if (window.history.length > 2) {
+      navigate(-1);
+    } else {
+      navigate('/index');
+    }
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     async function fetchData() {
@@ -61,7 +69,7 @@ function PoemView() {
       style={{ flex: 1, padding: '2rem 0', position: 'relative' }}
     >
       {renderBackground()}
-      <button className="back-button" style={{ marginBottom: '2rem' }} onClick={() => navigate(-1)}>
+      <button className="back-button" style={{ marginBottom: '2rem' }} onClick={handleBack}>
         &larr; {language === 'EN' ? 'Back' : 'Volver'}
       </button>
 

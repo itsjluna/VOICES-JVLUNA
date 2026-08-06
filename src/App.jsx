@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import DockNav from './components/DockNav';
@@ -6,13 +6,13 @@ import CustomCursor from './components/CustomCursor';
 import TypewriterLoader from './components/TypewriterLoader';
 import FlashlightOverlay from './components/FlashlightOverlay';
 
-const WelcomeScreen = lazy(() => import('./components/WelcomeScreen'));
-const IndexView = lazy(() => import('./components/IndexView'));
-const ChapterView = lazy(() => import('./components/ChapterView'));
-const PoemView = lazy(() => import('./components/PoemView'));
-const IntermissionView = lazy(() => import('./components/IntermissionView'));
-const VentView = lazy(() => import('./components/VentView'));
-const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
+import WelcomeScreen from './components/WelcomeScreen';
+import IndexView from './components/IndexView';
+import ChapterView from './components/ChapterView';
+import PoemView from './components/PoemView';
+import IntermissionView from './components/IntermissionView';
+import VentView from './components/VentView';
+import AdminDashboard from './components/AdminDashboard';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -39,9 +39,7 @@ function App() {
       <FlashlightOverlay />
       <DockNav />
       <div className="container">
-        <Suspense fallback={null}>
-          <AnimatedRoutes />
-        </Suspense>
+        <AnimatedRoutes />
       </div>
     </Router>
   );

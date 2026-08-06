@@ -25,6 +25,14 @@ function ChapterView() {
   const [randomDecorations, setRandomDecorations] = useState([]);
   const { language } = useLanguage();
 
+  const handleBack = () => {
+    if (window.history.length > 2) {
+      navigate(-1);
+    } else {
+      navigate('/index');
+    }
+  };
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -340,7 +348,7 @@ function ChapterView() {
     >
       <AmbientAudio src={`/${chapter?.theme || 'spring'}-ambient.mp3`} volume={0.03} />
       {renderSeason()}
-      <button className="back-button" style={{ marginBottom: '2rem' }} onClick={() => navigate(-1)}>
+      <button className="back-button" style={{ marginBottom: '2rem' }} onClick={handleBack}>
         &larr; {language === 'EN' ? 'Back' : 'Volver'}
       </button>
 

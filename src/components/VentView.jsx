@@ -17,9 +17,18 @@ function VentView() {
   const { language } = useLanguage();
   const [ventLanguage, setVentLanguage] = useState(language);
 
+  // Sync ventLanguage with global language when global language changes
   useEffect(() => {
     setVentLanguage(language);
   }, [language]);
+
+  const handleBack = () => {
+    if (window.history.length > 2) {
+      navigate(-1);
+    } else {
+      navigate('/index');
+    }
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -214,7 +223,7 @@ function VentView() {
         {scatters}
       </div>
 
-      <button className="back-button" style={{ marginBottom: '3rem', alignSelf: 'flex-start' }} onClick={() => navigate(-1)}>
+      <button className="back-button" style={{ marginBottom: '3rem', alignSelf: 'flex-start' }} onClick={handleBack}>
         &larr; {language === 'EN' ? 'Back' : 'Volver'}
       </button>
 
