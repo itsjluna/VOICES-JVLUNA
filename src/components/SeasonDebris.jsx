@@ -94,8 +94,8 @@ export const SeasonDebris = React.memo(({ theme }) => {
           ) : type > 0.25 ? (
             // Wide Tulip / Purple Flower
             <g transform="scale(1.1) translate(-4, -2)">
-              <path d="M 35 90 C 10 60, 10 25, 35 10 C 50 30, 45 60, 35 90 Z" fill="#9d4edd" />
-              <path d="M 65 90 C 90 60, 90 25, 65 10 C 50 30, 55 60, 65 90 Z" fill="#9d4edd" />
+              <path d="M 35 90 C 10 60, 10 25, 35 10 C 50 30, 45 60, 35 90 Z" fill="#9d4edd" transform="rotate(12 35 90)" />
+              <path d="M 65 90 C 90 60, 90 25, 65 10 C 50 30, 55 60, 65 90 Z" fill="#9d4edd" transform="rotate(-12 65 90)" />
               <path d="M 50 95 C 25 60, 30 20, 50 5 C 70 20, 75 60, 50 95 Z" fill="#7b2cbf" />
               <path d="M 50 95 C 40 70, 45 40, 50 25 C 55 40, 60 70, 50 95 Z" fill="#5a189a" />
             </g>

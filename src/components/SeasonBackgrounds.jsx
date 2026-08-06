@@ -654,10 +654,13 @@ export const Autumn = React.memo(() => {
         <circle cx="185" cy="535" r="20" fill={isDark ? "#733e24" : "#c97b5f"} />
         <circle cx="215" cy="525" r="25" fill={hillFg} />
         
-        <path d="M 800 630 L 800 500" stroke={hillBg} strokeWidth="10" strokeLinecap="round" />
-        <circle cx="800" cy="460" r="50" fill={coast} />
-        <circle cx="770" cy="485" r="30" fill={isDark ? "#733e24" : "#c97b5f"} />
-        <circle cx="830" cy="470" r="35" fill={hillFg} />
+        {/* Far Autumn Tree Right */}
+        <g opacity="0.6">
+          <path d="M 850 580 L 850 480" stroke={hillBg} strokeWidth="6" strokeLinecap="round" />
+          <circle cx="850" cy="450" r="35" fill={coast} />
+          <circle cx="830" cy="465" r="20" fill={isDark ? "#733e24" : "#c97b5f"} />
+          <circle cx="870" cy="455" r="25" fill={hillFg} />
+        </g>
       </motion.g>
     </motion.g>
   );
