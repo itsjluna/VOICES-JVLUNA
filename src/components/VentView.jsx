@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import api from '../api';
 import Polaroid from './Polaroid';
+import Sticker from './Sticker';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import { useLanguage } from '../contexts/LanguageContext';
 import { FaLanguage } from 'react-icons/fa';
@@ -35,6 +36,35 @@ function VentView() {
   }, [id]);
 
   const isNotebook = vent?.theme !== 'postits';
+
+  // STICKERS GENERATION
+  const stickerImages = ['bee.png', 'cat.png', 'cat2.png', 'flower.png', 'flower2.png', 'flower3.png', 'flower4.png', 'jjk.png', 'pig.png'];
+  const generatedStickers = useMemo(() => {
+    const count = Math.floor(Math.random() * 4) + 3; // 3 to 6 stickers
+    const items = [];
+    const available = [...stickerImages];
+    for (let i = 0; i < count; i++) {
+      if (available.length === 0) break;
+      const idx = Math.floor(Math.random() * available.length);
+      const img = available.splice(idx, 1)[0];
+      
+      const isLeft = Math.random() > 0.5;
+      const top = `${Math.random() * 80 + 10}%`; // anywhere along the vertical axis but not extreme top/bottom
+      // position slightly outside or on the edge of the container
+      const sidePos = `${Math.random() * 10 - 5}%`;
+      
+      items.push({
+        id: `sticker-${i}`,
+        src: `/sticker/${img}`,
+        top,
+        left: isLeft ? sidePos : 'auto',
+        right: !isLeft ? sidePos : 'auto',
+        rotate: Math.random() * 60 - 30,
+        width: `${Math.random() * 40 + 60}px`
+      });
+    }
+    return items;
+  }, []);
 
   // SCATTER GENERATION
   const scatters = useMemo(() => {
@@ -198,6 +228,22 @@ function VentView() {
           })
         }}
       >
+        {/* Render Stickers */}
+        {generatedStickers.map(sticker => (
+          <Sticker
+            key={sticker.id}
+            src={sticker.src}
+            style={{
+              top: sticker.top,
+              left: sticker.left,
+              right: sticker.right,
+              width: sticker.width,
+              transform: `rotate(${sticker.rotate}deg)`,
+              zIndex: 20
+            }}
+          />
+        ))}
+
         <div className="editorial-margin left" style={{ color: isNotebook ? '#777' : '#555', left: isNotebook ? '-60px' : '-40px' }}>
           {language === 'EN' ? 'VENT Nº ' : 'DESAHOGO Nº '}{id ? id.slice(-4).toUpperCase() : 'XXXX'}
         </div>

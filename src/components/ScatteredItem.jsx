@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
-const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimation, style, className }) => {
+const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimation, style, className, draggable = true }) => {
   const [isOpen, setIsOpen] = useState(false);
   
   useEffect(() => {
@@ -23,11 +23,11 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
         initial={initialAnimation.initial}
         animate={initialAnimation.animate}
         transition={initialAnimation.transition}
-        style={{ ...style, cursor: 'grab' }}
-        drag
-        dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }}
-        dragElastic={0.2}
-        whileDrag={{ scale: 1.1, cursor: 'grabbing', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }}
+        style={{ ...style, cursor: draggable ? 'grab' : 'pointer' }}
+        drag={draggable}
+        dragConstraints={draggable ? { left: -100, right: 100, top: -100, bottom: 100 } : undefined}
+        dragElastic={draggable ? 0.2 : undefined}
+        whileDrag={draggable ? { scale: 1.1, cursor: 'grabbing', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' } : undefined}
         onClick={() => setIsOpen(true)}
         whileHover={{ scale: 1.05, filter: 'brightness(1.1)' }}
         loading="lazy"

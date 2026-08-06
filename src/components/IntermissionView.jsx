@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { FaPlane, FaTrain, FaBus } from 'react-icons/fa';
 import api from '../api';
 import Polaroid from './Polaroid';
+import ScatteredItem from './ScatteredItem';
 import { TravelGraphics } from './TravelGraphics';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -13,6 +14,14 @@ import TypewriterLoader from './TypewriterLoader';
 const ticketTypes = ['plane', 'train', 'train-cherry', 'bus'];
 const accentColors = ['#e63946', '#2a9d8f', '#e9c46a', '#f4a261', '#264653', '#8338ec', '#ff006e', '#fb8500', '#023047', '#8ecae6'];
 
+const souvenirs = [
+  { src: '/souvenirs/conepine.png', titleEn: 'Fallen Pinecone', titleEs: 'Cono de Pino Caído', descEn: 'A dry pinecone.', descEs: 'Un cono de pino seco.' },
+  { src: '/souvenirs/mapleleaf.png', titleEn: 'Autumn Maple Leaf', titleEs: 'Hoja de Arce de Otoño', descEn: 'A crisp red leaf.', descEs: 'Una hoja roja crujiente.' },
+  { src: '/souvenirs/OIP__11_-removebg-preview.png', titleEn: 'Marquesita Yucateca', titleEs: 'Marquesita Yucateca', descEn: 'Crispy crepe with cheese.', descEs: 'Crepa crujiente con queso.' },
+  { src: '/souvenirs/OIP__9_-removebg-preview.png', titleEn: 'Inca Kola', titleEs: 'Inca Kola', descEn: 'Golden carbonated beverage.', descEs: 'Bebida dorada carbonatada.' },
+  { src: '/souvenirs/paci-6178-removebg-preview.png', titleEn: 'Macarrón Argentino', titleEs: 'Macarrón Argentino', descEn: 'Sweet macaron.', descEs: 'Macarrón dulce.' }
+];
+
 function IntermissionView() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -21,6 +30,7 @@ function IntermissionView() {
   const { markAsRead } = useReadingProgress();
   const { language } = useLanguage();
   const [intermissionLanguage, setIntermissionLanguage] = useState(language);
+  const [randomSouvenir, setRandomSouvenir] = useState(null);
 
   useEffect(() => {
     setIntermissionLanguage(language);
@@ -69,6 +79,7 @@ function IntermissionView() {
 
     fetchData();
     fetchIp();
+    setRandomSouvenir({ ...souvenirs[Math.floor(Math.random() * souvenirs.length)], rotate: Math.random() * 40 - 20 });
   }, [id]);
 
   if (!intermission) return <TypewriterLoader text={language === 'EN' ? 'Opening intermission...' : 'Abriendo intermedio...'} />;
@@ -177,6 +188,27 @@ function IntermissionView() {
               <path d="M45,45 L45,150 A15,15 0 0,0 75,150 L75,30 A25,25 0 0,0 25,30 L25,160 A35,35 0 0,0 95,160 L95,55" fill="none" stroke="#bdc3c7" strokeWidth="8" strokeLinecap="round" />
               <path d="M45,45 L45,150 A15,15 0 0,0 75,150 L75,30 A25,25 0 0,0 25,30 L25,160 A35,35 0 0,0 95,160 L95,55" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" opacity="0.5" transform="translate(-1, -1)" />
             </svg>
+            
+            {randomSouvenir && (
+              <ScatteredItem 
+                src={randomSouvenir.src}
+                title={language === 'EN' ? randomSouvenir.titleEn : randomSouvenir.titleEs}
+                description={language === 'EN' ? randomSouvenir.descEn : randomSouvenir.descEs}
+                draggable={false}
+                initialAnimation={{
+                  initial: { opacity: 0, scale: 0.8, rotate: randomSouvenir.rotate, x: 20 },
+                  animate: { opacity: 1, scale: 1, x: 0 },
+                  transition: { delay: 1, duration: 0.8 }
+                }}
+                style={{
+                  position: 'absolute',
+                  bottom: '-40px',
+                  right: '-60px',
+                  width: '140px',
+                  zIndex: 20
+                }}
+              />
+            )}
           </motion.div>
         )}
       </div>

@@ -149,8 +149,8 @@ export const Winter = React.memo(() => {
           </linearGradient>
         </defs>
         {[...Array(2)].map((_, i) => (
-          <path key={`aurora-${i}`} d="M-200 400 Q 200 100 600 400 T 1400 400" fill="none" stroke={`url(#aurora-grad-${i})`} strokeWidth={120 - i * 40} opacity={0.6 + i * 0.2} filter="blur(30px)">
-            <animate attributeName="d" values="M-200 400 Q 200 100 600 400 T 1400 400; M-200 300 Q 400 600 800 300 T 1400 300; M-200 400 Q 200 100 600 400 T 1400 400" dur={`${15 + i * 8}s`} repeatCount="indefinite" calcMode="spline" keyTimes="0; 0.5; 1" keySplines="0.42 0 0.58 1; 0.42 0 0.58 1" />
+          <path key={`aurora-${i}`} d="M-200 400 Q 300 300 700 350 T 1400 400" fill="none" stroke={`url(#aurora-grad-${i})`} strokeWidth={120 - i * 40} opacity={0.6 + i * 0.2} filter="blur(30px)">
+            <animate attributeName="d" values="M-200 400 Q 300 250 700 350 T 1400 400; M-200 400 Q 400 450 800 300 T 1400 400; M-200 400 Q 300 250 700 350 T 1400 400" dur={`${40 + i * 20}s`} repeatCount="indefinite" calcMode="spline" keyTimes="0; 0.5; 1" keySplines="0.42 0 0.58 1; 0.42 0 0.58 1" />
           </path>
         ))}
       </g>

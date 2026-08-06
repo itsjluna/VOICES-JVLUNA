@@ -22,8 +22,7 @@
   padding: 0;
 }
 
-html, body {
-  overflow-x: hidden;
+html {
   max-width: 100%;
   width: 100%;
 }
@@ -39,7 +38,6 @@ body {
 }
 
 #root {
-  overflow-x: hidden;
   width: 100%;
   position: relative;
   min-height: 100vh;

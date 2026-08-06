@@ -123,8 +123,8 @@ function IndexView() {
       ][i % 3],
       scale: Math.random() * 2.5 + 1.5,
       dur: Math.random() * 120 + 180, // Slower clouds
-      begin: Math.random() * 60,
-      y: Math.random() * 60
+      begin: Math.random() * 120,
+      y: Math.random() * 200 - 20
     }));
   }, []);
 
@@ -161,10 +161,10 @@ function IndexView() {
       const cloudCount = (localWeather === 'cloudy' || localWeather === 'rain' || localWeather === 'snow') ? 12 : 4;
       const opacity = localWeather === 'clear' ? 0.3 : (isDaytime ? 0.5 : 0.25);
       elements.push(clouds.slice(0, cloudCount).map((c, i) => (
-        <path key={`cloud-${i}`} d={c.d} fill="#fff" opacity={opacity} transform={`scale(${c.scale})`}>
-          <animateTransform attributeName="transform" type="translate" from="-300 0" to="2000 0" dur={`${c.dur}s`} begin={`-${c.begin}s`} repeatCount="indefinite" additive="sum" />
-          <animate attributeName="y" values={`${c.y}vh`} />
-        </path>
+        <g key={`cloud-${i}`}>
+          <animateTransform attributeName="transform" type="translate" from={`-300 ${c.y}`} to={`2000 ${c.y}`} dur={`${c.dur}s`} begin={`-${c.begin}s`} repeatCount="indefinite" />
+          <path d={c.d} fill="#fff" opacity={opacity} transform={`scale(${c.scale})`} />
+        </g>
       )));
     }
 

@@ -159,11 +159,16 @@ function ChapterView() {
             universallySafeResults.sort((a, b) => new Date(b.releaseDate || 0) - new Date(a.releaseDate || 0));
 
             // 2. Try to get exact artist matches (strict case-sensitive equal to prevent collisions like EmJay vs EMJAY)
-            const exactMatches = universallySafeResults.filter(a => {
+            let exactMatches = universallySafeResults.filter(a => {
               if (randomArtist === 'Dafna') return a.artistId === 1450666890;
               if (randomArtist === 'Junior Varsity') return a.artistId === 1561201891;
-              return a.artistName === randomArtist;
+              return a.artistName === randomArtist || a.artistName.toLowerCase() === randomArtist.toLowerCase();
             });
+            
+            // Fallback to top results if exact string match fails but we have results
+            if (exactMatches.length === 0 && universallySafeResults.length > 0) {
+              exactMatches = universallySafeResults.slice(0, 5);
+            }
             
             // 3. Categorize matches into 5 Tiers
             const tier1_StudioAlbums = [];
@@ -231,7 +236,8 @@ function ChapterView() {
           'logitech.png', 'marvel.png', 'pen.png', 'pencil.png', 'pepsi.png', 'rubik.png', 
           'slims.png', 'sw.png', 'transformers.png', 'watch.png', 
           'whisky.png', 'wine.png', 'hummingbird.webp', 'magnolia.webp', 'origami.webp',
-          'pulparindo.png', 'lgbtflag.png', 'munecalele.png', 'vynilplayer.png', 'mazapan.png'
+          'pulparindo.png', 'lgbtflag.png', 'munecalele.png', 'vynilplayer.png', 'mazapan.png',
+          'galletasolesdonde.png', 'freelifedrink.png', 'skyycosmos.png', 'aspirins.png', 'kitkat.png'
         ];
         
         const decorationMeta = {
@@ -262,7 +268,12 @@ function ChapterView() {
           'lgbtflag.png': { titleEn: 'Pride Flag', titleEs: 'Bandera del Orgullo', descEn: 'Colored fabric.', descEs: 'Tela de colores.' },
           'munecalele.png': { titleEn: 'Muñeca Lele', titleEs: 'Muñeca Lele', descEn: 'Traditional rag doll.', descEs: 'Muñeca de trapo tradicional.' },
           'vynilplayer.png': { titleEn: 'Record Player', titleEs: 'Tocadiscos', descEn: 'Turntable and needle.', descEs: 'Plato y aguja.' },
-          'mazapan.png': { titleEn: 'De la Rosa Mazapán', titleEs: 'Mazapán de la Rosa', descEn: 'Peanut confection.', descEs: 'Dulce de cacahuate.' }
+          'mazapan.png': { titleEn: 'De la Rosa Mazapán', titleEs: 'Mazapán de la Rosa', descEn: 'Peanut confection.', descEs: 'Dulce de cacahuate.' },
+          'galletasolesdonde.png': { titleEn: 'Dondé Soles Cookies', titleEs: 'Galletas Soles Dondé', descEn: 'Cookies from Yucatan.', descEs: 'Galletas de Yucatán.' },
+          'freelifedrink.png': { titleEn: 'Free Life Drink', titleEs: 'Bebida Free Life', descEn: '0 cal drink.', descEs: 'Bebida 0 cal.' },
+          'skyycosmos.png': { titleEn: 'Skyy Cosmos', titleEs: 'Skyy Cosmos', descEn: 'Cosmos drink.', descEs: 'Bebida Cosmos.' },
+          'aspirins.png': { titleEn: 'Aspirin 81mg', titleEs: 'Aspirina 81mg', descEn: 'Slow action.', descEs: 'Acción lenta.' },
+          'kitkat.png': { titleEn: 'Kit-Kat Bar', titleEs: 'Barra Kit-Kat', descEn: 'Chocolate bar.', descEs: 'Barra de chocolate.' }
         };
 
         const isDesktop = typeof window !== 'undefined' && window.innerWidth > 768;
