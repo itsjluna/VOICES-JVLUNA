@@ -453,7 +453,7 @@ function ChapterView() {
             </motion.div>
           )}
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 1.5 }} className="glass-panel" style={{ marginTop: '3rem', clear: 'both' }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 1.5 }} className="glass-panel" style={{ marginTop: '3rem' }}>
             <h3 style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', letterSpacing: '0.05em', marginBottom: '1.5rem', opacity: 0.8 }}>
               {language === 'EN' ? 'IN THIS CHAPTER' : 'EN ESTE CAPÍTULO'}
             </h3>
