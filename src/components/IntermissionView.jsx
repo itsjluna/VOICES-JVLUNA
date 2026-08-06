@@ -17,9 +17,9 @@ const accentColors = ['#e63946', '#2a9d8f', '#e9c46a', '#f4a261', '#264653', '#8
 const souvenirs = [
   { src: '/souvenirs/conepine.png', titleEn: 'Fallen Pinecone', titleEs: 'Cono de Pino Caído', descEn: 'A dry pinecone.', descEs: 'Un cono de pino seco.' },
   { src: '/souvenirs/mapleleaf.png', titleEn: 'Autumn Maple Leaf', titleEs: 'Hoja de Arce de Otoño', descEn: 'A crisp red leaf.', descEs: 'Una hoja roja crujiente.' },
-  { src: '/souvenirs/OIP__11_-removebg-preview.png', titleEn: 'Marquesita Yucateca', titleEs: 'Marquesita Yucateca', descEn: 'Crispy crepe with cheese.', descEs: 'Crepa crujiente con queso.' },
-  { src: '/souvenirs/OIP__9_-removebg-preview.png', titleEn: 'Inca Kola', titleEs: 'Inca Kola', descEn: 'Golden carbonated beverage.', descEs: 'Bebida dorada carbonatada.' },
-  { src: '/souvenirs/paci-6178-removebg-preview.png', titleEn: 'Macarrón Argentino', titleEs: 'Macarrón Argentino', descEn: 'Sweet macaron.', descEs: 'Macarrón dulce.' }
+  { src: '/souvenirs/marquesitayucateca.png', titleEn: 'Marquesita Yucateca', titleEs: 'Marquesita Yucateca', descEn: 'Crispy crepe with cheese.', descEs: 'Crepa crujiente con queso.' },
+  { src: '/souvenirs/incakola.png', titleEn: 'Inca Kola', titleEs: 'Inca Kola', descEn: 'Golden carbonated beverage.', descEs: 'Bebida dorada carbonatada.' },
+  { src: '/souvenirs/macarronargentino.png', titleEn: 'Macarrón Argentino', titleEs: 'Macarrón Argentino', descEn: 'Sweet macaron.', descEs: 'Macarrón dulce.' }
 ];
 
 function IntermissionView() {

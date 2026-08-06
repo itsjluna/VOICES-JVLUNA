@@ -50,8 +50,8 @@ function VentView() {
       
       const isLeft = Math.random() > 0.5;
       const top = `${Math.random() * 80 + 10}%`; // anywhere along the vertical axis but not extreme top/bottom
-      // position slightly outside or on the edge of the container
-      const sidePos = `${Math.random() * 10 - 5}%`;
+      // position strictly on the outer margins to avoid covering text
+      const sidePos = `-${Math.random() * 8 + 4}%`;
       
       items.push({
         id: `sticker-${i}`,

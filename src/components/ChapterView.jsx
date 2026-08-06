@@ -348,6 +348,7 @@ function ChapterView() {
         VOL. {id.slice(-4).toUpperCase()} — {language === 'EN' ? 'CHAPTER' : 'CAPÍTULO'}
       </div>
 
+      <SeasonDebris theme={chapter.theme} />
 
       <div className="book-layout">
         <motion.div 
@@ -355,7 +356,6 @@ function ChapterView() {
           className="book-content"
           style={{ position: 'relative' }}
         >
-          <SeasonDebris theme={chapter.theme} />
           <h1 className="chapter-title">{language === 'EN' && chapter.titleEn ? chapter.titleEn : chapter.title}</h1>
           
           {chapter.image && (
