@@ -4,6 +4,10 @@ import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-mo
 
 const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimation, style, className, draggable = true }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const hasOpened = React.useRef(false);
+  const layoutId = `scattered-${src}-${title}`.replace(/[^a-zA-Z0-9]/g, '-');
+  
+  if (isOpen) hasOpened.current = true;
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -26,21 +30,28 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
 
   return (
     <>
-      <motion.img 
-        src={src}
-        alt={alt}
-        className={className}
-        initial={initialAnimation.initial}
-        animate={initialAnimation.animate}
-        transition={initialAnimation.transition}
-        style={{ ...style, cursor: draggable ? 'grab' : 'pointer' }}
-        drag={draggable}
-        dragConstraints={draggable ? { left: -100, right: 100, top: -100, bottom: 100 } : undefined}
-        dragElastic={draggable ? 0.2 : undefined}
-        whileDrag={draggable ? { scale: 1.1, cursor: 'grabbing', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' } : undefined}
-        onClick={handleOpen}
-        whileHover={{ scale: 1.05, filter: 'brightness(1.1)' }}
-      />
+      {!isOpen && (
+        <motion.img 
+          layoutId={layoutId}
+          src={src}
+          alt={alt}
+          className={className}
+          initial={hasOpened.current ? false : initialAnimation.initial}
+          animate={initialAnimation.animate}
+          transition={{ 
+            ...initialAnimation.transition, 
+            delay: hasOpened.current ? 0 : (initialAnimation.transition?.delay || 0),
+            layout: { type: "spring", stiffness: 1000, damping: 35 } 
+          }}
+          style={{ ...style, cursor: draggable ? 'grab' : 'pointer' }}
+          drag={draggable}
+          dragConstraints={draggable ? { left: -100, right: 100, top: -100, bottom: 100 } : undefined}
+          dragElastic={draggable ? 0.2 : undefined}
+          whileDrag={draggable ? { scale: 1.1, cursor: 'grabbing', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' } : undefined}
+          onClick={handleOpen}
+          whileHover={{ scale: 1.05, filter: 'brightness(1.1)' }}
+        />
+      )}
 
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
@@ -52,6 +63,7 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
               description={description}
               className={className} 
               onClose={() => setIsOpen(false)} 
+              layoutId={layoutId}
             />
           )}
         </AnimatePresence>,
@@ -61,7 +73,7 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
   );
 });
 
-const ScatteredModal = ({ src, alt, title, description, className, onClose }) => {
+const ScatteredModal = ({ src, alt, title, description, className, onClose, layoutId }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
@@ -126,10 +138,8 @@ const ScatteredModal = ({ src, alt, title, description, className, onClose }) =>
       }}
     >
       <motion.div
-        initial={{ scale: 0.5, y: 300, opacity: 0 }}
-        animate={{ scale: 1, y: 0, opacity: 1 }}
-        exit={{ scale: 0.7, y: 300, opacity: 0, transition: { duration: 0.2 } }}
-        transition={{ type: "spring", stiffness: 250, damping: 20, mass: 1.2 }}
+        layoutId={layoutId}
+        transition={{ type: "spring", stiffness: 1000, damping: 35 }}
         style={{
           rotateX: rotateX,
           rotateY: rotateY,
@@ -157,7 +167,7 @@ const ScatteredModal = ({ src, alt, title, description, className, onClose }) =>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.05 }}
             style={{
               marginTop: '2rem',
               color: '#fff',
