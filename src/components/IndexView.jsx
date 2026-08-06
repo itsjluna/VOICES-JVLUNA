@@ -136,13 +136,17 @@ function IndexView() {
     opacity: Math.random() * 0.3 + 0.1
   })), []);
 
-  const snow = useMemo(() => [...Array(80)].map((_, i) => ({
-    cx: Math.random() * 100,
-    r: Math.random() * 2.5 + 1,
-    dur: Math.random() * 10 + 8,
-    sway: Math.random() * 8 + 3,
-    opacity: Math.random() * 0.6 + 0.2
-  })), []);
+  const snow = useMemo(() => [...Array(80)].map((_, i) => {
+    const dur = Math.random() * 10 + 8;
+    return {
+      cx: Math.random() * 100,
+      r: Math.random() * 2.5 + 1,
+      dur: dur,
+      sway: Math.random() * 8 + 3,
+      opacity: Math.random() * 0.6 + 0.2,
+      delay: Math.random() * dur
+    };
+  }), []);
 
   const renderWeatherEffects = () => {
     if (localWeather === 'loading') return null;
@@ -189,8 +193,9 @@ function IndexView() {
     if (localWeather === 'snow') {
       elements.push(snow.map((s, i) => (
         <circle key={`snow-${i}`} cx={`${s.cx}%`} cy="-10%" r={s.r} fill="#fff" opacity={s.opacity} filter="drop-shadow(0 0 2px rgba(255,255,255,0.8))">
-          <animate attributeName="cy" from="-10%" to="110%" dur={`${s.dur}s`} repeatCount="indefinite" />
-          <animate attributeName="cx" values={`${s.cx}%; ${s.cx + s.sway}%; ${s.cx - s.sway/2}%; ${s.cx}%`} dur={`${s.dur * 0.65}s`} repeatCount="indefinite" calcMode="spline" keyTimes="0; 0.333; 0.666; 1" keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1" />
+          <animate attributeName="cy" from="-10%" to="110%" dur={`${s.dur}s`} begin={`-${s.delay}s`} repeatCount="indefinite" />
+          <animate attributeName="cx" values={`${s.cx}%; ${s.cx + s.sway}%; ${s.cx - s.sway/2}%; ${s.cx}%`} dur={`${s.dur * 0.65}s`} begin={`-${s.delay}s`} repeatCount="indefinite" calcMode="spline" keyTimes="0; 0.333; 0.666; 1" keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1" />
+          <animate attributeName="opacity" values={`${s.opacity}; ${s.opacity * 0.3}; ${s.opacity}`} dur={`${s.dur * 0.5}s`} begin={`-${s.delay}s`} repeatCount="indefinite" />
         </circle>
       )));
     }
@@ -205,6 +210,26 @@ function IndexView() {
       transition={{ duration: 1 }} 
       style={{ flex: 1, padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 5vw, 2rem)', display: 'flex', flexDirection: 'column', position: 'relative', alignItems: 'center', width: '100%' }}
     >
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeInOut" } }}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              backgroundColor: 'var(--bg-color)',
+              zIndex: 999999,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <TypewriterLoader text={language === 'EN' ? 'RETRIEVING ARCHIVES...' : 'RECUPERANDO ARCHIVOS...'} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence mode="wait">
         {showQuote && (
           <motion.div
@@ -294,11 +319,7 @@ function IndexView() {
           </h1>
         </div>
         
-        {isLoading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, minHeight: '300px' }}>
-            <TypewriterLoader text={language === 'EN' ? 'RETRIEVING ARCHIVES...' : 'RECUPERANDO ARCHIVOS...'} />
-          </div>
-        ) : (
+        {!isLoading && (
           <motion.div variants={containerVariants} initial="hidden" animate="show" style={{ width: '100%' }}>
             <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
               <motion.button 
@@ -534,6 +555,8 @@ function IndexView() {
           </motion.div>
         )}
       </div>
+
+
 
       {/* Debug Buttons - Temporary (Dev Only) */}
       {import.meta.env.DEV && (

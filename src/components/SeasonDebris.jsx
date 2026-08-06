@@ -65,40 +65,40 @@ export const SeasonDebris = React.memo(({ theme }) => {
       const top = Math.random() * 100;
       const left = Math.random() * 100;
       const rotate = Math.random() * 360;
-      const size = Math.random() * 55 + 25;
+      const size = Math.random() * 45 + 15;
       const type = Math.random();
       
       return (
         <svg key={i} width={size} height={size} style={{ position: 'absolute', top: `${top}vh`, left: `${left}vw`, opacity: 0.95, transform: `rotate(${rotate}deg)`, willChange: 'transform', filter: 'drop-shadow(2px 4px 6px rgba(0,0,0,0.15))' }} viewBox="0 0 100 100">
           {type > 0.75 ? (
-            // Magnolia (Pink)
-            <>
-              <path d="M50 50 C 25 15, 75 15, 50 50" fill="#f8c3cd" />
-              <path d="M50 50 C 15 35, 25 80, 50 50" fill="#f4a7b9" />
-              <path d="M50 50 C 85 35, 75 80, 50 50" fill="#f4a7b9" />
-              <path d="M50 50 C 40 20, 60 20, 50 50" fill="#ffb7b2" />
-              <circle cx="50" cy="50" r="7" fill="#e9cd4c" />
-              <circle cx="50" cy="50" r="3" fill="#d4af37" />
-            </>
+            // Magnolia (Pink, larger and lusher)
+            <g transform="scale(1.2) translate(-8, -8)">
+              <path d="M 50 50 C 20 0, 80 0, 50 50" fill="#f8c3cd" />
+              <path d="M 50 50 C -10 30, 20 90, 50 50" fill="#f4a7b9" />
+              <path d="M 50 50 C 110 30, 80 90, 50 50" fill="#f4a7b9" />
+              <path d="M 50 50 C 30 10, 70 10, 50 50" fill="#ffb7b2" opacity="0.8" />
+              <path d="M 50 50 C 10 40, 30 70, 50 50" fill="#ffb7b2" opacity="0.6" />
+              <path d="M 50 50 C 90 40, 70 70, 50 50" fill="#ffb7b2" opacity="0.6" />
+              <circle cx="50" cy="50" r="9" fill="#e9cd4c" />
+              <circle cx="50" cy="50" r="4" fill="#d4af37" />
+            </g>
           ) : type > 0.5 ? (
             // Daisy (White & Yellow)
             <>
-              {[0, 45, 90, 135].map(angle => (
-                <path key={angle} d="M50 50 L50 5 A12 12 0 0 1 64 5 L50 50" fill="#ffffff" transform={`rotate(${angle} 50 50)`} />
-              ))}
-              {[0, 45, 90, 135].map(angle => (
-                <path key={angle} d="M50 50 L50 95 A12 12 0 0 1 36 95 L50 50" fill="#ffffff" transform={`rotate(${angle} 50 50)`} />
+              {[0, 30, 60, 90, 120, 150].map(angle => (
+                <ellipse key={angle} cx="50" cy="50" rx="8" ry="40" fill="#ffffff" transform={`rotate(${angle} 50 50)`} />
               ))}
               <circle cx="50" cy="50" r="14" fill="#ffd166" />
               <circle cx="50" cy="50" r="10" fill="#ffb703" />
             </>
           ) : type > 0.25 ? (
-            // Tulip
-            <>
-              <path d="M 25 80 C 40 95, 60 95, 75 80 L 85 20 C 70 50, 50 40, 25 20 Z" fill="#9d4edd" />
-              <path d="M 35 80 C 50 95, 65 80, 65 40 C 50 70, 35 40, 35 40 Z" fill="#7b2cbf" />
-              <path d="M 45 80 C 50 90, 55 80, 55 50 Z" fill="#5a189a" />
-            </>
+            // Wide Tulip / Purple Flower
+            <g transform="scale(1.1) translate(-4, -2)">
+              <path d="M 35 90 C 10 60, 10 25, 35 10 C 50 30, 45 60, 35 90 Z" fill="#9d4edd" />
+              <path d="M 65 90 C 90 60, 90 25, 65 10 C 50 30, 55 60, 65 90 Z" fill="#9d4edd" />
+              <path d="M 50 95 C 25 60, 30 20, 50 5 C 70 20, 75 60, 50 95 Z" fill="#7b2cbf" />
+              <path d="M 50 95 C 40 70, 45 40, 50 25 C 55 40, 60 70, 50 95 Z" fill="#5a189a" />
+            </g>
           ) : (
             // Lush Green Leaf (Spring Green)
             <>
@@ -118,20 +118,25 @@ export const SeasonDebris = React.memo(({ theme }) => {
       const top = Math.random() * 100;
       const left = Math.random() * 100;
       const rotate = Math.random() * 360;
-      const size = Math.random() * 60 + 25;
+      const size = Math.random() * 45 + 15;
       const type = Math.random();
 
       return (
         <svg key={`summer-${i}`} width={size} height={size} style={{ position: 'absolute', top: `${top}vh`, left: `${left}vw`, opacity: 0.95, transform: `rotate(${rotate}deg)`, willChange: 'transform', filter: 'drop-shadow(2px 5px 6px rgba(0,0,0,0.2))' }} viewBox="0 0 100 100">
           {type > 0.8 ? (
-            // Watermelon Slice
+            // Starfish (Round and soft)
             <>
-              <path d="M 10 30 A 40 40 0 0 0 90 30 Z" fill="#2d6a4f" />
-              <path d="M 15 30 A 35 35 0 0 0 85 30 Z" fill="#d8f3dc" />
-              <path d="M 20 30 A 30 30 0 0 0 80 30 Z" fill="#ff4d6d" />
-              {[30, 40, 50, 60, 70].map((cx, idx) => (
-                <ellipse key={idx} cx={cx} cy={45 + (idx % 2 === 0 ? 5 : 0)} rx="2" ry="3.5" fill="#111" transform={`rotate(${(cx-50)/2} ${cx} 45)`} />
-              ))}
+              <path d="M 50 15 L 58 38 L 85 38 L 63 55 L 70 80 L 50 65 L 30 80 L 37 55 L 15 38 L 42 38 Z" fill="#f4a261" stroke="#f4a261" strokeWidth="12" strokeLinejoin="round" />
+              <path d="M 50 15 L 58 38 L 85 38 L 63 55 L 70 80 L 50 65 L 30 80 L 37 55 L 15 38 L 42 38 Z" fill="none" stroke="#e76f51" strokeWidth="1.5" strokeLinejoin="round" />
+              <circle cx="50" cy="45" r="2" fill="#e76f51" />
+              <circle cx="50" cy="55" r="2" fill="#e76f51" />
+              <circle cx="45" cy="50" r="2" fill="#e76f51" />
+              <circle cx="55" cy="50" r="2" fill="#e76f51" />
+              <circle cx="50" cy="22" r="1.5" fill="#e76f51" />
+              <circle cx="32" cy="42" r="1.5" fill="#e76f51" />
+              <circle cx="68" cy="42" r="1.5" fill="#e76f51" />
+              <circle cx="38" cy="70" r="1.5" fill="#e76f51" />
+              <circle cx="62" cy="70" r="1.5" fill="#e76f51" />
             </>
           ) : type > 0.6 ? (
             // Citrus Slice
@@ -144,24 +149,40 @@ export const SeasonDebris = React.memo(({ theme }) => {
               <circle cx="50" cy="50" r="6" fill="#fff9eb" />
             </>
           ) : type > 0.4 ? (
-            // Monstera Leaf
-            <>
-              <path d="M 50 95 C 20 80, 5 30, 30 10 C 65 0, 95 25, 85 70 C 75 90, 65 95, 50 95 Z" fill="#2a9d8f" />
-              <path d="M 25 35 C 35 35, 45 40, 45 50 C 45 35, 30 20, 10 20 C 15 30, 20 35, 25 35 Z" fill="transparent" />
-              <ellipse cx="25" cy="35" rx="10" ry="4" fill="white" style={{ mixBlendMode: 'destination-out' }} transform="rotate(30 25 35)" />
-              <ellipse cx="75" cy="45" rx="12" ry="5" fill="white" style={{ mixBlendMode: 'destination-out' }} transform="rotate(-40 75 45)" />
-              <ellipse cx="65" cy="20" rx="9" ry="4" fill="white" style={{ mixBlendMode: 'destination-out' }} transform="rotate(-60 65 20)" />
-              <ellipse cx="35" cy="70" rx="11" ry="4" fill="white" style={{ mixBlendMode: 'destination-out' }} transform="rotate(20 35 70)" />
-              <line x1="50" y1="95" x2="45" y2="15" stroke="#1b4332" strokeWidth="3" opacity="0.6" strokeLinecap="round" />
-            </>
+            // Soft Monstera Leaf (Summer Green)
+            <g>
+              <mask id={`monstera-mask-${i}`}>
+                <rect width="100" height="100" fill="white" />
+                {/* Left Slits */}
+                <ellipse cx="10" cy="35" rx="25" ry="3" fill="black" transform="rotate(15 10 35)" />
+                <ellipse cx="15" cy="65" rx="22" ry="3.5" fill="black" transform="rotate(30 15 65)" />
+                {/* Right Slits */}
+                <ellipse cx="90" cy="35" rx="25" ry="3" fill="black" transform="rotate(-15 90 35)" />
+                <ellipse cx="85" cy="65" rx="22" ry="3.5" fill="black" transform="rotate(-30 85 65)" />
+                {/* Fenestrations (Holes) */}
+                <circle cx="35" cy="48" r="3.5" fill="black" />
+                <circle cx="32" cy="28" r="2.5" fill="black" />
+                <circle cx="65" cy="50" r="3" fill="black" />
+                <circle cx="68" cy="30" r="2.5" fill="black" />
+              </mask>
+              <g mask={`url(#monstera-mask-${i})`}>
+                <path d="M 50 95 C -5 50, 15 10, 50 5 C 85 10, 105 50, 50 95 Z" fill="#52b788" opacity="0.95" />
+                <path d="M 50 95 C 35 60, 40 15, 50 5" fill="none" stroke="#40916c" strokeWidth="2" opacity="0.5" />
+                <line x1="50" y1="95" x2="50" y2="10" stroke="#40916c" strokeWidth="3" opacity="0.6" />
+                <line x1="50" y1="75" x2="25" y2="55" stroke="#40916c" strokeWidth="1.5" opacity="0.4" />
+                <line x1="50" y1="65" x2="75" y2="45" stroke="#40916c" strokeWidth="1.5" opacity="0.4" />
+                <line x1="50" y1="45" x2="30" y2="30" stroke="#40916c" strokeWidth="1.5" opacity="0.4" />
+                <line x1="50" y1="35" x2="70" y2="20" stroke="#40916c" strokeWidth="1.5" opacity="0.4" />
+              </g>
+            </g>
           ) : type > 0.2 ? (
             // Sunflower
             <>
               {[0, 30, 60, 90, 120, 150].map(angle => (
-                <ellipse key={angle} cx="50" cy="25" rx="10" ry="20" fill="#fca311" transform={`rotate(${angle} 50 50)`} />
+                <ellipse key={angle} cx="50" cy="50" rx="10" ry="40" fill="#fca311" transform={`rotate(${angle} 50 50)`} />
               ))}
               {[15, 45, 75, 105, 135, 165].map(angle => (
-                <ellipse key={angle} cx="50" cy="30" rx="8" ry="16" fill="#ffb703" transform={`rotate(${angle} 50 50)`} />
+                <ellipse key={angle} cx="50" cy="50" rx="8" ry="32" fill="#ffb703" transform={`rotate(${angle} 50 50)`} />
               ))}
               <circle cx="50" cy="50" r="18" fill="#582f0e" />
               <circle cx="50" cy="50" r="14" fill="#7f4f24" stroke="#936639" strokeWidth="2" strokeDasharray="3,3" />
@@ -193,7 +214,7 @@ export const SeasonDebris = React.memo(({ theme }) => {
       const top = Math.random() * 100;
       const left = Math.random() * 100;
       const rotate = Math.random() * 360;
-      const size = Math.random() * 50 + 20;
+      const size = Math.random() * 45 + 15;
       const type = Math.random();
 
       return (
@@ -201,11 +222,13 @@ export const SeasonDebris = React.memo(({ theme }) => {
           {type > 0.8 ? (
             // Rich Maple Leaf
             <>
-              <path d="M 50 90 L 50 70 L 15 55 L 20 40 L 5 35 L 35 25 L 40 5 L 50 15 L 60 5 L 65 25 L 95 35 L 80 40 L 85 55 L 50 70 Z" fill="#d00000" stroke="#9d0208" strokeWidth="2" strokeLinejoin="round" />
-              <path d="M 50 95 L 50 70" stroke="#6a040f" strokeWidth="3" strokeLinecap="round" />
-              <line x1="50" y1="70" x2="50" y2="15" stroke="#6a040f" strokeWidth="2.5" opacity="0.8" />
-              <line x1="50" y1="70" x2="20" y2="40" stroke="#6a040f" strokeWidth="2.5" opacity="0.8" />
-              <line x1="50" y1="70" x2="80" y2="40" stroke="#6a040f" strokeWidth="2.5" opacity="0.8" />
+              <path d="M 50 95 L 50 82" stroke="#6a040f" strokeWidth="3" strokeLinecap="round" />
+              <path d="M 50 82 L 35 78 L 20 78 L 18 68 L 30 60 L 12 55 L 8 45 L 25 40 L 35 45 L 40 25 L 50 5 L 60 25 L 65 45 L 75 40 L 92 45 L 88 55 L 70 60 L 82 68 L 80 78 L 65 78 Z" fill="#d00000" stroke="#9d0208" strokeWidth="1.5" strokeLinejoin="round" />
+              <line x1="50" y1="82" x2="50" y2="10" stroke="#6a040f" strokeWidth="2.5" opacity="0.7" />
+              <line x1="50" y1="82" x2="15" y2="48" stroke="#6a040f" strokeWidth="2" opacity="0.7" />
+              <line x1="50" y1="82" x2="85" y2="48" stroke="#6a040f" strokeWidth="2" opacity="0.7" />
+              <line x1="50" y1="82" x2="25" y2="73" stroke="#6a040f" strokeWidth="1.5" opacity="0.7" />
+              <line x1="50" y1="82" x2="75" y2="73" stroke="#6a040f" strokeWidth="1.5" opacity="0.7" />
             </>
           ) : type > 0.6 ? (
             // Oak Leaf
@@ -223,15 +246,14 @@ export const SeasonDebris = React.memo(({ theme }) => {
               <path d="M 30 45 L 70 45" stroke="#7f4f24" strokeWidth="2" />
             </>
           ) : type > 0.2 ? (
-            // Mushroom
+            // Pinecone
             <>
-              <path d="M 40 90 C 40 60, 42 50, 50 50 C 58 50, 60 60, 60 90 Z" fill="#edede9" />
-              <path d="M 10 55 C 10 10, 90 10, 90 55 C 90 60, 10 60, 10 55 Z" fill="#d90429" />
-              <circle cx="30" cy="35" r="5" fill="#ffffff" />
-              <circle cx="70" cy="40" r="6" fill="#ffffff" />
-              <circle cx="50" cy="25" r="7" fill="#ffffff" />
-              <circle cx="20" cy="45" r="3" fill="#ffffff" />
-              <circle cx="80" cy="30" r="4" fill="#ffffff" />
+              <path d="M 50 15 C 20 30, 25 75, 50 90 C 75 75, 80 30, 50 15 Z" fill="#582f0e" />
+              <path d="M 40 25 C 45 30, 55 30, 60 25 C 55 35, 45 35, 40 25 Z" fill="#7f4f24" />
+              <path d="M 30 40 C 40 45, 60 45, 70 40 C 60 50, 40 50, 30 40 Z" fill="#7f4f24" />
+              <path d="M 27 55 C 40 60, 60 60, 73 55 C 60 65, 40 65, 27 55 Z" fill="#7f4f24" />
+              <path d="M 33 70 C 45 75, 55 75, 67 70 C 55 80, 45 80, 33 70 Z" fill="#7f4f24" />
+              <path d="M 50 15 L 50 5" stroke="#432818" strokeWidth="3" strokeLinecap="round" />
             </>
           ) : (
             // Birch / Yellow Leaf
