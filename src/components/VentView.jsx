@@ -239,7 +239,7 @@ function VentView() {
               right: sticker.right,
               width: sticker.width,
               transform: `rotate(${sticker.rotate}deg)`,
-              zIndex: 20
+              zIndex: -1
             }}
           />
         ))}

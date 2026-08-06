@@ -500,6 +500,7 @@ function IndexView() {
                           color: readChapters.includes(chapter._id) && !isInt && !isVent 
                             ? 'var(--text-color)' 
                             : (isInt || isVent ? iconColor : 'inherit'),
+                          textShadow: '0 0 10px var(--glass-bg), 0 0 20px var(--glass-bg)',
                           opacity: readChapters.includes(chapter._id) && !isInt && !isVent ? 0.5 : 1,
                           wordWrap: 'break-word',
                           overflowWrap: 'break-word',
