@@ -14,6 +14,17 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
     return () => { document.body.style.overflow = 'unset'; };
   }, [isOpen]);
 
+  const handleOpen = async () => {
+    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+      try {
+        await DeviceOrientationEvent.requestPermission();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    setIsOpen(true);
+  };
+
   return (
     <>
       <motion.img 
@@ -28,7 +39,7 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
         dragConstraints={draggable ? { left: -100, right: 100, top: -100, bottom: 100 } : undefined}
         dragElastic={draggable ? 0.2 : undefined}
         whileDrag={draggable ? { scale: 1.1, cursor: 'grabbing', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' } : undefined}
-        onClick={() => setIsOpen(true)}
+        onClick={handleOpen}
         whileHover={{ scale: 1.05, filter: 'brightness(1.1)' }}
         loading="lazy"
         decoding="async"
@@ -60,6 +71,22 @@ const ScatteredModal = ({ src, alt, title, description, className, onClose }) =>
   const rotateX = useTransform(y, [-100, 100], [15, -15]);
   const rotateY = useTransform(x, [-100, 100], [-15, 15]);
   
+  useEffect(() => {
+    const handleOrientation = (e) => {
+      if (e.beta !== null && e.gamma !== null) {
+        let g = Math.max(-45, Math.min(45, e.gamma));
+        let b = Math.max(0, Math.min(90, e.beta)) - 45;
+        x.set((g / 45) * 100);
+        y.set((b / 45) * 100);
+      }
+    };
+    
+    if (typeof window !== 'undefined' && window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', handleOrientation);
+      return () => window.removeEventListener('deviceorientation', handleOrientation);
+    }
+  }, [x, y]);
+
   const handleMouseMove = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;

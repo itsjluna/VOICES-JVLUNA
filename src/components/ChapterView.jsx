@@ -156,11 +156,12 @@ function ChapterView() {
               const name = a.collectionName ? a.collectionName.toLowerCase() : '';
               const isBlockedChappell = a.artistName === 'Chappell Roan' && (name.includes('school nights') || name.includes('good hurt'));
               const isBlockedBadBunny = (a.artistName === 'Bad Bunny' || a.artistName === 'Drake') && (name.includes('super bowl') || name.includes('mia'));
+              const isBlockedOlivia = a.artistName === 'Olivia Rodrigo' && (name.includes('high school musical') || name.includes('hsmtmts'));
               
               const isAllowedUpsahl = a.artistName === 'UPSAHL' && name.includes('i like it');
               const isGarbage = name.includes('karaoke') || name.includes('instrumental') || name.includes('tribute') || name.includes('cover');
               
-              return !isBlockedChappell && !isBlockedBadBunny && !isGarbage;
+              return !isBlockedChappell && !isBlockedBadBunny && !isBlockedOlivia && !isGarbage;
             });
 
             // Sort by release date descending (newest first) to fix artists like Six Sex

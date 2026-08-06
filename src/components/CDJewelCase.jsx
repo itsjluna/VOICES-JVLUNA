@@ -38,9 +38,8 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
 
   return (
     <>
-      {!isOpen && (
-        <motion.div 
-          layoutId={layoutIdId}
+      <motion.div 
+        layoutId={layoutIdId}
         initial={initialAnimation.initial}
         animate={initialAnimation.animate}
         transition={{ ...initialAnimation.transition, layout: { type: "spring", stiffness: 1000, damping: 35 } }}
@@ -53,7 +52,8 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
           boxShadow: '2px 5px 15px rgba(0,0,0,0.3)',
           borderRadius: '2px',
           backgroundColor: '#111',
-          ...style
+          ...style,
+          opacity: isOpen ? 0 : (style?.opacity !== undefined ? style.opacity : 1)
         }}
         drag
         dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }}
@@ -69,7 +69,6 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
         />
         <JewelCaseOverlay />
       </motion.div>
-      )}
 
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
