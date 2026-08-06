@@ -48,17 +48,22 @@ function VentView() {
       const idx = Math.floor(Math.random() * available.length);
       const img = available.splice(idx, 1)[0];
       
-      const isLeft = Math.random() > 0.5;
-      const top = `${Math.random() * 80 + 10}%`; // anywhere along the vertical axis but not extreme top/bottom
-      // position strictly on the outer margins to avoid covering text
-      const sidePos = `-${Math.random() * 8 + 4}%`;
+      const isTop = Math.random() > 0.5;
+      
+      // limit to top or bottom borders to prevent overlapping with text
+      const topPos = isTop ? `-${Math.random() * 4 + 2}%` : 'auto';
+      const bottomPos = !isTop ? `-${Math.random() * 4 + 2}%` : 'auto';
+      
+      // place randomly along the horizontal edge
+      const leftPos = `${Math.random() * 80 + 10}%`;
       
       items.push({
         id: `sticker-${i}`,
         src: `/sticker/${img}`,
-        top,
-        left: isLeft ? sidePos : 'auto',
-        right: !isLeft ? sidePos : 'auto',
+        top: topPos,
+        bottom: bottomPos,
+        left: leftPos,
+        right: 'auto',
         rotate: Math.random() * 60 - 30,
         width: `${Math.random() * 40 + 60}px`
       });
@@ -235,11 +240,12 @@ function VentView() {
             src={sticker.src}
             style={{
               top: sticker.top,
+              bottom: sticker.bottom,
               left: sticker.left,
               right: sticker.right,
               width: sticker.width,
               transform: `rotate(${sticker.rotate}deg)`,
-              zIndex: -1
+              zIndex: 20
             }}
           />
         ))}
