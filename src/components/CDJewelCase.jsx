@@ -4,7 +4,10 @@ import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-mo
 
 const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initialAnimation, style }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const hasOpened = React.useRef(false);
   const layoutIdId = `cd-${albumName}-${artist}`.replace(/\s+/g, '-'); 
+  
+  if (isOpen) hasOpened.current = true;
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -38,23 +41,23 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
 
   return (
     <>
-      <motion.div 
-        layoutId={layoutIdId}
-        initial={initialAnimation.initial}
-        animate={initialAnimation.animate}
-        transition={{ ...initialAnimation.transition, layout: { type: "spring", stiffness: 1000, damping: 35 } }}
-        className="cd-jewel-case"
-        style={{ 
-          cursor: 'grab',
-          width: '120px',
-          height: '120px',
-          position: 'absolute',
-          boxShadow: '2px 5px 15px rgba(0,0,0,0.3)',
-          borderRadius: '2px',
-          backgroundColor: '#111',
-          ...style,
-          opacity: isOpen ? 0 : (style?.opacity !== undefined ? style.opacity : 1)
-        }}
+      {!isOpen && (
+        <motion.div 
+          layoutId={layoutIdId}
+          initial={hasOpened.current ? false : initialAnimation.initial}
+          animate={initialAnimation.animate}
+          transition={{ ...initialAnimation.transition, layout: { type: "spring", stiffness: 1000, damping: 35 } }}
+          className="cd-jewel-case"
+          style={{ 
+            cursor: 'grab',
+            width: '120px',
+            height: '120px',
+            position: 'absolute',
+            boxShadow: '2px 5px 15px rgba(0,0,0,0.3)',
+            borderRadius: '2px',
+            backgroundColor: '#111',
+            ...style
+          }}
         drag
         dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }}
         dragElastic={0.2}
@@ -69,6 +72,7 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
         />
         <JewelCaseOverlay />
       </motion.div>
+      )}
 
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
@@ -130,40 +134,29 @@ const CDModal = ({ layoutIdId, coverUrl, artist, albumName, previewUrl, onClose 
   };
 
   return (
-    <>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0,0,0,0.85)',
-          zIndex: 99998
-        }}
-      />
-      <div
-        onClick={onClose}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 99999,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          cursor: 'pointer',
-          perspective: '1000px'
-        }}
-      >
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'rgba(0,0,0,0.85)',
+        zIndex: 99999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        cursor: 'pointer',
+        perspective: '1000px'
+      }}
+    >
       <motion.div 
         layoutId={layoutIdId}
         transition={{ type: "spring", stiffness: 1000, damping: 35 }}
@@ -195,7 +188,7 @@ const CDModal = ({ layoutIdId, coverUrl, artist, albumName, previewUrl, onClose 
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.05 }}
+        transition={{ delay: 0.2 }}
         style={{ textAlign: 'center', color: '#fff', marginTop: '2rem', fontFamily: 'var(--font-sans)', letterSpacing: '1px', zIndex: 100000 }}
       >
         <strong style={{ fontSize: '1.2rem' }}>{albumName}</strong><br/>
@@ -204,8 +197,7 @@ const CDModal = ({ layoutIdId, coverUrl, artist, albumName, previewUrl, onClose 
       </motion.div>
       
       {previewUrl && <audio src={previewUrl} autoPlay />}
-      </div>
-    </>
+    </motion.div>
   );
 };
 

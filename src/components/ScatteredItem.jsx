@@ -4,8 +4,6 @@ import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-mo
 
 const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimation, style, className, draggable = true }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const layoutId = `scattered-${src}-${title}`.replace(/\s+/g, '-');
-  
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -29,14 +27,13 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
   return (
     <>
       <motion.img 
-        layoutId={layoutId}
         src={src}
         alt={alt}
         className={className}
         initial={initialAnimation.initial}
         animate={initialAnimation.animate}
         transition={initialAnimation.transition}
-        style={{ ...style, cursor: draggable ? 'grab' : 'pointer', opacity: isOpen ? 0 : (style?.opacity ?? 1) }}
+        style={{ ...style, cursor: draggable ? 'grab' : 'pointer' }}
         drag={draggable}
         dragConstraints={draggable ? { left: -100, right: 100, top: -100, bottom: 100 } : undefined}
         dragElastic={draggable ? 0.2 : undefined}
@@ -55,7 +52,6 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
               description={description}
               className={className} 
               onClose={() => setIsOpen(false)} 
-              layoutId={layoutId}
             />
           )}
         </AnimatePresence>,
@@ -65,7 +61,7 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
   );
 });
 
-const ScatteredModal = ({ src, alt, title, description, className, onClose, layoutId }) => {
+const ScatteredModal = ({ src, alt, title, description, className, onClose }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
@@ -104,45 +100,36 @@ const ScatteredModal = ({ src, alt, title, description, className, onClose, layo
   };
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'rgba(0,0,0,0.6)',
+        backdropFilter: 'blur(15px)',
+        WebkitBackdropFilter: 'blur(15px)',
+        zIndex: 99999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        cursor: 'pointer',
+        perspective: '1200px'
+      }}
+    >
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0,0,0,0.6)',
-          backdropFilter: 'blur(15px)',
-          WebkitBackdropFilter: 'blur(15px)',
-          zIndex: 99998
-        }}
-      />
-      <div
-        onClick={onClose}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 99999,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          cursor: 'pointer',
-          perspective: '1200px'
-        }}
-      >
-      <motion.div
-        layoutId={layoutId}
-        transition={{ type: "spring", stiffness: 1000, damping: 35 }}
+        initial={{ scale: 0.5, y: 300, opacity: 0 }}
+        animate={{ scale: 1, y: 0, opacity: 1 }}
+        exit={{ scale: 0.7, y: 300, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 250, damping: 20, mass: 1.2 }}
         style={{
           rotateX: rotateX,
           rotateY: rotateY,
@@ -170,7 +157,7 @@ const ScatteredModal = ({ src, alt, title, description, className, onClose, layo
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.05 }}
+            transition={{ delay: 0.3 }}
             style={{
               marginTop: '2rem',
               color: '#fff',
@@ -186,8 +173,7 @@ const ScatteredModal = ({ src, alt, title, description, className, onClose, layo
           </motion.div>
         )}
       </motion.div>
-      </div>
-    </>
+    </motion.div>
   );
 };
 
