@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { FaBookOpen, FaTicketAlt, FaSun, FaMoon, FaStickyNote } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaBookOpen, FaTicketAlt, FaSun, FaMoon, FaStickyNote, FaCloud, FaCloudRain, FaSnowflake, FaEye, FaEyeSlash, FaFilter } from 'react-icons/fa';
 import api from '../api';
 import { IndexScatter } from './IndexScatter';
 import { useReadingProgress } from '../hooks/useReadingProgress';
@@ -27,8 +27,19 @@ function IndexView() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTheme, setActiveTheme] = useState('all');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [localWeather, setLocalWeather] = useState('loading');
+  const [showSky, setShowSky] = useState(true);
+  const [showQuote, setShowQuote] = useState(false);
   const { readChapters } = useReadingProgress();
   const { language } = useLanguage();
+
+  useEffect(() => {
+    if (showQuote) {
+      const timer = setTimeout(() => setShowQuote(false), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [showQuote, showSky]);
 
   // Time of day logic
   const hour = new Date().getHours();
@@ -36,17 +47,29 @@ function IndexView() {
   const isDawn = hour >= 5 && hour <= 7;
   const isSunset = hour >= 17 && hour <= 19;
 
-  let skyGradient = 'linear-gradient(to bottom, rgba(10, 25, 47, 0.2) 0%, transparent 100%)'; // Night
+  let skyGradientBase = 'linear-gradient(to bottom, rgba(10, 25, 47, 0.6) 0%, rgba(10, 25, 47, 0) 100%)';
   let skyIcon = <FaMoon />;
   if (isDawn) {
-    skyGradient = 'linear-gradient(to bottom, rgba(255, 183, 178, 0.25) 0%, transparent 100%)';
+    skyGradientBase = 'linear-gradient(to bottom, rgba(255, 183, 178, 0.6) 0%, rgba(255, 183, 178, 0) 100%)';
     skyIcon = <FaSun />;
   } else if (isSunset) {
-    skyGradient = 'linear-gradient(to bottom, rgba(255, 154, 118, 0.25) 0%, transparent 100%)';
+    skyGradientBase = 'linear-gradient(to bottom, rgba(255, 154, 118, 0.6) 0%, rgba(255, 154, 118, 0) 100%)';
     skyIcon = <FaSun />;
   } else if (isDaytime) {
-    skyGradient = 'linear-gradient(to bottom, rgba(135, 206, 235, 0.25) 0%, transparent 100%)';
+    skyGradientBase = 'linear-gradient(to bottom, rgba(135, 206, 235, 0.6) 0%, rgba(135, 206, 235, 0) 100%)';
     skyIcon = <FaSun />;
+  }
+
+  let skyGradientWeather = 'transparent';
+  if (localWeather === 'cloudy') {
+    skyIcon = <FaCloud />;
+    skyGradientWeather = isDaytime ? 'linear-gradient(to bottom, rgba(150, 160, 170, 0.7) 0%, rgba(200, 210, 220, 0) 100%)' : 'linear-gradient(to bottom, rgba(30, 40, 50, 0.8) 0%, rgba(30, 40, 50, 0) 100%)';
+  } else if (localWeather === 'rain') {
+    skyIcon = <FaCloudRain />;
+    skyGradientWeather = isDaytime ? 'linear-gradient(to bottom, rgba(100, 120, 140, 0.8) 0%, rgba(140, 160, 180, 0) 100%)' : 'linear-gradient(to bottom, rgba(15, 20, 30, 0.9) 0%, rgba(15, 20, 30, 0) 100%)';
+  } else if (localWeather === 'snow') {
+    skyIcon = <FaSnowflake />;
+    skyGradientWeather = isDaytime ? 'linear-gradient(to bottom, rgba(180, 190, 200, 0.7) 0%, rgba(220, 230, 240, 0) 100%)' : 'linear-gradient(to bottom, rgba(40, 50, 60, 0.8) 0%, rgba(40, 50, 60, 0) 100%)';
   }
 
   useEffect(() => {
@@ -61,7 +84,119 @@ function IndexView() {
       }
     }
     fetchData();
+
+    async function fetchWeather() {
+      try {
+        const geoRes = await fetch('https://get.geojs.io/v1/ip/geo.json');
+        if (!geoRes.ok) return;
+        const geoData = await geoRes.json();
+        
+        const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${geoData.latitude}&longitude=${geoData.longitude}&current_weather=true`);
+        if (!weatherRes.ok) return;
+        const weatherData = await weatherRes.json();
+        const code = weatherData.current_weather.weathercode;
+        
+        if ([1, 2, 3, 45, 48].includes(code)) setLocalWeather('cloudy');
+        else if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82, 95, 96, 99].includes(code)) setLocalWeather('rain');
+        else if ([71, 73, 75, 77, 85, 86].includes(code)) setLocalWeather('snow');
+        else setLocalWeather('clear');
+      } catch (err) {
+        console.error('Error fetching weather:', err);
+      }
+    }
+    fetchWeather();
   }, []);
+
+  const stars = useMemo(() => [...Array(40)].map((_, i) => ({
+    cx: Math.random() * 100,
+    cy: Math.random() * 80,
+    r: Math.random() * 1.5 + 0.5,
+    dur: Math.random() * 4 + 2
+  })), []);
+
+  const clouds = useMemo(() => {
+    return [...Array(12)].map((_, i) => ({
+      d: [
+        "M 20 20 Q 30 10 40 20 Q 55 15 60 30 Q 70 30 70 40 Q 70 50 60 50 L 20 50 Q 5 50 10 35 Q 5 25 20 20 Z",
+        "M 30 30 Q 45 15 60 30 Q 80 20 90 40 Q 100 40 100 55 Q 100 70 85 70 L 30 70 Q 10 70 15 50 Q 10 35 30 30 Z",
+        "M 25 25 Q 40 10 50 25 Q 70 20 75 35 Q 85 40 80 50 L 25 50 Q 10 50 15 35 Q 10 25 25 25 Z"
+      ][i % 3],
+      scale: Math.random() * 2.5 + 1.5,
+      dur: Math.random() * 120 + 180, // Slower clouds
+      begin: Math.random() * 60,
+      y: Math.random() * 60
+    }));
+  }, []);
+
+  const rain = useMemo(() => [...Array(45)].map((_, i) => ({
+    left: Math.random() * 120 - 10,
+    dur: Math.random() * 0.8 + 0.6,
+    delay: Math.random() * 5,
+    width: Math.random() * 0.5 + 0.5,
+    opacity: Math.random() * 0.3 + 0.1
+  })), []);
+
+  const snow = useMemo(() => [...Array(80)].map((_, i) => ({
+    cx: Math.random() * 100,
+    r: Math.random() * 2.5 + 1,
+    dur: Math.random() * 10 + 8,
+    sway: Math.random() * 8 + 3,
+    opacity: Math.random() * 0.6 + 0.2
+  })), []);
+
+  const renderWeatherEffects = () => {
+    if (localWeather === 'loading') return null;
+
+    const elements = [];
+
+    if (localWeather === 'clear' && (!isDaytime && !isDawn && !isSunset)) {
+      elements.push(stars.map((s, i) => (
+        <circle key={`star-${i}`} cx={`${s.cx}%`} cy={`${s.cy}%`} r={s.r} fill="#fff">
+          <animate attributeName="opacity" values="0.1; 0.8; 0.1" dur={`${s.dur}s`} repeatCount="indefinite" />
+        </circle>
+      )));
+    }
+
+    if (localWeather === 'cloudy' || localWeather === 'rain' || localWeather === 'snow' || (localWeather === 'clear' && (isDaytime || isDawn || isSunset))) {
+      const cloudCount = (localWeather === 'cloudy' || localWeather === 'rain' || localWeather === 'snow') ? 12 : 4;
+      const opacity = localWeather === 'clear' ? 0.3 : (isDaytime ? 0.5 : 0.25);
+      elements.push(clouds.slice(0, cloudCount).map((c, i) => (
+        <path key={`cloud-${i}`} d={c.d} fill="#fff" opacity={opacity} transform={`scale(${c.scale})`}>
+          <animateTransform attributeName="transform" type="translate" from="-300 0" to="2000 0" dur={`${c.dur}s`} begin={`-${c.begin}s`} repeatCount="indefinite" additive="sum" />
+          <animate attributeName="y" values={`${c.y}vh`} />
+        </path>
+      )));
+    }
+
+    if (localWeather === 'rain') {
+      elements.push(rain.map((r, i) => (
+        <g key={`rain-${i}`}>
+          <line stroke="#a0c0d0" strokeWidth={r.width} opacity={r.opacity}>
+            <animate attributeName="x1" from={`${r.left}%`} to={`${r.left - 20}%`} dur={`${r.dur}s`} begin={`${r.delay}s`} repeatCount="indefinite" />
+            <animate attributeName="y1" from="-10%" to="110%" dur={`${r.dur}s`} begin={`${r.delay}s`} repeatCount="indefinite" />
+            <animate attributeName="x2" from={`${r.left - 5}%`} to={`${r.left - 25}%`} dur={`${r.dur}s`} begin={`${r.delay}s`} repeatCount="indefinite" />
+            <animate attributeName="y2" from="10%" to="130%" dur={`${r.dur}s`} begin={`${r.delay}s`} repeatCount="indefinite" />
+          </line>
+          <ellipse cx={`${r.left - 15}%`} cy="95%" rx="1" ry="0.5" fill="none" stroke="#a0c0d0" strokeWidth="1" opacity="0">
+            <animate attributeName="opacity" values="0; 0.5; 0" dur={`${r.dur}s`} begin={`${r.delay}s`} repeatCount="indefinite" />
+            <animate attributeName="rx" values="0; 10; 20" dur={`${r.dur}s`} begin={`${r.delay}s`} repeatCount="indefinite" />
+            <animate attributeName="ry" values="0; 2.5; 5" dur={`${r.dur}s`} begin={`${r.delay}s`} repeatCount="indefinite" />
+          </ellipse>
+        </g>
+      )));
+    }
+
+    if (localWeather === 'snow') {
+      elements.push(snow.map((s, i) => (
+        <circle key={`snow-${i}`} cx={`${s.cx}%`} cy="-10%" r={s.r} fill="#fff" opacity={s.opacity} filter="drop-shadow(0 0 2px rgba(255,255,255,0.8))">
+          <animate attributeName="cy" from="-10%" to="110%" dur={`${s.dur}s`} repeatCount="indefinite" />
+          <animate attributeName="cx" values={`${s.cx}%; ${s.cx + s.sway}%; ${s.cx - s.sway/2}%; ${s.cx}%`} dur={`${s.dur * 0.65}s`} repeatCount="indefinite" calcMode="spline" keyTimes="0; 0.333; 0.666; 1" keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1" />
+        </circle>
+      )));
+    }
+    
+    return elements;
+  };
 
   return (
     <motion.div 
@@ -70,6 +205,32 @@ function IndexView() {
       transition={{ duration: 1 }} 
       style={{ flex: 1, padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 5vw, 2rem)', display: 'flex', flexDirection: 'column', position: 'relative', alignItems: 'center', width: '100%' }}
     >
+      <AnimatePresence mode="wait">
+        {showQuote && (
+          <motion.div
+            key={showSky ? 'waiting' : 'heavens'}
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 0.5, y: 0 }}
+            exit={{ opacity: 0, y: 5 }}
+            transition={{ duration: 0.8 }}
+            style={{ 
+              position: 'fixed', 
+              top: '20px', 
+              left: '50%', 
+              transform: 'translateX(-50%)', 
+              zIndex: 100, 
+              fontFamily: 'var(--font-mono)', 
+              fontSize: '0.65rem', 
+              letterSpacing: '0.2em', 
+              textTransform: 'uppercase', 
+              pointerEvents: 'none' 
+            }}
+          >
+            {showSky ? 'they are waiting' : 'somewhere in the heavens'}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AmbientAudio src="/vinyl-crackle.mp3" volume={0.05} />
       <IndexScatter />
       
@@ -84,35 +245,33 @@ function IndexView() {
           left: 0, 
           width: '100vw', 
           height: '40vh', 
-          background: skyGradient, 
+          background: skyGradientBase, 
           zIndex: 0,
-          pointerEvents: 'none'
+          pointerEvents: 'none',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
+          maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)'
         }}
       >
-        {/* Drifting Clouds / Stars */}
-        <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0.2 }}>
-          {!isDaytime && !isDawn && !isSunset ? (
-            /* Night Stars */
-            [...Array(30)].map((_, i) => (
-              <circle key={`star-${i}`} cx={`${Math.random() * 100}%`} cy={`${Math.random() * 100}%`} r={Math.random() * 1.5 + 0.5} fill="#fff">
-                <animate attributeName="opacity" values="0.1; 0.8; 0.1" dur={`${Math.random() * 4 + 2}s`} repeatCount="indefinite" />
-              </circle>
-            ))
-          ) : (
-            /* Daytime Clouds */
-            [...Array(4)].map((_, i) => (
-              <path key={`cloud-${i}`} d="M 20 20 Q 30 10 40 20 Q 55 15 60 30 Q 70 30 70 40 Q 70 50 60 50 L 20 50 Q 5 50 10 35 Q 5 25 20 20 Z" fill="#fff" transform={`scale(${Math.random() * 2 + 1})`}>
-                <animateTransform attributeName="transform" type="translate" from="-200 0" to="2000 0" dur={`${Math.random() * 60 + 60}s`} begin={`-${Math.random() * 60}s`} repeatCount="indefinite" additive="sum" />
-                <animate attributeName="y" values={`${Math.random() * 20}vh`} />
-              </path>
-            ))
-          )}
-        </svg>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: localWeather === 'loading' ? 0 : 1, background: skyGradientWeather }}
+          transition={{ duration: 2, ease: "easeInOut" }}
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+        />
+
+        <motion.svg 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: localWeather === 'loading' || !showSky ? 0 : 1 }}
+          transition={{ duration: 2, ease: "easeInOut" }}
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+        >
+          {renderWeatherEffects()}
+        </motion.svg>
 
         <motion.div 
-          animate={{ rotate: 360 }} 
-          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-          style={{ position: 'absolute', top: '10vh', right: '15vw', fontSize: '3.5rem', color: 'var(--text-color)', opacity: 0.15 }}
+          animate={localWeather === 'clear' || localWeather === 'loading' ? { rotate: 360, opacity: showSky ? 0.15 : 0 } : { rotate: 0, opacity: showSky ? 0.15 : 0 }} 
+          transition={localWeather === 'clear' || localWeather === 'loading' ? { duration: 60, repeat: Infinity, ease: "linear" } : { duration: 0, ease: "linear" }}
+          style={{ position: 'absolute', top: '15vh', right: '15vw', fontSize: '3.5rem', color: 'var(--text-color)', opacity: 0.15 }}
         >
           {skyIcon}
         </motion.div>
@@ -141,31 +300,107 @@ function IndexView() {
           </div>
         ) : (
           <motion.div variants={containerVariants} initial="hidden" animate="show" style={{ width: '100%' }}>
-            {/* Filter Dropdown */}
-            <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
-              <select 
-                value={activeTheme}
-                onChange={(e) => setActiveTheme(e.target.value)}
-                className="glass-panel"
+            <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+              <motion.button 
+                whileHover={{ scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => { setShowSky(!showSky); setShowQuote(true); }}
                 style={{
-                  padding: '0.75rem 1.25rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'transparent',
+                  border: 'none',
                   color: 'var(--text-color)',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '0.85rem',
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  outline: 'none',
+                  padding: '1rem clamp(1.5rem, 4vw, 3rem)',
                   cursor: 'pointer'
                 }}
               >
-                <option value="all">{language === 'EN' ? 'ALL ENTRIES' : 'TODAS LAS ENTRADAS'}</option>
-                <option value="winter">{language === 'EN' ? 'WINTER' : 'INVIERNO'}</option>
-                <option value="spring">{language === 'EN' ? 'SPRING' : 'PRIMAVERA'}</option>
-                <option value="summer">{language === 'EN' ? 'SUMMER' : 'VERANO'}</option>
-                <option value="autumn">{language === 'EN' ? 'AUTUMN' : 'OTOÑO'}</option>
-                <option value="vents">{language === 'EN' ? 'VENTS' : 'DESAHOGOS'}</option>
-                <option value="intermissions">{language === 'EN' ? 'INTERMISSIONS' : 'INTERMEDIOS'}</option>
-              </select>
+                {showSky ? <FaEye size={16} /> : <FaEyeSlash size={16} />}
+              </motion.button>
+              
+              <div style={{ position: 'relative' }}>
+                <motion.button 
+                  whileHover={{ scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'transparent',
+                    border: 'none',
+                    color: 'var(--text-color)',
+                    padding: '1rem clamp(1.5rem, 4vw, 3rem)',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <FaFilter size={16} />
+                </motion.button>
+
+                <AnimatePresence>
+                  {isDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                      className="glass-panel"
+                      style={{
+                        position: 'absolute',
+                        top: '100%',
+                        right: 0,
+                        marginTop: '0.5rem',
+                        padding: '1rem',
+                        zIndex: 50,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.5rem',
+                        minWidth: '200px'
+                      }}
+                    >
+                      {[
+                        { id: 'all', en: 'ALL ENTRIES', es: 'TODAS LAS ENTRADAS' },
+                        { id: 'winter', en: 'WINTER', es: 'INVIERNO' },
+                        { id: 'spring', en: 'SPRING', es: 'PRIMAVERA' },
+                        { id: 'summer', en: 'SUMMER', es: 'VERANO' },
+                        { id: 'autumn', en: 'AUTUMN', es: 'OTOÑO' },
+                        { id: 'vents', en: 'VENTS', es: 'DESAHOGOS' },
+                        { id: 'intermissions', en: 'INTERMISSIONS', es: 'INTERMEDIOS' }
+                      ].map((theme) => (
+                        <div 
+                          key={theme.id}
+                          onClick={() => { setActiveTheme(theme.id); setIsDropdownOpen(false); }}
+                          style={{
+                            padding: '0.5rem 1rem',
+                            cursor: 'pointer',
+                            color: activeTheme === theme.id ? 'var(--bg-color)' : 'var(--text-color)',
+                            backgroundColor: activeTheme === theme.id ? 'var(--text-color)' : 'transparent',
+                            borderRadius: '4px',
+                            fontFamily: 'var(--font-sans)',
+                            fontSize: '0.85rem',
+                            letterSpacing: '0.1em',
+                            textTransform: 'uppercase',
+                            transition: 'all 0.2s ease'
+                          }}
+                          onMouseEnter={(e) => {
+                            if (activeTheme !== theme.id) {
+                              e.currentTarget.style.backgroundColor = 'rgba(128,128,128,0.2)';
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            if (activeTheme !== theme.id) {
+                              e.currentTarget.style.backgroundColor = 'transparent';
+                            }
+                          }}
+                        >
+                          {language === 'EN' ? theme.en : theme.es}
+                        </div>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
 
             {chapters.length === 0 && <p style={{ textAlign: 'center', fontStyle: 'italic', opacity: 0.5 }}>{language === 'EN' ? 'The archives are empty...' : 'Los archivos están vacíos...'}</p>}
@@ -298,6 +533,16 @@ function IndexView() {
           </motion.div>
         )}
       </div>
+
+      {/* Debug Buttons - Temporary (Dev Only) */}
+      {import.meta.env.DEV && (
+        <div style={{ position: 'fixed', bottom: '10px', right: '10px', zIndex: 100, display: 'flex', gap: '5px', opacity: 0.2, transition: 'opacity 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.opacity = 1} onMouseLeave={(e) => e.currentTarget.style.opacity = 0.2}>
+          <button onClick={() => setLocalWeather('clear')} style={{ background: '#333', color: '#fff', border: 'none', padding: '5px', cursor: 'pointer', fontSize: '10px' }}>Clear</button>
+          <button onClick={() => setLocalWeather('cloudy')} style={{ background: '#333', color: '#fff', border: 'none', padding: '5px', cursor: 'pointer', fontSize: '10px' }}>Cloudy</button>
+          <button onClick={() => setLocalWeather('rain')} style={{ background: '#333', color: '#fff', border: 'none', padding: '5px', cursor: 'pointer', fontSize: '10px' }}>Rain</button>
+          <button onClick={() => setLocalWeather('snow')} style={{ background: '#333', color: '#fff', border: 'none', padding: '5px', cursor: 'pointer', fontSize: '10px' }}>Snow</button>
+        </div>
+      )}
     </motion.div>
   );
 }

@@ -6,6 +6,27 @@ const Polaroid = React.memo(({ src, alt, containerStyle = {}, wrapperClass = "",
   const [isOpen, setIsOpen] = useState(false);
   const [rotation] = useState(() => (Math.random() * 8) - 4); // Random between -4 and 4 degrees
   
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  
+  const rotateX = useTransform(y, [-100, 100], [15, -15]);
+  const rotateY = useTransform(x, [-100, 100], [-15, 15]);
+  
+  const handleMouseMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    x.set((mouseX - centerX) / centerX * 100);
+    y.set((mouseY - centerY) / centerY * 100);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -20,15 +41,24 @@ const Polaroid = React.memo(({ src, alt, containerStyle = {}, wrapperClass = "",
       <div 
         className={wrapperClass}
         onClick={() => setIsOpen(true)}
-        style={{ cursor: 'pointer', ...containerStyle }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ cursor: 'pointer', perspective: '1000px', ...containerStyle }}
       >
         <motion.div 
           className={`polaroid-container ${polaroidClass}`}
-          style={{ rotate: rotation }}
+          style={{ 
+            rotate: rotation,
+            rotateX: rotateX,
+            rotateY: rotateY,
+            transformStyle: 'preserve-3d',
+            transition: 'transform 0.1s ease-out'
+          }}
+          whileHover={{ scale: 1.05, zIndex: 50 }}
         >
-          <img src={src} alt={alt} className="polaroid-img" loading="lazy" decoding="async" />
+          <img src={src} alt={alt} className="polaroid-img" style={{ transform: 'translateZ(10px)' }} loading="lazy" decoding="async" />
           {children}
-          <div className="staple"></div>
+          <div className="staple" style={{ transform: 'translateZ(15px)' }}></div>
         </motion.div>
       </div>
 

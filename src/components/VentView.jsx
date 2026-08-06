@@ -171,7 +171,7 @@ function VentView() {
         {scatters}
       </div>
 
-      <button style={{ marginBottom: '3rem', border: 'none', padding: '0', textDecoration: 'underline', color: isNotebook ? '#333' : '#fff', position: 'relative', zIndex: 10, alignSelf: 'flex-start' }} onClick={() => navigate(-1)}>
+      <button className="back-button" style={{ marginBottom: '3rem', alignSelf: 'flex-start' }} onClick={() => navigate(-1)}>
         &larr; {language === 'EN' ? 'Back' : 'Volver'}
       </button>
 

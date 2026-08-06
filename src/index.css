@@ -794,3 +794,23 @@ button:hover {
   mix-blend-mode: overlay;
 }
 
+\n
+/* Vent Polaroid Floating Logic */
+.vent-image {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+}
+
+@media (min-width: 768px) {
+  .vent-image {
+    float: right;
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    max-width: 45%;
+    display: block;
+  }
+}

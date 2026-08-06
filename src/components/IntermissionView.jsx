@@ -79,7 +79,7 @@ function IntermissionView() {
       style={{ flex: 1, padding: '2rem 0', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}
     >
       <TravelGraphics type={ticketType} />
-      <button style={{ alignSelf: 'flex-start', marginBottom: '2rem', border: 'none', padding: '0', textDecoration: 'underline', position: 'relative', zIndex: 10 }} onClick={() => navigate(-1)}>
+      <button className="back-button" style={{ marginBottom: '2rem', alignSelf: 'flex-start' }} onClick={() => navigate(-1)}>
         &larr; {language === 'EN' ? 'Back' : 'Volver'}
       </button>
 

@@ -329,7 +329,7 @@ function ChapterView() {
     >
       <AmbientAudio src={`/${chapter?.theme || 'spring'}-ambient.mp3`} volume={0.03} />
       {renderSeason()}
-      <button style={{ marginBottom: '2rem', border: 'none', padding: '0', textDecoration: 'underline', position: 'relative', zIndex: 10 }} onClick={() => navigate(-1)}>
+      <button className="back-button" style={{ marginBottom: '2rem' }} onClick={() => navigate(-1)}>
         &larr; {language === 'EN' ? 'Back' : 'Volver'}
       </button>
 
