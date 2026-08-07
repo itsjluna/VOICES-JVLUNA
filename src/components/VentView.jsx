@@ -66,7 +66,7 @@ function VentView() {
         topPos = `-${Math.random() * 20 + 30}px`;
         leftPos = Math.random() > 0.5 ? `${Math.random() * 10 - 5}%` : `${Math.random() * 10 + 85}%`;
       } else if (region === 1) { // Bottom
-        bottomPos = `-${Math.random() * 20 + 20}px`;
+        bottomPos = `-${Math.random() * 20 + (isMobile ? stickerWidth + 10 : 20)}px`;
         leftPos = `${Math.random() * 80 + 10}%`;
       } else if (region === 2) { // Left (Avoid top 25% to protect title, push out on mobile)
         topPos = `${Math.random() * 60 + 25}%`;
@@ -239,11 +239,11 @@ function VentView() {
           maxWidth: isNotebook ? '1200px' : '900px',
           ...(isNotebook ? {
             marginTop: '3rem',
-            padding: 'clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 5vw)',
+            padding: 'clamp(2rem, 5vw, 4rem) clamp(0.75rem, 3vw, 5vw)',
           } : {
             // Giant Post-it Styling
             backgroundColor: '#fdfd96',
-            padding: 'clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 5vw)',
+            padding: 'clamp(2rem, 5vw, 4rem) clamp(0.75rem, 3vw, 5vw)',
             boxShadow: '0 10px 30px rgba(0,0,0,0.3), inset 0 0 50px rgba(0,0,0,0.02)',
             borderRadius: '2px',
             transform: 'rotate(1deg)',
