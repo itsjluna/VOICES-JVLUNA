@@ -52,34 +52,49 @@ function VentView() {
     const count = Math.floor(Math.random() * 4) + 3; // 3 to 6 stickers
     const items = [];
     const available = [...stickerImages];
+    
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    
+    // Define available placement slots to prevent clumping
+    const availableSlots = [
+      { region: 0, sub: 'left' },
+      { region: 0, sub: 'right' },
+      ...(isMobile ? [] : [
+        { region: 1, sub: 'left' }, 
+        { region: 1, sub: 'center' }, 
+        { region: 1, sub: 'right' }
+      ]),
+      { region: 2, sub: 'top' },
+      { region: 2, sub: 'bottom' },
+      { region: 3, sub: 'top' },
+      { region: 3, sub: 'bottom' }
+    ];
+    
+    // Shuffle slots so placement is random but uniformly distributed
+    availableSlots.sort(() => Math.random() - 0.5);
+
     for (let i = 0; i < count; i++) {
-      if (available.length === 0) break;
+      if (available.length === 0 || availableSlots.length === 0) break;
       const idx = Math.floor(Math.random() * available.length);
       const img = available.splice(idx, 1)[0];
+      const slot = availableSlots.pop();
       
-      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-      
-      let region = Math.floor(Math.random() * 4); // 0: top, 1: bottom, 2: left, 3: right
-      if (isMobile && region === 1) {
-        // completely prohibit stickers at the bottom of the card on mobile
-        const fallbackRegions = [0, 2, 3];
-        region = fallbackRegions[Math.floor(Math.random() * fallbackRegions.length)];
-      }
-
       let topPos = 'auto', bottomPos = 'auto', leftPos = 'auto', rightPos = 'auto';
       const stickerWidth = Math.random() * 40 + 60; // 60 to 100px
       
-      if (region === 0) { // Top (Avoid center title area by pushing to corners)
+      if (slot.region === 0) { // Top
         topPos = `-${Math.random() * 20 + 30}px`;
-        leftPos = Math.random() > 0.5 ? `${Math.random() * 10 - 5}%` : `${Math.random() * 10 + 85}%`;
-      } else if (region === 1) { // Bottom
-        bottomPos = `-${Math.random() * 20 + (isMobile ? stickerWidth + 10 : 20)}px`;
-        leftPos = `${Math.random() * 80 + 10}%`;
-      } else if (region === 2) { // Left (Avoid top 25% to protect title, push out on mobile)
-        topPos = `${Math.random() * 60 + 25}%`;
+        leftPos = slot.sub === 'left' ? `${Math.random() * 10 - 5}%` : `${Math.random() * 10 + 85}%`;
+      } else if (slot.region === 1) { // Bottom
+        bottomPos = `-${Math.random() * 15 + 20}px`;
+        if (slot.sub === 'left') leftPos = `${Math.random() * 15 + 10}%`;
+        else if (slot.sub === 'center') leftPos = `${Math.random() * 20 + 40}%`;
+        else leftPos = `${Math.random() * 15 + 70}%`;
+      } else if (slot.region === 2) { // Left
+        topPos = slot.sub === 'top' ? `${Math.random() * 20 + 20}%` : `${Math.random() * 20 + 60}%`;
         leftPos = `-${Math.random() * 20 + (isMobile ? stickerWidth - 20 : 40)}px`;
-      } else { // Right (Avoid top 25% to protect title, push out on mobile)
-        topPos = `${Math.random() * 60 + 25}%`;
+      } else { // Right
+        topPos = slot.sub === 'top' ? `${Math.random() * 20 + 20}%` : `${Math.random() * 20 + 60}%`;
         rightPos = `-${Math.random() * 20 + (isMobile ? stickerWidth - 20 : 40)}px`;
       }
       
