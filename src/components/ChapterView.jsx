@@ -34,6 +34,8 @@ function ChapterView() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    
     async function fetchData() {
       try {
         const [chapRes, poemRes] = await Promise.all([
@@ -136,60 +138,44 @@ function ChapterView() {
         // Fetch random album decoration
         try {
           const belovedArtists = [
-            "Low Roar", "Imagine Dragons", "Chappell Roan", "Laufey", "Clairo", 
-            "Bad Bunny", "K.Flay", "EMJAY", "Olivia Rodrigo", "Joey Valence & Brae", 
-            "Tessa Ia", "Dafna", "Susanne Sundfør", "Doris Day", "Dagny", 
-            "Taylor Swift", "Addison Rae", "Alice Phoebe Lou", "Kim Petras",
-            "Charli XCX", "Sigrid", "Sabrina Carpenter", "Midnight Generation", 
-            "Lady Gaga", "EVERGLOW", "TWICE", "AKRIILA", "Lana Del Rey", "Lorde", 
-            "Griff", "Taichu", "RIXXIA", "Junior Varsity", "Magnolian", "BLACKPINK", "Six Sex", "UPSAHL"
+            { name: "Low Roar", id: 475538413 }, { name: "Imagine Dragons", id: 358714030 }, { name: "Chappell Roan", id: 1264818718 }, { name: "Laufey", id: 1504424880 }, { name: "Clairo", id: 1187613837 }, { name: "Bad Bunny", id: 1126808565 }, { name: "K.Flay", id: 297760267 }, { name: "EMJAY", id: 1517993423 }, { name: "Olivia Rodrigo", id: 979458609 }, { name: "Joey Valence & Brae", id: 1643989506 }, { name: "Tessa Ia", id: 1148748480 }, { name: "Dafna", id: 1450666890 }, { name: "Susanne Sundfør", id: 203460080 }, { name: "Doris Day", id: 461709 }, { name: "Dagny", id: 465319798 }, { name: "Taylor Swift", id: 159260351 }, { name: "Addison Rae", id: 1513956049 }, { name: "Alice Phoebe Lou", id: 670236358 }, { name: "Kim Petras", id: 291697579 }, { name: "Charli XCX", id: 432942256 }, { name: "Sigrid", id: 1206070304 }, { name: "Sabrina Carpenter", id: 390647681 }, { name: "Midnight Generation", id: 1036865731 }, { name: "Lady Gaga", id: 277293880 }, { name: "EVERGLOW", id: 1456576473 }, { name: "TWICE", id: 1203816887 }, { name: "AKRIILA", id: 1526015823 }, { name: "Lana Del Rey", id: 464296584 }, { name: "Lorde", id: 602767352 }, { name: "Griff", id: 1472442704 }, { name: "Taichu", id: 1488060428 }, { name: "RIXXIA", id: 1731658764 }, { name: "Junior Varsity", id: 1561201891 }, { name: "Magnolian", id: 1129552659 }, { name: "BLACKPINK", id: 1141774019 }, { name: "Six Sex", id: 1485483068 }, { name: "UPSAHL", id: 1193439527 }
           ];
           const randomArtist = belovedArtists[Math.floor(Math.random() * belovedArtists.length)];
           
-          // Use a massive limit so we can safely filter out false positives before picking
-          const itunesRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(randomArtist)}&entity=song&attribute=artistTerm&limit=50`);
+          // Lookup albums explicitly by artist ID to prevent compiling/soundtrack bleed-over
+          const itunesRes = await fetch(`https://itunes.apple.com/lookup?id=${randomArtist.id}&entity=album&limit=30`);
           const itunesData = await itunesRes.json();
           if (itunesData.results && itunesData.results.length > 0) {
             
+            // Only process collection records (index 0 is the artist record itself)
+            const collections = itunesData.results.filter(a => a.wrapperType === 'collection');
+            
             // 1. Filter ALL results to remove hard-blocked items universally
-            const universallySafeResults = itunesData.results.filter(a => {
+            const universallySafeResults = collections.filter(a => {
               const name = a.collectionName ? a.collectionName.toLowerCase() : '';
-              const isBlockedChappell = a.artistName === 'Chappell Roan' && (name.includes('school nights') || name.includes('good hurt'));
-              const isBlockedBadBunny = (a.artistName === 'Bad Bunny' || a.artistName === 'Drake') && (name.includes('super bowl') || name.includes('mia'));
-              const isBlockedOlivia = a.artistName === 'Olivia Rodrigo' && (name.includes('high school musical') || name.includes('hsmtmts'));
+              const isBlockedChappell = randomArtist.name === 'Chappell Roan' && (name.includes('school nights') || name.includes('good hurt'));
+              const isBlockedBadBunny = randomArtist.name === 'Bad Bunny' && (name.includes('super bowl') || name.includes('mia'));
+              const isBlockedOlivia = randomArtist.name === 'Olivia Rodrigo' && (name.includes('high school musical') || name.includes('hsmtmts'));
               
-              const isAllowedUpsahl = a.artistName === 'UPSAHL' && name.includes('i like it');
+              const isAllowedUpsahl = randomArtist.name === 'UPSAHL' && name.includes('i like it');
               const isGarbage = name.includes('karaoke') || name.includes('instrumental') || name.includes('tribute') || name.includes('cover');
               
               return !isBlockedChappell && !isBlockedBadBunny && !isBlockedOlivia && !isGarbage;
             });
 
-            // Sort by release date descending (newest first) to fix artists like Six Sex
+            // Sort by release date descending (newest first)
             universallySafeResults.sort((a, b) => new Date(b.releaseDate || 0) - new Date(a.releaseDate || 0));
-
-            // 2. Try to get exact artist matches (strict case-sensitive equal to prevent collisions like EmJay vs EMJAY)
-            let exactMatches = universallySafeResults.filter(a => {
-              if (randomArtist === 'Dafna') return a.artistId === 1450666890;
-              if (randomArtist === 'Junior Varsity') return a.artistId === 1561201891;
-              if (randomArtist === 'EMJAY') return a.artistId === 1628172822;
-              return a.artistName === randomArtist || a.artistName.toLowerCase() === randomArtist.toLowerCase();
-            });
             
-            // Fallback to top results if exact string match fails but we have results
-            if (exactMatches.length === 0 && universallySafeResults.length > 0) {
-              exactMatches = universallySafeResults.slice(0, 5);
-            }
-            
-            // 3. Categorize matches into 5 Tiers
+            // 2. Categorize matches into 5 Tiers (handles artists with only Singles or EPs)
             const tier1_StudioAlbums = [];
             const tier2_StudioEPs = [];
             const tier3_MultiTrackSingles = [];
             const tier4_PureSingles = [];
             const tier5_AltVersions = [];
 
-            exactMatches.forEach(a => {
+            universallySafeResults.forEach(a => {
               const name = a.collectionName ? a.collectionName.toLowerCase() : '';
-              const isAllowedUpsahl = a.artistName === 'UPSAHL' && name.includes('i like it');
+              const isAllowedUpsahl = randomArtist.name === 'UPSAHL' && name.includes('i like it');
               
               const isAltVersion = name.includes('remix') || name.includes('live') || name.includes('deluxe') || name.includes('bonus') || name.includes('tour edition') || name.includes('greatest hits') || name.includes('essential') || name.includes('anthology') || name.includes('the best of') || name.includes('acoustic');
               const isExplicitSingle = name.includes('- single') || name.includes('(single)') || name.endsWith(' single');
@@ -209,7 +195,7 @@ function ChapterView() {
               }
             });
 
-            // 4. Fallback chain: Tier 1 -> Tier 5
+            // 3. Fallback chain: Tier 1 -> Tier 5
             let pool = tier1_StudioAlbums;
             if (pool.length === 0) pool = tier2_StudioEPs;
             if (pool.length === 0) pool = tier3_MultiTrackSingles;
@@ -221,7 +207,7 @@ function ChapterView() {
               const shrunkPool = pool.slice(0, 5);
               const randomAlbum = shrunkPool[Math.floor(Math.random() * shrunkPool.length)];
               
-              // Fetch track list to get preview audio
+              // 4. Fetch track list to get preview audio since the album object doesn't have it
               try {
                 const tracksRes = await fetch(`https://itunes.apple.com/lookup?id=${randomAlbum.collectionId}&entity=song`);
                 const tracksData = await tracksRes.json();
