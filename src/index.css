@@ -129,6 +129,8 @@ button:hover {
 .polaroid-img {
   width: 100%;
   height: auto;
+  max-height: 400px; /* Restrict excessively tall images */
+  object-fit: cover;
   display: block;
   filter: contrast(1.1) saturate(1.1); /* Editorial but full color */
 }
@@ -722,18 +724,13 @@ button:hover {
 /* --- Entry Header (Title and Toggle) --- */
 .entry-header {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: flex-start;
   margin-bottom: 2rem;
   position: relative;
   z-index: 10;
   gap: 1rem;
-}
-
-@media (max-width: 768px) {
-  .entry-header {
-    flex-direction: column;
-  }
 }
 
 /* --- Glassmorphism Panel (for readability over backgrounds) --- */
