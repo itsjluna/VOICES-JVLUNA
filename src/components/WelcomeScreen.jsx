@@ -21,7 +21,7 @@ function WelcomeScreen() {
       <motion.div 
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.5, duration: 1.2, ease: "easeOut" }}
+        transition={{ delay: 0, duration: 1.5, ease: "easeInOut" }}
         className="glass-panel"
         style={{
           padding: 'clamp(2rem, 5vw, 4rem) clamp(2rem, 8vw, 5rem)',

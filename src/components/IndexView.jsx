@@ -209,7 +209,7 @@ function IndexView() {
     <motion.div 
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }} 
-      transition={{ duration: 1 }} 
+      transition={{ duration: 1.5, ease: "easeInOut" }} 
       style={{ flex: 1, padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 5vw, 2rem)', display: 'flex', flexDirection: 'column', position: 'relative', alignItems: 'center', width: '100%' }}
     >
       <AnimatePresence>
@@ -522,8 +522,8 @@ function IndexView() {
                           letterSpacing: '0.05em',
                           color: readChapters.includes(chapter._id) && !isInt && !isVent 
                             ? 'var(--text-color)' 
-                            : (isInt || isVent ? iconColor : 'inherit'),
-                          textShadow: '0 0 10px var(--glass-bg), 0 0 20px var(--glass-bg)',
+                            : 'inherit',
+                          textShadow: '0 0 10px var(--bg-color)',
                           opacity: readChapters.includes(chapter._id) && !isInt && !isVent ? 0.5 : 1,
                           wordWrap: 'break-word',
                           overflowWrap: 'break-word',
