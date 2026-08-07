@@ -44,44 +44,50 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
 
   return (
     <>
-      {!isOpen && (
-        <motion.div 
-          layoutId={layoutIdId}
-          initial={hasOpened.current ? false : initialAnimation.initial}
-          animate={initialAnimation.animate}
-          transition={{ 
+      <motion.div
+        initial={hasOpened.current ? false : initialAnimation.initial}
+        animate={initialAnimation.animate}
+        transition={{ 
           ...initialAnimation.transition, 
-          delay: hasOpened.current ? 0 : (initialAnimation.transition?.delay || 0),
-          layout: { type: "spring", stiffness: 1000, damping: 35 } 
+          delay: hasOpened.current ? 0 : (initialAnimation.transition?.delay || 0)
         }}
-          className="cd-jewel-case"
-          style={{ 
-            cursor: 'grab',
-            width: '120px',
-            height: '120px',
-            position: 'absolute',
-            boxShadow: '2px 5px 15px rgba(0,0,0,0.3)',
-            borderRadius: '2px',
-            backgroundColor: '#111',
-            ...style,
-            x: dragX,
-            y: dragY
-          }}
+        style={{ 
+          cursor: 'grab',
+          width: '120px',
+          height: '120px',
+          position: 'absolute',
+          ...style,
+          x: dragX,
+          y: dragY
+        }}
         drag
         dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }}
         dragElastic={0.2}
         whileDrag={{ scale: 1.1, cursor: 'grabbing', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }}
         onClick={handleOpen}
       >
-        <img 
-          src={coverUrl ? coverUrl.replace('100x100bb', '600x600bb') : ''} 
-          alt={`${albumName} by ${artist}`} 
-          style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2px' }} 
-          draggable="false"
-        />
-        <JewelCaseOverlay />
+        <motion.div 
+          layoutId={layoutIdId}
+          transition={{ layout: { type: "spring", stiffness: 1000, damping: 35 } }}
+          className="cd-jewel-case"
+          style={{ 
+            width: '100%',
+            height: '100%',
+            boxShadow: '2px 5px 15px rgba(0,0,0,0.3)',
+            borderRadius: '2px',
+            backgroundColor: '#111',
+            pointerEvents: 'none'
+          }}
+        >
+          <img 
+            src={coverUrl ? coverUrl.replace('100x100bb', '600x600bb') : ''} 
+            alt={`${albumName} by ${artist}`} 
+            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '2px' }} 
+            draggable="false"
+          />
+          <JewelCaseOverlay />
+        </motion.div>
       </motion.div>
-      )}
 
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>

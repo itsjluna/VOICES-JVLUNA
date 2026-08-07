@@ -33,28 +33,30 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
 
   return (
     <>
-      {!isOpen && (
+      <motion.div
+        initial={hasOpened.current ? false : initialAnimation.initial}
+        animate={initialAnimation.animate}
+        transition={{ 
+          ...initialAnimation.transition, 
+          delay: hasOpened.current ? 0 : (initialAnimation.transition?.delay || 0)
+        }}
+        style={{ ...style, cursor: draggable ? 'grab' : 'pointer', x: dragX, y: dragY }}
+        drag={draggable}
+        dragConstraints={draggable ? { left: -100, right: 100, top: -100, bottom: 100 } : undefined}
+        dragElastic={draggable ? 0.2 : undefined}
+        whileDrag={draggable ? { scale: 1.1, cursor: 'grabbing', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' } : undefined}
+        onClick={handleOpen}
+        whileHover={{ scale: 1.05, filter: 'brightness(1.1)' }}
+        className={className}
+      >
         <motion.img 
           layoutId={layoutId}
           src={src}
           alt={alt}
-          className={className}
-          initial={hasOpened.current ? false : initialAnimation.initial}
-          animate={initialAnimation.animate}
-          transition={{ 
-            ...initialAnimation.transition, 
-            delay: hasOpened.current ? 0 : (initialAnimation.transition?.delay || 0),
-            layout: { type: "spring", stiffness: 1000, damping: 35 } 
-          }}
-          style={{ ...style, cursor: draggable ? 'grab' : 'pointer', x: dragX, y: dragY }}
-          drag={draggable}
-          dragConstraints={draggable ? { left: -100, right: 100, top: -100, bottom: 100 } : undefined}
-          dragElastic={draggable ? 0.2 : undefined}
-          whileDrag={draggable ? { scale: 1.1, cursor: 'grabbing', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' } : undefined}
-          onClick={handleOpen}
-          whileHover={{ scale: 1.05, filter: 'brightness(1.1)' }}
+          transition={{ layout: { type: "spring", stiffness: 1000, damping: 35 } }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', pointerEvents: 'none' }}
         />
-      )}
+      </motion.div>
 
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
