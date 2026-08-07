@@ -195,46 +195,63 @@ function ChapterView() {
               }
             });
 
-            // 3. Fallback chain: Flatten tiers in order of preference
-            const allValidCollections = [
-              ...tier1_StudioAlbums,
-              ...tier2_StudioEPs,
-              ...tier3_MultiTrackSingles,
-              ...tier4_PureSingles,
-              ...tier5_AltVersions
+            // 3. Select Target Tier based on user priority (Albums > EPs > Singles)
+            // But occasionally (25% of the time) allow a Single/EP to be picked even if they have albums
+            let orderedTiers = [
+              tier1_StudioAlbums,
+              tier2_StudioEPs,
+              tier3_MultiTrackSingles,
+              tier4_PureSingles,
+              tier5_AltVersions
             ];
             
-            if (allValidCollections.length > 0) {
-              let finalAlbum = null;
+            const rand = Math.random();
+            if (rand < 0.15) {
+              // 15% chance to prioritize EPs
+              orderedTiers = [tier2_StudioEPs, tier1_StudioAlbums, tier3_MultiTrackSingles, tier4_PureSingles, tier5_AltVersions];
+            } else if (rand < 0.25) {
+              // 10% chance to prioritize Singles
+              orderedTiers = [tier4_PureSingles, tier3_MultiTrackSingles, tier2_StudioEPs, tier1_StudioAlbums, tier5_AltVersions];
+            }
+            
+            let finalAlbum = null;
+            let fallbackAlbum = null;
+            
+            // 4. Test albums in the selected tier order until we find one with an audio preview
+            for (const tier of orderedTiers) {
+              if (tier.length === 0) continue;
               
-              // Take the top 15 results (across all tiers) and shuffle them to maintain randomness
-              const poolToTest = allValidCollections.slice(0, 15).sort(() => Math.random() - 0.5);
+              // Shuffle the albums in this tier to pick a random one
+              const shuffledTier = [...tier].sort(() => Math.random() - 0.5);
               
-              // Test up to 5 albums until we find one that actually has a playable audio preview
-              for (let i = 0; i < Math.min(5, poolToTest.length); i++) {
-                const album = poolToTest[i];
+              // Try up to 3 albums in this tier to find one with music
+              for (let i = 0; i < Math.min(3, shuffledTier.length); i++) {
+                const album = shuffledTier[i];
+                if (!fallbackAlbum) fallbackAlbum = album; // Save first seen in case API fails
+                
                 try {
                   const tracksRes = await api.get(`/itunes/lookup?id=${album.collectionId}&entity=song`);
                   const tracksData = tracksRes.data;
-                  const track = tracksData.results.find(t => t.wrapperType === 'track' && t.previewUrl);
+                  // Find ALL playable tracks on this album
+                  const playableTracks = tracksData.results.filter(t => t.wrapperType === 'track' && t.previewUrl);
                   
-                  if (track) {
-                    album.previewUrl = track.previewUrl;
+                  if (playableTracks.length > 0) {
+                    // Pick a random track from the album instead of always the first one!
+                    const randomTrack = playableTracks[Math.floor(Math.random() * playableTracks.length)];
+                    album.previewUrl = randomTrack.previewUrl;
                     finalAlbum = album;
-                    break; // Success! We found music.
+                    break;
                   }
                 } catch (e) {
                   console.error("Failed to fetch album tracks for preview", e);
                 }
               }
               
-              // If after 5 tries we still have no preview (or API failed), just show the first album so the Jewel Case always appears
-              if (!finalAlbum) {
-                finalAlbum = poolToTest[0];
-              }
-              
-              setAlbumDecoration(finalAlbum);
+              if (finalAlbum) break; // We found an album with a working preview in this tier!
             }
+            
+            // If API failed or absolutely no previews found, default to the first fallback
+            setAlbumDecoration(finalAlbum || fallbackAlbum);
           }
         } catch (e) {
           console.error("Failed to fetch iTunes album", e);
