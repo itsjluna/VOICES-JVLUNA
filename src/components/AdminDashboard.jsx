@@ -241,25 +241,24 @@ function AdminDashboard() {
         layout
         initial={false}
         animate={{
-          padding: isScrolled ? '0.5rem 1.5rem' : '1rem 0',
-          borderRadius: isScrolled ? '35px' : '0px',
-          background: isScrolled ? (isDark ? 'rgba(30, 30, 30, 0.6)' : 'rgba(255, 255, 255, 0.7)') : (isDark ? 'rgba(18, 18, 18, 0.9)' : 'rgba(255, 255, 255, 0.9)'),
-          backdropFilter: 'blur(15px)',
-          WebkitBackdropFilter: 'blur(15px)',
-          boxShadow: isScrolled ? '0 10px 40px rgba(0,0,0,0.2)' : 'none',
-          border: isScrolled ? `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}` : 'none',
-          borderBottom: isScrolled ? `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}` : '1px solid var(--border-color)',
-          width: isScrolled ? 'fit-content' : '100%',
-          margin: isScrolled ? '0 auto 2rem auto' : '0 0 2rem 0',
+          padding: isScrolled ? '0.5rem 1.5rem' : '0.5rem 2rem',
           gap: isScrolled ? '1.5rem' : '1rem'
         }}
         style={{ 
           position: 'sticky', 
-          top: isScrolled ? '1rem' : '0', 
+          top: '1rem', 
           zIndex: 50,
           display: 'flex', 
-          justifyContent: isScrolled ? 'center' : 'space-between',
+          justifyContent: 'center',
           alignItems: 'center',
+          borderRadius: '35px',
+          background: isDark ? 'rgba(30, 30, 30, 0.6)' : 'rgba(255, 255, 255, 0.7)',
+          backdropFilter: 'blur(15px)',
+          WebkitBackdropFilter: 'blur(15px)',
+          boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
+          border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+          width: 'fit-content',
+          margin: '0 auto 2rem auto',
           transformOrigin: 'top center'
         }}
       >
