@@ -57,9 +57,16 @@ function VentView() {
       const idx = Math.floor(Math.random() * available.length);
       const img = available.splice(idx, 1)[0];
       
-      const region = Math.floor(Math.random() * 4); // 0: top, 1: bottom, 2: left, 3: right
-      let topPos = 'auto', bottomPos = 'auto', leftPos = 'auto', rightPos = 'auto';
       const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      
+      let region = Math.floor(Math.random() * 4); // 0: top, 1: bottom, 2: left, 3: right
+      if (isMobile && region === 1) {
+        // completely prohibit stickers at the bottom of the card on mobile
+        const fallbackRegions = [0, 2, 3];
+        region = fallbackRegions[Math.floor(Math.random() * fallbackRegions.length)];
+      }
+
+      let topPos = 'auto', bottomPos = 'auto', leftPos = 'auto', rightPos = 'auto';
       const stickerWidth = Math.random() * 40 + 60; // 60 to 100px
       
       if (region === 0) { // Top (Avoid center title area by pushing to corners)
