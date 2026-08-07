@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Editor from 'react-simple-wysiwyg';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaBookOpen, FaTicketAlt, FaFileAlt, FaArrowUp, FaArrowDown, FaImage, FaStickyNote } from 'react-icons/fa';
+import { FaBookOpen, FaTicketAlt, FaFileAlt, FaArrowUp, FaArrowDown, FaImage, FaStickyNote, FaChevronDown, FaChevronRight, FaPlus, FaExpand, FaCompress } from 'react-icons/fa';
 import api from '../api';
 
 function AdminDashboard() {
@@ -24,6 +24,32 @@ function AdminDashboard() {
 
   const [chapterForm, setChapterForm] = useState({ _id: null, title: '', titleEn: '', image: '', theme: 'winter' });
   const [isChapterModalOpen, setIsChapterModalOpen] = useState(false);
+
+  const [expandedChapters, setExpandedChapters] = useState(new Set());
+
+  const toggleChapter = (chapterId) => {
+    setExpandedChapters(prev => {
+      const next = new Set(prev);
+      if (next.has(chapterId)) next.delete(chapterId);
+      else next.add(chapterId);
+      return next;
+    });
+  };
+
+  const expandAll = () => setExpandedChapters(new Set(chapters.map(c => c._id)));
+  const collapseAll = () => setExpandedChapters(new Set());
+
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    setIsDark(document.documentElement.classList.contains('dark'));
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     if (token) fetchData();
@@ -206,74 +232,155 @@ function AdminDashboard() {
 
   return (
     <div style={{ padding: '2rem 0', maxWidth: '800px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <h2>Anthology Structure</h2>
         <button onClick={handleLogout}>Logout</button>
       </div>
 
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '3rem' }}>
-        <button onClick={() => { setChapterForm({ _id: null, title: '', titleEn: '', image: '', theme: 'winter' }); setIsChapterModalOpen(true); }} style={{ padding: '0.5rem 1rem' }}>
-          + Add Chapter
-        </button>
-        <button onClick={openIntermissionModalForNew} style={{ background: 'var(--text-color)', color: 'var(--bg-color)' }}>
-          + Add Intermission
-        </button>
-        <button onClick={openVentModalForNew} style={{ background: '#fdfd96', color: '#111', border: '1px solid #111' }}>
-          + Add Vent
-        </button>
-      </div>
+      <motion.div 
+        layout
+        initial={false}
+        animate={{
+          padding: isScrolled ? '0.5rem 1.5rem' : '1rem 0',
+          borderRadius: isScrolled ? '35px' : '0px',
+          background: isScrolled ? (isDark ? 'rgba(30, 30, 30, 0.6)' : 'rgba(255, 255, 255, 0.7)') : (isDark ? 'rgba(18, 18, 18, 0.9)' : 'rgba(255, 255, 255, 0.9)'),
+          backdropFilter: 'blur(15px)',
+          WebkitBackdropFilter: 'blur(15px)',
+          boxShadow: isScrolled ? '0 10px 40px rgba(0,0,0,0.2)' : 'none',
+          border: isScrolled ? `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}` : 'none',
+          borderBottom: isScrolled ? `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}` : '1px solid var(--border-color)',
+          width: isScrolled ? 'fit-content' : '100%',
+          margin: isScrolled ? '0 auto 2rem auto' : '0 0 2rem 0',
+          gap: isScrolled ? '1.5rem' : '1rem'
+        }}
+        style={{ 
+          position: 'sticky', 
+          top: isScrolled ? '1rem' : '0', 
+          zIndex: 50,
+          display: 'flex', 
+          justifyContent: isScrolled ? 'center' : 'space-between',
+          alignItems: 'center',
+          transformOrigin: 'top center'
+        }}
+      >
+        <div style={{ display: 'flex', gap: isScrolled ? '1.5rem' : '1rem', alignItems: 'center' }}>
+          <button 
+            onClick={() => { setChapterForm({ _id: null, title: '', titleEn: '', image: '', theme: 'winter' }); setIsChapterModalOpen(true); }} 
+            style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none' }}
+            title="Add Chapter"
+          >
+            {isScrolled ? <FaBookOpen size={20} /> : <><FaPlus size={12}/> Add Chapter</>}
+          </button>
+          <button 
+            onClick={openIntermissionModalForNew} 
+            style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: isScrolled ? 'transparent' : 'var(--text-color)', color: isScrolled ? 'var(--text-color)' : 'var(--bg-color)', border: 'none' }}
+            title="Add Intermission"
+          >
+            {isScrolled ? <FaTicketAlt size={20} /> : <><FaPlus size={12}/> Add Intermission</>}
+          </button>
+          <button 
+            onClick={openVentModalForNew} 
+            style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: isScrolled ? 'transparent' : '#fdfd96', color: isScrolled ? 'var(--text-color)' : '#111', border: isScrolled ? 'none' : '1px solid #111' }}
+            title="Add Vent"
+          >
+            {isScrolled ? <FaStickyNote size={20} /> : <><FaPlus size={12}/> Add Vent</>}
+          </button>
+        </div>
+        
+        {isScrolled && <div style={{ width: '1px', height: '24px', background: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' }} />}
+
+        <div style={{ display: 'flex', gap: isScrolled ? '1.5rem' : '0.5rem', alignItems: 'center' }}>
+          <button onClick={expandAll} style={{ padding: isScrolled ? '0.5rem' : '0.4rem 0.8rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none' }} title="Expand All">
+            {isScrolled ? <FaExpand size={20} /> : 'Expand All'}
+          </button>
+          <button onClick={collapseAll} style={{ padding: isScrolled ? '0.5rem' : '0.4rem 0.8rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none' }} title="Collapse All">
+            {isScrolled ? <FaCompress size={20} /> : 'Collapse All'}
+          </button>
+        </div>
+      </motion.div>
 
       <ul className="admin-list" style={{ padding: 0 }}>
-        {chapters.map((c, index) => (
-          <li key={c._id} style={{ display: 'block', padding: 0, marginBottom: '2rem', border: 'none' }}>
-            
-            <div style={{ 
-              display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
-              padding: '1rem', background: 'var(--border-color)', borderRadius: '4px' 
-            }}>
-              <strong style={{ fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                {c.isIntermission ? <><FaTicketAlt /> Intermission: {c.title}</> : c.isVent ? <><FaStickyNote /> Vent: {c.title}</> : <><FaBookOpen /> Chapter: {c.title}</>}
-                {c.image && <FaImage title="Has Image" style={{ marginLeft: '0.5rem', color: '#888' }} />}
-              </strong>
-              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                <button onClick={() => moveChapter(index, 'up')} style={{ padding: '0.3rem 0.6rem', fontSize: '0.9rem' }} title="Move Up"><FaArrowUp /></button>
-                <button onClick={() => moveChapter(index, 'down')} style={{ padding: '0.3rem 0.6rem', fontSize: '0.9rem' }} title="Move Down"><FaArrowDown /></button>
-                {c.isIntermission ? (
-                  <button onClick={() => openIntermissionModalForEdit(c)} style={{ padding: '0.2rem 0.5rem', marginRight: '0.5rem', fontSize: '0.8rem' }}>Edit</button>
-                ) : c.isVent ? (
-                  <button onClick={() => openVentModalForEdit(c)} style={{ padding: '0.2rem 0.5rem', marginRight: '0.5rem', fontSize: '0.8rem' }}>Edit</button>
-                ) : (
-                  <button onClick={() => openChapterModalForEdit(c)} style={{ padding: '0.2rem 0.5rem', marginRight: '0.5rem', fontSize: '0.8rem' }}>Edit Theme</button>
-                )}
-                <button onClick={() => deleteChapter(c._id)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }}>Delete</button>
-              </div>
-            </div>
+        {chapters.map((c, index) => {
+          const chapterPoems = poems.filter(p => p.chapterId === c._id);
+          const isExpanded = expandedChapters.has(c._id);
+          const hasPoems = !c.isIntermission && !c.isVent;
+          
+          return (
+            <li key={c._id} style={{ display: 'block', padding: 0, marginBottom: '1rem', border: 'none' }}>
+              <div style={{ 
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
+                padding: '0.8rem 1rem', background: 'var(--border-color)', borderRadius: '4px',
+                cursor: hasPoems ? 'pointer' : 'default',
+                userSelect: 'none'
+              }}
+              onClick={() => { if(hasPoems) toggleChapter(c._id); }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{ display: 'flex', gap: '0.2rem' }} onClick={e => e.stopPropagation()}>
+                    <button onClick={() => moveChapter(index, 'up')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }} title="Move Up"><FaArrowUp /></button>
+                    <button onClick={() => moveChapter(index, 'down')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }} title="Move Down"><FaArrowDown /></button>
+                  </div>
+                  
+                  <strong style={{ fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    {hasPoems && (
+                      <span style={{ color: '#888', display: 'flex', alignItems: 'center' }}>
+                        {isExpanded ? <FaChevronDown size={14} /> : <FaChevronRight size={14} />}
+                      </span>
+                    )}
+                    {c.isIntermission ? <><FaTicketAlt /> Intermission: {c.title}</> : c.isVent ? <><FaStickyNote /> Vent: {c.title}</> : <><FaBookOpen /> Chapter: {c.title}</>}
+                    {c.image && <FaImage title="Has Image" style={{ marginLeft: '0.5rem', color: '#888', fontSize: '0.9rem' }} />}
+                  </strong>
+                </div>
 
-            {!c.isIntermission && !c.isVent && (
-              <div style={{ padding: '1rem 0 1rem 2rem', borderLeft: '2px solid var(--border-color)', marginLeft: '1rem' }}>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                  {poems.filter(p => p.chapterId === c._id).map(p => (
-                    <li key={p._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0', borderBottom: '1px dashed var(--border-color)' }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><FaFileAlt /> {p.title} {p.image && <FaImage title="Has Image" style={{ color: '#888' }} />}</span>
-                      <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <button onClick={() => movePoem(p, 'up')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }}><FaArrowUp /></button>
-                        <button onClick={() => movePoem(p, 'down')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }}><FaArrowDown /></button>
-                        <button onClick={() => openPoemModalForEdit(p)} style={{ padding: '0.1rem 0.4rem', marginRight: '0.5rem', fontSize: '0.7rem' }}>Edit</button>
-                        <button onClick={() => deletePoem(p._id)} style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem' }}>Delete</button>
-                      </div>
-                    </li>
-                  ))}
-                  {poems.filter(p => p.chapterId === c._id).length === 0 && (
-                    <li style={{ fontStyle: 'italic', color: '#888', padding: '0.5rem 0', borderBottom: 'none' }}>No poems in this chapter.</li>
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                  {hasPoems && !isExpanded && (
+                    <span style={{ fontSize: '0.8rem', background: 'rgba(0,0,0,0.1)', padding: '0.2rem 0.6rem', borderRadius: '12px' }}>
+                      {chapterPoems.length} poem{chapterPoems.length !== 1 ? 's' : ''}
+                    </span>
                   )}
-                </ul>
-                <button onClick={() => openPoemModalForNew(c._id)} style={{ marginTop: '1rem', fontSize: '0.8rem', padding: '0.4rem 0.8rem' }}>
-                  + Add Poem Here
-                </button>
+                  <div style={{ display: 'flex', gap: '0.5rem' }} onClick={e => e.stopPropagation()}>
+                    {c.isIntermission ? (
+                      <button onClick={() => openIntermissionModalForEdit(c)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }}>Edit</button>
+                    ) : c.isVent ? (
+                      <button onClick={() => openVentModalForEdit(c)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }}>Edit</button>
+                    ) : (
+                      <button onClick={() => openChapterModalForEdit(c)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }}>Edit Theme</button>
+                    )}
+                    <button onClick={() => deleteChapter(c._id)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }}>Delete</button>
+                  </div>
+                </div>
               </div>
-            )}
-          </li>
-        ))}
+
+              {hasPoems && isExpanded && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }} 
+                  animate={{ opacity: 1, height: 'auto' }} 
+                  style={{ padding: '1rem 0 1rem 2.5rem', borderLeft: '2px solid var(--border-color)', marginLeft: '1.5rem', marginTop: '0.5rem' }}
+                >
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                    {chapterPoems.map(p => (
+                      <li key={p._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0', borderBottom: '1px dashed var(--border-color)' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><FaFileAlt /> {p.title} {p.image && <FaImage title="Has Image" style={{ color: '#888' }} />}</span>
+                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                          <button onClick={() => movePoem(p, 'up')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }}><FaArrowUp /></button>
+                          <button onClick={() => movePoem(p, 'down')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }}><FaArrowDown /></button>
+                          <button onClick={() => openPoemModalForEdit(p)} style={{ padding: '0.1rem 0.4rem', marginRight: '0.5rem', fontSize: '0.7rem' }}>Edit</button>
+                          <button onClick={() => deletePoem(p._id)} style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem' }}>Delete</button>
+                        </div>
+                      </li>
+                    ))}
+                    {chapterPoems.length === 0 && (
+                      <li style={{ fontStyle: 'italic', color: '#888', padding: '0.5rem 0', borderBottom: 'none' }}>No poems in this chapter.</li>
+                    )}
+                  </ul>
+                  <button onClick={() => openPoemModalForNew(c._id)} style={{ marginTop: '1rem', fontSize: '0.8rem', padding: '0.4rem 0.8rem' }}>
+                    + Add Poem Here
+                  </button>
+                </motion.div>
+              )}
+            </li>
+          );
+        })}
       </ul>
 
       {/* CHAPTER MODAL */}
