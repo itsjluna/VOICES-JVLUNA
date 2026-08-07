@@ -195,31 +195,45 @@ function ChapterView() {
               }
             });
 
-            // 3. Fallback chain: Tier 1 -> Tier 5
-            let pool = tier1_StudioAlbums;
-            if (pool.length === 0) pool = tier2_StudioEPs;
-            if (pool.length === 0) pool = tier3_MultiTrackSingles;
-            if (pool.length === 0) pool = tier4_PureSingles;
-            if (pool.length === 0) pool = tier5_AltVersions;
+            // 3. Fallback chain: Flatten tiers in order of preference
+            const allValidCollections = [
+              ...tier1_StudioAlbums,
+              ...tier2_StudioEPs,
+              ...tier3_MultiTrackSingles,
+              ...tier4_PureSingles,
+              ...tier5_AltVersions
+            ];
             
-            if (pool.length > 0) {
-              // Shrink coincidences per artist to 5 for top popularity while maintaining variety
-              const shrunkPool = pool.slice(0, 5);
-              const randomAlbum = shrunkPool[Math.floor(Math.random() * shrunkPool.length)];
+            if (allValidCollections.length > 0) {
+              let finalAlbum = null;
               
-              // 4. Fetch track list to get preview audio since the album object doesn't have it
-              try {
-                const tracksRes = await fetch(`https://itunes.apple.com/lookup?id=${randomAlbum.collectionId}&entity=song`);
-                const tracksData = await tracksRes.json();
-                const track = tracksData.results.find(t => t.wrapperType === 'track' && t.previewUrl);
-                if (track) {
-                  randomAlbum.previewUrl = track.previewUrl;
+              // Take the top 15 results (across all tiers) and shuffle them to maintain randomness
+              const poolToTest = allValidCollections.slice(0, 15).sort(() => Math.random() - 0.5);
+              
+              // Test up to 5 albums until we find one that actually has a playable audio preview
+              for (let i = 0; i < Math.min(5, poolToTest.length); i++) {
+                const album = poolToTest[i];
+                try {
+                  const tracksRes = await fetch(`https://itunes.apple.com/lookup?id=${album.collectionId}&entity=song`);
+                  const tracksData = await tracksRes.json();
+                  const track = tracksData.results.find(t => t.wrapperType === 'track' && t.previewUrl);
+                  
+                  if (track) {
+                    album.previewUrl = track.previewUrl;
+                    finalAlbum = album;
+                    break; // Success! We found music.
+                  }
+                } catch (e) {
+                  console.error("Failed to fetch album tracks for preview", e);
                 }
-              } catch (e) {
-                console.error("Failed to fetch album tracks for preview", e);
               }
               
-              setAlbumDecoration(randomAlbum);
+              // If after 5 tries we still have no preview (or API failed), just show the first album so the Jewel Case always appears
+              if (!finalAlbum) {
+                finalAlbum = poolToTest[0];
+              }
+              
+              setAlbumDecoration(finalAlbum);
             }
           }
         } catch (e) {
