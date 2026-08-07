@@ -374,6 +374,7 @@ button:hover {
 @media (min-width: 1024px) {
   .intermission-collage {
     display: block; /* Remove flex row to keep ticket perfectly centered */
+    padding-top: 8rem; /* Extra space to accommodate large polaroids on top */
   }
   
   .ticket-container {
@@ -382,11 +383,11 @@ button:hover {
 
   .intermission-polaroid {
     position: absolute;
-    top: 60px;
+    top: -30px; /* Shifted considerably up to avoid overlapping long text */
     left: calc(50% + 180px); /* Adjust slightly closer for scale */
     z-index: 10;
     transform: scale(1.15); /* Make it a bit bigger when attached */
-    transform-origin: left center;
+    transform-origin: left top;
   }
 }
 
