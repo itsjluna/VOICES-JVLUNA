@@ -478,12 +478,18 @@ button:hover {
 }
 
 /* --- Post-it Notes --- */
-.post-it {
+.post-it-wrapper {
   position: absolute;
   top: 150px;
   right: -60px;
   width: 200px;
   max-height: 220px;
+  z-index: 15;
+}
+
+.post-it {
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   background: #fdfd96;
   padding: 1.5rem;
@@ -491,11 +497,10 @@ button:hover {
   color: #333;
   font-family: 'Courier New', Courier, monospace;
   font-size: 0.9rem;
-  z-index: 15;
 }
 
 @media (max-width: 767px) {
-  .post-it {
+  .post-it-wrapper {
     position: relative;
     top: auto;
     right: auto;
