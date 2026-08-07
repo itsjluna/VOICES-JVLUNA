@@ -190,6 +190,18 @@ app.delete('/api/poems/:id', authMiddleware, async (req, res) => {
 });
 
 
+app.get('/api/itunes/lookup', async (req, res) => {
+  try {
+    const { id, entity, limit } = req.query;
+    let url = `https://itunes.apple.com/lookup?id=${id}&entity=${entity}`;
+    if (limit) url += `&limit=${limit}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 export default app;
 if (process.env.NODE_ENV !== 'production') {

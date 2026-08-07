@@ -142,9 +142,9 @@ function ChapterView() {
           ];
           const randomArtist = belovedArtists[Math.floor(Math.random() * belovedArtists.length)];
           
-          // Lookup albums explicitly by artist ID to prevent compiling/soundtrack bleed-over
-          const itunesRes = await fetch(`https://itunes.apple.com/lookup?id=${randomArtist.id}&entity=album&limit=30`);
-          const itunesData = await itunesRes.json();
+          // Lookup albums explicitly by artist ID using our backend proxy to prevent CORS issues
+          const itunesRes = await api.get(`/itunes/lookup?id=${randomArtist.id}&entity=album&limit=30`);
+          const itunesData = itunesRes.data;
           if (itunesData.results && itunesData.results.length > 0) {
             
             // Only process collection records (index 0 is the artist record itself)
@@ -214,8 +214,8 @@ function ChapterView() {
               for (let i = 0; i < Math.min(5, poolToTest.length); i++) {
                 const album = poolToTest[i];
                 try {
-                  const tracksRes = await fetch(`https://itunes.apple.com/lookup?id=${album.collectionId}&entity=song`);
-                  const tracksData = await tracksRes.json();
+                  const tracksRes = await api.get(`/itunes/lookup?id=${album.collectionId}&entity=song`);
+                  const tracksData = tracksRes.data;
                   const track = tracksData.results.find(t => t.wrapperType === 'track' && t.previewUrl);
                   
                   if (track) {
