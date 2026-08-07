@@ -59,19 +59,21 @@ function VentView() {
       
       const region = Math.floor(Math.random() * 4); // 0: top, 1: bottom, 2: left, 3: right
       let topPos = 'auto', bottomPos = 'auto', leftPos = 'auto', rightPos = 'auto';
-
-      if (region === 0) { // Top
-        topPos = `-${Math.random() * 4 + 2}%`;
-        leftPos = `${Math.random() * 80 + 10}%`;
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      const stickerWidth = Math.random() * 40 + 60; // 60 to 100px
+      
+      if (region === 0) { // Top (Avoid center title area by pushing to corners)
+        topPos = `-${Math.random() * 20 + 30}px`;
+        leftPos = Math.random() > 0.5 ? `${Math.random() * 10 - 5}%` : `${Math.random() * 10 + 85}%`;
       } else if (region === 1) { // Bottom
-        bottomPos = `-${Math.random() * 4 + 2}%`;
+        bottomPos = `-${Math.random() * 20 + 20}px`;
         leftPos = `${Math.random() * 80 + 10}%`;
-      } else if (region === 2) { // Left
-        topPos = `${Math.random() * 80 + 10}%`;
-        leftPos = `-${Math.random() * 30 + 40}px`;
-      } else { // Right
-        topPos = `${Math.random() * 80 + 10}%`;
-        rightPos = `-${Math.random() * 30 + 40}px`;
+      } else if (region === 2) { // Left (Avoid top 25% to protect title, push out on mobile)
+        topPos = `${Math.random() * 60 + 25}%`;
+        leftPos = `-${Math.random() * 20 + (isMobile ? stickerWidth - 20 : 40)}px`;
+      } else { // Right (Avoid top 25% to protect title, push out on mobile)
+        topPos = `${Math.random() * 60 + 25}%`;
+        rightPos = `-${Math.random() * 20 + (isMobile ? stickerWidth - 20 : 40)}px`;
       }
       
       items.push({
@@ -82,7 +84,7 @@ function VentView() {
         left: leftPos,
         right: rightPos,
         rotate: Math.random() * 60 - 30,
-        width: `${Math.random() * 40 + 60}px`
+        width: `${stickerWidth}px`
       });
     }
     return items;
