@@ -7,6 +7,9 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
   const hasOpened = React.useRef(false);
   const layoutIdId = `cd-${albumName}-${artist}`.replace(/\s+/g, '-'); 
   
+  const dragX = useMotionValue(0);
+  const dragY = useMotionValue(0);
+  
   if (isOpen) hasOpened.current = true;
 
   useEffect(() => {
@@ -60,7 +63,9 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
             boxShadow: '2px 5px 15px rgba(0,0,0,0.3)',
             borderRadius: '2px',
             backgroundColor: '#111',
-            ...style
+            ...style,
+            x: dragX,
+            y: dragY
           }}
         drag
         dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }}

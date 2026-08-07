@@ -7,6 +7,9 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
   const hasOpened = React.useRef(false);
   const layoutId = `scattered-${src}-${title}`.replace(/[^a-zA-Z0-9]/g, '-');
   
+  const dragX = useMotionValue(0);
+  const dragY = useMotionValue(0);
+  
   if (isOpen) hasOpened.current = true;
   useEffect(() => {
     if (isOpen) {
@@ -43,7 +46,7 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
             delay: hasOpened.current ? 0 : (initialAnimation.transition?.delay || 0),
             layout: { type: "spring", stiffness: 1000, damping: 35 } 
           }}
-          style={{ ...style, cursor: draggable ? 'grab' : 'pointer' }}
+          style={{ ...style, cursor: draggable ? 'grab' : 'pointer', x: dragX, y: dragY }}
           drag={draggable}
           dragConstraints={draggable ? { left: -100, right: 100, top: -100, bottom: 100 } : undefined}
           dragElastic={draggable ? 0.2 : undefined}

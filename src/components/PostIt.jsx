@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue } from 'framer-motion';
 
 const PostIt = React.memo(({ quote, author, color, initialAnimation, style }) => {
   const [isOpen, setIsOpen] = useState(false);
   const layoutIdId = `postit-${quote.substring(0, 20)}-${author}`; 
+  
+  const dragX = useMotionValue(0);
+  const dragY = useMotionValue(0);
   
   useEffect(() => {
     if (isOpen) {
@@ -23,7 +26,7 @@ const PostIt = React.memo(({ quote, author, color, initialAnimation, style }) =>
         animate={initialAnimation.animate}
         transition={{ ...initialAnimation.transition, layout: { type: "spring", stiffness: 1000, damping: 35 } }}
         className="post-it"
-        style={{ ...style, background: color, cursor: 'grab' }}
+        style={{ ...style, background: color, cursor: 'grab', x: dragX, y: dragY }}
         drag
         dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }}
         dragElastic={0.2}
