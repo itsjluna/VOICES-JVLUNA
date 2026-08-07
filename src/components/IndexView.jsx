@@ -527,28 +527,9 @@ function IndexView() {
                           wordWrap: 'break-word',
                           overflowWrap: 'break-word',
                           wordBreak: 'break-word',
-                          whiteSpace: 'normal',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.5rem'
+                          whiteSpace: 'normal'
                         }}>
                           {language === 'EN' && chapter.titleEn ? chapter.titleEn : chapter.title}
-                          {(isInt || isVent) && (
-                            <span style={{
-                              fontSize: '0.6rem',
-                              fontFamily: 'var(--font-mono)',
-                              fontStyle: 'normal',
-                              padding: '0.15rem 0.4rem',
-                              borderRadius: '10px',
-                              border: `1px solid ${iconColor}`,
-                              color: iconColor,
-                              letterSpacing: '0.1em',
-                              opacity: 0.8,
-                              transform: 'translateY(-2px)'
-                            }}>
-                              {numberText}
-                            </span>
-                          )}
                         </span>
                       </div>
                       
