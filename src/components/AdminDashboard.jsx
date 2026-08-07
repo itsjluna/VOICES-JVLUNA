@@ -238,12 +238,12 @@ function AdminDashboard() {
       </div>
 
       <motion.div 
-        layout
         initial={false}
         animate={{
           padding: isScrolled ? '0.5rem 1.5rem' : '0.5rem 2rem',
-          gap: isScrolled ? '1.5rem' : '1rem'
+          gap: isScrolled ? '1.5rem' : '1.5rem'
         }}
+        transition={{ duration: 0.3 }}
         style={{ 
           position: 'sticky', 
           top: '1rem', 
@@ -258,42 +258,41 @@ function AdminDashboard() {
           boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
           border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
           width: 'fit-content',
-          margin: '0 auto 2rem auto',
-          transformOrigin: 'top center'
+          margin: '0 auto 2rem auto'
         }}
       >
-        <div style={{ display: 'flex', gap: isScrolled ? '1.5rem' : '1rem', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
           <button 
             onClick={() => { setChapterForm({ _id: null, title: '', titleEn: '', image: '', theme: 'winter' }); setIsChapterModalOpen(true); }} 
-            style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none' }}
+            style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none', cursor: 'pointer' }}
             title="Add Chapter"
           >
-            {isScrolled ? <FaBookOpen size={20} /> : <><FaPlus size={12}/> Add Chapter</>}
+            <FaBookOpen size={16} /> {!isScrolled && <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Add Chapter</span>}
           </button>
           <button 
             onClick={openIntermissionModalForNew} 
-            style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: isScrolled ? 'transparent' : 'var(--text-color)', color: isScrolled ? 'var(--text-color)' : 'var(--bg-color)', border: 'none' }}
+            style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none', cursor: 'pointer' }}
             title="Add Intermission"
           >
-            {isScrolled ? <FaTicketAlt size={20} /> : <><FaPlus size={12}/> Add Intermission</>}
+            <FaTicketAlt size={16} /> {!isScrolled && <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Add Intermission</span>}
           </button>
           <button 
             onClick={openVentModalForNew} 
-            style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: isScrolled ? 'transparent' : '#fdfd96', color: isScrolled ? 'var(--text-color)' : '#111', border: isScrolled ? 'none' : '1px solid #111' }}
+            style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none', cursor: 'pointer' }}
             title="Add Vent"
           >
-            {isScrolled ? <FaStickyNote size={20} /> : <><FaPlus size={12}/> Add Vent</>}
+            <FaStickyNote size={16} /> {!isScrolled && <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Add Vent</span>}
           </button>
         </div>
         
-        {isScrolled && <div style={{ width: '1px', height: '24px', background: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' }} />}
+        <div style={{ width: '1px', height: '24px', background: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' }} />
 
-        <div style={{ display: 'flex', gap: isScrolled ? '1.5rem' : '0.5rem', alignItems: 'center' }}>
-          <button onClick={expandAll} style={{ padding: isScrolled ? '0.5rem' : '0.4rem 0.8rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none' }} title="Expand All">
-            {isScrolled ? <FaExpand size={20} /> : 'Expand All'}
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <button onClick={expandAll} style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none', cursor: 'pointer' }} title="Expand All">
+            <FaExpand size={16} /> {!isScrolled && <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Expand</span>}
           </button>
-          <button onClick={collapseAll} style={{ padding: isScrolled ? '0.5rem' : '0.4rem 0.8rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none' }} title="Collapse All">
-            {isScrolled ? <FaCompress size={20} /> : 'Collapse All'}
+          <button onClick={collapseAll} style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none', cursor: 'pointer' }} title="Collapse All">
+            <FaCompress size={16} /> {!isScrolled && <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Collapse</span>}
           </button>
         </div>
       </motion.div>
