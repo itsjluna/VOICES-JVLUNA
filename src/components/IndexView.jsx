@@ -523,7 +523,6 @@ function IndexView() {
                           color: readChapters.includes(chapter._id) && !isInt && !isVent 
                             ? 'var(--text-color)' 
                             : 'inherit',
-                          textShadow: '0 0 10px var(--bg-color)',
                           opacity: readChapters.includes(chapter._id) && !isInt && !isVent ? 0.5 : 1,
                           wordWrap: 'break-word',
                           overflowWrap: 'break-word',
@@ -543,7 +542,7 @@ function IndexView() {
                           fontSize: '1rem', 
                           opacity: readChapters.includes(chapter._id) ? 0.3 : 0.8,
                           letterSpacing: '0.1em',
-                          color: iconColor,
+                          color: 'var(--text-color)',
                           flexShrink: 0
                         }}>
                           {numberText}
