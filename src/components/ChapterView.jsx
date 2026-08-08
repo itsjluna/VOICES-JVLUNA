@@ -23,7 +23,15 @@ function ChapterView() {
   const [postItColor2, setPostItColor2] = useState('#ffb7b2');
   const [albumDecoration, setAlbumDecoration] = useState(null);
   const [randomDecorations, setRandomDecorations] = useState([]);
+  const [isMobileView, setIsMobileView] = useState(false);
   const { language } = useLanguage();
+
+  useEffect(() => {
+    const handleResize = () => setIsMobileView(window.innerWidth <= 767);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleBack = () => {
     if (window.history.length > 2) {
@@ -456,7 +464,7 @@ function ChapterView() {
                   style={{ zIndex: 5 }}
                   initialAnimation={{
                     initial: { opacity: 0, scale: 0.8, rotate: 10, y: 0 },
-                    animate: { opacity: 1, scale: 1, rotate: -5, y: -20 },
+                    animate: { opacity: 1, scale: 1, rotate: -5, y: isMobileView ? 0 : -20 },
                     transition: { delay: 1.2, duration: 0.5 }
                   }}
                 />
@@ -469,7 +477,7 @@ function ChapterView() {
                   style={{ zIndex: 6 }}
                   initialAnimation={{
                     initial: { opacity: 0, scale: 0.8, rotate: -10, y: 0, x: 0 },
-                    animate: { opacity: 1, scale: 1, rotate: 8, y: 80, x: -40 },
+                    animate: { opacity: 1, scale: 1, rotate: 8, y: isMobileView ? 10 : 80, x: isMobileView ? 0 : -40 },
                     transition: { delay: 1.4, duration: 0.5 }
                   }}
                 />
