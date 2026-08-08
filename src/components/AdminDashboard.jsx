@@ -298,7 +298,7 @@ function AdminDashboard() {
   }
 
   return (
-    <div style={{ padding: '2rem 0', maxWidth: '800px', margin: '0 auto' }}>
+    <div style={{ padding: '2rem 1rem', maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <h2>Anthology Structure</h2>
         <button onClick={handleLogout}>Logout</button>
@@ -406,7 +406,7 @@ function AdminDashboard() {
           
           return (
             <li key={c._id} style={{ display: 'block', padding: 0, marginBottom: '1rem', border: 'none' }}>
-              <div style={{ 
+              <div className="admin-list-item" style={{ 
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
                 padding: '1rem 1.5rem', 
                 background: isDark ? 'rgba(30, 30, 30, 0.4)' : 'rgba(255, 255, 255, 0.5)', 
@@ -447,21 +447,60 @@ function AdminDashboard() {
                   </strong>
                 </div>
 
-                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <div className="admin-list-item-actions" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                   {hasPoems && !isExpanded && (
                     <span style={{ fontSize: '0.8rem', background: 'rgba(0,0,0,0.1)', padding: '0.2rem 0.6rem', borderRadius: '12px' }}>
                       {chapterPoems.length} poem{chapterPoems.length !== 1 ? 's' : ''}
                     </span>
                   )}
+                  
+                  {/* Desktop Inline Actions */}
+                  <div className="desktop-inline-actions" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginRight: '1rem' }} onClick={e => e.stopPropagation()}>
+                    {!c.isIntermission && !c.isVent && (
+                      <select 
+                        value={c.theme || 'winter'} 
+                        onChange={async (e) => {
+                          await api.put(`/chapters/${c._id}`, { ...c, theme: e.target.value });
+                          fetchData();
+                        }}
+                        style={{ padding: '0.3rem 0.5rem', fontSize: '0.8rem', borderRadius: '4px', background: 'transparent', color: 'var(--text-color)', border: '1px solid var(--border-color)' }}
+                      >
+                        <option value="winter">Winter</option>
+                        <option value="spring">Spring</option>
+                        <option value="summer">Summer</option>
+                        <option value="autumn">Autumn</option>
+                      </select>
+                    )}
+                    
+                    <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.3rem 0.5rem', fontSize: '0.8rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}>
+                      <FaImage /> {c.image ? 'Change Image' : 'Add Image'}
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        style={{ display: 'none' }} 
+                        onChange={async (e) => {
+                          const file = e.target.files[0];
+                          if (!file) return;
+                          const reader = new FileReader();
+                          reader.onloadend = async () => {
+                            await api.put(`/chapters/${c._id}`, { ...c, image: reader.result });
+                            fetchData();
+                          };
+                          reader.readAsDataURL(file);
+                        }} 
+                      />
+                    </label>
+                  </div>
+
                   <div style={{ display: 'flex', gap: '0.5rem' }} onClick={e => e.stopPropagation()}>
                     {c.isIntermission ? (
                       <button onClick={() => openIntermissionModalForEdit(c)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }}>Edit</button>
                     ) : c.isVent ? (
                       <button onClick={() => openVentModalForEdit(c)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }}>Edit</button>
                     ) : (
-                      <button onClick={() => openChapterModalForEdit(c)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }}>Edit Theme</button>
+                      <button onClick={() => openChapterModalForEdit(c)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }}>Edit Details</button>
                     )}
-                    <button onClick={() => deleteChapter(c._id)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }}>Delete</button>
+                    <button onClick={() => deleteChapter(c._id)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem', color: '#ff4d4d', borderColor: '#ff4d4d' }}>Delete</button>
                   </div>
                 </div>
               </div>
@@ -474,7 +513,7 @@ function AdminDashboard() {
                 >
                   <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                     {chapterPoems.map(p => (
-                      <li key={p._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0', borderBottom: '1px dashed var(--border-color)' }}>
+                      <li key={p._id} className="admin-list-poem-item" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0', borderBottom: '1px dashed var(--border-color)' }}>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                           <input 
                             type="checkbox" 
@@ -488,11 +527,29 @@ function AdminDashboard() {
                             {p.image && <FaImage title="Has Image" style={{ color: '#888', fontSize: '0.8rem' }} />}
                           </span>
                         </span>
-                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <div className="admin-list-poem-actions" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                          <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.1rem 0.4rem', fontSize: '0.7rem', borderRadius: '4px', border: '1px solid var(--border-color)', marginRight: '0.5rem' }}>
+                            <FaImage /> {p.image ? 'Change' : 'Add Image'}
+                            <input 
+                              type="file" 
+                              accept="image/*" 
+                              style={{ display: 'none' }} 
+                              onChange={async (e) => {
+                                const file = e.target.files[0];
+                                if (!file) return;
+                                const reader = new FileReader();
+                                reader.onloadend = async () => {
+                                  await api.put(`/poems/${p._id}`, { ...p, image: reader.result });
+                                  fetchData();
+                                };
+                                reader.readAsDataURL(file);
+                              }} 
+                            />
+                          </label>
                           <button onClick={() => movePoem(p, 'up')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }}><FaArrowUp /></button>
                           <button onClick={() => movePoem(p, 'down')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }}><FaArrowDown /></button>
                           <button onClick={() => openPoemModalForEdit(p)} style={{ padding: '0.1rem 0.4rem', marginRight: '0.5rem', fontSize: '0.7rem' }}>Edit</button>
-                          <button onClick={() => deletePoem(p._id)} style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem' }}>Delete</button>
+                          <button onClick={() => deletePoem(p._id)} style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem', color: '#ff4d4d', borderColor: '#ff4d4d' }}>Delete</button>
                         </div>
                       </li>
                     ))}
@@ -594,11 +651,11 @@ function AdminDashboard() {
 
                 <div style={{ background: 'white', color: 'black', marginBottom: '1.5rem', minHeight: '300px' }}>
                   <label style={{color: '#111'}}>Content (ES)</label>
-                  <Editor value={poemForm.content} onChange={e => setPoemForm({...poemForm, content: e.target.value})} style={{ height: '300px' }} />
+                  <Editor value={poemForm.content} onChange={e => setPoemForm({...poemForm, content: e.target.value})} style={{ height: 'clamp(300px, 50vh, 600px)', overflowY: 'auto' }} />
                 </div>
                 <div style={{ background: 'white', color: 'black', marginBottom: '1.5rem', minHeight: '300px' }}>
                   <label style={{color: '#111'}}>Content (EN)</label>
-                  <Editor value={poemForm.contentEn} onChange={e => setPoemForm({...poemForm, contentEn: e.target.value})} style={{ height: '300px' }} />
+                  <Editor value={poemForm.contentEn} onChange={e => setPoemForm({...poemForm, contentEn: e.target.value})} style={{ height: 'clamp(300px, 50vh, 600px)', overflowY: 'auto' }} />
                 </div>
                 <label>Image (optional)</label>
                 <input type="file" accept="image/*" onChange={e => handleFileChange(e, setPoemForm)} />
@@ -641,11 +698,11 @@ function AdminDashboard() {
 
                 <div style={{ background: 'white', color: 'black', margin: '1.5rem 0', minHeight: '300px' }}>
                   <label style={{color: '#111'}}>Content (ES)</label>
-                  <Editor value={intermissionForm.content} onChange={e => setIntermissionForm({...intermissionForm, content: e.target.value})} style={{ height: '300px' }} />
+                  <Editor value={intermissionForm.content} onChange={e => setIntermissionForm({...intermissionForm, content: e.target.value})} style={{ height: 'clamp(300px, 50vh, 600px)', overflowY: 'auto' }} />
                 </div>
                 <div style={{ background: 'white', color: 'black', margin: '1.5rem 0', minHeight: '300px' }}>
                   <label style={{color: '#111'}}>Content (EN)</label>
-                  <Editor value={intermissionForm.contentEn} onChange={e => setIntermissionForm({...intermissionForm, contentEn: e.target.value})} style={{ height: '300px' }} />
+                  <Editor value={intermissionForm.contentEn} onChange={e => setIntermissionForm({...intermissionForm, contentEn: e.target.value})} style={{ height: 'clamp(300px, 50vh, 600px)', overflowY: 'auto' }} />
                 </div>
                 <label>Image (optional)</label>
                 <input type="file" accept="image/*" onChange={e => handleFileChange(e, setIntermissionForm)} />
@@ -685,11 +742,11 @@ function AdminDashboard() {
 
                 <div style={{ background: 'white', color: 'black', margin: '1.5rem 0', minHeight: '300px' }}>
                   <label style={{color: '#111'}}>Content (ES)</label>
-                  <Editor value={ventForm.content} onChange={e => setVentForm({...ventForm, content: e.target.value})} style={{ height: '300px' }} />
+                  <Editor value={ventForm.content} onChange={e => setVentForm({...ventForm, content: e.target.value})} style={{ height: 'clamp(300px, 50vh, 600px)', overflowY: 'auto' }} />
                 </div>
                 <div style={{ background: 'white', color: 'black', margin: '1.5rem 0', minHeight: '300px' }}>
                   <label style={{color: '#111'}}>Content (EN)</label>
-                  <Editor value={ventForm.contentEn} onChange={e => setVentForm({...ventForm, contentEn: e.target.value})} style={{ height: '300px' }} />
+                  <Editor value={ventForm.contentEn} onChange={e => setVentForm({...ventForm, contentEn: e.target.value})} style={{ height: 'clamp(300px, 50vh, 600px)', overflowY: 'auto' }} />
                 </div>
                 <label>Cover Image (optional)</label>
                 <input type="file" accept="image/*" onChange={e => handleFileChange(e, setVentForm)} />
