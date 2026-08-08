@@ -47,7 +47,7 @@ function VentView() {
   const isNotebook = vent?.theme !== 'postits';
 
   // STICKERS GENERATION
-  const stickerImages = ['bee.png', 'cat.png', 'cat2.png', 'flower.png', 'flower2.png', 'flower3.png', 'flower4.png', 'jjk.png', 'pig.png'];
+  const stickerImages = ['bee.png', 'cat.png', 'cat2.png', 'flower.png', 'flower2.png', 'flower3.png', 'flower4.png', 'jjk.png', 'pig.png', 'lightpole.png', 'swing.png', 'whale.png'];
   const generatedStickers = useMemo(() => {
     const count = Math.floor(Math.random() * 4) + 3; // 3 to 6 stickers
     const items = [];
