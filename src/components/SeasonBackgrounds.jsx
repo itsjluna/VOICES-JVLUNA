@@ -878,8 +878,39 @@ export const LgbtPride = React.memo(() => {
     </motion.g>
   );
 
+  const floatingLaces = useMemo(() => {
+    return [...Array(6)].map((_, i) => {
+      const yStart = Math.random() * 1500 - 250;
+      const angle = Math.random() * 40 - 20; 
+      const dur = Math.random() * 30 + 30; 
+      const dir = Math.random() > 0.5 ? 1 : -1;
+      
+      return (
+        <g key={`lace-${i}`} opacity="0.4">
+          <animateTransform 
+            attributeName="transform" 
+            type="translate" 
+            values={`${-1000 * dir},${yStart}; ${1500 * dir},${yStart - 300}`} 
+            dur={`${dur}s`} 
+            repeatCount="indefinite" 
+          />
+          <g transform={`rotate(${angle})`}>
+            <rect x="-2000" y="0" width="5000" height="2" fill="#ff4d4d" />
+            <rect x="-2000" y="2" width="5000" height="2" fill="#ff9e4d" />
+            <rect x="-2000" y="4" width="5000" height="2" fill="#ffe74d" />
+            <rect x="-2000" y="6" width="5000" height="2" fill="#4dff5b" />
+            <rect x="-2000" y="8" width="5000" height="2" fill="#4d8cff" />
+            <rect x="-2000" y="10" width="5000" height="2" fill="#b64dff" />
+          </g>
+        </g>
+      );
+    });
+  }, []);
+
   const fgLayer = (
-    <motion.g style={{ y: fgScrollY, x: mouseFgX }}></motion.g>
+    <motion.g style={{ y: fgScrollY, x: mouseFgX }}>
+      {floatingLaces}
+    </motion.g>
   );
 
   return <WindowFrame timePhase={timePhase} skyColor={skyColor} bgLayer={bgLayer} midLayer={midLayer} fgLayer={fgLayer} weatherLayer={null} frameY={frameScrollY} mouseFrameX={mouseFrameX} mouseFrameY={mouseFrameY} />;
