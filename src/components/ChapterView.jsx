@@ -315,25 +315,27 @@ function ChapterView() {
           const isTop = Math.random() > 0.5;
           const isLeft = Math.random() > 0.5;
           
-          const maxSpread = isDesktop ? 400 : 140;
-          const minSpread = isDesktop ? 120 : 70;
+          const minSpread = isDesktop ? 80 : 40;
+          const maxSpreadExtra = isDesktop ? 250 : 100;
           
-          const minSize = 70;
-          const maxSize = isDesktop ? 260 : 150;
+          const minSize = 90;
+          const maxSize = isDesktop ? 280 : 160;
           
+          const getOffset = () => `-${Math.floor(Math.random() * maxSpreadExtra) + minSpread}px`;
+
           selectedDecs.push({
             src: `/${item}`,
             titleEn: decorationMeta[item]?.titleEn,
             titleEs: decorationMeta[item]?.titleEs,
             descEn: decorationMeta[item]?.descEn,
             descEs: decorationMeta[item]?.descEs,
-            top: isTop ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
-            bottom: !isTop ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
-            left: isLeft ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
-            right: !isLeft ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
+            top: isTop ? getOffset() : 'auto',
+            bottom: !isTop ? getOffset() : 'auto',
+            left: isLeft ? getOffset() : 'auto',
+            right: !isLeft ? getOffset() : 'auto',
             rotate: Math.random() * 60 - 30,
-            width: `${130 + Math.random() * 80}px`,
-            zIndex: Math.floor(Math.random() * 8) + 1, // Behind or above elements
+            width: `${minSize + Math.random() * (maxSize - minSize)}px`,
+            zIndex: Math.floor(Math.random() * 10) + 10, // Ensure they sit above polaroid (zIndex: 5)
             delay: 1.5 + (Math.random() * 0.5)
           });
         }
