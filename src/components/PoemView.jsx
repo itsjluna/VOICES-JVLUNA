@@ -145,6 +145,7 @@ function PoemView() {
               <Polaroid 
                 src={poem.image} 
                 alt={poem.title} 
+                credit={poem.imageCredit} 
                 polaroidClass="bookmark-polaroid"
                 containerStyle={{ position: 'relative', zIndex: 1 }}
               />

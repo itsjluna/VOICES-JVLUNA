@@ -13,19 +13,43 @@ function AdminDashboard() {
   
   const [newChapterTitle, setNewChapterTitle] = useState('');
   
-  const [poemForm, setPoemForm] = useState({ _id: null, title: '', titleEn: '', content: '', contentEn: '', chapterId: '', image: '' });
+  const [poemForm, setPoemForm] = useState({ _id: null, title: '', titleEn: '', content: '', contentEn: '', chapterId: '', image: '', imageCredit: '' });
   const [isPoemModalOpen, setIsPoemModalOpen] = useState(false);
 
-  const [intermissionForm, setIntermissionForm] = useState({ _id: null, title: '', titleEn: '', content: '', contentEn: '', image: '', isIntermission: true });
+  const [intermissionForm, setIntermissionForm] = useState({ _id: null, title: '', titleEn: '', content: '', contentEn: '', image: '', imageCredit: '', isIntermission: true });
   const [isIntermissionModalOpen, setIsIntermissionModalOpen] = useState(false);
 
-  const [ventForm, setVentForm] = useState({ _id: null, title: '', titleEn: '', content: '', contentEn: '', image: '', isVent: true });
+  const [ventForm, setVentForm] = useState({ _id: null, title: '', titleEn: '', content: '', contentEn: '', image: '', imageCredit: '', isVent: true });
   const [isVentModalOpen, setIsVentModalOpen] = useState(false);
 
-  const [chapterForm, setChapterForm] = useState({ _id: null, title: '', titleEn: '', image: '', theme: 'winter' });
+  const [chapterForm, setChapterForm] = useState({ _id: null, title: '', titleEn: '', image: '', imageCredit: '', theme: 'winter' });
   const [isChapterModalOpen, setIsChapterModalOpen] = useState(false);
 
   const [expandedChapters, setExpandedChapters] = useState(new Set());
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedItems, setSelectedItems] = useState(new Set());
+
+  const toggleSelection = (e, id, type) => {
+    e.stopPropagation();
+    const key = `${type}:${id}`;
+    setSelectedItems(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+
+  const handleBulkDelete = async () => {
+    if (!confirm(`Are you sure you want to delete ${selectedItems.size} selected item(s)?`)) return;
+    for (const key of selectedItems) {
+      const [type, id] = key.split(':');
+      if (type === 'chapter') await api.delete(`/chapters/${id}`);
+      else if (type === 'poem') await api.delete(`/poems/${id}`);
+    }
+    setSelectedItems(new Set());
+    fetchData();
+  };
 
   const toggleChapter = (chapterId) => {
     setExpandedChapters(prev => {
@@ -40,7 +64,47 @@ function AdminDashboard() {
   const collapseAll = () => setExpandedChapters(new Set());
 
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isDark, setIsDark] = useState(false);
+
+  // Drafts logic
+  useEffect(() => {
+    const drafts = JSON.parse(localStorage.getItem('admin_drafts') || '{}');
+    let changed = false;
+    
+    // Only auto-save if modal is open and it's a new entry (no _id)
+    if (isChapterModalOpen && !chapterForm._id) { drafts.chapter = chapterForm; changed = true; }
+    if (isPoemModalOpen && !poemForm._id) { drafts.poem = poemForm; changed = true; }
+    if (isIntermissionModalOpen && !intermissionForm._id) { drafts.intermission = intermissionForm; changed = true; }
+    if (isVentModalOpen && !ventForm._id) { drafts.vent = ventForm; changed = true; }
+    
+    if (changed) {
+      localStorage.setItem('admin_drafts', JSON.stringify(drafts));
+    }
+  }, [chapterForm, poemForm, intermissionForm, ventForm, isChapterModalOpen, isPoemModalOpen, isIntermissionModalOpen, isVentModalOpen]);
+
+  const clearDraft = (type) => {
+    try {
+      const drafts = JSON.parse(localStorage.getItem('admin_drafts') || '{}');
+      delete drafts[type];
+      localStorage.setItem('admin_drafts', JSON.stringify(drafts));
+    } catch(e) {}
+  };
+
+  const loadDraft = (type, defaultForm) => {
+    try {
+      const drafts = JSON.parse(localStorage.getItem('admin_drafts') || '{}');
+      const draft = drafts[type];
+      if (draft && (draft.title || draft.content)) {
+        if (confirm(`You have an unsaved draft for a ${type}. Would you like to load it?`)) {
+          return { ...defaultForm, ...draft };
+        } else {
+          clearDraft(type);
+        }
+      }
+    } catch(e) {}
+    return defaultForm;
+  };
 
   useEffect(() => {
     setIsDark(document.documentElement.classList.contains('dark'));
@@ -109,6 +173,7 @@ function AdminDashboard() {
     e.preventDefault();
     if (chapterForm._id) await api.put(`/chapters/${chapterForm._id}`, chapterForm);
     else await api.post('/chapters', { ...chapterForm, isIntermission: false });
+    clearDraft('chapter');
     setIsChapterModalOpen(false);
     fetchData();
   };
@@ -142,6 +207,7 @@ function AdminDashboard() {
     e.preventDefault();
     if (poemForm._id) await api.put(`/poems/${poemForm._id}`, poemForm);
     else await api.post('/poems', poemForm);
+    clearDraft('poem');
     setIsPoemModalOpen(false);
     fetchData();
   };
@@ -171,7 +237,7 @@ function AdminDashboard() {
   };
 
   const openPoemModalForNew = (chapterId) => {
-    setPoemForm({ _id: null, title: '', titleEn: '', content: '', contentEn: '', chapterId: chapterId, image: '' });
+    setPoemForm(loadDraft('poem', { _id: null, title: '', titleEn: '', content: '', contentEn: '', chapterId: chapterId, image: '', imageCredit: '' }));
     setIsPoemModalOpen(true);
   };
 
@@ -185,12 +251,13 @@ function AdminDashboard() {
     e.preventDefault();
     if (intermissionForm._id) await api.put(`/chapters/${intermissionForm._id}`, intermissionForm);
     else await api.post('/chapters', intermissionForm);
+    clearDraft('intermission');
     setIsIntermissionModalOpen(false);
     fetchData();
   };
 
   const openIntermissionModalForNew = () => {
-    setIntermissionForm({ _id: null, title: '', titleEn: '', content: '', contentEn: '', image: '', isIntermission: true });
+    setIntermissionForm(loadDraft('intermission', { _id: null, title: '', titleEn: '', content: '', contentEn: '', image: '', imageCredit: '', isIntermission: true }));
     setIsIntermissionModalOpen(true);
   };
 
@@ -204,12 +271,13 @@ function AdminDashboard() {
     e.preventDefault();
     if (ventForm._id) await api.put(`/chapters/${ventForm._id}`, ventForm);
     else await api.post('/chapters', ventForm);
+    clearDraft('vent');
     setIsVentModalOpen(false);
     fetchData();
   };
 
   const openVentModalForNew = () => {
-    setVentForm({ _id: null, title: '', titleEn: '', content: '', contentEn: '', image: '', isVent: true });
+    setVentForm(loadDraft('vent', { _id: null, title: '', titleEn: '', content: '', contentEn: '', image: '', imageCredit: '', isVent: true }));
     setIsVentModalOpen(true);
   };
 
@@ -237,6 +305,8 @@ function AdminDashboard() {
         <button onClick={handleLogout}>Logout</button>
       </div>
 
+      <div style={{ position: 'sticky', top: '1rem', zIndex: 50, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginBottom: '2rem', width: '100%' }}>
+
       <motion.div 
         initial={false}
         animate={{
@@ -245,9 +315,6 @@ function AdminDashboard() {
         }}
         transition={{ duration: 0.3 }}
         style={{ 
-          position: 'sticky', 
-          top: '1rem', 
-          zIndex: 50,
           display: 'flex', 
           justifyContent: 'center',
           alignItems: 'center',
@@ -257,13 +324,12 @@ function AdminDashboard() {
           WebkitBackdropFilter: 'blur(15px)',
           boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
           border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-          width: 'fit-content',
-          margin: '0 auto 2rem auto'
+          width: 'fit-content'
         }}
       >
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
           <button 
-            onClick={() => { setChapterForm({ _id: null, title: '', titleEn: '', image: '', theme: 'winter' }); setIsChapterModalOpen(true); }} 
+            onClick={() => { setChapterForm(loadDraft('chapter', { _id: null, title: '', titleEn: '', image: '', imageCredit: '', theme: 'winter' })); setIsChapterModalOpen(true); }} 
             style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none', cursor: 'pointer' }}
             title="Add Chapter"
           >
@@ -283,6 +349,15 @@ function AdminDashboard() {
           >
             <FaStickyNote size={16} /> {!isScrolled && <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Add Vent</span>}
           </button>
+          {selectedItems.size > 0 && (
+            <button 
+              onClick={handleBulkDelete}
+              style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: '#ff4d4d', color: '#fff', border: 'none', cursor: 'pointer', borderRadius: '15px' }}
+              title={`Delete ${selectedItems.size} items`}
+            >
+              {!isScrolled ? <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Delete {selectedItems.size} items</span> : <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>{selectedItems.size}</span>}
+            </button>
+          )}
         </div>
         
         <div style={{ width: '1px', height: '24px', background: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' }} />
@@ -297,8 +372,35 @@ function AdminDashboard() {
         </div>
       </motion.div>
 
+        <input 
+          type="text" 
+          placeholder="Search chapters, vents, and poems..." 
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ 
+            width: '100%', 
+            maxWidth: '500px', 
+            padding: '0.8rem 1.5rem', 
+            borderRadius: '25px',
+            border: `1px solid ${isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'}`,
+            background: isDark ? 'rgba(30,30,30,0.6)' : 'rgba(255,255,255,0.7)',
+            backdropFilter: 'blur(10px)',
+            color: 'var(--text-color)',
+            outline: 'none',
+            fontSize: '1rem'
+          }}
+        />
+      </div>
+
       <ul className="admin-list" style={{ padding: 0 }}>
-        {chapters.map((c, index) => {
+        {chapters.filter(c => {
+          if (!searchQuery) return true;
+          const query = searchQuery.toLowerCase();
+          if (c.title && c.title.toLowerCase().includes(query)) return true;
+          if (c.titleEn && c.titleEn.toLowerCase().includes(query)) return true;
+          const chapterPoems = poems.filter(p => p.chapterId === c._id);
+          return chapterPoems.some(p => (p.title && p.title.toLowerCase().includes(query)) || (p.titleEn && p.titleEn.toLowerCase().includes(query)));
+        }).map((c, index) => {
           const chapterPoems = poems.filter(p => p.chapterId === c._id);
           const isExpanded = expandedChapters.has(c._id);
           const hasPoems = !c.isIntermission && !c.isVent;
@@ -307,13 +409,29 @@ function AdminDashboard() {
             <li key={c._id} style={{ display: 'block', padding: 0, marginBottom: '1rem', border: 'none' }}>
               <div style={{ 
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
-                padding: '0.8rem 1rem', background: 'var(--border-color)', borderRadius: '4px',
+                padding: '1rem 1.5rem', 
+                background: isDark ? 'rgba(30, 30, 30, 0.4)' : 'rgba(255, 255, 255, 0.5)', 
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`,
+                boxShadow: '0 4px 15px rgba(0,0,0,0.03)',
+                borderRadius: '12px',
                 cursor: hasPoems ? 'pointer' : 'default',
-                userSelect: 'none'
+                userSelect: 'none',
+                transition: 'all 0.2s ease'
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.06)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.03)'; }}
               onClick={() => { if(hasPoems) toggleChapter(c._id); }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <input 
+                    type="checkbox" 
+                    checked={selectedItems.has(`chapter:${c._id}`)} 
+                    onChange={(e) => toggleSelection(e, c._id, 'chapter')} 
+                    onClick={e => e.stopPropagation()}
+                    style={{ transform: 'scale(1.2)' }}
+                  />
                   <div style={{ display: 'flex', gap: '0.2rem' }} onClick={e => e.stopPropagation()}>
                     <button onClick={() => moveChapter(index, 'up')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }} title="Move Up"><FaArrowUp /></button>
                     <button onClick={() => moveChapter(index, 'down')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }} title="Move Down"><FaArrowDown /></button>
@@ -358,7 +476,19 @@ function AdminDashboard() {
                   <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                     {chapterPoems.map(p => (
                       <li key={p._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0', borderBottom: '1px dashed var(--border-color)' }}>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><FaFileAlt /> {p.title} {p.image && <FaImage title="Has Image" style={{ color: '#888' }} />}</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                          <input 
+                            type="checkbox" 
+                            checked={selectedItems.has(`poem:${p._id}`)} 
+                            onChange={(e) => toggleSelection(e, p._id, 'poem')} 
+                            style={{ transform: 'scale(1.1)' }}
+                          />
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: 0.9 }}>
+                            <FaFileAlt style={{ color: 'var(--text-color)', opacity: 0.7 }} /> 
+                            {p.title} 
+                            {p.image && <FaImage title="Has Image" style={{ color: '#888', fontSize: '0.8rem' }} />}
+                          </span>
+                        </span>
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
                           <button onClick={() => movePoem(p, 'up')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }}><FaArrowUp /></button>
                           <button onClick={() => movePoem(p, 'down')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }}><FaArrowDown /></button>
@@ -371,8 +501,8 @@ function AdminDashboard() {
                       <li style={{ fontStyle: 'italic', color: '#888', padding: '0.5rem 0', borderBottom: 'none' }}>No poems in this chapter.</li>
                     )}
                   </ul>
-                  <button onClick={() => openPoemModalForNew(c._id)} style={{ marginTop: '1rem', fontSize: '0.8rem', padding: '0.4rem 0.8rem' }}>
-                    + Add Poem Here
+                  <button onClick={() => openPoemModalForNew(c._id)} style={{ marginTop: '1rem', fontSize: '0.85rem', padding: '0.5rem 1rem', background: 'transparent', border: `1px dashed ${isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'}`, borderRadius: '8px', color: 'var(--text-color)', cursor: 'pointer', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', transition: 'background 0.2s ease' }} onMouseEnter={e => e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                    <FaPlus size={10} /> Add New Poem to Chapter
                   </button>
                 </motion.div>
               )}
@@ -409,6 +539,7 @@ function AdminDashboard() {
 
                 <label>Chapter Cover Polaroid (optional)</label>
                 <input type="file" accept="image/*" onChange={e => handleFileChange(e, setChapterForm)} />
+                <input type="text" placeholder="Image Credit (e.g. Photo by John Doe)" value={chapterForm.imageCredit || ''} onChange={e => setChapterForm({...chapterForm, imageCredit: e.target.value})} />
                 {chapterForm.image && <img src={chapterForm.image} alt="preview" style={{ width: '150px' }} />}
                 
                 <button type="submit" style={{ marginTop: '2rem', padding: '1rem', background: 'var(--text-color)', color: 'var(--bg-color)' }}>
@@ -472,6 +603,7 @@ function AdminDashboard() {
                 </div>
                 <label>Image (optional)</label>
                 <input type="file" accept="image/*" onChange={e => handleFileChange(e, setPoemForm)} />
+                <input type="text" placeholder="Image Credit (e.g. Photo by John Doe)" value={poemForm.imageCredit || ''} onChange={e => setPoemForm({...poemForm, imageCredit: e.target.value})} />
                 {poemForm.image && <img src={poemForm.image} alt="preview" style={{ width: '150px' }} />}
                 <button type="submit" style={{ marginTop: '2rem', padding: '1rem', background: 'var(--text-color)', color: 'var(--bg-color)' }}>
                   {poemForm._id ? 'Save Changes' : 'Create Poem'}
@@ -518,6 +650,7 @@ function AdminDashboard() {
                 </div>
                 <label>Image (optional)</label>
                 <input type="file" accept="image/*" onChange={e => handleFileChange(e, setIntermissionForm)} />
+                <input type="text" placeholder="Image Credit (e.g. Photo by John Doe)" value={intermissionForm.imageCredit || ''} onChange={e => setIntermissionForm({...intermissionForm, imageCredit: e.target.value})} />
                 {intermissionForm.image && <img src={intermissionForm.image} alt="preview" style={{ width: '150px', display: 'block', marginTop: '1rem' }} />}
                 <button type="submit" style={{ marginTop: '2rem', padding: '1rem', background: 'var(--text-color)', color: 'var(--bg-color)' }}>
                   {intermissionForm._id ? 'Save Changes' : 'Create Intermission'}
@@ -561,6 +694,7 @@ function AdminDashboard() {
                 </div>
                 <label>Cover Image (optional)</label>
                 <input type="file" accept="image/*" onChange={e => handleFileChange(e, setVentForm)} />
+                <input type="text" placeholder="Image Credit (e.g. Photo by John Doe)" value={ventForm.imageCredit || ''} onChange={e => setVentForm({...ventForm, imageCredit: e.target.value})} />
                 {ventForm.image && <img src={ventForm.image} alt="preview" style={{ width: '150px', display: 'block', marginTop: '1rem' }} />}
                 <button type="submit" style={{ marginTop: '2rem', padding: '1rem', background: '#fdfd96', color: '#111', border: '1px solid #111' }}>
                   {ventForm._id ? 'Save Vent' : 'Create Vent'}

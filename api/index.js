@@ -39,6 +39,7 @@ const chapterSchema = new mongoose.Schema({
   titleEn: String,
   order: { type: Number, default: 0 },
   image: String,
+  imageCredit: { type: String, default: '' },
   isIntermission: { type: Boolean, default: false },
   isVent: { type: Boolean, default: false },
   content: String,
@@ -54,6 +55,7 @@ const poemSchema = new mongoose.Schema({
   chapterId: mongoose.Schema.Types.ObjectId,
   order: { type: Number, default: 0 },
   image: String,
+  imageCredit: { type: String, default: '' },
   theme: { type: String, default: 'none' }
 });
 

@@ -177,7 +177,7 @@ function IntermissionView() {
             transition={{ duration: 1, delay: 0.6 }}
             className="intermission-polaroid"
           >
-            <Polaroid src={intermission.image} alt={intermission.title} containerStyle={{ margin: 0, boxShadow: '0 20px 40px rgba(0,0,0,0.3)', position: 'relative', zIndex: 1 }} />
+            <Polaroid src={intermission.image} alt={intermission.title} credit={intermission.imageCredit} containerStyle={{ margin: 0, boxShadow: '0 20px 40px rgba(0,0,0,0.3)', position: 'relative', zIndex: 1 }} />
             
             {/* Metallic Paperclip (Clipping to the ticket on the left) */}
             <svg 

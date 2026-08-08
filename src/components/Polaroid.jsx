@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
-const Polaroid = React.memo(({ src, alt, containerStyle = {}, wrapperClass = "", polaroidClass = "", children }) => {
+const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperClass = "", polaroidClass = "", children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [rotation] = useState(() => (Math.random() * 8) - 4); // Random between -4 and 4 degrees
   
@@ -65,7 +65,7 @@ const Polaroid = React.memo(({ src, alt, containerStyle = {}, wrapperClass = "",
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
           {isOpen && (
-            <PolaroidModal src={src} alt={alt} onClose={() => setIsOpen(false)} />
+            <PolaroidModal src={src} alt={alt} credit={credit} onClose={() => setIsOpen(false)} />
           )}
         </AnimatePresence>,
         document.body
@@ -74,7 +74,7 @@ const Polaroid = React.memo(({ src, alt, containerStyle = {}, wrapperClass = "",
   );
 });
 
-const PolaroidModal = ({ src, alt, onClose }) => {
+const PolaroidModal = ({ src, alt, credit, onClose }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
@@ -138,11 +138,27 @@ const PolaroidModal = ({ src, alt, onClose }) => {
           boxShadow: '0 30px 60px rgba(0,0,0,0.6)',
           transformStyle: 'preserve-3d',
           rotateX: rotateX,
-          rotateY: rotateY
+          rotateY: rotateY,
+          position: 'relative'
         }}
       >
         <img src={src} alt={alt} style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain', transform: 'translateZ(20px)' }} className="polaroid-img" loading="lazy" decoding="async" />
         <div className="staple" style={{ transform: 'rotate(-15deg) translateZ(25px)' }}></div>
+        {credit && (
+          <div style={{
+            position: 'absolute',
+            bottom: '5%',
+            right: '5%',
+            fontFamily: '"Permanent Marker", cursive',
+            fontSize: '1.2rem',
+            color: '#111',
+            transform: 'rotate(-3deg) translateZ(25px)',
+            opacity: 0.85,
+            zIndex: 10
+          }}>
+            {credit}
+          </div>
+        )}
       </motion.div>
     </motion.div>
   );

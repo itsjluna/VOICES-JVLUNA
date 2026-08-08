@@ -330,7 +330,7 @@ function VentView() {
         
         {vent.image && (
           <div className="vent-image" style={{ transform: `rotate(${Math.random() * 8 - 4}deg)` }}>
-            <Polaroid src={vent.image} alt={vent.title} />
+            <Polaroid src={vent.image} alt={vent.title} credit={vent.imageCredit} />
             {/* Tape */}
             {!isNotebook && <div style={{ position: 'absolute', top: '-15px', left: '50%', transform: 'translateX(-50%) rotate(-5deg)', width: '80px', height: '25px', backgroundColor: 'rgba(255,255,255,0.5)', border: '1px solid rgba(0,0,0,0.05)', backdropFilter: 'blur(2px)' }}></div>}
           </div>

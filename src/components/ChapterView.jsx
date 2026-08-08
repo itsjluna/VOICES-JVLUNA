@@ -406,7 +406,7 @@ function ChapterView() {
                 />
               )}
               
-              <Polaroid src={chapter.image} alt={chapter.title} containerStyle={{ margin: 0, position: 'relative', zIndex: 5 }} />
+              <Polaroid src={chapter.image} alt={chapter.title} credit={chapter.imageCredit} containerStyle={{ margin: 0, position: 'relative', zIndex: 5 }} />
               
               <ScatteredItem 
                 src="/earbuds.png" 
