@@ -813,3 +813,74 @@ export const Clocks = React.memo(() => {
     </svg>
   );
 });
+
+export const LgbtPride = React.memo(() => {
+  const { scrollY } = useScroll();
+  const bgScrollY = useTransform(scrollY, [0, 3000], [0, 80]);
+  const midScrollY = useTransform(scrollY, [0, 3000], [0, 200]);
+  const fgScrollY = useTransform(scrollY, [0, 3000], [0, 350]);
+  const frameScrollY = useTransform(scrollY, [0, 3000], [0, -100]);
+
+  const { smoothX, smoothY } = useMouseParallax();
+  const mouseBgX = useTransform(smoothX, [-1, 1], [-2, 2]);
+  const mouseBgY = useTransform(smoothY, [-1, 1], [-2, 2]);
+  const mouseMidX = useTransform(smoothX, [-1, 1], [-5, 5]);
+  const mouseMidY = useTransform(smoothY, [-1, 1], [-5, 5]);
+  const mouseFgX = useTransform(smoothX, [-1, 1], [-10, 10]);
+  const mouseFgY = useTransform(smoothY, [-1, 1], [-10, 10]);
+  const mouseFrameX = useTransform(smoothX, [-1, 1], [12, -12]);
+  const mouseFrameY = useTransform(smoothY, [-1, 1], [12, -12]);
+
+  const timePhase = useTimePhase();
+  const isDark = timePhase === 'night' || timePhase === 'dusk';
+
+  const skyColor = isDark ? ""#2a1b3d"" : ""#ffe6e6"";
+
+  const rainbowGradient = (
+    <linearGradient id=""rainbow"" x1=""0%"" y1=""0%"" x2=""100%"" y2=""100%"">
+      <stop offset=""0%"" stopColor=""#ff4d4d"" />
+      <stop offset=""20%"" stopColor=""#ff9e4d"" />
+      <stop offset=""40%"" stopColor=""#ffe74d"" />
+      <stop offset=""60%"" stopColor=""#4dff5b"" />
+      <stop offset=""80%"" stopColor=""#4d8cff"" />
+      <stop offset=""100%"" stopColor=""#b64dff"" />
+    </linearGradient>
+  );
+
+  const bgLayer = (
+    <motion.g style={{ y: bgScrollY, x: mouseBgX }}>
+      <defs>{rainbowGradient}</defs>
+      <circle cx=""500"" cy=""500"" r=""400"" fill=""url(#rainbow)"" opacity={isDark ? 0.3 : 0.6} filter=""blur(60px)"" />
+      <circle cx=""200"" cy=""800"" r=""300"" fill=""#ff4d4d"" opacity={0.2} filter=""blur(80px)"" />
+      <circle cx=""800"" cy=""200"" r=""300"" fill=""#b64dff"" opacity={0.2} filter=""blur(80px)"" />
+    </motion.g>
+  );
+
+  const floatingHearts = useMemo(() => {
+    const colors = [""#ff4d4d"", ""#ff9e4d"", ""#ffe74d"", ""#4dff5b"", ""#4d8cff"", ""#b64dff""];
+    return [...Array(40)].map((_, i) => {
+      const x = Math.random() * 1200 - 100;
+      const y = Math.random() * 1200 - 100;
+      const dur = Math.random() * 15 + 10;
+      const col = colors[Math.floor(Math.random() * colors.length)];
+      return (
+        <circle key={i} cx={x} cy={y} r={Math.random() * 6 + 2} fill={col} opacity=""0.6"">
+          <animate attributeName=""cy"" values={${y}; ; } dur={${dur}s} repeatCount=""indefinite"" />
+          <animate attributeName=""cx"" values={${x}; ; } dur={${dur * 1.2}s} repeatCount=""indefinite"" />
+        </circle>
+      );
+    });
+  }, []);
+
+  const midLayer = (
+    <motion.g style={{ y: midScrollY, x: mouseMidX }}>
+      {floatingHearts}
+    </motion.g>
+  );
+
+  const fgLayer = (
+    <motion.g style={{ y: fgScrollY, x: mouseFgX }}></motion.g>
+  );
+
+  return <WindowFrame timePhase={timePhase} skyColor={skyColor} bgLayer={bgLayer} midLayer={midLayer} fgLayer={fgLayer} weatherLayer={null} frameY={frameScrollY} mouseFrameX={mouseFrameX} mouseFrameY={mouseFrameY} />;
+});

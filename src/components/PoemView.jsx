@@ -6,7 +6,7 @@ import { useReadingProgress } from '../hooks/useReadingProgress';
 import api from '../api';
 import Polaroid from './Polaroid';
 import Marginalia from './Marginalia';
-import { Winter, Spring, Summer, Autumn, AmbientDust, DigitalMatrix, Embers, Clocks, DawnLight } from './SeasonBackgrounds';
+import { Winter, Spring, Summer, Autumn, AmbientDust, DigitalMatrix, Embers, Clocks, DawnLight, LgbtPride } from './SeasonBackgrounds';
 import { useLanguage } from '../contexts/LanguageContext';
 import { FaLanguage } from 'react-icons/fa';
 import TypewriterLoader from './TypewriterLoader';
@@ -59,6 +59,7 @@ function PoemView() {
       case 'embers': return <Embers />;
       case 'clocks': return <Clocks />;
       case 'dawn': return <DawnLight />;
+      case 'lgbt': return <LgbtPride />;
       default: return null;
     }
   };

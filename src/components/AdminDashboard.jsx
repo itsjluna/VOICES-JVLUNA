@@ -411,15 +411,8 @@ function AdminDashboard() {
               <div className="admin-list-item" style={{ 
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
                 padding: '1rem 1.5rem', 
-                background: isDark ? 'rgba(30, 30, 30, 0.4)' : 'rgba(255, 255, 255, 0.5)', 
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                border: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`,
-                boxShadow: '0 4px 15px rgba(0,0,0,0.03)',
-                borderRadius: '12px',
                 cursor: hasPoems ? 'pointer' : 'default',
                 userSelect: 'none',
-                transition: 'all 0.2s ease'
               }}
               onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.06)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.03)'; }}
@@ -647,6 +640,7 @@ function AdminDashboard() {
                       <option value="embers">Floating Embers</option>
                       <option value="clocks">Time & Clocks</option>
                       <option value="dawn">Dawn Light</option>
+                      <option value="lgbt">Pride (Rainbow)</option>
                     </select>
                   </div>
                 </div>
