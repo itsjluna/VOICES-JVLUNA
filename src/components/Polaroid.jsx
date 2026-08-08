@@ -151,9 +151,10 @@ const PolaroidModal = ({ src, alt, credit, onClose }) => {
             right: '5%',
             fontFamily: '"Permanent Marker", cursive',
             fontSize: '1.2rem',
-            color: '#111',
+            color: '#f0f0f0',
+            textShadow: '1px 1px 0px rgba(0,0,0,0.5), 0px 0px 4px rgba(255,255,255,0.7)',
             transform: 'rotate(-3deg) translateZ(25px)',
-            opacity: 0.85,
+            opacity: 0.95,
             zIndex: 10
           }}>
             {credit}
