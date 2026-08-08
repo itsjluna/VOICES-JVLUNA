@@ -307,6 +307,7 @@ function AdminDashboard() {
       <div style={{ position: 'sticky', top: '1rem', zIndex: 50, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginBottom: '2rem', width: '100%' }}>
 
       <motion.div 
+        className="admin-toolbar"
         initial={false}
         animate={{
           padding: isScrolled ? '0.5rem 1.5rem' : '0.5rem 2rem',
@@ -386,7 +387,8 @@ function AdminDashboard() {
             backdropFilter: 'blur(10px)',
             color: 'var(--text-color)',
             outline: 'none',
-            fontSize: '1rem'
+            fontSize: '1rem',
+            boxSizing: 'border-box'
           }}
         />
       </div>
