@@ -314,17 +314,9 @@ function ChapterView() {
           
           const isTop = Math.random() > 0.5;
           const isLeft = Math.random() > 0.5;
+          const maxSpread = isDesktop ? 400 : 140;
+          const minSpread = isDesktop ? 120 : 70;
           
-          const minSpread = isDesktop ? 80 : 40;
-          const maxSpreadX = isDesktop ? 250 : 100;
-          const maxSpreadY = isDesktop ? 100 : 100;
-          
-          const minSize = 70;
-          const maxSize = isDesktop ? 260 : 150;
-          
-          const getOffsetX = () => `-${Math.floor(Math.random() * maxSpreadX) + minSpread}px`;
-          const getOffsetY = () => `-${Math.floor(Math.random() * maxSpreadY) + minSpread}px`;
-
           const scaleMod = decorationMeta[item]?.scaleMod || 1;
           
           selectedDecs.push({
@@ -333,13 +325,13 @@ function ChapterView() {
             titleEs: decorationMeta[item]?.titleEs,
             descEn: decorationMeta[item]?.descEn,
             descEs: decorationMeta[item]?.descEs,
-            top: isTop ? getOffsetY() : 'auto',
-            bottom: !isTop ? getOffsetY() : 'auto',
-            left: isLeft ? getOffsetX() : 'auto',
-            right: !isLeft ? getOffsetX() : 'auto',
+            top: isTop ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
+            bottom: !isTop ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
+            left: isLeft ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
+            right: !isLeft ? `${Math.floor(Math.random() * maxSpread) - minSpread}px` : 'auto',
             rotate: Math.random() * 60 - 30,
-            width: `${(minSize + Math.random() * (maxSize - minSize)) * scaleMod}px`,
-            zIndex: Math.floor(Math.random() * 10) + 10, // Ensure they sit above polaroid (zIndex: 5)
+            width: `${(130 + Math.random() * 80) * scaleMod}px`,
+            zIndex: Math.floor(Math.random() * 8) + 1, // Behind or above elements
             delay: 1.5 + (Math.random() * 0.5)
           });
         }
