@@ -19,11 +19,7 @@ const TypewriterLoader = ({ text = "Opening journal..." }) => {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column', background: 'var(--bg-color)', color: 'var(--text-color)' }}>
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
+      <motion.div>
         <p style={{
           fontFamily: "'Courier New', Courier, monospace",
           fontSize: '1.2rem',
