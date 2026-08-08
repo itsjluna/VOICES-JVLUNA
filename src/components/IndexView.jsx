@@ -32,7 +32,15 @@ function IndexView() {
   const [showSky, setShowSky] = useState(true);
   const [showQuote, setShowQuote] = useState(false);
   const { readChapters } = useReadingProgress();
+  const [isMobileView, setIsMobileView] = useState(false);
   const { language } = useLanguage();
+
+  useEffect(() => {
+    const handleResize = () => setIsMobileView(window.innerWidth <= 767);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (showQuote) {
@@ -406,11 +414,11 @@ function IndexView() {
                             textTransform: 'uppercase',
                             transition: 'all 0.2s ease'
                           }}
-                          onMouseEnter={(e) => {
+                          onMouseEnter={!isMobileView ? (e) => {
                             if (activeTheme !== theme.id) {
                               e.currentTarget.style.backgroundColor = 'rgba(128,128,128,0.2)';
                             }
-                          }}
+                          } : undefined}
                           onMouseLeave={(e) => {
                             if (activeTheme !== theme.id) {
                               e.currentTarget.style.backgroundColor = 'transparent';
@@ -482,7 +490,7 @@ function IndexView() {
                 <motion.div variants={itemVariants} key={chapter._id} style={{ marginBottom: '1.5rem' }}>
                   <Link 
                     to={linkPath} 
-                    onMouseEnter={() => {
+                    onMouseEnter={!isMobileView ? () => {
                       if (!isInt && !isVent) {
                         api.get(`/poems?chapterId=${chapter._id}`);
                       } else if (isInt) {
@@ -490,7 +498,7 @@ function IndexView() {
                       } else if (isVent) {
                         api.get(`/vents/${chapter._id}`);
                       }
-                    }}
+                    } : undefined}
                     style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}
                     className="index-item"
                   >

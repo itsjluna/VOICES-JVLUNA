@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 
 const TypewriterLoader = ({ text = "Opening journal..." }) => {
@@ -17,8 +18,10 @@ const TypewriterLoader = ({ text = "Opening journal..." }) => {
     return () => clearInterval(interval);
   }, [text]);
 
-  return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column', background: 'var(--bg-color)', color: 'var(--text-color)' }}>
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
+    <div style={{ position: 'fixed', inset: 0, zIndex: 9999999, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', background: 'var(--bg-color)', color: 'var(--text-color)' }}>
       <motion.div>
         <p style={{
           fontFamily: "'Courier New', Courier, monospace",
@@ -43,7 +46,8 @@ const TypewriterLoader = ({ text = "Opening journal..." }) => {
           />
         </p>
       </motion.div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

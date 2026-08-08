@@ -494,7 +494,7 @@ function ChapterView() {
                 <li key={poem._id} style={{ margin: '0' }}>
                   <Link 
                     to={`/poem/${poem._id}`} 
-                    onMouseEnter={() => api.get(`/poems/${poem._id}`)}
+                    onMouseEnter={!isMobileView ? () => api.get(`/poems/${poem._id}`) : undefined}
                     style={{ 
                       display: 'flex', 
                       justifyContent: 'space-between',
