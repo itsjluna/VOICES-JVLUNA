@@ -240,7 +240,7 @@ function VentView() {
 
   return (
     <motion.div 
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.15 } }} transition={{ duration: 0.8 }}
       className={isNotebook ? 'vent-notebook' : 'vent-postit'}
     >
       <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>

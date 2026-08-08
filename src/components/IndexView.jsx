@@ -208,6 +208,7 @@ function IndexView() {
     <motion.div 
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }} 
+      exit={{ opacity: 0, transition: { duration: 0.15 } }}
       transition={{ duration: 1.5, ease: "easeInOut" }} 
       style={{ flex: 1, padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 5vw, 2rem)', display: 'flex', flexDirection: 'column', position: 'relative', alignItems: 'center', width: '100%' }}
     >
