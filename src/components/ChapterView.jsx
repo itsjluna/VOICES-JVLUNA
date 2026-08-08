@@ -314,8 +314,8 @@ function ChapterView() {
           
           const isTop = Math.random() > 0.5;
           const isLeft = Math.random() > 0.5;
-          const maxSpread = isDesktop ? 400 : 140;
-          const minSpread = isDesktop ? 120 : 70;
+          const maxSpread = isDesktop ? 450 : 140;
+          const minSpread = isDesktop ? 180 : 70;
           
           const scaleMod = decorationMeta[item]?.scaleMod || 1;
           
