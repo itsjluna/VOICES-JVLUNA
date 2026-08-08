@@ -64,7 +64,6 @@ function AdminDashboard() {
   const collapseAll = () => setExpandedChapters(new Set());
 
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isDark, setIsDark] = useState(false);
 
   // Drafts logic
