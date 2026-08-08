@@ -914,3 +914,25 @@ button:hover {
     display: none !important;
   }
 }
+
+.admin-list-poem-item {
+  padding: 0.8rem 1rem !important;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  border-radius: 12px;
+  margin-bottom: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+:root.dark .admin-list-poem-item {
+  background: rgba(30, 30, 30, 0.4);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.admin-list-poem-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}

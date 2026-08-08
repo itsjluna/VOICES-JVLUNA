@@ -515,7 +515,7 @@ function AdminDashboard() {
                 >
                   <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                     {chapterPoems.map(p => (
-                      <li key={p._id} className="admin-list-poem-item" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0', borderBottom: '1px dashed var(--border-color)' }}>
+                      <li key={p._id} className="admin-list-poem-item" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                           <input 
                             type="checkbox" 
