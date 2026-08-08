@@ -34,7 +34,6 @@ function ChapterView() {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     
     async function fetchData() {
       try {

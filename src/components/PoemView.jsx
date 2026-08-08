@@ -33,7 +33,6 @@ function PoemView() {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     async function fetchData() {
       try {
         const res = await api.get(`/poems/${id}`);

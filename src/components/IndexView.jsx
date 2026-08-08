@@ -73,7 +73,6 @@ function IndexView() {
   }
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     
     async function fetchData() {
       try {
