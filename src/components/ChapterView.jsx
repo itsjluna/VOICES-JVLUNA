@@ -295,7 +295,7 @@ function ChapterView() {
           'lgbtflag.png': { titleEn: 'Pride Flag', titleEs: 'Bandera del Orgullo', descEn: 'Colored fabric.', descEs: 'Tela de colores.' },
           'munecalele.png': { titleEn: 'Muñeca Lele', titleEs: 'Muñeca Lele', descEn: 'Traditional rag doll.', descEs: 'Muñeca de trapo tradicional.' },
           'vynilplayer.png': { titleEn: 'Record Player', titleEs: 'Tocadiscos', descEn: 'Turntable and needle.', descEs: 'Plato y aguja.' },
-          'mazapan.png': { titleEn: 'De la Rosa Mazapán', titleEs: 'Mazapán de la Rosa', descEn: 'Peanut confection.', descEs: 'Dulce de cacahuate.' },
+          'mazapan.png': { titleEn: 'De la Rosa Mazapán', titleEs: 'Mazapán de la Rosa', descEn: 'Peanut confection.', descEs: 'Dulce de cacahuate.', scaleMod: 0.6 },
           'galletasolesdonde.png': { titleEn: 'Dondé Soles Cookies', titleEs: 'Galletas Soles Dondé', descEn: 'Cookies from Yucatan.', descEs: 'Galletas de Yucatán.' },
           'freelifedrink.png': { titleEn: 'Free Life Drink', titleEs: 'Bebida Free Life', descEn: '0 cal drink.', descEs: 'Bebida 0 cal.' },
           'skyycosmos.png': { titleEn: 'Skyy Cosmos', titleEs: 'Skyy Cosmos', descEn: 'Cosmos drink.', descEs: 'Bebida Cosmos.' },
@@ -316,12 +316,14 @@ function ChapterView() {
           const isLeft = Math.random() > 0.5;
           
           const minSpread = isDesktop ? 80 : 40;
-          const maxSpreadExtra = isDesktop ? 250 : 100;
+          const maxSpreadX = isDesktop ? 250 : 100;
+          const maxSpreadY = isDesktop ? 100 : 100;
           
-          const minSize = 90;
-          const maxSize = isDesktop ? 280 : 160;
+          const minSize = 70;
+          const maxSize = isDesktop ? 260 : 150;
           
-          const getOffset = () => `-${Math.floor(Math.random() * maxSpreadExtra) + minSpread}px`;
+          const getOffsetX = () => `-${Math.floor(Math.random() * maxSpreadX) + minSpread}px`;
+          const getOffsetY = () => `-${Math.floor(Math.random() * maxSpreadY) + minSpread}px`;
 
           const scaleMod = decorationMeta[item]?.scaleMod || 1;
           
@@ -331,10 +333,10 @@ function ChapterView() {
             titleEs: decorationMeta[item]?.titleEs,
             descEn: decorationMeta[item]?.descEn,
             descEs: decorationMeta[item]?.descEs,
-            top: isTop ? getOffset() : 'auto',
-            bottom: !isTop ? getOffset() : 'auto',
-            left: isLeft ? getOffset() : 'auto',
-            right: !isLeft ? getOffset() : 'auto',
+            top: isTop ? getOffsetY() : 'auto',
+            bottom: !isTop ? getOffsetY() : 'auto',
+            left: isLeft ? getOffsetX() : 'auto',
+            right: !isLeft ? getOffsetX() : 'auto',
             rotate: Math.random() * 60 - 30,
             width: `${(minSize + Math.random() * (maxSize - minSize)) * scaleMod}px`,
             zIndex: Math.floor(Math.random() * 10) + 10, // Ensure they sit above polaroid (zIndex: 5)
