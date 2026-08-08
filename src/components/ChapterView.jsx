@@ -286,7 +286,7 @@ function ChapterView() {
           'sw.png': { titleEn: 'Rey', titleEs: 'Rey', descEn: 'Star Wars figure.', descEs: 'Figura de Star Wars.' },
           'transformers.png': { titleEn: 'Autobot Blaster', titleEs: 'Autobot Blaster', descEn: 'Transformers action figure.', descEs: 'Figura de acción Transformers.' },
           'watch.png': { titleEn: 'CMF Watch Pro', titleEs: 'CMF Watch Pro', descEn: 'Digital smartwatch.', descEs: 'Reloj inteligente digital.' },
-          'whisky.png': { titleEn: 'Aged Whisky', titleEs: 'Whisky Añejo', descEn: 'Amber liquid on ice.', descEs: 'Líquido ámbar en hielo.' },
+          'whisky.png': { titleEn: 'Aged Whisky', titleEs: 'Whisky Añejo', descEn: 'Amber liquid on ice.', descEs: 'Líquido ámbar en hielo.', scaleMod: 0.5 },
           'wine.png': { titleEn: 'Rosé Wine', titleEs: 'Vino Rosado', descEn: 'Light pink glass.', descEs: 'Copa color rosa claro.' },
           'hummingbird.webp': { titleEn: 'Hummingbird', titleEs: 'Colibrí', descEn: 'Iridescent green feathers.', descEs: 'Plumas verdes iridiscentes.' },
           'magnolia.webp': { titleEn: 'Magnolia', titleEs: 'Magnolia', descEn: 'Smooth white petals.', descEs: 'Pétalos blancos suaves.' },
@@ -299,7 +299,7 @@ function ChapterView() {
           'galletasolesdonde.png': { titleEn: 'Dondé Soles Cookies', titleEs: 'Galletas Soles Dondé', descEn: 'Cookies from Yucatan.', descEs: 'Galletas de Yucatán.' },
           'freelifedrink.png': { titleEn: 'Free Life Drink', titleEs: 'Bebida Free Life', descEn: '0 cal drink.', descEs: 'Bebida 0 cal.' },
           'skyycosmos.png': { titleEn: 'Skyy Cosmos', titleEs: 'Skyy Cosmos', descEn: 'Cosmos drink.', descEs: 'Bebida Cosmos.' },
-          'aspirins.png': { titleEn: 'Aspirin 81mg', titleEs: 'Aspirina 81mg', descEn: 'Slow action.', descEs: 'Acción lenta.' },
+          'aspirins.png': { titleEn: 'Aspirin 81mg', titleEs: 'Aspirina 81mg', descEn: 'Slow action.', descEs: 'Acción lenta.', scaleMod: 0.5 },
           'kitkat.png': { titleEn: 'Kit-Kat Bar', titleEs: 'Barra Kit-Kat', descEn: 'Chocolate bar.', descEs: 'Barra de chocolate.' }
         };
 
@@ -323,6 +323,8 @@ function ChapterView() {
           
           const getOffset = () => `-${Math.floor(Math.random() * maxSpreadExtra) + minSpread}px`;
 
+          const scaleMod = decorationMeta[item]?.scaleMod || 1;
+          
           selectedDecs.push({
             src: `/${item}`,
             titleEn: decorationMeta[item]?.titleEn,
@@ -334,7 +336,7 @@ function ChapterView() {
             left: isLeft ? getOffset() : 'auto',
             right: !isLeft ? getOffset() : 'auto',
             rotate: Math.random() * 60 - 30,
-            width: `${minSize + Math.random() * (maxSize - minSize)}px`,
+            width: `${(minSize + Math.random() * (maxSize - minSize)) * scaleMod}px`,
             zIndex: Math.floor(Math.random() * 10) + 10, // Ensure they sit above polaroid (zIndex: 5)
             delay: 1.5 + (Math.random() * 0.5)
           });
