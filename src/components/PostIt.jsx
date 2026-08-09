@@ -23,7 +23,7 @@ const PostIt = React.memo(({ quote, author, color, initialAnimation, style }) =>
       <motion.div
         initial={initialAnimation.initial}
         animate={initialAnimation.animate}
-        exit={{ opacity: 0, scale: 0.8 }}
+        exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2, delay: 0 } }}
         transition={{ ...initialAnimation.transition }}
         className="post-it-wrapper"
         style={{ ...style, cursor: 'grab', x: dragX, y: dragY }}
