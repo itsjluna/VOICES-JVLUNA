@@ -19,7 +19,8 @@ const souvenirs = [
   { src: '/souvenirs/mapleleaf.png', titleEn: 'Autumn Maple Leaf', titleEs: 'Hoja de Arce de Otoño', descEn: 'A crisp red leaf.', descEs: 'Una hoja roja crujiente.' },
   { src: '/souvenirs/marquesitayucateca.png', titleEn: 'Marquesita Yucateca', titleEs: 'Marquesita Yucateca', descEn: 'Crispy crepe with cheese.', descEs: 'Crepa crujiente con queso.' },
   { src: '/souvenirs/incakola.png', titleEn: 'Inca Kola', titleEs: 'Inca Kola', descEn: 'Golden carbonated beverage.', descEs: 'Bebida dorada carbonatada.' },
-  { src: '/souvenirs/macarronargentino.png', titleEn: 'Macarrón Argentino', titleEs: 'Macarrón Argentino', descEn: 'Sweet macaron.', descEs: 'Macarrón dulce.' }
+  { src: '/souvenirs/macarronargentino.png', titleEn: 'Macarrón Argentino', titleEs: 'Macarrón Argentino', descEn: 'Sweet macaron.', descEs: 'Macarrón dulce.' },
+  { src: '/necklace.png', titleEn: 'Silver Necklace', titleEs: 'Collar de Plata', descEn: 'A delicate chain.', descEs: 'Una cadena delicada.' }
 ];
 
 function IntermissionView() {

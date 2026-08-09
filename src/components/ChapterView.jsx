@@ -271,7 +271,7 @@ function ChapterView() {
           'slims.png', 'sw.png', 'transformers.png', 'watch.png', 
           'whisky.png', 'wine.png', 'hummingbird.webp', 'magnolia.webp', 'origami.webp',
           'pulparindo.png', 'lgbtflag.png', 'munecalele.png', 'vynilplayer.png', 'mazapan.png',
-          'galletasolesdonde.png', 'freelifedrink.png', 'skyycosmos.png', 'aspirins.png', 'kitkat.png'
+          'galletasolesdonde.png', 'freelifedrink.png', 'skyycosmos.png', 'aspirins.png', 'kitkat.png', 'necklace.png'
         ];
         
         const decorationMeta = {
@@ -307,7 +307,8 @@ function ChapterView() {
           'freelifedrink.png': { titleEn: 'Free Life Drink', titleEs: 'Bebida Free Life', descEn: '0 cal drink.', descEs: 'Bebida 0 cal.' },
           'skyycosmos.png': { titleEn: 'Skyy Cosmos', titleEs: 'Skyy Cosmos', descEn: 'Cosmos drink.', descEs: 'Bebida Cosmos.' },
           'aspirins.png': { titleEn: 'Aspirin 81mg', titleEs: 'Aspirina 81mg', descEn: 'Slow action.', descEs: 'Acción lenta.', scaleMod: 0.5 },
-          'kitkat.png': { titleEn: 'Kit-Kat Bar', titleEs: 'Barra Kit-Kat', descEn: 'Chocolate bar.', descEs: 'Barra de chocolate.' }
+          'kitkat.png': { titleEn: 'Kit-Kat Bar', titleEs: 'Barra Kit-Kat', descEn: 'Chocolate bar.', descEs: 'Barra de chocolate.' },
+          'necklace.png': { titleEn: 'Silver Necklace', titleEs: 'Collar de Plata', descEn: 'A delicate chain.', descEs: 'Una cadena delicada.', scaleMod: 0.6 }
         };
 
         const isDesktop = typeof window !== 'undefined' && window.innerWidth > 768;
