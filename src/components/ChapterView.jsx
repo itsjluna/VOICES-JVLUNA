@@ -308,7 +308,7 @@ function ChapterView() {
           'skyycosmos.png': { titleEn: 'Skyy Cosmos', titleEs: 'Skyy Cosmos', descEn: 'Cosmos drink.', descEs: 'Bebida Cosmos.' },
           'aspirins.png': { titleEn: 'Aspirin 81mg', titleEs: 'Aspirina 81mg', descEn: 'Slow action.', descEs: 'Acción lenta.', scaleMod: 0.5 },
           'kitkat.png': { titleEn: 'Kit-Kat Bar', titleEs: 'Barra Kit-Kat', descEn: 'Chocolate bar.', descEs: 'Barra de chocolate.' },
-          'necklace.png': { titleEn: 'Silver Necklace', titleEs: 'Collar de Plata', descEn: 'A special possession.', descEs: 'Una posesión especial.', scaleMod: 0.6 }
+          'necklace.png': { titleEn: 'Silver Necklace', titleEs: 'Collar de Plata', descEn: 'A special possession.', descEs: 'Una posesión especial.', scaleMod: 0.9 }
         };
 
         const isDesktop = typeof window !== 'undefined' && window.innerWidth > 768;
