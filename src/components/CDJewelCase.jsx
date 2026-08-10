@@ -30,15 +30,7 @@ const CDJewelCase = React.memo(({ coverUrl, artist, albumName, previewUrl, initi
     return () => { document.body.style.overflow = 'unset'; };
   }, [isOpen]);
 
-  const handleOpen = async () => {
-    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-      try {
-        const permissionState = await DeviceOrientationEvent.requestPermission();
-        // If granted, the event listener in CDModal will just work
-      } catch (e) {
-        console.error(e);
-      }
-    }
+  const handleOpen = () => {
     setIsOpen(true);
   };
 
@@ -117,21 +109,7 @@ const CDModal = ({ layoutIdId, coverUrl, artist, albumName, previewUrl, onClose 
   const rotateX = useTransform(y, [-100, 100], [15, -15]);
   const rotateY = useTransform(x, [-100, 100], [-15, 15]);
   
-  useEffect(() => {
-    const handleOrientation = (e) => {
-      if (e.beta !== null && e.gamma !== null) {
-        let g = Math.max(-45, Math.min(45, e.gamma));
-        let b = Math.max(0, Math.min(90, e.beta)) - 45;
-        x.set((g / 45) * 100);
-        y.set((b / 45) * 100);
-      }
-    };
-    
-    if (typeof window !== 'undefined' && window.DeviceOrientationEvent) {
-      window.addEventListener('deviceorientation', handleOrientation);
-      return () => window.removeEventListener('deviceorientation', handleOrientation);
-    }
-  }, [x, y]);
+
 
   const handleMouseMove = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
