@@ -67,27 +67,32 @@ const PostIt = React.memo(({ quote, author, color, initialAnimation, style }) =>
               }}
             >
               <motion.div 
-                layoutId={layoutIdId}
-                transition={{ type: "spring", stiffness: 1000, damping: 35 }}
+                className="post-it-wrapper"
                 animate={{ scale: 1.5 }}
-                className="post-it"
                 style={{
-                  margin: 0,
                   position: 'relative',
                   top: 'auto',
                   right: 'auto',
-                  rotate: 0,
-                  width: '200px',
-                  maxHeight: '220px',
-                  overflow: 'auto',
-                  background: color,
-                  pointerEvents: 'auto',
-                  boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
-                  zIndex: 100000
+                  margin: 0,
+                  zIndex: 100000,
+                  boxShadow: '0 25px 50px rgba(0,0,0,0.5)'
                 }}
               >
-                <p>"{quote}"</p>
-                <small>— {author}</small>
+                <motion.div 
+                  layoutId={layoutIdId}
+                  transition={{ type: "spring", stiffness: 1000, damping: 35 }}
+                  className="post-it"
+                  style={{
+                    background: color,
+                    width: '100%',
+                    height: '100%',
+                    pointerEvents: 'auto',
+                    overflow: 'auto'
+                  }}
+                >
+                  <p>"{quote}"</p>
+                  <small>— {author}</small>
+                </motion.div>
               </motion.div>
             </motion.div>
           )}
