@@ -78,6 +78,8 @@ const PostIt = React.memo(({ quote, author, color, initialAnimation, style }) =>
                   right: 'auto',
                   rotate: 0,
                   width: '200px',
+                  maxHeight: '220px',
+                  overflow: 'auto',
                   background: color,
                   pointerEvents: 'auto',
                   boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
