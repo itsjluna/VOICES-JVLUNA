@@ -84,7 +84,8 @@ const PostIt = React.memo(({ quote, author, color, initialAnimation, style }) =>
                   maxHeight: '90vh',
                   overflow: 'auto',
                   boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
-                  zIndex: 100000
+                  zIndex: 100000,
+                  aspectRatio: '1 / 1'
                 }}
               >
                 <p style={{ fontSize: '1.5rem', lineHeight: '1.6' }}>"{quote}"</p>
