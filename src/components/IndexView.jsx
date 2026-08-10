@@ -413,7 +413,7 @@ function IndexView() {
                 if (activeTheme === 'all') return true;
                 if (activeTheme === 'vents') return c.isVent;
                 if (activeTheme === 'intermissions') return c.isIntermission;
-                return c.theme === activeTheme;
+                return c.theme === activeTheme && !c.isVent && !c.isIntermission;
               })
               .map((chapter, index) => {
               const isInt = chapter.isIntermission;
