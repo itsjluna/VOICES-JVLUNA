@@ -7,10 +7,11 @@ import { SeasonDebris } from './SeasonDebris';
 import Polaroid from './Polaroid';
 import PostIt from './PostIt';
 import CDJewelCase from './CDJewelCase';
+import PageWrapper from './PageWrapper';
+import BackButton from './BackButton';
 import ScatteredItem from './ScatteredItem';
 import AmbientAudio from './AmbientAudio';
 import { useLanguage } from '../contexts/LanguageContext';
-import TypewriterLoader from './TypewriterLoader';
 
 function ChapterView() {
   const { id } = useParams();
@@ -354,8 +355,6 @@ function ChapterView() {
     fetchQuotes();
   }, [id]);
 
-  if (!chapter) return <TypewriterLoader text={language === 'EN' ? 'Opening chapter...' : 'Abriendo capítulo...'} />;
-
   const renderSeason = () => {
     switch (chapter?.theme) {
       case 'winter': return <Winter />;
@@ -367,15 +366,17 @@ function ChapterView() {
   };
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}
+    <PageWrapper 
+      isLoading={!chapter}
+      loadingTextEn="Opening chapter..."
+      loadingTextEs="Abriendo capítulo..."
       style={{ flex: 1, padding: '2rem 0', position: 'relative' }}
     >
+      {chapter && (
+        <>
       <AmbientAudio src={`/${chapter?.theme || 'spring'}-ambient.mp3`} volume={0.03} />
       {renderSeason()}
-      <button className="back-button" style={{ marginBottom: '2rem' }} onClick={handleBack}>
-        &larr; {language === 'EN' ? 'Back' : 'Volver'}
-      </button>
+      <BackButton />
 
       <div className="editorial-margin left">
         VOL. {id.slice(-4).toUpperCase()} — {language === 'EN' ? 'CHAPTER' : 'CAPÍTULO'}
@@ -525,7 +526,9 @@ function ChapterView() {
         </motion.div>
         <div style={{ clear: 'both' }}></div>
       </div>
-    </motion.div>
+      </>
+      )}
+    </PageWrapper>
   );
 }
 

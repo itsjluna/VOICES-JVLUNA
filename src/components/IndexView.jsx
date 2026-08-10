@@ -7,7 +7,7 @@ import { IndexScatter } from './IndexScatter';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import AmbientAudio from './AmbientAudio';
 import { useLanguage } from '../contexts/LanguageContext';
-import TypewriterLoader from './TypewriterLoader';
+import PageWrapper from './PageWrapper';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -205,31 +205,12 @@ function IndexView() {
   };
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }} 
-      animate={{ opacity: 1 }} 
-      transition={{ duration: 1.5, ease: "easeInOut" }} 
+    <PageWrapper 
+      isLoading={isLoading}
+      loadingTextEn="RETRIEVING ARCHIVES..."
+      loadingTextEs="RECUPERANDO ARCHIVOS..."
       style={{ flex: 1, padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 5vw, 2rem)', display: 'flex', flexDirection: 'column', position: 'relative', alignItems: 'center', width: '100%' }}
     >
-      <AnimatePresence>
-        {isLoading && (
-          <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeInOut" } }}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              backgroundColor: 'var(--bg-color)',
-              zIndex: 999999,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <TypewriterLoader text={language === 'EN' ? 'RETRIEVING ARCHIVES...' : 'RECUPERANDO ARCHIVOS...'} />
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       <AnimatePresence mode="wait">
         {showQuote && (
@@ -567,7 +548,7 @@ function IndexView() {
           <button onClick={() => setLocalWeather('snow')} style={{ background: '#333', color: '#fff', border: 'none', padding: '5px', cursor: 'pointer', fontSize: '10px' }}>Snow</button>
         </div>
       )}
-    </motion.div>
+    </PageWrapper>
   );
 }
 

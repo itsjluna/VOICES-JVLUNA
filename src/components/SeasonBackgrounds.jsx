@@ -915,3 +915,96 @@ export const LgbtPride = React.memo(() => {
 
   return <WindowFrame timePhase={timePhase} skyColor={skyColor} bgLayer={bgLayer} midLayer={midLayer} fgLayer={fgLayer} weatherLayer={null} frameY={frameScrollY} mouseFrameX={mouseFrameX} mouseFrameY={mouseFrameY} />;
 });
+
+export const ClassActress = React.memo(() => {
+  const { scrollY } = useScroll();
+  const bgScrollY = useTransform(scrollY, [0, 3000], [0, 80]);
+  const midScrollY = useTransform(scrollY, [0, 3000], [0, 200]);
+  const fgScrollY = useTransform(scrollY, [0, 3000], [0, 350]);
+  const frameScrollY = useTransform(scrollY, [0, 3000], [0, -100]);
+
+  const { smoothX, smoothY } = useMouseParallax();
+  const mouseBgX = useTransform(smoothX, [-1, 1], [-2, 2]);
+  const mouseBgY = useTransform(smoothY, [-1, 1], [-2, 2]);
+  const mouseMidX = useTransform(smoothX, [-1, 1], [-5, 5]);
+  const mouseMidY = useTransform(smoothY, [-1, 1], [-5, 5]);
+  const mouseFgX = useTransform(smoothX, [-1, 1], [-10, 10]);
+  const mouseFgY = useTransform(smoothY, [-1, 1], [-10, 10]);
+  const mouseFrameX = useTransform(smoothX, [-1, 1], [12, -12]);
+  const mouseFrameY = useTransform(smoothY, [-1, 1], [12, -12]);
+
+  const timePhase = 'night';
+  const skyColor = "#050510";
+
+  const stars = useMemo(() => {
+    return [...Array(150)].map((_, i) => (
+      <circle key={i} cx={Math.random() * 1200 - 100} cy={Math.random() * 1200 - 100} r={Math.random() * 1.5 + 0.5} fill="#ffffff" opacity={Math.random() * 0.5 + 0.3}>
+        <animate attributeName="opacity" values={`${Math.random() * 0.3 + 0.1}; ${Math.random() * 0.5 + 0.5}; ${Math.random() * 0.3 + 0.1}`} dur={`${Math.random() * 4 + 2}s`} repeatCount="indefinite" />
+      </circle>
+    ));
+  }, []);
+
+  const eyes = useMemo(() => {
+    return [...Array(10)].map((_, i) => {
+      const x = Math.random() * 1000;
+      const y = Math.random() * 800;
+      return (
+        <g key={`eye-${i}`} transform={`translate(${x}, ${y}) scale(${Math.random() * 0.5 + 0.5})`} opacity="0.6">
+          <path d="M0,0 Q25,-20 50,0 Q25,20 0,0" fill="none" stroke="#ffffff" strokeWidth="2" />
+          <circle cx="25" cy="0" r="8" fill="#ffffff" />
+          <circle cx="25" cy="0" r="4" fill="#050510" />
+        </g>
+      );
+    });
+  }, []);
+
+  const hearts = useMemo(() => {
+    return [...Array(15)].map((_, i) => {
+      const x = Math.random() * 1200 - 100;
+      const y = Math.random() * 1200 - 100;
+      return (
+        <path key={`heart-${i}`} d="M0,5 C0,5 0,0 5,0 C10,0 10,5 10,5 C10,5 10,0 15,0 C20,0 20,5 20,5 C20,15 10,25 10,25 C10,25 0,15 0,5 Z" fill="#ff4d4d" opacity="0.5" transform={`translate(${x}, ${y}) scale(${Math.random() * 1 + 0.5}) rotate(${Math.random() * 40 - 20})`}>
+           <animateTransform attributeName="transform" type="translate" from={`${x} ${y}`} to={`${x} ${y - 200}`} dur={`${Math.random() * 15 + 10}s`} repeatCount="indefinite" />
+        </path>
+      );
+    });
+  }, []);
+
+  const albumCovers = useMemo(() => {
+    return [...Array(8)].map((_, i) => {
+      const x = Math.random() * 1000 - 100;
+      const y = Math.random() * 1000 - 100;
+      const rotation = Math.random() * 360;
+      const scale = Math.random() * 0.5 + 0.5;
+      return (
+        <g key={`album-${i}`} transform={`translate(${x}, ${y}) rotate(${rotation}) scale(${scale})`} opacity="0.4">
+          <image href="/class-actress.jpg" x="-100" y="-100" width="200" height="200" preserveAspectRatio="xMidYMid slice" />
+        </g>
+      );
+    });
+  }, []);
+
+  const bgLayer = (
+    <motion.g style={{ y: bgScrollY, x: mouseBgX }}>
+      {stars}
+      {albumCovers.slice(0, 4)}
+    </motion.g>
+  );
+
+  const midLayer = (
+    <motion.g style={{ y: midScrollY, x: mouseMidX }}>
+      {eyes}
+      {hearts.slice(0, 7)}
+      {albumCovers.slice(4, 6)}
+    </motion.g>
+  );
+
+  const fgLayer = (
+    <motion.g style={{ y: fgScrollY, x: mouseFgX }}>
+      {hearts.slice(7)}
+      {albumCovers.slice(6)}
+    </motion.g>
+  );
+
+  return <WindowFrame timePhase={timePhase} skyColor={skyColor} bgLayer={bgLayer} midLayer={midLayer} fgLayer={fgLayer} weatherLayer={null} frameY={frameScrollY} mouseFrameX={mouseFrameX} mouseFrameY={mouseFrameY} />;
+});

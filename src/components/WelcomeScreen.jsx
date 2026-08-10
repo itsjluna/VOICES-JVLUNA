@@ -3,16 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { IndexScatter } from './IndexScatter';
 import { useLanguage } from '../contexts/LanguageContext';
+import PageWrapper from './PageWrapper';
 
 function WelcomeScreen() {
   const navigate = useNavigate();
   const { language } = useLanguage();
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1.5 }}
+    <PageWrapper 
       style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'relative' }}
     >
       {/* Background Scatter */}
@@ -66,7 +64,7 @@ function WelcomeScreen() {
       {/* Decorative Marginalia */}
       <div className="editorial-margin left" style={{ opacity: 0.5 }}>{language === 'EN' ? 'ARCHIVE ENTRY — SEASONS' : 'ENTRADA DE ARCHIVO — TEMPORADAS'}</div>
       <div className="editorial-margin right" style={{ opacity: 0.5 }}>{language === 'EN' ? 'EDITION ONE' : 'EDICIÓN UNO'}</div>
-    </motion.div>
+    </PageWrapper>
   );
 }
 

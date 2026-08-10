@@ -641,6 +641,7 @@ function AdminDashboard() {
                       <option value="clocks">Time & Clocks</option>
                       <option value="dawn">Dawn Light</option>
                       <option value="lgbt">Pride (Rainbow)</option>
+                      <option value="class-actress">Class Actress</option>
                     </select>
                   </div>
                 </div>

@@ -9,7 +9,8 @@ import { TravelGraphics } from './TravelGraphics';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import { useLanguage } from '../contexts/LanguageContext';
 import { FaLanguage } from 'react-icons/fa';
-import TypewriterLoader from './TypewriterLoader';
+import PageWrapper from './PageWrapper';
+import BackButton from './BackButton';
 
 const ticketTypes = ['plane', 'train', 'train-cherry', 'bus'];
 const accentColors = ['#e63946', '#2a9d8f', '#e9c46a', '#f4a261', '#264653', '#8338ec', '#ff006e', '#fb8500', '#023047', '#8ecae6'];
@@ -91,17 +92,17 @@ function IntermissionView() {
     setRandomSouvenir({ ...souvenirs[Math.floor(Math.random() * souvenirs.length)], rotate: Math.random() * 40 - 20 });
   }, [id]);
 
-  if (!intermission) return <TypewriterLoader text={language === 'EN' ? 'Opening intermission...' : 'Abriendo intermedio...'} />;
-
   return (
-    <motion.div 
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}
+    <PageWrapper 
+      isLoading={!intermission}
+      loadingTextEn="Opening intermission..."
+      loadingTextEs="Abriendo intermedio..."
       style={{ flex: 1, padding: '2rem 0', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}
     >
+      {intermission && (
+        <>
       <TravelGraphics type={ticketType} />
-      <button className="back-button" style={{ marginBottom: '2rem', alignSelf: 'flex-start' }} onClick={handleBack}>
-        &larr; {language === 'EN' ? 'Back' : 'Volver'}
-      </button>
+      <BackButton />
 
       <div className="intermission-collage">
         <motion.div 
@@ -221,7 +222,9 @@ function IntermissionView() {
           </motion.div>
         )}
       </div>
-    </motion.div>
+      </>
+      )}
+    </PageWrapper>
   );
 }
 

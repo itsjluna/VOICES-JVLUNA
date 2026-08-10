@@ -6,10 +6,11 @@ import { useReadingProgress } from '../hooks/useReadingProgress';
 import api from '../api';
 import Polaroid from './Polaroid';
 import Marginalia from './Marginalia';
-import { Winter, Spring, Summer, Autumn, AmbientDust, DigitalMatrix, Embers, Clocks, DawnLight, LgbtPride } from './SeasonBackgrounds';
+import { Winter, Spring, Summer, Autumn, AmbientDust, DigitalMatrix, Embers, Clocks, DawnLight, LgbtPride, ClassActress } from './SeasonBackgrounds';
 import { useLanguage } from '../contexts/LanguageContext';
 import { FaLanguage } from 'react-icons/fa';
-import TypewriterLoader from './TypewriterLoader';
+import PageWrapper from './PageWrapper';
+import BackButton from './BackButton';
 
 function PoemView() {
   const { id } = useParams();
@@ -45,10 +46,11 @@ function PoemView() {
     fetchData();
   }, [id]);
 
-  if (!poem) return <TypewriterLoader text={language === 'EN' ? 'Opening poem...' : 'Abriendo poema...'} />;
+  const titleText = poemLanguage === 'EN' ? poem?.titleEn : poem?.titleEs;
+  const contentText = poemLanguage === 'EN' ? poem?.contentEn : poem?.contentEs;
 
   const renderBackground = () => {
-    switch (poem.theme) {
+    switch (poem?.theme) {
       case 'winter': return <Winter />;
       case 'spring': return <Spring />;
       case 'summer': return <Summer />;
@@ -59,19 +61,22 @@ function PoemView() {
       case 'clocks': return <Clocks />;
       case 'dawn': return <DawnLight />;
       case 'lgbt': return <LgbtPride />;
+      case 'class-actress': return <ClassActress />;
       default: return null;
     }
   };
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}
+    <PageWrapper 
+      isLoading={!poem}
+      loadingTextEn="Opening poem..."
+      loadingTextEs="Abriendo poema..."
       style={{ flex: 1, padding: '2rem 0', position: 'relative' }}
     >
+      {poem && (
+        <>
       {renderBackground()}
-      <button className="back-button" style={{ marginBottom: '2rem' }} onClick={handleBack}>
-        &larr; {language === 'EN' ? 'Back' : 'Volver'}
-      </button>
+      <BackButton />
 
       <div className="editorial-margin left">
         {language === 'EN' ? 'ENTRY Nº ' : 'ENTRADA Nº '}{id.slice(-4).toUpperCase()} — VOICES
@@ -179,7 +184,9 @@ function PoemView() {
         </motion.div>
         <div style={{ clear: 'both' }}></div>
       </div>
-    </motion.div>
+      </>
+      )}
+    </PageWrapper>
   );
 }
 

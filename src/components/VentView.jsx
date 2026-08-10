@@ -7,7 +7,8 @@ import Sticker from './Sticker';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import { useLanguage } from '../contexts/LanguageContext';
 import { FaLanguage } from 'react-icons/fa';
-import TypewriterLoader from './TypewriterLoader';
+import PageWrapper from './PageWrapper';
+import BackButton from './BackButton';
 
 function VentView() {
   const { id } = useParams();
@@ -236,20 +237,20 @@ function VentView() {
     });
   }, [isNotebook]);
 
-  if (!vent) return <TypewriterLoader text={language === 'EN' ? 'Opening vent...' : 'Abriendo desahogo...'} />;
-
   return (
-    <motion.div 
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}
+    <PageWrapper 
+      isLoading={!vent}
+      loadingTextEn="Opening vent..."
+      loadingTextEs="Abriendo desahogo..."
       className={isNotebook ? 'vent-notebook' : 'vent-postit'}
     >
+      {vent && (
+        <>
       <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
         {scatters}
       </div>
 
-      <button className="back-button" style={{ marginBottom: '3rem', alignSelf: 'flex-start' }} onClick={handleBack}>
-        &larr; {language === 'EN' ? 'Back' : 'Volver'}
-      </button>
+      <BackButton />
 
       {/* Main Content Container */}
       <motion.div 
@@ -351,7 +352,9 @@ function VentView() {
         
         <div style={{ clear: 'both' }}></div>
       </motion.div>
-    </motion.div>
+      </>
+      )}
+    </PageWrapper>
   );
 }
 
