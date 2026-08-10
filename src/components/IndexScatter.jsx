@@ -173,9 +173,9 @@ export const IndexScatter = React.memo(() => {
       return (
         <motion.div key={`ticket-${i}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5, delay: 0.6 }}
           drag dragConstraints={{ left: -30, right: 30, top: -30, bottom: 30 }} dragElastic={0.4} whileDrag={{ scale: 1.05, cursor: 'grabbing', filter: 'drop-shadow(0 15px 25px rgba(0,0,0,0.4))' }}
-          style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, rotate, width: '160px', height: '60px', backgroundColor: '#fafafa', borderLeft: `8px solid ${bg}`, boxShadow: '0 4px 12px rgba(0,0,0,0.1)', cursor: 'grab', zIndex: 2, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 15px', fontFamily: 'monospace', fontSize: '0.65rem', color: '#555', pointerEvents: 'auto', touchAction: 'none' }}>
-          <div style={{ fontWeight: 'bold', fontSize: '0.75rem', marginBottom: '2px', color: bg }}>ADMIT ONE</div>
-          <div>NO. {Math.floor(Math.random() * 9000) + 1000}</div>
+          style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, rotate, width: '160px', height: '60px', backgroundColor: '#fafafa', borderLeft: `8px solid ${bg}`, boxShadow: '0 4px 12px rgba(0,0,0,0.15)', cursor: 'grab', zIndex: 2, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 15px', fontFamily: 'monospace', fontSize: '0.65rem', color: '#555', pointerEvents: 'auto', touchAction: 'none', WebkitMaskImage: 'radial-gradient(circle at 0 50%, transparent 8px, black 8.5px), radial-gradient(circle at 100% 50%, transparent 8px, black 8.5px)', WebkitMaskSize: '51% 100%', WebkitMaskRepeat: 'no-repeat', WebkitMaskPosition: 'left, right' }}>
+          <div style={{ fontWeight: 'bold', fontSize: '0.75rem', marginBottom: '2px', color: bg, letterSpacing: '1px' }}>ADMIT ONE</div>
+          <div style={{ letterSpacing: '2px' }}>NO. {Math.floor(Math.random() * 9000) + 1000}</div>
         </motion.div>
       );
     });
