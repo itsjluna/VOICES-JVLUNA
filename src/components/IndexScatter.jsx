@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import api from '../api';
+import Sticker from './Sticker';
 
 export const IndexScatter = React.memo(() => {
   const [randomImages, setRandomImages] = useState([]);
@@ -195,6 +196,29 @@ export const IndexScatter = React.memo(() => {
     });
   }, [positions]);
 
+  const stickers = useMemo(() => {
+    const stickerImages = ['bee.png', 'cat.png', 'cat2.png', 'flower.png', 'flower2.png', 'flower3.png', 'flower4.png', 'jjk.png', 'pig.png', 'lightpole.png', 'swing.png', 'whale.png'];
+    const count = 3 + Math.floor(Math.random() * 3); // 3 to 5 stickers
+    const shuffled = [...stickerImages].sort(() => 0.5 - Math.random());
+    
+    return [...Array(count)].map((_, i) => {
+      const pos = positions[i + 14] || positions[i % positions.length];
+      const top = pos.top;
+      const left = pos.left;
+      const rotate = pos.rotate * 2;
+      const img = shuffled[i % shuffled.length];
+      const width = Math.random() * 40 + 60; // 60 to 100px
+      
+      return (
+        <motion.div key={`sticker-${i}`} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5, delay: 0.7 + (i * 0.1) }}
+          drag dragConstraints={{ left: -30, right: 30, top: -30, bottom: 30 }} dragElastic={0.4} whileDrag={{ scale: 1.1, cursor: 'grabbing', filter: 'drop-shadow(0 15px 25px rgba(0,0,0,0.4))' }}
+          style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, rotate, width: `${width}px`, zIndex: 6, cursor: 'grab', pointerEvents: 'auto', touchAction: 'none' }}>
+          <Sticker src={`/sticker/${img}`} style={{ position: 'relative', width: '100%', height: '100%' }} />
+        </motion.div>
+      );
+    });
+  }, [positions]);
+
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'visible', pointerEvents: 'none', zIndex: 0 }}>
       {coffeeRings}
@@ -205,6 +229,7 @@ export const IndexScatter = React.memo(() => {
       {polaroids}
       {paperClips}
       {washitapes}
+      {stickers}
     </div>
   );
 });
