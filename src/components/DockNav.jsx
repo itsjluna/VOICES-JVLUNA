@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaSun, FaMoon, FaHome, FaBookOpen, FaLanguage } from 'react-icons/fa';
+import { FaSun, FaMoon, FaHome, FaBookOpen, FaLanguage, FaStickyNote } from 'react-icons/fa';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -60,6 +60,13 @@ function DockNav() {
         label="Index"
         active={location.pathname === '/index'} 
         onClick={() => navigate('/index')} 
+        isDark={isDark}
+      />
+      <DockButton 
+        icon={<FaStickyNote size={20} color={location.pathname === '/journal' ? activeColor : inactiveColor} />} 
+        label="Journal"
+        active={location.pathname === '/journal'} 
+        onClick={() => navigate('/journal')} 
         isDark={isDark}
       />
       

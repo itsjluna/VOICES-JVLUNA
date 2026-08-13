@@ -22,7 +22,7 @@ function AdminDashboard() {
   const [ventForm, setVentForm] = useState({ _id: null, title: '', titleEn: '', content: '', contentEn: '', image: '', imageCredit: '', isVent: true });
   const [isVentModalOpen, setIsVentModalOpen] = useState(false);
 
-  const [chapterForm, setChapterForm] = useState({ _id: null, title: '', titleEn: '', image: '', imageCredit: '', theme: 'winter' });
+  const [chapterForm, setChapterForm] = useState({ _id: null, title: '', titleEn: '', image: '', imageCredit: '', theme: 'winter', writersNote: '', writersNoteEn: '' });
   const [isChapterModalOpen, setIsChapterModalOpen] = useState(false);
 
   const [expandedChapters, setExpandedChapters] = useState(new Set());
@@ -178,7 +178,7 @@ function AdminDashboard() {
   };
 
   const openChapterModalForEdit = (c) => {
-    setChapterForm({ _id: c._id, title: c.title, titleEn: c.titleEn || '', image: c.image || '', theme: c.theme || 'winter' });
+    setChapterForm({ _id: c._id, title: c.title, titleEn: c.titleEn || '', image: c.image || '', theme: c.theme || 'winter', writersNote: c.writersNote || '', writersNoteEn: c.writersNoteEn || '' });
     setIsChapterModalOpen(true);
   };
 
@@ -329,7 +329,7 @@ function AdminDashboard() {
       >
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
           <button 
-            onClick={() => { setChapterForm(loadDraft('chapter', { _id: null, title: '', titleEn: '', image: '', imageCredit: '', theme: 'winter' })); setIsChapterModalOpen(true); }} 
+            onClick={() => { setChapterForm(loadDraft('chapter', { _id: null, title: '', titleEn: '', image: '', imageCredit: '', theme: 'winter', writersNote: '', writersNoteEn: '' })); setIsChapterModalOpen(true); }} 
             style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none', cursor: 'pointer' }}
             title="Add Chapter"
           >
@@ -587,6 +587,12 @@ function AdminDashboard() {
                   <option value="summer">Summer</option>
                   <option value="autumn">Autumn</option>
                 </select>
+
+                <label>Writer's Note (ES)</label>
+                <textarea placeholder="Writer's Note (ES) (optional)..." value={chapterForm.writersNote} onChange={e => setChapterForm({...chapterForm, writersNote: e.target.value})} rows="3" style={{ width: '100%', marginBottom: '1rem', padding: '0.5rem', borderRadius: '4px', border: '1px solid rgba(0,0,0,0.2)', background: 'rgba(255,255,255,0.8)' }} />
+                
+                <label>Writer's Note (EN)</label>
+                <textarea placeholder="Writer's Note (EN) (optional)..." value={chapterForm.writersNoteEn} onChange={e => setChapterForm({...chapterForm, writersNoteEn: e.target.value})} rows="3" style={{ width: '100%', marginBottom: '1rem', padding: '0.5rem', borderRadius: '4px', border: '1px solid rgba(0,0,0,0.2)', background: 'rgba(255,255,255,0.8)' }} />
 
                 <label>Chapter Cover Polaroid (optional)</label>
                 <input type="file" accept="image/*" onChange={e => handleFileChange(e, setChapterForm)} />

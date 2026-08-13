@@ -40,11 +40,29 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-api.interceptors.response.use((response) => {
-  if (response.config.method === 'get') {
-    cache.set(response.config.url, response.data);
+api.interceptors.response.use(
+  (response) => {
+    if (response.config.method === 'get') {
+      cache.set(response.config.url, response.data);
+    }
+    return response;
+  },
+  (error) => {
+    if (error.config && error.config.ignoreGlobalError) {
+      return Promise.reject(error);
+    }
+
+    let code = 'network';
+    if (error.response) {
+      code = error.response.status;
+    }
+    
+    // Dispatch custom event for global error handling
+    const event = new CustomEvent('api-error', { detail: { code } });
+    window.dispatchEvent(event);
+    
+    return Promise.reject(error);
   }
-  return response;
-});
+);
 
 export default api;

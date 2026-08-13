@@ -44,6 +44,8 @@ const chapterSchema = new mongoose.Schema({
   isVent: { type: Boolean, default: false },
   content: String,
   contentEn: String,
+  writersNote: String,
+  writersNoteEn: String,
   theme: { type: String, default: 'winter' }
 });
 

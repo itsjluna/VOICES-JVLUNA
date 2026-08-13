@@ -1,6 +1,7 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaPenFancy, FaTimes } from 'react-icons/fa';
 import api from '../api';
 import { Winter, Spring, Summer, Autumn } from './SeasonBackgrounds';
 import { SeasonDebris } from './SeasonDebris';
@@ -25,6 +26,7 @@ function ChapterView() {
   const [albumDecoration, setAlbumDecoration] = useState(null);
   const [randomDecorations, setRandomDecorations] = useState([]);
   const [isMobileView, setIsMobileView] = useState(false);
+  const [showNote, setShowNote] = useState(false);
   const { language } = useLanguage();
 
   useEffect(() => {
@@ -151,7 +153,7 @@ function ChapterView() {
           const randomArtist = belovedArtists[Math.floor(Math.random() * belovedArtists.length)];
           
           // Lookup albums explicitly by artist ID using our backend proxy to prevent CORS issues
-          const itunesRes = await api.get(`/itunes/lookup?id=${randomArtist.id}&entity=album&limit=30`);
+          const itunesRes = await api.get(`/itunes/lookup?id=${randomArtist.id}&entity=album&limit=30`, { ignoreGlobalError: true });
           const itunesData = itunesRes.data;
           if (itunesData.results && itunesData.results.length > 0) {
             
@@ -523,6 +525,57 @@ function ChapterView() {
               {poems.length === 0 && <p style={{ fontStyle: 'italic', opacity: 0.6 }}>{language === 'EN' ? 'No poems yet.' : 'Aún no hay poemas.'}</p>}
             </ul>
           </motion.div>
+
+          {/* Writer's Note Button */}
+          {(chapter.writersNote || chapter.writersNoteEn) && (
+            <div style={{ marginTop: '3rem', display: 'flex', justifyContent: 'center' }}>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setShowNote(!showNote)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  background: 'transparent',
+                  border: `1px solid ${showNote ? 'var(--text-color)' : 'var(--border-color)'}`,
+                  color: 'var(--text-color)',
+                  padding: '0.8rem 1.5rem',
+                  borderRadius: '25px',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '0.9rem',
+                  letterSpacing: '0.05em',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                {showNote ? <FaTimes size={14} /> : <FaPenFancy size={14} />}
+                {language === 'EN' ? (showNote ? 'Hide Note' : "Author's Note") : (showNote ? 'Ocultar Nota' : "Nota del Autor")}
+              </motion.button>
+            </div>
+          )}
+
+          {/* Writer's Note Content */}
+          <AnimatePresence>
+            {showNote && (chapter.writersNote || chapter.writersNoteEn) && (
+              <motion.div
+                initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                animate={{ opacity: 1, height: 'auto', marginTop: '2rem' }}
+                exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                style={{ overflow: 'hidden' }}
+              >
+                <div className="glass-panel" style={{ 
+                  padding: '2rem', 
+                  borderLeft: '4px solid var(--text-color)',
+                  fontStyle: 'italic',
+                  lineHeight: '1.8'
+                }}>
+                  {language === 'EN' && chapter.writersNoteEn ? chapter.writersNoteEn : chapter.writersNote}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
         </motion.div>
         <div style={{ clear: 'both' }}></div>
       </div>

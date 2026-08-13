@@ -22,12 +22,10 @@ const itemVariants = {
   show: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
 };
 
-function IndexView() {
+function JournalView() {
   const [chapters, setChapters] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeTheme, setActiveTheme] = useState('all');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [localWeather, setLocalWeather] = useState('loading');
   const [showSky, setShowSky] = useState(true);
   const [showQuote, setShowQuote] = useState(false);
@@ -298,7 +296,7 @@ function IndexView() {
       }}>
         <div style={{ marginBottom: '3rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
           <h1 style={{ fontSize: 'clamp(1.5rem, 8vw, 2.5rem)', letterSpacing: '0.2em', textTransform: 'uppercase', margin: 0 }}>
-            {language === 'EN' ? 'Index' : 'Índice'}
+            {language === 'EN' ? 'Journal' : 'Diario'}
           </h1>
         </div>
         
@@ -308,7 +306,7 @@ function IndexView() {
               <motion.button 
                 whileHover={{ scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('/journal')}
+                onClick={() => navigate('/index')}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -320,9 +318,9 @@ function IndexView() {
                   cursor: 'pointer'
                 }}
               >
-                <FaStickyNote size={16} />
+                <FaBookOpen size={16} />
               </motion.button>
-              
+
               <motion.button 
                 whileHover={{ scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' }}
                 whileTap={{ scale: 0.95 }}
@@ -340,99 +338,12 @@ function IndexView() {
               >
                 {showSky ? <FaEye size={16} /> : <FaEyeSlash size={16} />}
               </motion.button>
-              
-              <div style={{ position: 'relative' }}>
-                <motion.button 
-                  whileHover={{ scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: 'transparent',
-                    border: 'none',
-                    color: 'var(--text-color)',
-                    padding: '1rem clamp(1.5rem, 4vw, 3rem)',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <FaFilter size={16} />
-                </motion.button>
-
-                <AnimatePresence>
-                  {isDropdownOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                      className="glass-panel"
-                      style={{
-                        position: 'absolute',
-                        top: '100%',
-                        right: 0,
-                        marginTop: '0.5rem',
-                        padding: '1rem',
-                        zIndex: 50,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '0.5rem',
-                        minWidth: '200px'
-                      }}
-                    >
-                      {[
-                        { id: 'all', en: 'ALL ENTRIES', es: 'TODAS LAS ENTRADAS' },
-                        { id: 'winter', en: 'WINTER', es: 'INVIERNO' },
-                        { id: 'spring', en: 'SPRING', es: 'PRIMAVERA' },
-                        { id: 'summer', en: 'SUMMER', es: 'VERANO' },
-                        { id: 'autumn', en: 'AUTUMN', es: 'OTOÑO' },
-                        { id: 'intermissions', en: 'INTERMISSIONS', es: 'INTERMEDIOS' }
-                      ].map((theme) => (
-                        <div 
-                          key={theme.id}
-                          onClick={() => { setActiveTheme(theme.id); setIsDropdownOpen(false); }}
-                          style={{
-                            padding: '0.5rem 1rem',
-                            cursor: 'pointer',
-                            color: activeTheme === theme.id ? 'var(--bg-color)' : 'var(--text-color)',
-                            backgroundColor: activeTheme === theme.id ? 'var(--text-color)' : 'transparent',
-                            borderRadius: '4px',
-                            fontFamily: 'var(--font-sans)',
-                            fontSize: '0.85rem',
-                            letterSpacing: '0.1em',
-                            textTransform: 'uppercase',
-                            transition: 'all 0.2s ease'
-                          }}
-                          onMouseEnter={(e) => {
-                            if (activeTheme !== theme.id) {
-                              e.currentTarget.style.backgroundColor = 'rgba(128,128,128,0.2)';
-                            }
-                          }}
-                          onMouseLeave={(e) => {
-                            if (activeTheme !== theme.id) {
-                              e.currentTarget.style.backgroundColor = 'transparent';
-                            }
-                          }}
-                        >
-                          {language === 'EN' ? theme.en : theme.es}
-                        </div>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
             </div>
 
-            {chapters.length === 0 && <p style={{ textAlign: 'center', fontStyle: 'italic', opacity: 0.5 }}>{language === 'EN' ? 'The archives are empty...' : 'Los archivos están vacíos...'}</p>}
+            {chapters.filter(c => c.isVent).length === 0 && <p style={{ textAlign: 'center', fontStyle: 'italic', opacity: 0.5 }}>{language === 'EN' ? 'The journal is empty...' : 'El diario está vacío...'}</p>}
             
             {chapters
-              .filter(c => !c.isVent)
-              .filter(c => {
-                if (activeTheme === 'all') return true;
-                if (activeTheme === 'intermissions') return c.isIntermission;
-                return c.theme === activeTheme && !c.isIntermission;
-              })
+              .filter(c => c.isVent)
               .map((chapter, index) => {
               const isInt = chapter.isIntermission;
               const isVent = chapter.isVent;
@@ -566,4 +477,4 @@ function IndexView() {
   );
 }
 
-export default React.memo(IndexView);
+export default React.memo(JournalView);
