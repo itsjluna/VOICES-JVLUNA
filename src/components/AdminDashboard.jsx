@@ -28,6 +28,7 @@ function AdminDashboard() {
   const [expandedChapters, setExpandedChapters] = useState(new Set());
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedItems, setSelectedItems] = useState(new Set());
+  const [activeTab, setActiveTab] = useState('main'); // 'main' or 'vents'
 
   const toggleSelection = (e, id, type) => {
     e.stopPropagation();
@@ -189,7 +190,9 @@ function AdminDashboard() {
     }
   };
 
-  const moveChapter = async (index, direction) => {
+  const moveChapter = async (chapterId, direction) => {
+    const index = chapters.findIndex(c => c._id === chapterId);
+    if (index === -1) return;
     const newChapters = [...chapters];
     if (direction === 'up' && index > 0) {
       [newChapters[index - 1], newChapters[index]] = [newChapters[index], newChapters[index - 1]];
@@ -372,6 +375,21 @@ function AdminDashboard() {
         </div>
       </motion.div>
 
+        <div style={{ display: 'flex', gap: '0.5rem', background: isDark ? 'rgba(30,30,30,0.6)' : 'rgba(255,255,255,0.7)', padding: '0.3rem', borderRadius: '25px', backdropFilter: 'blur(10px)', border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}` }}>
+          <button 
+            onClick={() => setActiveTab('main')}
+            style={{ padding: '0.6rem 1.2rem', borderRadius: '20px', border: 'none', background: activeTab === 'main' ? 'var(--text-color)' : 'transparent', color: activeTab === 'main' ? 'var(--bg-color)' : 'var(--text-color)', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 600, transition: 'all 0.2s' }}
+          >
+            Chapters & Intermissions
+          </button>
+          <button 
+            onClick={() => setActiveTab('vents')}
+            style={{ padding: '0.6rem 1.2rem', borderRadius: '20px', border: 'none', background: activeTab === 'vents' ? 'var(--text-color)' : 'transparent', color: activeTab === 'vents' ? 'var(--bg-color)' : 'var(--text-color)', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 600, transition: 'all 0.2s' }}
+          >
+            Vents
+          </button>
+        </div>
+
         <input 
           type="text" 
           placeholder="Search chapters, vents, and poems..." 
@@ -395,6 +413,9 @@ function AdminDashboard() {
 
       <ul className="admin-list" style={{ padding: 0 }}>
         {chapters.filter(c => {
+          if (activeTab === 'vents' && !c.isVent) return false;
+          if (activeTab === 'main' && c.isVent) return false;
+
           if (!searchQuery) return true;
           const query = searchQuery.toLowerCase();
           if (c.title && c.title.toLowerCase().includes(query)) return true;
@@ -427,8 +448,8 @@ function AdminDashboard() {
                     style={{ transform: 'scale(1.2)' }}
                   />
                   <div style={{ display: 'flex', gap: '0.2rem' }} onClick={e => e.stopPropagation()}>
-                    <button onClick={() => moveChapter(index, 'up')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }} title="Move Up"><FaArrowUp /></button>
-                    <button onClick={() => moveChapter(index, 'down')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }} title="Move Down"><FaArrowDown /></button>
+                    <button onClick={() => moveChapter(c._id, 'up')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }} title="Move Up"><FaArrowUp /></button>
+                    <button onClick={() => moveChapter(c._id, 'down')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }} title="Move Down"><FaArrowDown /></button>
                   </div>
                   
                   <strong style={{ fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
