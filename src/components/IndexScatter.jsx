@@ -145,18 +145,32 @@ export const IndexScatter = React.memo(() => {
   }, [positions]);
 
   const postIts = useMemo(() => {
-    return [...Array(2)].map((_, i) => {
+    const phrases = [
+      'everything is art',
+      'we all fade away',
+      'nothing beside remains',
+      'the rapture of being',
+      'love me in the mirror',
+      'escondida en la luna',
+      'miré debajo de mi cama'
+    ];
+    // Shuffle to get random phrases each time
+    const shuffledPhrases = [...phrases].sort(() => 0.5 - Math.random());
+
+    return [...Array(4)].map((_, i) => {
       const pos = positions[i + 10] || positions[6];
       const top = pos.top;
       const left = pos.left;
       const rotate = pos.rotate;
       const colors = ['#fdfd96', '#ffb7b2', '#c1e1c1', '#b5ead7', '#e2f0cb'];
       const bg = colors[i % colors.length];
+      const text = shuffledPhrases[i % shuffledPhrases.length];
+      
       return (
         <motion.div key={`postit-${i}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5, delay: 0.4 }}
           drag dragConstraints={{ left: -30, right: 30, top: -30, bottom: 30 }} dragElastic={0.4} whileDrag={{ scale: 1.05, cursor: 'grabbing', filter: 'drop-shadow(0 15px 25px rgba(0,0,0,0.4))' }}
-          style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, rotate, width: '100px', height: '100px', backgroundColor: bg, boxShadow: '2px 5px 10px rgba(0,0,0,0.15)', cursor: 'grab', zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Reenie Beanie", cursive', fontSize: '1.2rem', color: 'rgba(0,0,0,0.6)', padding: '10px', textAlign: 'center', pointerEvents: 'auto', touchAction: 'none' }}>
-          {i === 0 ? "read me" : "don't forget"}
+          style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, rotate, width: '100px', height: '100px', backgroundColor: bg, boxShadow: '2px 5px 10px rgba(0,0,0,0.15)', cursor: 'grab', zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Reenie Beanie", cursive', fontSize: '1.3rem', color: 'rgba(0,0,0,0.7)', padding: '10px', textAlign: 'center', pointerEvents: 'auto', touchAction: 'none' }}>
+          {text}
         </motion.div>
       );
     });
