@@ -56,13 +56,7 @@ function DockNav() {
         position: 'fixed',
         bottom: '2rem',
         left: '50%',
-        zIndex: 5000,
-        borderRadius: '35px',
-        background: isDark ? 'rgba(30, 30, 30, 0.6)' : 'rgba(255, 255, 255, 0.7)',
-        backdropFilter: 'blur(15px)',
-        WebkitBackdropFilter: 'blur(15px)',
-        border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-        boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
+        zIndex: 5000
       }}
     >
       <div 
@@ -71,6 +65,12 @@ function DockNav() {
           alignItems: 'center',
           gap: '0.5rem',
           padding: '0.5rem',
+          borderRadius: '35px',
+          background: isDark ? 'rgba(30, 30, 30, 0.6)' : 'rgba(255, 255, 255, 0.7)',
+          backdropFilter: 'blur(15px)',
+          WebkitBackdropFilter: 'blur(15px)',
+          border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+          boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
         }}
       >
         <DockButton 
