@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { IndexScatter } from './IndexScatter';
 import { useLanguage } from '../contexts/LanguageContext';
 import PageWrapper from './PageWrapper';
@@ -8,6 +8,31 @@ import PageWrapper from './PageWrapper';
 function WelcomeScreen() {
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const [showSections, setShowSections] = useState(false);
+
+  const sections = [
+    { id: 'poetry', path: '/index', labelEN: 'Poetry', labelES: 'Poesía', status: 'available' },
+    { id: 'journal', path: '/journal', labelEN: 'Journal', labelES: 'Diario', status: 'available' },
+    { id: 'photography', path: '/photography', labelEN: 'Photography', labelES: 'Fotografía', status: 'soon' },
+    { id: 'video', path: '/video', labelEN: 'Video Editing', labelES: 'Edición de Video', status: 'soon' },
+    { id: 'gamedev', path: '/gamedev', labelEN: 'Game Dev', labelES: 'Desarrollo de Juegos', status: 'soon' },
+  ];
+
+  const renderStatusBadge = (status) => {
+    if (status === 'available') {
+      return (
+        <span style={{ fontSize: '0.6rem', letterSpacing: '2px', padding: '0.2rem 0.5rem', border: '1px solid currentColor', borderRadius: '12px', opacity: 0.8 }}>
+          {language === 'EN' ? 'EXPLORE' : 'EXPLORAR'}
+        </span>
+      );
+    } else {
+      return (
+        <span style={{ fontSize: '0.6rem', letterSpacing: '2px', padding: '0.2rem 0.5rem', border: '1px dashed currentColor', borderRadius: '12px', opacity: 0.5 }}>
+          {language === 'EN' ? 'IN THE MAKING' : 'EN PROCESO'}
+        </span>
+      );
+    }
+  };
 
   return (
     <PageWrapper 
@@ -41,24 +66,71 @@ function WelcomeScreen() {
           }
         </p>
 
-        <motion.button 
-          whileHover={{ scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => navigate('/index')}
-          style={{
-            background: 'transparent',
-            color: 'var(--text-color)',
-            border: '1px solid var(--text-color)',
-            padding: '1rem clamp(1.5rem, 4vw, 3rem)',
-            fontSize: '0.9rem',
-            letterSpacing: '3px',
-            textTransform: 'uppercase',
-            cursor: 'pointer',
-            transition: 'background 0.3s ease, color 0.3s ease'
-          }}
-        >
-          {language === 'EN' ? 'Enter' : 'Entrar'}
-        </motion.button>
+        <AnimatePresence mode="wait">
+          {!showSections ? (
+            <motion.button 
+              key="enter-btn"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              whileHover={{ scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setShowSections(true)}
+              style={{
+                background: 'transparent',
+                color: 'var(--text-color)',
+                border: '1px solid var(--text-color)',
+                padding: '1rem clamp(1.5rem, 4vw, 3rem)',
+                fontSize: '0.9rem',
+                letterSpacing: '3px',
+                textTransform: 'uppercase',
+                cursor: 'pointer',
+                transition: 'background 0.3s ease, color 0.3s ease'
+              }}
+            >
+              {language === 'EN' ? 'Enter' : 'Entrar'}
+            </motion.button>
+          ) : (
+            <motion.div
+              key="sections-list"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', width: '100%', maxWidth: '400px', margin: '0 auto' }}
+            >
+              {sections.map((sec, i) => (
+                <motion.button
+                  key={sec.id}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1, duration: 0.3 }}
+                  whileHover={{ backgroundColor: 'rgba(128,128,128,0.1)', paddingLeft: '1.5rem', paddingRight: '1.5rem' }}
+                  onClick={() => navigate(sec.path)}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    background: 'transparent',
+                    border: '1px solid var(--border-color)',
+                    color: 'var(--text-color)',
+                    padding: '1rem',
+                    fontSize: '0.85rem',
+                    letterSpacing: '2px',
+                    textTransform: 'uppercase',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    textAlign: 'left',
+                    borderRadius: '8px'
+                  }}
+                >
+                  <span>{language === 'EN' ? sec.labelEN : sec.labelES}</span>
+                  {renderStatusBadge(sec.status)}
+                </motion.button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
       
       {/* Decorative Marginalia */}

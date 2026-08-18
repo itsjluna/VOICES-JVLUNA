@@ -308,24 +308,6 @@ function IndexView() {
               <motion.button 
                 whileHover={{ scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('/journal')}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: 'transparent',
-                  border: 'none',
-                  color: 'var(--text-color)',
-                  padding: '1rem clamp(1.5rem, 4vw, 3rem)',
-                  cursor: 'pointer'
-                }}
-              >
-                <FaStickyNote size={16} />
-              </motion.button>
-              
-              <motion.button 
-                whileHover={{ scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' }}
-                whileTap={{ scale: 0.95 }}
                 onClick={() => { setShowSky(!showSky); setShowQuote(true); }}
                 style={{
                   display: 'flex',

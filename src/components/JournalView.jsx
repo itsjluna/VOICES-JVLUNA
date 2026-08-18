@@ -302,26 +302,7 @@ function JournalView() {
         
         {!isLoading && (
           <motion.div variants={containerVariants} initial="hidden" animate="show" style={{ width: '100%' }}>
-            <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
-              <motion.button 
-                whileHover={{ scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('/index')}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: 'transparent',
-                  border: 'none',
-                  color: 'var(--text-color)',
-                  padding: '1rem clamp(1.5rem, 4vw, 3rem)',
-                  cursor: 'pointer'
-                }}
-              >
-                <FaBookOpen size={16} />
-              </motion.button>
-
-              <motion.button 
+            <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>              <motion.button 
                 whileHover={{ scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => { setShowSky(!showSky); setShowQuote(true); }}

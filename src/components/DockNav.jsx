@@ -144,6 +144,8 @@ function DockNav() {
               active={location.pathname === '/index'} 
               onClick={() => { navigate('/index'); setIsArtMenuOpen(false); }} 
               isDark={isDark}
+              status="available"
+              language={language}
             />
             <MenuButton 
               icon={<FaStickyNote size={16} />} 
@@ -151,6 +153,8 @@ function DockNav() {
               active={location.pathname === '/journal'} 
               onClick={() => { navigate('/journal'); setIsArtMenuOpen(false); }} 
               isDark={isDark}
+              status="available"
+              language={language}
             />
             <MenuButton 
               icon={<FaCamera size={16} />} 
@@ -158,6 +162,8 @@ function DockNav() {
               active={location.pathname === '/photography'} 
               onClick={() => { navigate('/photography'); setIsArtMenuOpen(false); }} 
               isDark={isDark}
+              status="soon"
+              language={language}
             />
             <MenuButton 
               icon={<FaFilm size={16} />} 
@@ -165,6 +171,8 @@ function DockNav() {
               active={location.pathname === '/video'} 
               onClick={() => { navigate('/video'); setIsArtMenuOpen(false); }} 
               isDark={isDark}
+              status="soon"
+              language={language}
             />
             <MenuButton 
               icon={<FaGamepad size={16} />} 
@@ -172,6 +180,8 @@ function DockNav() {
               active={location.pathname === '/gamedev'} 
               onClick={() => { navigate('/gamedev'); setIsArtMenuOpen(false); }} 
               isDark={isDark}
+              status="soon"
+              language={language}
             />
           </motion.div>
         )}
@@ -213,10 +223,27 @@ function DockButton({ icon, active, onClick, label, isDark }) {
     </motion.button>
   );
 }
-function MenuButton({ icon, label, active, onClick, isDark }) {
+function MenuButton({ icon, label, active, onClick, isDark, status, language }) {
   const activeBg = isDark ? '#fdfdf8' : '#121212';
   const inactiveBg = 'transparent';
   
+  const renderStatusBadge = () => {
+    if (!status) return null;
+    if (status === 'available') {
+      return (
+        <span style={{ fontSize: '0.6rem', letterSpacing: '1px', padding: '0.2rem 0.4rem', border: '1px solid currentColor', borderRadius: '8px', opacity: 0.8, marginLeft: 'auto' }}>
+          {language === 'EN' ? 'EXPLORE' : 'EXPLORAR'}
+        </span>
+      );
+    } else {
+      return (
+        <span style={{ fontSize: '0.6rem', letterSpacing: '1px', padding: '0.2rem 0.4rem', border: '1px dashed currentColor', borderRadius: '8px', opacity: 0.5, marginLeft: 'auto' }}>
+          {language === 'EN' ? 'IN THE MAKING' : 'EN PROCESO'}
+        </span>
+      );
+    }
+  };
+
   return (
     <motion.button
       onClick={onClick}
@@ -231,18 +258,19 @@ function MenuButton({ icon, label, active, onClick, isDark }) {
         alignItems: 'center',
         justifyContent: 'flex-start',
         textAlign: 'left',
-        gap: '1rem',
+        gap: '0.8rem',
         cursor: 'pointer',
         background: active ? activeBg : inactiveBg,
         color: active ? (isDark ? '#121212' : '#fdfdf8') : (isDark ? '#fdfdf8' : '#121212'),
         transition: 'all 0.2s ease-in-out',
-        fontSize: '1rem',
+        fontSize: '0.9rem',
         fontFamily: 'inherit',
         fontWeight: active ? 600 : 400
       }}
     >
       <div style={{ opacity: active ? 1 : 0.7 }}>{icon}</div>
-      <span>{label}</span>
+      <span style={{ flexShrink: 0 }}>{label}</span>
+      {renderStatusBadge()}
     </motion.button>
   );
 }
