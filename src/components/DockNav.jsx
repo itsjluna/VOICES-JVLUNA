@@ -94,6 +94,7 @@ function DockNav() {
             {isArtMenuOpen && (
               <motion.div
                 ref={popupRef}
+                className="glass-panel"
                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -103,11 +104,6 @@ function DockNav() {
                   bottom: 'calc(100% + 20px)',
                   left: '50%',
                   transform: 'translateX(-50%)',
-                  background: isDark ? 'rgba(30, 30, 30, 0.8)' : 'rgba(255, 255, 255, 0.85)',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-                  boxShadow: '0 15px 40px rgba(0,0,0,0.3)',
                   borderRadius: '25px',
                   padding: '1rem',
                   display: 'flex',
