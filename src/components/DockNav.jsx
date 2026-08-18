@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaSun, FaMoon, FaHome, FaBookOpen, FaLanguage, FaStickyNote } from 'react-icons/fa';
+import { FaSun, FaMoon, FaHome, FaBookOpen, FaLanguage, FaStickyNote, FaCamera, FaFilm, FaGamepad } from 'react-icons/fa';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -69,9 +69,29 @@ function DockNav() {
         onClick={() => navigate('/journal')} 
         isDark={isDark}
       />
-      
-      <div style={{ width: '1px', height: '24px', background: inactiveColor, margin: '0 0.5rem', opacity: 0.5 }} />
-
+      <div style={{ width: '1px', height: '24px', background: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' }} />
+      <DockButton 
+        icon={<FaCamera size={20} color={location.pathname === '/photography' ? activeColor : inactiveColor} />} 
+        label="Photography"
+        active={location.pathname === '/photography'} 
+        onClick={() => navigate('/photography')} 
+        isDark={isDark}
+      />
+      <DockButton 
+        icon={<FaFilm size={20} color={location.pathname === '/video' ? activeColor : inactiveColor} />} 
+        label="Video Editing"
+        active={location.pathname === '/video'} 
+        onClick={() => navigate('/video')} 
+        isDark={isDark}
+      />
+      <DockButton 
+        icon={<FaGamepad size={20} color={location.pathname === '/gamedev' ? activeColor : inactiveColor} />} 
+        label="Game Dev"
+        active={location.pathname === '/gamedev'} 
+        onClick={() => navigate('/gamedev')} 
+        isDark={isDark}
+      />
+      <div style={{ width: '1px', height: '24px', background: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' }} />
       <DockButton 
         icon={isDark ? <FaSun size={20} color={inactiveColor} /> : <FaMoon size={20} color={inactiveColor} />} 
         label={isDark ? 'Light Mode' : 'Dark Mode'}

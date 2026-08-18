@@ -79,7 +79,7 @@ function PoemView() {
       <BackButton />
 
       <div className="editorial-margin left">
-        {language === 'EN' ? 'ENTRY Nº ' : 'ENTRADA Nº '}{id.slice(-4).toUpperCase()} — VOICES
+        {language === 'EN' ? 'ENTRY Nº ' : 'ENTRADA Nº '}{id.slice(-4).toUpperCase()} — PATHS
       </div>
       <div className="book-layout book-page-aesthetic">
         <motion.div 

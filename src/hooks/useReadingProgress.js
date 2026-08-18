@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 export function useReadingProgress() {
   const [readChapters, setReadChapters] = useState(() => {
     try {
-      const stored = localStorage.getItem('voices-read-progress');
+      const stored = localStorage.getItem('paths-read-progress');
       return stored ? JSON.parse(stored) : [];
     } catch (e) {
       return [];
@@ -15,7 +15,7 @@ export function useReadingProgress() {
     setReadChapters((prev) => {
       if (!prev.includes(id)) {
         const next = [...prev, id];
-        localStorage.setItem('voices-read-progress', JSON.stringify(next));
+        localStorage.setItem('paths-read-progress', JSON.stringify(next));
         return next;
       }
       return prev;

@@ -15,6 +15,7 @@ import VentView from './components/VentView';
 import JournalView from './components/JournalView';
 import AdminDashboard from './components/AdminDashboard';
 import ErrorView from './components/ErrorView';
+import PlaceholderView from './components/PlaceholderView';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -40,6 +41,9 @@ function AnimatedRoutes() {
         <Route path="/intermission/:id" element={<IntermissionView />} />
         <Route path="/vent/:id" element={<VentView />} />
         <Route path="/poem/:id" element={<PoemView />} />
+        <Route path="/photography" element={<PlaceholderView title="Photography" />} />
+        <Route path="/video" element={<PlaceholderView title="Video Editing" />} />
+        <Route path="/gamedev" element={<PlaceholderView title="Game Dev" />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/error" element={<ErrorView />} />
         <Route path="*" element={<ErrorView fallbackCode={404} />} />

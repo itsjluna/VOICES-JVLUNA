@@ -30,9 +30,9 @@ function WelcomeScreen() {
           zIndex: 10
         }}
       >
-        <div style={{ fontSize: '0.8rem', letterSpacing: '4px', opacity: 0.5, marginBottom: '2rem', fontFamily: 'monospace' }}>VOICES BY JOSHUA V LUNA - FIRST EDITION VER1.0.0</div>
+        <div style={{ fontSize: '0.8rem', letterSpacing: '4px', opacity: 0.5, marginBottom: '2rem', fontFamily: 'monospace' }}>PATHS BY J VIOLET LUNA - FIRST EDITION VER1.0.0</div>
         
-        <h1 style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)', letterSpacing: '0.15em', marginBottom: '2rem', textTransform: 'uppercase', lineHeight: '1.2' }}>VOICES</h1>
+        <h1 style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)', letterSpacing: '0.15em', marginBottom: '2rem', textTransform: 'uppercase', lineHeight: '1.2' }}>PATHS</h1>
         
         <p style={{ fontStyle: 'italic', marginBottom: '3rem', fontSize: 'clamp(0.9rem, 2vw, 1.1rem)', opacity: 0.8, lineHeight: '1.8' }}>
           {language === 'EN' 
