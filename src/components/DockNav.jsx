@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { FaSun, FaMoon, FaHome, FaBookOpen, FaLanguage, FaStickyNote, FaCamera, FaFilm, FaGamepad } from 'react-icons/fa';
+import React, { useEffect, useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaSun, FaMoon, FaHome, FaBookOpen, FaLanguage, FaStickyNote, FaCamera, FaFilm, FaGamepad, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -23,6 +23,29 @@ function DockNav() {
       localStorage.setItem('theme', 'light');
     }
   }, [isDark]);
+
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 2); // a little buffer
+      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth - 2);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    // Also check after a brief delay in case fonts/icons are loading
+    const timer = setTimeout(checkScroll, 500);
+    return () => {
+      window.removeEventListener('resize', checkScroll);
+      clearTimeout(timer);
+    };
+  }, []);
 
   const activeColor = isDark ? '#121212' : '#fdfdf8';
   const inactiveColor = isDark ? '#fdfdf8' : '#121212';
@@ -51,8 +74,39 @@ function DockNav() {
           display: none;
         }
       `}</style>
+      
+      <AnimatePresence>
+        {canScrollLeft && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: '40px',
+              background: `linear-gradient(to right, ${isDark ? 'rgba(30,30,30,0.95)' : 'rgba(255,255,255,0.95)'}, transparent)`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+              paddingLeft: '8px',
+              pointerEvents: 'none',
+              zIndex: 10
+            }}
+          >
+            <motion.div animate={{ x: [-3, 0, -3] }} transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}>
+              <FaChevronLeft size={14} color={inactiveColor} />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div 
+        ref={scrollRef}
         className="dock-scroll-container"
+        onScroll={checkScroll}
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -124,6 +178,34 @@ function DockNav() {
         isDark={isDark}
       />
       </div>
+
+      <AnimatePresence>
+        {canScrollRight && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              bottom: 0,
+              width: '40px',
+              background: `linear-gradient(to left, ${isDark ? 'rgba(30,30,30,0.95)' : 'rgba(255,255,255,0.95)'}, transparent)`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              paddingRight: '8px',
+              pointerEvents: 'none',
+              zIndex: 10
+            }}
+          >
+            <motion.div animate={{ x: [3, 0, 3] }} transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}>
+              <FaChevronRight size={14} color={inactiveColor} />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
