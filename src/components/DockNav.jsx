@@ -36,19 +36,35 @@ function DockNav() {
         bottom: '2rem',
         left: '50%',
         zIndex: 5000,
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-        padding: '0.5rem',
         borderRadius: '35px',
         background: isDark ? 'rgba(30, 30, 30, 0.6)' : 'rgba(255, 255, 255, 0.7)',
         backdropFilter: 'blur(15px)',
         WebkitBackdropFilter: 'blur(15px)',
         border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
         boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
+        maxWidth: 'calc(100vw - 2rem)',
+        overflow: 'hidden'
       }}
     >
-      <DockButton 
+      <style>{`
+        .dock-scroll-container::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
+      <div 
+        className="dock-scroll-container"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          padding: '0.5rem',
+          overflowX: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none'
+        }}
+      >
+        <DockButton 
         icon={<FaHome size={20} color={location.pathname === '/' ? activeColor : inactiveColor} />} 
         label="Home"
         active={location.pathname === '/'} 
@@ -69,7 +85,7 @@ function DockNav() {
         onClick={() => navigate('/journal')} 
         isDark={isDark}
       />
-      <div style={{ width: '1px', height: '24px', background: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' }} />
+      <div style={{ width: '1px', height: '24px', background: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)', flexShrink: 0 }} />
       <DockButton 
         icon={<FaCamera size={20} color={location.pathname === '/photography' ? activeColor : inactiveColor} />} 
         label="Photography"
@@ -91,7 +107,7 @@ function DockNav() {
         onClick={() => navigate('/gamedev')} 
         isDark={isDark}
       />
-      <div style={{ width: '1px', height: '24px', background: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' }} />
+      <div style={{ width: '1px', height: '24px', background: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)', flexShrink: 0 }} />
       <DockButton 
         icon={isDark ? <FaSun size={20} color={inactiveColor} /> : <FaMoon size={20} color={inactiveColor} />} 
         label={isDark ? 'Light Mode' : 'Dark Mode'}
@@ -107,6 +123,7 @@ function DockNav() {
         onClick={toggleLanguage} 
         isDark={isDark}
       />
+      </div>
     </motion.div>
   );
 }
@@ -134,7 +151,8 @@ function DockButton({ icon, active, onClick, label, isDark }) {
         color: active ? (isDark ? '#121212' : '#fdfdf8') : (isDark ? '#fdfdf8' : '#121212'),
         transition: 'background 0.2s ease-in-out, color 0.2s ease-in-out',
         padding: 0,
-        fontSize: '20px'
+        fontSize: '20px',
+        flexShrink: 0
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
