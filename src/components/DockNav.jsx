@@ -112,15 +112,14 @@ function DockNav() {
         {isArtMenuOpen && (
           <motion.div
             ref={popupRef}
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            initial={{ opacity: 0, y: 20, x: '-50%' }}
+            animate={{ opacity: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, y: 20, x: '-50%' }}
             transition={{ duration: 0.2, ease: "easeOut" }}
             style={{
               position: 'absolute',
               bottom: 'calc(100% + 20px)',
               left: '50%',
-              transform: 'translateX(-50%)',
               background: isDark ? 'rgba(30, 30, 30, 0.6)' : 'rgba(255, 255, 255, 0.7)',
               backdropFilter: 'blur(15px)',
               WebkitBackdropFilter: 'blur(15px)',
