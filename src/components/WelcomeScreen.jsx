@@ -36,8 +36,8 @@ function WelcomeScreen() {
         
         <p style={{ fontStyle: 'italic', marginBottom: '3rem', fontSize: 'clamp(0.9rem, 2vw, 1.1rem)', opacity: 0.8, lineHeight: '1.8' }}>
           {language === 'EN' 
-            ? <React.Fragment>A curated collection of poetry and memories.<br/>The only way out is art.</React.Fragment>
-            : <React.Fragment>Una cuidada colección de poesía y memorias.<br/>La única salida es el arte.</React.Fragment>
+            ? 'The only way out is art.'
+            : 'La única salida es el arte.'
           }
         </p>
 
