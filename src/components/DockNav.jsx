@@ -215,7 +215,6 @@ function DockButton({ icon, active, onClick, label, isDark }) {
     </motion.button>
   );
 }
-}
 function MenuButton({ icon, label, active, onClick, isDark }) {
   const activeBg = isDark ? '#fdfdf8' : '#121212';
   const inactiveBg = 'transparent';
