@@ -62,9 +62,7 @@ function DockNav() {
         backdropFilter: 'blur(15px)',
         WebkitBackdropFilter: 'blur(15px)',
         border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-        boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
-        maxWidth: 'calc(100vw - 2rem)',
-        overflow: 'hidden'
+        boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
       }}
     >
       <div 
