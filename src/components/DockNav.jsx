@@ -81,7 +81,7 @@ function DockNav() {
           isDark={isDark}
         />
         <div style={{ width: '1px', height: '24px', background: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)', flexShrink: 0 }} />
-        <div className="palette-toggle-btn" style={{ position: 'relative' }}>
+        <div className="palette-toggle-btn">
           <DockButton 
             icon={<FaPalette size={20} color={isArtMenuOpen ? activeColor : inactiveColor} />} 
             label="Art Collection"
@@ -89,72 +89,6 @@ function DockNav() {
             onClick={() => setIsArtMenuOpen(!isArtMenuOpen)} 
             isDark={isDark}
           />
-
-          <AnimatePresence>
-            {isArtMenuOpen && (
-              <motion.div
-                ref={popupRef}
-                className="glass-panel"
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                style={{
-                  position: 'absolute',
-                  bottom: 'calc(100% + 20px)',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  borderRadius: '25px',
-                  padding: '1rem',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.5rem',
-                  minWidth: '180px',
-                  width: 'max-content',
-                  zIndex: 5001
-                }}
-              >
-                <div style={{ padding: '0 0.5rem 0.5rem', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`, marginBottom: '0.5rem', fontSize: '0.8rem', letterSpacing: '2px', textTransform: 'uppercase', opacity: 0.6, fontWeight: 600, textAlign: 'center' }}>
-                  Paths
-                </div>
-                <MenuButton 
-                  icon={<FaBookOpen size={16} />} 
-                  label={language === 'EN' ? "Poetry" : "Poesía"}
-                  active={location.pathname === '/index'} 
-                  onClick={() => { navigate('/index'); setIsArtMenuOpen(false); }} 
-                  isDark={isDark}
-                />
-                <MenuButton 
-                  icon={<FaStickyNote size={16} />} 
-                  label="Journal"
-                  active={location.pathname === '/journal'} 
-                  onClick={() => { navigate('/journal'); setIsArtMenuOpen(false); }} 
-                  isDark={isDark}
-                />
-                <MenuButton 
-                  icon={<FaCamera size={16} />} 
-                  label={language === 'EN' ? "Photography" : "Fotografía"}
-                  active={location.pathname === '/photography'} 
-                  onClick={() => { navigate('/photography'); setIsArtMenuOpen(false); }} 
-                  isDark={isDark}
-                />
-                <MenuButton 
-                  icon={<FaFilm size={16} />} 
-                  label={language === 'EN' ? "Video Editing" : "Edición de Video"}
-                  active={location.pathname === '/video'} 
-                  onClick={() => { navigate('/video'); setIsArtMenuOpen(false); }} 
-                  isDark={isDark}
-                />
-                <MenuButton 
-                  icon={<FaGamepad size={16} />} 
-                  label="Game Dev"
-                  active={location.pathname === '/gamedev'} 
-                  onClick={() => { navigate('/gamedev'); setIsArtMenuOpen(false); }} 
-                  isDark={isDark}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
         <div style={{ width: '1px', height: '24px', background: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)', flexShrink: 0 }} />
         <DockButton 
@@ -173,6 +107,76 @@ function DockNav() {
           isDark={isDark}
         />
       </div>
+
+      <AnimatePresence>
+        {isArtMenuOpen && (
+          <motion.div
+            ref={popupRef}
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            style={{
+              position: 'absolute',
+              bottom: 'calc(100% + 20px)',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              background: isDark ? 'rgba(30, 30, 30, 0.6)' : 'rgba(255, 255, 255, 0.7)',
+              backdropFilter: 'blur(15px)',
+              WebkitBackdropFilter: 'blur(15px)',
+              border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+              boxShadow: '0 15px 40px rgba(0,0,0,0.3)',
+              borderRadius: '25px',
+              padding: '1rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.5rem',
+              minWidth: '200px',
+              width: 'max-content',
+              zIndex: 5001
+            }}
+          >
+            <div style={{ padding: '0 0.5rem 0.5rem', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`, marginBottom: '0.5rem', fontSize: '0.8rem', letterSpacing: '2px', textTransform: 'uppercase', opacity: 0.6, fontWeight: 600, textAlign: 'center' }}>
+              Paths
+            </div>
+            <MenuButton 
+              icon={<FaBookOpen size={16} />} 
+              label={language === 'EN' ? "Poetry" : "Poesía"}
+              active={location.pathname === '/index'} 
+              onClick={() => { navigate('/index'); setIsArtMenuOpen(false); }} 
+              isDark={isDark}
+            />
+            <MenuButton 
+              icon={<FaStickyNote size={16} />} 
+              label="Journal"
+              active={location.pathname === '/journal'} 
+              onClick={() => { navigate('/journal'); setIsArtMenuOpen(false); }} 
+              isDark={isDark}
+            />
+            <MenuButton 
+              icon={<FaCamera size={16} />} 
+              label={language === 'EN' ? "Photography" : "Fotografía"}
+              active={location.pathname === '/photography'} 
+              onClick={() => { navigate('/photography'); setIsArtMenuOpen(false); }} 
+              isDark={isDark}
+            />
+            <MenuButton 
+              icon={<FaFilm size={16} />} 
+              label={language === 'EN' ? "Video Editing" : "Edición de Video"}
+              active={location.pathname === '/video'} 
+              onClick={() => { navigate('/video'); setIsArtMenuOpen(false); }} 
+              isDark={isDark}
+            />
+            <MenuButton 
+              icon={<FaGamepad size={16} />} 
+              label="Game Dev"
+              active={location.pathname === '/gamedev'} 
+              onClick={() => { navigate('/gamedev'); setIsArtMenuOpen(false); }} 
+              isDark={isDark}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
