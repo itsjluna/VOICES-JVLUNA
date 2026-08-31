@@ -29,6 +29,30 @@ function AdminDashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedItems, setSelectedItems] = useState(new Set());
   const [activeTab, setActiveTab] = useState('main'); // 'main' or 'vents'
+  const [previewImages, setPreviewImages] = useState({});
+
+  const togglePreview = async (type, id, e) => {
+    e.stopPropagation();
+    const key = `${type}-${id}`;
+    if (previewImages[key]) {
+      setPreviewImages(prev => {
+        const next = { ...prev };
+        delete next[key];
+        return next;
+      });
+    } else {
+      try {
+        const res = await api.get(`/${type}s/${id}`);
+        if (res.data.image) {
+          setPreviewImages(prev => ({ ...prev, [key]: res.data.image }));
+        } else {
+          alert('No image found.');
+        }
+      } catch (err) {
+        console.error('Error fetching preview:', err);
+      }
+    }
+  };
 
   const toggleSelection = (e, id, type) => {
     e.stopPropagation();
@@ -511,6 +535,14 @@ function AdminDashboard() {
                         }} 
                       />
                     </label>
+                    {c.hasImage && (
+                      <button 
+                        onClick={(e) => togglePreview('chapter', c._id, e)}
+                        style={{ padding: '0.3rem 0.5rem', fontSize: '0.8rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer' }}
+                      >
+                        {previewImages[`chapter-${c._id}`] ? 'Hide Preview' : 'Preview'}
+                      </button>
+                    )}
                   </div>
 
                   <div style={{ display: 'flex', gap: '0.5rem' }} onClick={e => e.stopPropagation()}>
@@ -525,6 +557,19 @@ function AdminDashboard() {
                   </div>
                 </div>
               </div>
+              
+              <AnimatePresence>
+                {previewImages[`chapter-${c._id}`] && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    style={{ background: 'rgba(0,0,0,0.02)', padding: '1rem', display: 'flex', justifyContent: 'center', borderBottom: '1px solid rgba(0,0,0,0.05)' }}
+                  >
+                    <img src={previewImages[`chapter-${c._id}`]} style={{ maxHeight: '300px', objectFit: 'contain', borderRadius: '4px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} alt="Preview" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               {hasPoems && isExpanded && (
                 <motion.div 
@@ -534,45 +579,67 @@ function AdminDashboard() {
                 >
                   <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                     {chapterPoems.map(p => (
-                      <li key={p._id} className="admin-list-poem-item" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                          <input 
-                            type="checkbox" 
-                            checked={selectedItems.has(`poem:${p._id}`)} 
-                            onChange={(e) => toggleSelection(e, p._id, 'poem')} 
-                            style={{ transform: 'scale(1.1)' }}
-                          />
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: 0.9 }}>
-                            <FaFileAlt style={{ color: 'var(--text-color)', opacity: 0.7 }} /> 
-                            {p.title} 
-                            {p.hasImage && <FaImage title="Has Image" style={{ color: '#888', fontSize: '0.8rem' }} />}
-                          </span>
-                        </span>
-                        <div className="admin-list-poem-actions" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                          <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.1rem 0.4rem', fontSize: '0.7rem', borderRadius: '4px', border: '1px solid var(--border-color)', marginRight: '0.5rem' }}>
-                            <FaImage /> {p.hasImage ? 'Change' : 'Add Image'}
+                      <React.Fragment key={p._id}>
+                        <li className="admin-list-poem-item" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                             <input 
-                              type="file" 
-                              accept="image/*" 
-                              style={{ display: 'none' }} 
-                              onChange={async (e) => {
-                                const file = e.target.files[0];
-                                if (!file) return;
-                                const reader = new FileReader();
-                                reader.onloadend = async () => {
-                                  await api.put(`/poems/${p._id}`, { image: reader.result });
-                                  fetchData();
-                                };
-                                reader.readAsDataURL(file);
-                              }} 
+                              type="checkbox" 
+                              checked={selectedItems.has(`poem:${p._id}`)} 
+                              onChange={(e) => toggleSelection(e, p._id, 'poem')} 
+                              style={{ transform: 'scale(1.1)' }}
                             />
-                          </label>
-                          <button onClick={() => movePoem(p, 'up')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }}><FaArrowUp /></button>
-                          <button onClick={() => movePoem(p, 'down')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }}><FaArrowDown /></button>
-                          <button onClick={() => openPoemModalForEdit(p)} style={{ padding: '0.1rem 0.4rem', marginRight: '0.5rem', fontSize: '0.7rem' }}>Edit</button>
-                          <button onClick={() => deletePoem(p._id)} style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem', color: '#ff4d4d', borderColor: '#ff4d4d' }}>Delete</button>
-                        </div>
-                      </li>
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: 0.9 }}>
+                              <FaFileAlt style={{ color: 'var(--text-color)', opacity: 0.7 }} /> 
+                              {p.title} 
+                              {p.hasImage && <FaImage title="Has Image" style={{ color: '#888', fontSize: '0.8rem' }} />}
+                            </span>
+                          </span>
+                          <div className="admin-list-poem-actions" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                            <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.1rem 0.4rem', fontSize: '0.7rem', borderRadius: '4px', border: '1px solid var(--border-color)', marginRight: '0.5rem' }}>
+                              <FaImage /> {p.hasImage ? 'Change' : 'Add Image'}
+                              <input 
+                                type="file" 
+                                accept="image/*" 
+                                style={{ display: 'none' }} 
+                                onChange={async (e) => {
+                                  const file = e.target.files[0];
+                                  if (!file) return;
+                                  const reader = new FileReader();
+                                  reader.onloadend = async () => {
+                                    await api.put(`/poems/${p._id}`, { image: reader.result });
+                                    fetchData();
+                                  };
+                                  reader.readAsDataURL(file);
+                                }} 
+                              />
+                            </label>
+                            {p.hasImage && (
+                              <button 
+                                onClick={(e) => togglePreview('poem', p._id, e)}
+                                style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', marginRight: '0.5rem' }}
+                              >
+                                {previewImages[`poem-${p._id}`] ? 'Hide Preview' : 'Preview'}
+                              </button>
+                            )}
+                            <button onClick={() => movePoem(p, 'up')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }}><FaArrowUp /></button>
+                            <button onClick={() => movePoem(p, 'down')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }}><FaArrowDown /></button>
+                            <button onClick={() => openPoemModalForEdit(p)} style={{ padding: '0.1rem 0.4rem', marginRight: '0.5rem', fontSize: '0.7rem' }}>Edit</button>
+                            <button onClick={() => deletePoem(p._id)} style={{ padding: '0.1rem 0.4rem', fontSize: '0.7rem', color: '#ff4d4d', borderColor: '#ff4d4d' }}>Delete</button>
+                          </div>
+                        </li>
+                        <AnimatePresence>
+                          {previewImages[`poem-${p._id}`] && (
+                            <motion.li
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              style={{ background: 'rgba(0,0,0,0.02)', padding: '0.5rem', display: 'flex', justifyContent: 'center', borderBottom: '1px solid rgba(0,0,0,0.05)', listStyle: 'none' }}
+                            >
+                              <img src={previewImages[`poem-${p._id}`]} style={{ maxHeight: '200px', objectFit: 'contain', borderRadius: '4px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} alt="Preview" />
+                            </motion.li>
+                          )}
+                        </AnimatePresence>
+                      </React.Fragment>
                     ))}
                     {chapterPoems.length === 0 && (
                       <li style={{ fontStyle: 'italic', color: '#888', padding: '0.5rem 0', borderBottom: 'none' }}>No poems in this chapter.</li>
