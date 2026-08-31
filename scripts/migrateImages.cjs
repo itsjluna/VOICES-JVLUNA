@@ -1,10 +1,16 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs');
 
-const MONGODB_URI = "mongodb+srv://Vercel-Admin-atlas-cordovan-pendant:ghKqXj7ty5eN9pjr@atlas-cordovan-pendant.ysbztyz.mongodb.net/?retryWrites=true&w=majority";
-const SUPABASE_URL = "https://gsdwxrpvfnekfcbfeiox.supabase.co";
-const SUPABASE_SERVICE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdzZHd4cnB2Zm5la2ZjYmZlaW94Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NjEyMTY2NCwiZXhwIjoyMTAxNjk3NjY0fQ.mzcNxoNroZqZ8UGgEDsIgFqYWcZqITJHe1nPbAXahcw";
+const MONGODB_URI = process.env.MONGODB_URI;
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!MONGODB_URI || !SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+  console.error("Missing environment variables. Make sure MONGODB_URI, NEXT_PUBLIC_SUPABASE_URL, and SUPABASE_SERVICE_ROLE_KEY are set.");
+  process.exit(1);
+}
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 

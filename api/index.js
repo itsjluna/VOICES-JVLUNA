@@ -2,12 +2,42 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { createClient } from '@supabase/supabase-js';
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+async function uploadToSupabase(base64Str, filename) {
+  if (!base64Str.startsWith('data:image')) return base64Str;
+
+  const matches = base64Str.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+  if (!matches || matches.length !== 3) return base64Str;
+
+  const mimeType = matches[1];
+  const buffer = Buffer.from(matches[2], 'base64');
+  const ext = mimeType.split('/')[1];
+  const finalName = `${filename}_${Date.now()}.${ext}`;
+
+  const { data, error } = await supabase.storage
+    .from('anthology-images')
+    .upload(finalName, buffer, { contentType: mimeType, upsert: true });
+
+  if (error) throw error;
+
+  const { data: publicUrlData } = supabase.storage
+    .from('anthology-images')
+    .getPublicUrl(finalName);
+
+  return publicUrlData.publicUrl;
+}
 
 let isConnected = false;
 const connectDB = async () => {
@@ -116,6 +146,11 @@ app.get('/api/chapters/:id', async (req, res) => {
 
 app.post('/api/chapters', authMiddleware, async (req, res) => {
   try {
+    if (req.body.image && req.body.image.startsWith('data:image')) {
+      const chapterId = new mongoose.Types.ObjectId();
+      req.body._id = chapterId;
+      req.body.image = await uploadToSupabase(req.body.image, `chapter_${chapterId}`);
+    }
     const chapter = new Chapter(req.body);
     await chapter.save();
     res.json(chapter);
@@ -139,6 +174,9 @@ app.put('/api/chapters/reorder', authMiddleware, async (req, res) => {
 
 app.put('/api/chapters/:id', authMiddleware, async (req, res) => {
   try {
+    if (req.body.image && req.body.image.startsWith('data:image')) {
+      req.body.image = await uploadToSupabase(req.body.image, `chapter_${req.params.id}`);
+    }
     const chapter = await Chapter.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
     res.json(chapter);
   } catch (err) {
@@ -186,6 +224,11 @@ app.get('/api/poems/:id', async (req, res) => {
 
 app.post('/api/poems', authMiddleware, async (req, res) => {
   try {
+    if (req.body.image && req.body.image.startsWith('data:image')) {
+      const poemId = new mongoose.Types.ObjectId();
+      req.body._id = poemId;
+      req.body.image = await uploadToSupabase(req.body.image, `poem_${poemId}`);
+    }
     const poem = new Poem(req.body);
     await poem.save();
     res.json(poem);
@@ -209,6 +252,9 @@ app.put('/api/poems/reorder', authMiddleware, async (req, res) => {
 
 app.put('/api/poems/:id', authMiddleware, async (req, res) => {
   try {
+    if (req.body.image && req.body.image.startsWith('data:image')) {
+      req.body.image = await uploadToSupabase(req.body.image, `poem_${req.params.id}`);
+    }
     const poem = await Poem.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
     res.json(poem);
   } catch (err) {
