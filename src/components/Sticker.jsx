@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import '../App.css';
 
-export default function Sticker({ src, style }) {
+const Sticker = React.memo(({ src, style }) => {
   const [isShiny, setIsShiny] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
 
@@ -58,4 +58,6 @@ export default function Sticker({ src, style }) {
       )}
     </motion.div>
   );
-}
+});
+
+export default Sticker;

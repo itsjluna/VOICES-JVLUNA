@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-const AmbientAudio = ({ src, volume = 0.1 }) => {
+const AmbientAudio = React.memo(({ src, volume = 0.1 }) => {
   const audioRef = useRef(null);
 
   useEffect(() => {

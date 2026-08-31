@@ -225,7 +225,7 @@ export const IndexScatter = React.memo(() => {
   );
 });
 
-function PolaroidScatter({ top, left, rotate, index, image }) {
+const PolaroidScatter = React.memo(({ top, left, rotate, index, image }) => {
   const [revealed, setRevealed] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -285,4 +285,4 @@ function PolaroidScatter({ top, left, rotate, index, image }) {
       </motion.div>
     </motion.div>
   );
-}
+});

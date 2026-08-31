@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const TypewriterLoader = ({ text = "Opening journal..." }) => {
+const TypewriterLoader = React.memo(({ text = "Opening journal..." }) => {
   const [displayedText, setDisplayedText] = useState("");
 
   useEffect(() => {
@@ -49,6 +49,6 @@ const TypewriterLoader = ({ text = "Opening journal..." }) => {
       </motion.div>
     </div>
   );
-};
+});
 
 export default TypewriterLoader;
