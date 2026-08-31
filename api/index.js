@@ -49,6 +49,8 @@ const chapterSchema = new mongoose.Schema({
   theme: { type: String, default: 'winter' }
 });
 
+chapterSchema.index({ order: 1 });
+
 const poemSchema = new mongoose.Schema({
   title: String,
   titleEn: String,
@@ -60,6 +62,9 @@ const poemSchema = new mongoose.Schema({
   imageCredit: { type: String, default: '' },
   theme: { type: String, default: 'none' }
 });
+
+poemSchema.index({ chapterId: 1, order: 1 });
+poemSchema.index({ order: 1 });
 
 const Chapter = mongoose.model('Chapter', chapterSchema);
 const Poem = mongoose.model('Poem', poemSchema);
@@ -84,7 +89,7 @@ app.post('/api/login', (req, res) => {
 
 app.get('/api/chapters', async (req, res) => {
   try {
-    const chapters = await Chapter.find().sort({ order: 1 });
+    const chapters = await Chapter.find().sort({ order: 1 }).allowDiskUse(true);
     res.json(chapters);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -136,7 +141,7 @@ app.delete('/api/chapters/:id', authMiddleware, async (req, res) => {
 app.get('/api/poems', async (req, res) => {
   try {
     const filter = req.query.chapterId ? { chapterId: req.query.chapterId } : {};
-    const poems = await Poem.find(filter).sort({ order: 1 });
+    const poems = await Poem.find(filter).sort({ order: 1 }).allowDiskUse(true);
     res.json(poems);
   } catch (err) {
     res.status(500).json({ error: err.message });
