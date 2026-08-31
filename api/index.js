@@ -117,6 +117,13 @@ app.post('/api/login', (req, res) => {
   }
 });
 
+app.get('/api/supabase-creds', authMiddleware, (req, res) => {
+  res.json({
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    anonKey: process.env.SUPABASE_ANON_KEY
+  });
+});
+
 app.get('/api/chapters', async (req, res) => {
   try {
     if (req.query.lean === 'true') {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Editor from 'react-simple-wysiwyg';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaBookOpen, FaTicketAlt, FaFileAlt, FaArrowUp, FaArrowDown, FaImage, FaStickyNote, FaChevronDown, FaChevronRight, FaPlus, FaExpand, FaCompress } from 'react-icons/fa';
+import { createClient } from '@supabase/supabase-js';
 import api from '../api';
 
 function AdminDashboard() {
@@ -143,6 +144,33 @@ function AdminDashboard() {
     if (token) fetchData();
   }, [token]);
 
+  const uploadFileToSupabase = async (file, idPrefix) => {
+    try {
+      const credsRes = await api.get('/supabase-creds');
+      const { url, anonKey } = credsRes.data;
+      const supabase = createClient(url, anonKey);
+      
+      const ext = file.name.split('.').pop() || 'jpg';
+      const finalName = `${idPrefix}_${Date.now()}.${ext}`;
+      
+      const { data, error } = await supabase.storage
+        .from('anthology-images')
+        .upload(finalName, file, { upsert: true });
+        
+      if (error) throw error;
+      
+      const { data: publicUrlData } = supabase.storage
+        .from('anthology-images')
+        .getPublicUrl(finalName);
+        
+      return publicUrlData.publicUrl;
+    } catch (err) {
+      console.error('Failed to upload to Supabase directly:', err);
+      alert('Upload failed: ' + err.message);
+      return null;
+    }
+  };
+
   const fetchData = async () => {
     try {
       const [chapRes, poemRes] = await Promise.all([
@@ -173,22 +201,20 @@ function AdminDashboard() {
     setToken(null);
   };
 
-  const toBase64 = file => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
-
   const handleFileChange = async (e, setter) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        alert("File is too large (max 5MB)");
+      if (file.size > 15 * 1024 * 1024) {
+        alert("File is too large (max 15MB)");
         return;
       }
-      const base64 = await toBase64(file);
-      setter(prev => ({ ...prev, image: base64 }));
+      setter(prev => ({ ...prev, image: 'Uploading...' }));
+      const url = await uploadFileToSupabase(file, 'upload');
+      if (url) {
+        setter(prev => ({ ...prev, image: url }));
+      } else {
+        setter(prev => ({ ...prev, image: '' }));
+      }
     }
   };
 
@@ -526,12 +552,20 @@ function AdminDashboard() {
                         onChange={async (e) => {
                           const file = e.target.files[0];
                           if (!file) return;
-                          const reader = new FileReader();
-                          reader.onloadend = async () => {
-                            await api.put(`/chapters/${c._id}`, { image: reader.result });
+                          
+                          if (file.size > 15 * 1024 * 1024) {
+                            alert("File is too large (max 15MB)");
+                            return;
+                          }
+                          
+                          e.target.parentElement.style.opacity = 0.5; // optimistic UI
+                          const url = await uploadFileToSupabase(file, `chapter_${c._id}`);
+                          e.target.parentElement.style.opacity = 1;
+                          
+                          if (url) {
+                            await api.put(`/chapters/${c._id}`, { image: url });
                             fetchData();
-                          };
-                          reader.readAsDataURL(file);
+                          }
                         }} 
                       />
                     </label>
@@ -604,12 +638,20 @@ function AdminDashboard() {
                                 onChange={async (e) => {
                                   const file = e.target.files[0];
                                   if (!file) return;
-                                  const reader = new FileReader();
-                                  reader.onloadend = async () => {
-                                    await api.put(`/poems/${p._id}`, { image: reader.result });
+
+                                  if (file.size > 15 * 1024 * 1024) {
+                                    alert("File is too large (max 15MB)");
+                                    return;
+                                  }
+
+                                  e.target.parentElement.style.opacity = 0.5; // optimistic UI
+                                  const url = await uploadFileToSupabase(file, `poem_${p._id}`);
+                                  e.target.parentElement.style.opacity = 1;
+                                  
+                                  if (url) {
+                                    await api.put(`/poems/${p._id}`, { image: url });
                                     fetchData();
-                                  };
-                                  reader.readAsDataURL(file);
+                                  }
                                 }} 
                               />
                             </label>
