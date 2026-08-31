@@ -89,8 +89,26 @@ app.post('/api/login', (req, res) => {
 
 app.get('/api/chapters', async (req, res) => {
   try {
+    if (req.query.lean === 'true') {
+      const chapters = await Chapter.find().select('-content -contentEn').lean().sort({ order: 1 }).allowDiskUse(true);
+      const mapped = chapters.map(c => {
+        const hasImage = !!c.image;
+        delete c.image;
+        return { ...c, hasImage };
+      });
+      return res.json(mapped);
+    }
     const chapters = await Chapter.find().sort({ order: 1 }).allowDiskUse(true);
     res.json(chapters);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/chapters/:id', async (req, res) => {
+  try {
+    const chapter = await Chapter.findById(req.params.id);
+    res.json(chapter);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -141,6 +159,15 @@ app.delete('/api/chapters/:id', authMiddleware, async (req, res) => {
 app.get('/api/poems', async (req, res) => {
   try {
     const filter = req.query.chapterId ? { chapterId: req.query.chapterId } : {};
+    if (req.query.lean === 'true') {
+      const poems = await Poem.find(filter).select('-content -contentEn').lean().sort({ order: 1 }).allowDiskUse(true);
+      const mapped = poems.map(p => {
+        const hasImage = !!p.image;
+        delete p.image;
+        return { ...p, hasImage };
+      });
+      return res.json(mapped);
+    }
     const poems = await Poem.find(filter).sort({ order: 1 }).allowDiskUse(true);
     res.json(poems);
   } catch (err) {
@@ -193,6 +220,27 @@ app.delete('/api/poems/:id', authMiddleware, async (req, res) => {
   try {
     await Poem.findByIdAndDelete(req.params.id);
     res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/images/random', async (req, res) => {
+  try {
+    const count = parseInt(req.query.count) || 5;
+    const chapters = await Chapter.aggregate([
+      { $match: { image: { $exists: true, $ne: '' } } },
+      { $sample: { size: count } },
+      { $project: { image: 1 } }
+    ]);
+    const poems = await Poem.aggregate([
+      { $match: { image: { $exists: true, $ne: '' } } },
+      { $sample: { size: count } },
+      { $project: { image: 1 } }
+    ]);
+    const allImages = [...chapters.map(c => c.image), ...poems.map(p => p.image)];
+    const shuffled = allImages.sort(() => 0.5 - Math.random()).slice(0, count);
+    res.json(shuffled);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

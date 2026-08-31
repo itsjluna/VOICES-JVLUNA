@@ -77,7 +77,7 @@ function IndexView() {
     
     async function fetchData() {
       try {
-        const chapRes = await api.get('/chapters');
+        const chapRes = await api.get('/chapters?lean=true');
         setChapters(chapRes.data);
       } catch (err) {
         console.error('Error fetching data:', err);
@@ -464,7 +464,7 @@ function IndexView() {
                     to={linkPath} 
                     onMouseEnter={() => {
                       if (!isInt && !isVent) {
-                        api.get(`/poems?chapterId=${chapter._id}`);
+                        api.get(`/poems?chapterId=${chapter._id}&lean=true`);
                       }
                     }}
                     style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}

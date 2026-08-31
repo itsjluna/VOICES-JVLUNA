@@ -68,9 +68,8 @@ function IntermissionView() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await api.get('/chapters'); // Since intermissions are chapters
-        const found = res.data.find(c => c._id === id);
-        setIntermission(found);
+        const res = await api.get(`/chapters/${id}`);
+        setIntermission(res.data);
       } catch (err) {
         console.error(err);
       }

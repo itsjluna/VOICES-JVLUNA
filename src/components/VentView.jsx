@@ -34,9 +34,8 @@ function VentView() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await api.get('/chapters');
-        const found = res.data.find(c => c._id === id && c.isVent);
-        setVent(found);
+        const res = await api.get(`/chapters/${id}`);
+        setVent(res.data);
       } catch (err) {
         console.error(err);
       }

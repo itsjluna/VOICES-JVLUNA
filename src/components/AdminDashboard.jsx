@@ -122,8 +122,8 @@ function AdminDashboard() {
   const fetchData = async () => {
     try {
       const [chapRes, poemRes] = await Promise.all([
-        api.get('/chapters'),
-        api.get('/poems')
+        api.get('/chapters?lean=true'),
+        api.get('/poems?lean=true')
       ]);
       setChapters(chapRes.data);
       setPoems(poemRes.data);
@@ -178,8 +178,10 @@ function AdminDashboard() {
     fetchData();
   };
 
-  const openChapterModalForEdit = (c) => {
-    setChapterForm({ _id: c._id, title: c.title, titleEn: c.titleEn || '', image: c.image || '', theme: c.theme || 'winter', writersNote: c.writersNote || '', writersNoteEn: c.writersNoteEn || '' });
+  const openChapterModalForEdit = async (c) => {
+    const res = await api.get(`/chapters/${c._id}`);
+    const full = res.data;
+    setChapterForm({ _id: full._id, title: full.title, titleEn: full.titleEn || '', image: full.image || '', imageCredit: full.imageCredit || '', theme: full.theme || 'winter', writersNote: full.writersNote || '', writersNoteEn: full.writersNoteEn || '' });
     setIsChapterModalOpen(true);
   };
 
@@ -243,8 +245,9 @@ function AdminDashboard() {
     setIsPoemModalOpen(true);
   };
 
-  const openPoemModalForEdit = (poem) => {
-    setPoemForm(poem);
+  const openPoemModalForEdit = async (poem) => {
+    const res = await api.get(`/poems/${poem._id}`);
+    setPoemForm(res.data);
     setIsPoemModalOpen(true);
   };
 
@@ -263,8 +266,9 @@ function AdminDashboard() {
     setIsIntermissionModalOpen(true);
   };
 
-  const openIntermissionModalForEdit = (chap) => {
-    setIntermissionForm(chap);
+  const openIntermissionModalForEdit = async (chap) => {
+    const res = await api.get(`/chapters/${chap._id}`);
+    setIntermissionForm(res.data);
     setIsIntermissionModalOpen(true);
   };
 
@@ -283,8 +287,9 @@ function AdminDashboard() {
     setIsVentModalOpen(true);
   };
 
-  const openVentModalForEdit = (chap) => {
-    setVentForm(chap);
+  const openVentModalForEdit = async (chap) => {
+    const res = await api.get(`/chapters/${chap._id}`);
+    setVentForm(res.data);
     setIsVentModalOpen(true);
   };
 
@@ -459,7 +464,7 @@ function AdminDashboard() {
                       </span>
                     )}
                     {c.isIntermission ? <><FaTicketAlt /> Intermission: {c.title}</> : c.isVent ? <><FaStickyNote /> Vent: {c.title}</> : <><FaBookOpen /> Chapter: {c.title}</>}
-                    {c.image && <FaImage title="Has Image" style={{ marginLeft: '0.5rem', color: '#888', fontSize: '0.9rem' }} />}
+                    {c.hasImage && <FaImage title="Has Image" style={{ marginLeft: '0.5rem', color: '#888', fontSize: '0.9rem' }} />}
                   </strong>
                 </div>
 
@@ -476,7 +481,7 @@ function AdminDashboard() {
                       <select 
                         value={c.theme || 'winter'} 
                         onChange={async (e) => {
-                          await api.put(`/chapters/${c._id}`, { ...c, theme: e.target.value });
+                          await api.put(`/chapters/${c._id}`, { theme: e.target.value });
                           fetchData();
                         }}
                         style={{ padding: '0.3rem 0.5rem', fontSize: '0.8rem', borderRadius: '4px', background: 'transparent', color: 'var(--text-color)', border: '1px solid var(--border-color)' }}
@@ -489,7 +494,7 @@ function AdminDashboard() {
                     )}
                     
                     <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.3rem 0.5rem', fontSize: '0.8rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}>
-                      <FaImage /> {c.image ? 'Change Image' : 'Add Image'}
+                      <FaImage /> {c.hasImage ? 'Change Image' : 'Add Image'}
                       <input 
                         type="file" 
                         accept="image/*" 
@@ -499,7 +504,7 @@ function AdminDashboard() {
                           if (!file) return;
                           const reader = new FileReader();
                           reader.onloadend = async () => {
-                            await api.put(`/chapters/${c._id}`, { ...c, image: reader.result });
+                            await api.put(`/chapters/${c._id}`, { image: reader.result });
                             fetchData();
                           };
                           reader.readAsDataURL(file);
@@ -540,12 +545,12 @@ function AdminDashboard() {
                           <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: 0.9 }}>
                             <FaFileAlt style={{ color: 'var(--text-color)', opacity: 0.7 }} /> 
                             {p.title} 
-                            {p.image && <FaImage title="Has Image" style={{ color: '#888', fontSize: '0.8rem' }} />}
+                            {p.hasImage && <FaImage title="Has Image" style={{ color: '#888', fontSize: '0.8rem' }} />}
                           </span>
                         </span>
                         <div className="admin-list-poem-actions" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                           <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.1rem 0.4rem', fontSize: '0.7rem', borderRadius: '4px', border: '1px solid var(--border-color)', marginRight: '0.5rem' }}>
-                            <FaImage /> {p.image ? 'Change' : 'Add Image'}
+                            <FaImage /> {p.hasImage ? 'Change' : 'Add Image'}
                             <input 
                               type="file" 
                               accept="image/*" 
@@ -555,7 +560,7 @@ function AdminDashboard() {
                                 if (!file) return;
                                 const reader = new FileReader();
                                 reader.onloadend = async () => {
-                                  await api.put(`/poems/${p._id}`, { ...p, image: reader.result });
+                                  await api.put(`/poems/${p._id}`, { image: reader.result });
                                   fetchData();
                                 };
                                 reader.readAsDataURL(file);

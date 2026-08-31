@@ -9,18 +9,9 @@ export const IndexScatter = React.memo(() => {
   useEffect(() => {
     async function fetchImages() {
       try {
-        const [poemsRes, chaptersRes] = await Promise.all([
-          api.get('/poems'),
-          api.get('/chapters')
-        ]);
-        
-        const poemImages = poemsRes.data.filter(p => p.image).map(p => p.image);
-        const chapterImages = chaptersRes.data.filter(c => c.image).map(c => c.image);
-        
-        const allImages = [...poemImages, ...chapterImages];
-        const shuffled = allImages.sort(() => 0.5 - Math.random());
         const count = 5 + Math.floor(Math.random() * 2); // 5 or 6
-        setRandomImages(shuffled.slice(0, count));
+        const res = await api.get(`/images/random?count=${count}`);
+        setRandomImages(res.data);
       } catch (err) {
         console.error(err);
       }

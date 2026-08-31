@@ -49,11 +49,10 @@ function ChapterView() {
     async function fetchData() {
       try {
         const [chapRes, poemRes] = await Promise.all([
-          api.get('/chapters'),
-          api.get(`/poems?chapterId=${id}`)
+          api.get(`/chapters/${id}`),
+          api.get(`/poems?chapterId=${id}&lean=true`)
         ]);
-        const found = chapRes.data.find(c => c._id === id);
-        setChapter(found);
+        setChapter(chapRes.data);
         setPoems(poemRes.data);
       } catch (err) {
         console.error(err);
