@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
 import { IndexScatter } from './IndexScatter';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import api from '../api';
@@ -15,7 +16,16 @@ import BackButton from './BackButton';
 function PoemView() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [poem, setPoem] = useState(null);
+  
+  const { data: poem } = useQuery({
+    queryKey: ['poem', id],
+    queryFn: async () => {
+      const res = await api.get(`/poems/${id}`);
+      return res.data;
+    },
+    enabled: !!id,
+  });
+
   const { markAsRead } = useReadingProgress();
   const { language } = useLanguage();
   const [poemLanguage, setPoemLanguage] = useState(language);
@@ -34,17 +44,8 @@ function PoemView() {
   };
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await api.get(`/poems/${id}`);
-        setPoem(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-      if (id) markAsRead(id);
-    }
-    fetchData();
-  }, [id]);
+    if (id) markAsRead(id);
+  }, [id, markAsRead]);
 
   const titleText = poemLanguage === 'EN' ? poem?.titleEn : poem?.titleEs;
   const contentText = poemLanguage === 'EN' ? poem?.contentEn : poem?.contentEs;

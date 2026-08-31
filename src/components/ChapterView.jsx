@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaPenFancy, FaTimes } from 'react-icons/fa';
 import api from '../api';
+import { useQuery } from '@tanstack/react-query';
 import { Winter, Spring, Summer, Autumn } from './SeasonBackgrounds';
 import { SeasonDebris } from './SeasonDebris';
 import Polaroid from './Polaroid';
@@ -17,8 +18,19 @@ import { useLanguage } from '../contexts/LanguageContext';
 function ChapterView() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [chapter, setChapter] = useState(null);
-  const [poems, setPoems] = useState([]);
+
+  const { data: { chapter, poems } = {} } = useQuery({
+    queryKey: ['chapter', id],
+    queryFn: async () => {
+      const [chapRes, poemRes] = await Promise.all([
+        api.get(`/chapters/${id}`),
+        api.get(`/poems?chapterId=${id}&lean=true`)
+      ]);
+      return { chapter: chapRes.data, poems: poemRes.data };
+    },
+    enabled: !!id,
+  });
+
   const [quoteReal, setQuoteReal] = useState(null);
   const [quoteFictional, setQuoteFictional] = useState(null);
   const [postItColor1, setPostItColor1] = useState('#fdfd96');
@@ -45,19 +57,6 @@ function ChapterView() {
   };
 
   useEffect(() => {
-    
-    async function fetchData() {
-      try {
-        const [chapRes, poemRes] = await Promise.all([
-          api.get(`/chapters/${id}`),
-          api.get(`/poems?chapterId=${id}&lean=true`)
-        ]);
-        setChapter(chapRes.data);
-        setPoems(poemRes.data);
-      } catch (err) {
-        console.error(err);
-      }
-    }
     
     async function fetchQuotes() {
       try {
@@ -352,7 +351,6 @@ function ChapterView() {
       }
     }
 
-    fetchData();
     fetchQuotes();
   }, [id]);
 

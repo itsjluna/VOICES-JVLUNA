@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
 import api from '../api';
 import Polaroid from './Polaroid';
 import Sticker from './Sticker';
@@ -13,7 +14,16 @@ import BackButton from './BackButton';
 function VentView() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [vent, setVent] = useState(null);
+  
+  const { data: vent } = useQuery({
+    queryKey: ['vent', id],
+    queryFn: async () => {
+      const res = await api.get(`/chapters/${id}`);
+      return res.data;
+    },
+    enabled: !!id,
+  });
+
   const { markAsRead } = useReadingProgress();
   const { language } = useLanguage();
   const [ventLanguage, setVentLanguage] = useState(language);
@@ -32,17 +42,8 @@ function VentView() {
   };
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await api.get(`/chapters/${id}`);
-        setVent(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-      if (id) markAsRead(id);
-    }
-    fetchData();
-  }, [id]);
+    if (id) markAsRead(id);
+  }, [id, markAsRead]);
 
   const isNotebook = vent?.theme !== 'postits';
 

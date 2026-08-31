@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
 import { FaPlane, FaTrain, FaBus } from 'react-icons/fa';
 import api from '../api';
 import Polaroid from './Polaroid';
@@ -27,7 +28,16 @@ const souvenirs = [
 function IntermissionView() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [intermission, setIntermission] = useState(null);
+  
+  const { data: intermission } = useQuery({
+    queryKey: ['intermission', id],
+    queryFn: async () => {
+      const res = await api.get(`/chapters/${id}`);
+      return res.data;
+    },
+    enabled: !!id,
+  });
+
   const [passenger, setPassenger] = useState('WANDERING SOUL');
   const { markAsRead } = useReadingProgress();
   const { language } = useLanguage();
@@ -66,15 +76,7 @@ function IntermissionView() {
   }, [ticketType]);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await api.get(`/chapters/${id}`);
-        setIntermission(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-      if (id) markAsRead(id);
-    }
+    if (id) markAsRead(id);
     
     async function fetchIp() {
       try {
@@ -86,10 +88,9 @@ function IntermissionView() {
       }
     }
 
-    fetchData();
     fetchIp();
     setRandomSouvenir({ ...souvenirs[Math.floor(Math.random() * souvenirs.length)], rotate: Math.random() * 40 - 20 });
-  }, [id]);
+  }, [id, markAsRead]);
 
   return (
     <PageWrapper 

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaBookOpen, FaTicketAlt, FaSun, FaMoon, FaStickyNote, FaCloud, FaCloudRain, FaSnowflake, FaEye, FaEyeSlash, FaFilter } from 'react-icons/fa';
 import api from '../api';
+import { useQuery } from '@tanstack/react-query';
 import { IndexScatter } from './IndexScatter';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import AmbientAudio from './AmbientAudio';
@@ -23,8 +24,6 @@ const itemVariants = {
 };
 
 function JournalView() {
-  const [chapters, setChapters] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [localWeather, setLocalWeather] = useState('loading');
   const [showSky, setShowSky] = useState(true);
@@ -71,19 +70,15 @@ function JournalView() {
     skyGradientWeather = isDaytime ? 'linear-gradient(to bottom, rgba(180, 190, 200, 0.7) 0%, rgba(220, 230, 240, 0) 100%)' : 'linear-gradient(to bottom, rgba(40, 50, 60, 0.8) 0%, rgba(40, 50, 60, 0) 100%)';
   }
 
-  useEffect(() => {
-    
-    async function fetchData() {
-      try {
-        const chapRes = await api.get('/chapters?lean=true');
-        setChapters(chapRes.data);
-      } catch (err) {
-        console.error('Error fetching data:', err);
-      } finally {
-        setIsLoading(false);
-      }
+  const { data: chapters = [], isLoading } = useQuery({
+    queryKey: ['chapters', 'lean'],
+    queryFn: async () => {
+      const res = await api.get('/chapters?lean=true');
+      return res.data;
     }
-    fetchData();
+  });
+
+  useEffect(() => {
 
     async function fetchWeather() {
       try {
