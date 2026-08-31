@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-mo
 
 const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimation, style, className, draggable = true }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
   const hasOpened = React.useRef(false);
   const layoutId = `scattered-${src}-${title}`.replace(/[^a-zA-Z0-9]/g, '-');
   
@@ -24,14 +25,27 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
     setIsOpen(true);
   };
 
+  // Enhance the initial opacity animation to wait for image load
+  const animatedOpacity = initialAnimation.animate?.opacity;
+  const initialOpacity = initialAnimation.initial?.opacity;
+  const combinedAnimate = { 
+    ...initialAnimation.animate, 
+    opacity: imgLoaded ? (animatedOpacity !== undefined ? animatedOpacity : 1) : 0 
+  };
+  const combinedInitial = {
+    ...initialAnimation.initial,
+    opacity: 0
+  };
+
   return (
     <>
       <motion.div
-        initial={hasOpened.current ? false : initialAnimation.initial}
-        animate={initialAnimation.animate}
+        initial={hasOpened.current ? false : combinedInitial}
+        animate={combinedAnimate}
         transition={{ 
           ...initialAnimation.transition, 
-          delay: hasOpened.current ? 0 : (initialAnimation.transition?.delay || 0)
+          delay: hasOpened.current ? 0 : (initialAnimation.transition?.delay || 0),
+          opacity: { duration: 0.6 } // Add a smooth fade specifically for opacity
         }}
         style={{ ...style, cursor: draggable ? 'grab' : 'pointer', x: dragX, y: dragY }}
         drag={draggable}
@@ -46,7 +60,8 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
           layoutId={layoutId}
           src={src}
           alt={alt}
-          transition={{ layout: { type: "spring", stiffness: 1000, damping: 35 } }}
+          onLoad={() => setImgLoaded(true)}
+          transition={{ layout: { type: "spring", stiffness: 1200, damping: 30 } }}
           style={{ width: '100%', height: '100%', objectFit: 'contain', pointerEvents: 'none' }}
         />
       </motion.div>
@@ -123,7 +138,7 @@ const ScatteredModal = ({ src, alt, title, description, className, onClose, layo
     >
       <motion.div
         layoutId={layoutId}
-        transition={{ type: "spring", stiffness: 1000, damping: 35 }}
+        transition={{ type: "spring", stiffness: 1500, damping: 25 }}
         style={{
           rotateX: rotateX,
           rotateY: rotateY,

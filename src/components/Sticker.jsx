@@ -4,6 +4,7 @@ import '../App.css';
 
 export default function Sticker({ src, style }) {
   const [isShiny, setIsShiny] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   const handleClick = () => {
     setIsShiny(false);
@@ -23,10 +24,10 @@ export default function Sticker({ src, style }) {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       initial={{ opacity: 0, scale: 0 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ type: 'spring', stiffness: 200, damping: 20, delay: Math.random() * 0.5 }}
+      animate={{ opacity: imgLoaded ? 1 : 0, scale: imgLoaded ? 1 : 0 }}
+      transition={{ type: 'spring', stiffness: 200, damping: 20, delay: Math.random() * 0.5, opacity: { duration: 0.4 } }}
     >
-      <img src={src} style={{ width: '100%', height: '100%', display: 'block', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.4))' }} draggable={false} alt="sticker" />
+      <img src={src} onLoad={() => setImgLoaded(true)} style={{ width: '100%', height: '100%', display: 'block', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.4))' }} draggable={false} alt="sticker" />
       
       {/* Plastic Texture Overlay */}
       <div style={{

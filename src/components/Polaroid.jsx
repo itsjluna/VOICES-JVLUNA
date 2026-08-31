@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-mo
 
 const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperClass = "", polaroidClass = "", children }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
   const [rotation] = useState(() => (Math.random() * 8) - 4); // Random between -4 and 4 degrees
   
   const x = useMotionValue(0);
@@ -52,11 +53,23 @@ const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperCla
             rotateX: rotateX,
             rotateY: rotateY,
             transformStyle: 'preserve-3d',
-            transition: 'transform 0.1s ease-out'
+            transition: 'transform 0.1s ease-out',
+            opacity: imgLoaded ? 1 : 0
           }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: imgLoaded ? 1 : 0 }}
+          transition={{ duration: 0.6 }}
           whileHover={{ scale: 1.05, zIndex: 50 }}
         >
-          <img src={src} alt={alt} className="polaroid-img" style={{ transform: 'translateZ(10px)' }} loading="lazy" decoding="async" />
+          <img 
+            src={src} 
+            alt={alt} 
+            className="polaroid-img" 
+            style={{ transform: 'translateZ(10px)' }} 
+            loading="lazy" 
+            decoding="async" 
+            onLoad={() => setImgLoaded(true)}
+          />
           {children}
           <div className="staple" style={{ transform: 'translateZ(15px)' }}></div>
         </motion.div>
@@ -123,10 +136,10 @@ const PolaroidModal = ({ src, alt, credit, onClose }) => {
       }}
     >
       <motion.div 
-        initial={{ scale: 0.5, y: 300, opacity: 0 }}
+        initial={{ scale: 0.5, y: 150, opacity: 0 }}
         animate={{ scale: 1, y: 0, opacity: 1 }}
-        exit={{ scale: 0.7, y: 300, opacity: 0 }}
-        transition={{ type: "spring", stiffness: 250, damping: 20, mass: 1.2 }}
+        exit={{ scale: 0.8, y: 150, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 500, damping: 25, mass: 0.8 }}
         className="polaroid-container"
         style={{
           margin: 0,
