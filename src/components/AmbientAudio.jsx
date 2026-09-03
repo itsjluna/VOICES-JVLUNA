@@ -33,6 +33,6 @@ const AmbientAudio = React.memo(({ src, volume = 0.1 }) => {
   }, [src, volume]);
 
   return <audio ref={audioRef} src={src} loop style={{ display: 'none' }} />;
-};
+});
 
 export default AmbientAudio;
