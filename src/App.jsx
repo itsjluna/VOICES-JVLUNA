@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import DockNav from './components/DockNav';
-import CustomCursor from './components/CustomCursor';
 import TypewriterLoader from './components/TypewriterLoader';
 import FlashlightOverlay from './components/FlashlightOverlay';
 
@@ -63,7 +62,6 @@ function App() {
 
   return (
     <Router>
-      <CustomCursor />
       <FlashlightOverlay />
       <DockNav />
       <div className="container">

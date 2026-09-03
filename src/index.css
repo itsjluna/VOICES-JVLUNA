@@ -643,48 +643,6 @@ button:hover {
   background-repeat: repeat-x;
 }
 
-/* --- Global Custom Cursor --- */
-@media (hover: hover) and (pointer: fine) {
-  body {
-    cursor: none;
-  }
-
-  a, button, input, select {
-    cursor: none;
-  }
-
-  .custom-cursor-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    z-index: 9999;
-    will-change: transform;
-    /* Wrapper handles movement instantly without transitions, eliminating input lag */
-  }
-
-  .custom-cursor-inner {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--text-color);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), background 0.15s ease, mix-blend-mode 0.2s ease;
-    mix-blend-mode: difference;
-    will-change: transform;
-  }
-
-  .custom-cursor-wrapper.hover .custom-cursor-inner {
-    transform: translate(-50%, -50%) scale(1.5);
-    background: var(--text-color);
-  }
-}
-
-@media (hover: none), (pointer: coarse) {
-  .custom-cursor-wrapper {
-    display: none !important;
-  }
-}
 
 /* --- Sky Animations --- */
 @keyframes breathe-sky {
