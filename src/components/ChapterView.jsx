@@ -363,6 +363,104 @@ function ChapterView() {
     }
   };
 
+  const bookMediaContent = React.useMemo(() => {
+    if (!chapter?.image) return null;
+    return (
+      <motion.div 
+        initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1, delay: 0.5 }}
+        className="book-media"
+        style={{ position: 'relative' }}
+      >
+        {albumDecoration && (
+          <CDJewelCase
+            coverUrl={albumDecoration.artworkUrl100}
+            artist={albumDecoration.artistName}
+            albumName={albumDecoration.collectionName}
+            previewUrl={albumDecoration.previewUrl}
+            style={{ zIndex: 12, top: '-50px', left: '-70px', transform: 'rotate(-15deg)', width: '160px', height: '160px' }}
+            initialAnimation={{
+              initial: { opacity: 0, y: 50, rotate: -35 },
+              animate: { opacity: 1, y: 0, rotate: -15 },
+              transition: { delay: 1.0, duration: 0.6 }
+            }}
+          />
+        )}
+        
+        <Polaroid src={chapter.image} alt={chapter.title} credit={chapter.imageCredit} containerStyle={{ margin: 0, position: 'relative', zIndex: 5 }} />
+        
+        <ScatteredItem 
+          src="/earbuds.png" 
+          alt="Nothing Ear"
+          title="Nothing Ear"
+          description={language === 'EN' ? "Transparent wireless audio." : "Audio inalámbrico transparente."}
+          initialAnimation={{
+            initial: { opacity: 0, scale: 0.8, rotate: 25 },
+            animate: { opacity: 1, scale: 1, rotate: 25 },
+            transition: { delay: 1.6, duration: 0.5 }
+          }}
+          style={{ 
+            position: 'absolute', 
+            bottom: '-50px', 
+            right: '-80px', 
+            width: '140px', 
+            zIndex: 20
+          }}
+        />
+        
+        {randomDecorations.map((dec, idx) => (
+          <ScatteredItem 
+            key={idx}
+            src={dec.src}
+            alt={(language === 'EN' ? dec.titleEn : dec.titleEs) || "Decoration"}
+            title={language === 'EN' ? dec.titleEn : dec.titleEs}
+            description={language === 'EN' ? dec.descEn : dec.descEs}
+            initialAnimation={{
+              initial: { opacity: 0, scale: 0.8, rotate: dec.rotate },
+              animate: { opacity: 1, scale: 1, rotate: dec.rotate },
+              transition: { delay: dec.delay, duration: 0.5 }
+            }}
+            style={{ 
+              position: 'absolute', 
+              top: dec.top,
+              bottom: dec.bottom,
+              left: dec.left,
+              right: dec.right,
+              width: dec.width, 
+              zIndex: dec.zIndex
+            }}
+          />
+        ))}
+
+        {quoteReal && (
+          <PostIt 
+            quote={language === 'EN' && quoteReal.quoteEn ? quoteReal.quoteEn : (quoteReal.quoteEs || quoteReal.quoteEn)}
+            author={quoteReal.author}
+            color={postItColor1}
+            style={{ zIndex: 5 }}
+            initialAnimation={{
+              initial: { opacity: 0, scale: 0.8, rotate: 10, y: 0 },
+              animate: { opacity: 1, scale: 1, rotate: -5, y: isMobileView ? 0 : -20 },
+              transition: { delay: 1.2, duration: 0.5 }
+            }}
+          />
+        )}
+        {quoteFictional && (
+          <PostIt 
+            quote={language === 'EN' && quoteFictional.quoteEn ? quoteFictional.quoteEn : (quoteFictional.quoteEs || quoteFictional.quoteEn)}
+            author={quoteFictional.author}
+            color={postItColor2}
+            style={{ zIndex: 6 }}
+            initialAnimation={{
+              initial: { opacity: 0, scale: 0.8, rotate: -10, y: 0, x: 0 },
+              animate: { opacity: 1, scale: 1, rotate: 8, y: isMobileView ? 10 : 80, x: isMobileView ? 0 : -40 },
+              transition: { delay: 1.4, duration: 0.5 }
+            }}
+          />
+        )}
+      </motion.div>
+    );
+  }, [chapter, language, isMobileView, quoteReal, quoteFictional, albumDecoration, randomDecorations, postItColor1, postItColor2]);
+
   return (
     <PageWrapper 
       isLoading={!chapter}
@@ -389,103 +487,7 @@ function ChapterView() {
         >
           <h1 className="chapter-title">{language === 'EN' && chapter.titleEn ? chapter.titleEn : chapter.title}</h1>
           
-          {React.useMemo(() => {
-            if (!chapter.image) return null;
-            return (
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1, delay: 0.5 }}
-              className="book-media"
-              style={{ position: 'relative' }}
-            >
-              {albumDecoration && (
-                <CDJewelCase
-                  coverUrl={albumDecoration.artworkUrl100}
-                  artist={albumDecoration.artistName}
-                  albumName={albumDecoration.collectionName}
-                  previewUrl={albumDecoration.previewUrl}
-                  style={{ zIndex: 12, top: '-50px', left: '-70px', transform: 'rotate(-15deg)', width: '160px', height: '160px' }}
-                  initialAnimation={{
-                    initial: { opacity: 0, y: 50, rotate: -35 },
-                    animate: { opacity: 1, y: 0, rotate: -15 },
-                    transition: { delay: 1.0, duration: 0.6 }
-                  }}
-                />
-              )}
-              
-              <Polaroid src={chapter.image} alt={chapter.title} credit={chapter.imageCredit} containerStyle={{ margin: 0, position: 'relative', zIndex: 5 }} />
-              
-              <ScatteredItem 
-                src="/earbuds.png" 
-                alt="Nothing Ear"
-                title="Nothing Ear"
-                description={language === 'EN' ? "Transparent wireless audio." : "Audio inalámbrico transparente."}
-                initialAnimation={{
-                  initial: { opacity: 0, scale: 0.8, rotate: 25 },
-                  animate: { opacity: 1, scale: 1, rotate: 25 },
-                  transition: { delay: 1.6, duration: 0.5 }
-                }}
-                style={{ 
-                  position: 'absolute', 
-                  bottom: '-50px', 
-                  right: '-80px', 
-                  width: '140px', 
-                  zIndex: 20
-                }}
-              />
-              
-              {randomDecorations.map((dec, idx) => (
-                <ScatteredItem 
-                  key={idx}
-                  src={dec.src}
-                  alt={(language === 'EN' ? dec.titleEn : dec.titleEs) || "Decoration"}
-                  title={language === 'EN' ? dec.titleEn : dec.titleEs}
-                  description={language === 'EN' ? dec.descEn : dec.descEs}
-                  initialAnimation={{
-                    initial: { opacity: 0, scale: 0.8, rotate: dec.rotate },
-                    animate: { opacity: 1, scale: 1, rotate: dec.rotate },
-                    transition: { delay: dec.delay, duration: 0.5 }
-                  }}
-                  style={{ 
-                    position: 'absolute', 
-                    top: dec.top,
-                    bottom: dec.bottom,
-                    left: dec.left,
-                    right: dec.right,
-                    width: dec.width, 
-                    zIndex: dec.zIndex
-                  }}
-                />
-              ))}
-
-              {quoteReal && (
-                <PostIt 
-                  quote={language === 'EN' && quoteReal.quoteEn ? quoteReal.quoteEn : (quoteReal.quoteEs || quoteReal.quoteEn)}
-                  author={quoteReal.author}
-                  color={postItColor1}
-                  style={{ zIndex: 5 }}
-                  initialAnimation={{
-                    initial: { opacity: 0, scale: 0.8, rotate: 10, y: 0 },
-                    animate: { opacity: 1, scale: 1, rotate: -5, y: isMobileView ? 0 : -20 },
-                    transition: { delay: 1.2, duration: 0.5 }
-                  }}
-                />
-              )}
-              {quoteFictional && (
-                <PostIt 
-                  quote={language === 'EN' && quoteFictional.quoteEn ? quoteFictional.quoteEn : (quoteFictional.quoteEs || quoteFictional.quoteEn)}
-                  author={quoteFictional.author}
-                  color={postItColor2}
-                  style={{ zIndex: 6 }}
-                  initialAnimation={{
-                    initial: { opacity: 0, scale: 0.8, rotate: -10, y: 0, x: 0 },
-                    animate: { opacity: 1, scale: 1, rotate: 8, y: isMobileView ? 10 : 80, x: isMobileView ? 0 : -40 },
-                    transition: { delay: 1.4, duration: 0.5 }
-                  }}
-                />
-              )}
-            </motion.div>
-            );
-          }, [chapter, language, isMobileView, quoteReal, quoteFictional, albumDecoration, randomDecorations, postItColor1, postItColor2])}
+          {bookMediaContent}
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 1.5 }} className="glass-panel" style={{ marginTop: '3rem' }}>
             <h3 style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', letterSpacing: '0.05em', marginBottom: '1.5rem', opacity: 0.8 }}>
