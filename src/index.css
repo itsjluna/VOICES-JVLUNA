@@ -50,7 +50,8 @@ a {
   color: var(--text-color);
   text-decoration: none;
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease, opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
   position: relative;
 }
 
@@ -92,7 +93,8 @@ button {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
 }
 
 button:hover {
@@ -929,7 +931,8 @@ button:hover {
   box-shadow: 0 4px 15px rgba(0,0,0,0.03);
   border-radius: 12px;
   margin-bottom: 0.8rem;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  will-change: transform;
 }
 
 :root.dark .admin-list-poem-item {
@@ -949,7 +952,8 @@ button:hover {
   border: 1px solid rgba(0,0,0,0.05);
   box-shadow: 0 4px 15px rgba(0,0,0,0.03);
   border-radius: 12px;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  will-change: transform;
 }
 
 :root.dark .admin-list-item {

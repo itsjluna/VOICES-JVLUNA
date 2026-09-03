@@ -507,6 +507,7 @@ function ChapterView() {
                       fontSize: '1.2rem', 
                       textDecoration: 'none', 
                       transition: 'background 0.2s, transform 0.2s',
+                      willChange: 'transform',
                       borderRadius: '8px',
                       color: 'inherit'
                     }}
