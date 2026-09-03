@@ -148,15 +148,6 @@ function DockNav() {
               language={language}
             />
             <MenuButton 
-              icon={<FaStickyNote size={16} />} 
-              label="Journal"
-              active={location.pathname === '/journal'} 
-              onClick={() => { navigate('/journal'); setIsArtMenuOpen(false); }} 
-              isDark={isDark}
-              status="available"
-              language={language}
-            />
-            <MenuButton 
               icon={<FaCamera size={16} />} 
               label={language === 'EN' ? "Photography" : "Fotografía"}
               active={location.pathname === '/photography'} 
@@ -167,7 +158,7 @@ function DockNav() {
             />
             <MenuButton 
               icon={<FaFilm size={16} />} 
-              label={language === 'EN' ? "Video Editing" : "Edición de Video"}
+              label={language === 'EN' ? "Videos" : "Videos"}
               active={location.pathname === '/video'} 
               onClick={() => { navigate('/video'); setIsArtMenuOpen(false); }} 
               isDark={isDark}
@@ -176,7 +167,7 @@ function DockNav() {
             />
             <MenuButton 
               icon={<FaGamepad size={16} />} 
-              label="Game Dev"
+              label={language === 'EN' ? "Games" : "Juegos"}
               active={location.pathname === '/gamedev'} 
               onClick={() => { navigate('/gamedev'); setIsArtMenuOpen(false); }} 
               isDark={isDark}

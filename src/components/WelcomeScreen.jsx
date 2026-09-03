@@ -12,10 +12,9 @@ function WelcomeScreen() {
 
   const sections = [
     { id: 'poetry', path: '/index', labelEN: 'Poetry', labelES: 'Poesía', status: 'available' },
-    { id: 'journal', path: '/journal', labelEN: 'Journal', labelES: 'Diario', status: 'available' },
     { id: 'photography', path: '/photography', labelEN: 'Photography', labelES: 'Fotografía', status: 'soon' },
-    { id: 'video', path: '/video', labelEN: 'Video Editing', labelES: 'Edición de Video', status: 'soon' },
-    { id: 'gamedev', path: '/gamedev', labelEN: 'Game Dev', labelES: 'Desarrollo de Juegos', status: 'soon' },
+    { id: 'video', path: '/video', labelEN: 'Videos', labelES: 'Videos', status: 'soon' },
+    { id: 'gamedev', path: '/gamedev', labelEN: 'Games', labelES: 'Juegos', status: 'soon' },
   ];
 
   const renderStatusBadge = (status) => {
@@ -102,10 +101,10 @@ function WelcomeScreen() {
               {sections.map((sec, i) => (
                 <motion.button
                   key={sec.id}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   transition={{ delay: i * 0.1, duration: 0.3 }}
-                  whileHover={{ backgroundColor: 'rgba(128,128,128,0.1)', paddingLeft: '1.5rem', paddingRight: '1.5rem' }}
+                  whileHover={{ backgroundColor: 'rgba(128,128,128,0.1)' }}
                   onClick={() => navigate(sec.path)}
                   style={{
                     display: 'flex',
@@ -119,7 +118,7 @@ function WelcomeScreen() {
                     letterSpacing: '2px',
                     textTransform: 'uppercase',
                     cursor: 'pointer',
-                    transition: 'all 0.3s ease',
+                    transition: 'background-color 0.2s ease',
                     textAlign: 'left',
                     borderRadius: '8px'
                   }}

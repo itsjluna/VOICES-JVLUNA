@@ -27,6 +27,7 @@ function IndexView() {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTheme, setActiveTheme] = useState('all');
+  const [activeTab, setActiveTab] = useState('poetry');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [localWeather, setLocalWeather] = useState('loading');
   const [showSky, setShowSky] = useState(true);
@@ -292,9 +293,34 @@ function IndexView() {
         flexShrink: 0,
         boxSizing: 'border-box'
       }}>
-        <div style={{ marginBottom: '3rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
-          <h1 style={{ fontSize: 'clamp(1.5rem, 8vw, 2.5rem)', letterSpacing: '0.2em', textTransform: 'uppercase', margin: 0 }}>
-            {language === 'EN' ? 'Index' : 'Índice'}
+        <div style={{ marginBottom: '3rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem', display: 'flex', gap: '2rem' }}>
+          <h1 
+            onClick={() => setActiveTab('poetry')}
+            style={{ 
+              fontSize: 'clamp(1.2rem, 6vw, 2rem)', 
+              letterSpacing: '0.2em', 
+              textTransform: 'uppercase', 
+              margin: 0, 
+              cursor: 'pointer',
+              opacity: activeTab === 'poetry' ? 1 : 0.3,
+              transition: 'opacity 0.3s'
+            }}
+          >
+            {language === 'EN' ? 'Poetry' : 'Poesía'}
+          </h1>
+          <h1 
+            onClick={() => setActiveTab('vents')}
+            style={{ 
+              fontSize: 'clamp(1.2rem, 6vw, 2rem)', 
+              letterSpacing: '0.2em', 
+              textTransform: 'uppercase', 
+              margin: 0, 
+              cursor: 'pointer',
+              opacity: activeTab === 'vents' ? 1 : 0.3,
+              transition: 'opacity 0.3s'
+            }}
+          >
+            {language === 'EN' ? 'Journal' : 'Diario'}
           </h1>
         </div>
         
@@ -320,23 +346,25 @@ function IndexView() {
               </motion.button>
               
               <div style={{ position: 'relative' }}>
-                <motion.button 
-                  whileHover={{ scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: 'transparent',
-                    border: 'none',
-                    color: 'var(--text-color)',
-                    padding: '1rem clamp(1.5rem, 4vw, 3rem)',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <FaFilter size={16} />
-                </motion.button>
+                {activeTab === 'poetry' && (
+                  <motion.button 
+                    whileHover={{ scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background: 'transparent',
+                      border: 'none',
+                      color: 'var(--text-color)',
+                      padding: '1rem clamp(1.5rem, 4vw, 3rem)',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <FaFilter size={16} />
+                  </motion.button>
+                )}
 
                 <AnimatePresence>
                   {isDropdownOpen && (
@@ -402,11 +430,13 @@ function IndexView() {
               </div>
             </div>
 
-            {chapters.length === 0 && <p style={{ textAlign: 'center', fontStyle: 'italic', opacity: 0.5 }}>{language === 'EN' ? 'The archives are empty...' : 'Los archivos están vacíos...'}</p>}
+            {activeTab === 'poetry' && chapters.filter(c => !c.isVent).length === 0 && <p style={{ textAlign: 'center', fontStyle: 'italic', opacity: 0.5 }}>{language === 'EN' ? 'The archives are empty...' : 'Los archivos están vacíos...'}</p>}
+            {activeTab === 'vents' && chapters.filter(c => c.isVent).length === 0 && <p style={{ textAlign: 'center', fontStyle: 'italic', opacity: 0.5 }}>{language === 'EN' ? 'The journal is empty...' : 'El diario está vacío...'}</p>}
             
             {chapters
-              .filter(c => !c.isVent)
+              .filter(c => activeTab === 'poetry' ? !c.isVent : c.isVent)
               .filter(c => {
+                if (activeTab === 'vents') return true; // Ignore theme filter for vents
                 if (activeTheme === 'all') return true;
                 if (activeTheme === 'intermissions') return c.isIntermission;
                 return c.theme === activeTheme && !c.isIntermission;

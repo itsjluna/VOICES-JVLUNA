@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import DockNav from './components/DockNav';
 import CustomCursor from './components/CustomCursor';
@@ -12,7 +12,7 @@ const ChapterView = React.lazy(() => import('./components/ChapterView'));
 const PoemView = React.lazy(() => import('./components/PoemView'));
 const IntermissionView = React.lazy(() => import('./components/IntermissionView'));
 const VentView = React.lazy(() => import('./components/VentView'));
-const JournalView = React.lazy(() => import('./components/JournalView'));
+
 const AdminDashboard = React.lazy(() => import('./components/AdminDashboard'));
 const ErrorView = React.lazy(() => import('./components/ErrorView'));
 const PlaceholderView = React.lazy(() => import('./components/PlaceholderView'));
@@ -37,14 +37,14 @@ function AnimatedRoutes() {
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<WelcomeScreen />} />
           <Route path="/index" element={<IndexView />} />
-          <Route path="/journal" element={<JournalView />} />
+          <Route path="/journal" element={<Navigate to="/index" replace />} />
           <Route path="/chapter/:id" element={<ChapterView />} />
           <Route path="/intermission/:id" element={<IntermissionView />} />
           <Route path="/vent/:id" element={<VentView />} />
           <Route path="/poem/:id" element={<PoemView />} />
           <Route path="/photography" element={<PlaceholderView title="Photography" />} />
-          <Route path="/video" element={<PlaceholderView title="Video Editing" />} />
-          <Route path="/gamedev" element={<PlaceholderView title="Game Dev" />} />
+          <Route path="/video" element={<PlaceholderView title="Videos" />} />
+          <Route path="/gamedev" element={<PlaceholderView title="Games" />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/error" element={<ErrorView />} />
           <Route path="*" element={<ErrorView fallbackCode={404} />} />
