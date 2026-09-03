@@ -651,29 +651,35 @@ button:hover {
     cursor: none;
   }
 
-  .custom-cursor {
+  .custom-cursor-wrapper {
     position: fixed;
     top: 0;
     left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    will-change: transform;
+    /* Wrapper handles movement instantly without transitions, eliminating input lag */
+  }
+
+  .custom-cursor-inner {
     width: 20px;
     height: 20px;
     border: 2px solid var(--text-color);
     border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
     transform: translate(-50%, -50%);
-    transition: transform 0.1s ease, background 0.2s ease, mix-blend-mode 0.2s ease;
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), background 0.15s ease, mix-blend-mode 0.2s ease;
     mix-blend-mode: difference;
+    will-change: transform;
   }
 
-  .custom-cursor.hover {
+  .custom-cursor-wrapper.hover .custom-cursor-inner {
     transform: translate(-50%, -50%) scale(1.5);
     background: var(--text-color);
   }
 }
 
 @media (hover: none), (pointer: coarse) {
-  .custom-cursor {
+  .custom-cursor-wrapper {
     display: none !important;
   }
 }

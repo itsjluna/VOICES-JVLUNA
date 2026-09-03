@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 function CustomCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
+  const cursorRef = useRef(null);
 
   useEffect(() => {
+    const cursor = cursorRef.current;
+    if (!cursor) return;
+
+    let rafId;
+
     const updatePosition = (e) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      // Use transform directly for GPU-accelerated, zero-layout movement
+      cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
     };
 
     const handleMouseOver = (e) => {
@@ -19,14 +24,15 @@ function CustomCursor() {
         target.tagName.toLowerCase() === 'input' ||
         target.tagName.toLowerCase() === 'select'
       ) {
-        setIsHovering(true);
+        cursor.classList.add('hover');
       } else {
-        setIsHovering(false);
+        cursor.classList.remove('hover');
       }
     };
 
-    window.addEventListener('mousemove', updatePosition);
-    window.addEventListener('mouseover', handleMouseOver);
+    // Use passive listener without requestAnimationFrame (which actually adds 1 frame of input latency!)
+    window.addEventListener('mousemove', updatePosition, { passive: true });
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
 
     return () => {
       window.removeEventListener('mousemove', updatePosition);
@@ -36,9 +42,12 @@ function CustomCursor() {
 
   return (
     <div 
-      className={`custom-cursor ${isHovering ? 'hover' : ''}`}
-      style={{ left: `${position.x}px`, top: `${position.y}px` }}
-    />
+      ref={cursorRef}
+      className="custom-cursor-wrapper"
+      style={{ transform: 'translate3d(-100px, -100px, 0)' }} // Start offscreen
+    >
+      <div className="custom-cursor-inner" />
+    </div>
   );
 }
 
