@@ -6,7 +6,6 @@ import api from '../api';
 import { useQuery } from '@tanstack/react-query';
 import { IndexScatter } from './IndexScatter';
 import { useReadingProgress } from '../hooks/useReadingProgress';
-import AmbientAudio from './AmbientAudio';
 import { useLanguage } from '../contexts/LanguageContext';
 import PageWrapper from './PageWrapper';
 
@@ -243,7 +242,6 @@ function IndexView() {
         )}
       </AnimatePresence>
 
-      <AmbientAudio src="/vinyl-crackle.mp3" volume={0.05} />
       <IndexScatter />
       
       {/* Full-width Sky Background */}

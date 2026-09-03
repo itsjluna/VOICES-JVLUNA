@@ -12,7 +12,6 @@ import CDJewelCase from './CDJewelCase';
 import PageWrapper from './PageWrapper';
 import BackButton from './BackButton';
 import ScatteredItem from './ScatteredItem';
-import AmbientAudio from './AmbientAudio';
 import { useLanguage } from '../contexts/LanguageContext';
 
 function ChapterView() {
@@ -373,7 +372,6 @@ function ChapterView() {
     >
       {chapter && (
         <>
-      <AmbientAudio src={`/${chapter?.theme || 'spring'}-ambient.mp3`} volume={0.03} />
       {renderSeason()}
       <BackButton />
 
