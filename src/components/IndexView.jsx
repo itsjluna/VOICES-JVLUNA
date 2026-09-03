@@ -32,9 +32,16 @@ function IndexView() {
   const [localWeather, setLocalWeather] = useState('loading');
   const [showSky, setShowSky] = useState(true);
   const [showQuote, setShowQuote] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
   const { readChapters } = useReadingProgress();
   const { language } = useLanguage();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 600);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (showQuote) {
@@ -293,35 +300,53 @@ function IndexView() {
         flexShrink: 0,
         boxSizing: 'border-box'
       }}>
-        <div style={{ marginBottom: '3rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem', display: 'flex', gap: '2rem' }}>
-          <h1 
+        <div style={{ marginBottom: '3rem', display: 'flex', gap: isMobile ? '1rem' : '2rem', justifyContent: 'center' }}>
+          <div 
             onClick={() => setActiveTab('poetry')}
             style={{ 
-              fontSize: 'clamp(1.2rem, 6vw, 2rem)', 
-              letterSpacing: '0.2em', 
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.8rem',
+              fontSize: 'clamp(0.85rem, 3vw, 1rem)', 
+              letterSpacing: '0.15em', 
               textTransform: 'uppercase', 
-              margin: 0, 
               cursor: 'pointer',
-              opacity: activeTab === 'poetry' ? 1 : 0.3,
-              transition: 'opacity 0.3s'
+              opacity: activeTab === 'poetry' ? 1 : 0.4,
+              backgroundColor: activeTab === 'poetry' ? 'rgba(128,128,128,0.1)' : 'transparent',
+              border: activeTab === 'poetry' ? '1px solid var(--text-color)' : '1px solid var(--border-color)',
+              borderRadius: '30px',
+              padding: isMobile ? '0.8rem' : '0.8rem 2rem',
+              transition: 'all 0.3s',
+              flex: isMobile ? 1 : 'initial'
             }}
           >
-            {language === 'EN' ? 'Poetry' : 'Poesía'}
-          </h1>
-          <h1 
+            <FaBookOpen size={isMobile ? 22 : 16} />
+            {!isMobile && (language === 'EN' ? 'Index' : 'Índice')}
+          </div>
+          <div 
             onClick={() => setActiveTab('vents')}
             style={{ 
-              fontSize: 'clamp(1.2rem, 6vw, 2rem)', 
-              letterSpacing: '0.2em', 
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.8rem',
+              fontSize: 'clamp(0.85rem, 3vw, 1rem)', 
+              letterSpacing: '0.15em', 
               textTransform: 'uppercase', 
-              margin: 0, 
               cursor: 'pointer',
-              opacity: activeTab === 'vents' ? 1 : 0.3,
-              transition: 'opacity 0.3s'
+              opacity: activeTab === 'vents' ? 1 : 0.4,
+              backgroundColor: activeTab === 'vents' ? 'rgba(128,128,128,0.1)' : 'transparent',
+              border: activeTab === 'vents' ? '1px solid var(--text-color)' : '1px solid var(--border-color)',
+              borderRadius: '30px',
+              padding: isMobile ? '0.8rem' : '0.8rem 2rem',
+              transition: 'all 0.3s',
+              flex: isMobile ? 1 : 'initial'
             }}
           >
-            {language === 'EN' ? 'Journal' : 'Diario'}
-          </h1>
+            <FaStickyNote size={isMobile ? 22 : 16} />
+            {!isMobile && 'Vents'}
+          </div>
         </div>
         
         {!isLoading && (
@@ -431,7 +456,7 @@ function IndexView() {
             </div>
 
             {activeTab === 'poetry' && chapters.filter(c => !c.isVent).length === 0 && <p style={{ textAlign: 'center', fontStyle: 'italic', opacity: 0.5 }}>{language === 'EN' ? 'The archives are empty...' : 'Los archivos están vacíos...'}</p>}
-            {activeTab === 'vents' && chapters.filter(c => c.isVent).length === 0 && <p style={{ textAlign: 'center', fontStyle: 'italic', opacity: 0.5 }}>{language === 'EN' ? 'The journal is empty...' : 'El diario está vacío...'}</p>}
+            {activeTab === 'vents' && chapters.filter(c => c.isVent).length === 0 && <p style={{ textAlign: 'center', fontStyle: 'italic', opacity: 0.5 }}>{language === 'EN' ? 'There are no vents...' : 'No hay vents...'}</p>}
             
             {chapters
               .filter(c => activeTab === 'poetry' ? !c.isVent : c.isVent)
