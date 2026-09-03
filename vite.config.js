@@ -11,5 +11,20 @@ export default defineConfig({
         changeOrigin: true
       }
     }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('framer-motion')) return 'framer-motion';
+            if (id.includes('react-icons')) return 'icons';
+            if (id.includes('@tanstack/react-query')) return 'react-query';
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) return 'react-vendor';
+            return 'vendor'; // all other deps
+          }
+        }
+      }
+    }
   }
 })
