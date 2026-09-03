@@ -391,7 +391,9 @@ function ChapterView() {
         >
           <h1 className="chapter-title">{language === 'EN' && chapter.titleEn ? chapter.titleEn : chapter.title}</h1>
           
-          {chapter.image && (
+          {React.useMemo(() => {
+            if (!chapter.image) return null;
+            return (
             <motion.div 
               initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1, delay: 0.5 }}
               className="book-media"
@@ -484,7 +486,8 @@ function ChapterView() {
                 />
               )}
             </motion.div>
-          )}
+            );
+          }, [chapter, language, isMobileView, quoteReal, quoteFictional, albumDecoration, randomDecorations, postItColor1, postItColor2])}
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 1.5 }} className="glass-panel" style={{ marginTop: '3rem' }}>
             <h3 style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', letterSpacing: '0.05em', marginBottom: '1.5rem', opacity: 0.8 }}>

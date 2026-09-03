@@ -6,6 +6,16 @@ import { useLanguage } from '../contexts/LanguageContext';
 const PageWrapper = ({ isLoading = false, loadingTextEn = "Loading...", loadingTextEs = "Cargando...", style, className, children }) => {
   const { language } = useLanguage();
 
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
+  React.useEffect(() => {
+    if (!isLoading) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+  }, [isLoading]);
+
   return (
     <motion.div 
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
