@@ -120,8 +120,20 @@ app.post('/api/login', (req, res) => {
 app.get('/api/supabase-creds', authMiddleware, (req, res) => {
   res.json({
     url: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    anonKey: process.env.SUPABASE_ANON_KEY
+    anonKey: process.env.SUPABASE_ANON_KEY // Actually we don't need this anymore but keeping for compatibility
   });
+});
+
+app.post('/api/upload', authMiddleware, async (req, res) => {
+  try {
+    const { image, filename } = req.body;
+    if (!image) return res.status(400).json({ error: 'No image provided' });
+    const url = await uploadToSupabase(image, filename || 'upload');
+    res.json({ url });
+  } catch (error) {
+    console.error('Upload error:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.get('/api/chapters', async (req, res) => {

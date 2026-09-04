@@ -145,30 +145,25 @@ function AdminDashboard() {
   }, [token]);
 
   const uploadFileToSupabase = async (file, idPrefix) => {
-    try {
-      const credsRes = await api.get('/supabase-creds');
-      const { url, anonKey } = credsRes.data;
-      const supabase = createClient(url, anonKey);
-      
-      const ext = file.name.split('.').pop() || 'jpg';
-      const finalName = `${idPrefix}_${Date.now()}.${ext}`;
-      
-      const { data, error } = await supabase.storage
-        .from('anthology-images')
-        .upload(finalName, file, { upsert: true });
-        
-      if (error) throw error;
-      
-      const { data: publicUrlData } = supabase.storage
-        .from('anthology-images')
-        .getPublicUrl(finalName);
-        
-      return publicUrlData.publicUrl;
-    } catch (err) {
-      console.error('Failed to upload to Supabase directly:', err);
-      alert('Upload failed: ' + err.message);
-      return null;
-    }
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        try {
+          const base64Str = reader.result;
+          const res = await api.post('/upload', { image: base64Str, filename: idPrefix });
+          resolve(res.data.url);
+        } catch (err) {
+          console.error('Failed to upload to Supabase via backend:', err);
+          alert('Upload failed: ' + (err.response?.data?.error || err.message));
+          resolve(null);
+        }
+      };
+      reader.onerror = () => {
+        alert('Failed to read file');
+        resolve(null);
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const fetchData = async () => {

@@ -21,6 +21,13 @@ function AnimatedRoutes() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  React.useEffect(() => {
     const handleApiError = (e) => {
       if (location.pathname !== '/error') {
         navigate(`/error?code=${e.detail.code}`, { replace: true });
@@ -31,7 +38,7 @@ function AnimatedRoutes() {
   }, [navigate, location.pathname]);
   
   return (
-    <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo(0, 0)}>
+    <AnimatePresence mode="wait">
       <React.Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: 'var(--text-color)' }}>Loading...</div>}>
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<WelcomeScreen />} />
