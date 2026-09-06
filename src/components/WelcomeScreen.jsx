@@ -8,7 +8,7 @@ import PageWrapper from './PageWrapper';
 function WelcomeScreen() {
   const navigate = useNavigate();
   const { language } = useLanguage();
-  const [showSections, setShowSections] = useState(false);
+  const [step, setStep] = useState(0);
 
   const sections = [
     { id: 'poetry', path: '/index', labelEN: 'Index', labelES: 'Índice', status: 'available' },
@@ -66,7 +66,7 @@ function WelcomeScreen() {
         </p>
 
         <AnimatePresence mode="wait">
-          {!showSections ? (
+          {step === 0 && (
             <motion.button 
               key="enter-btn"
               initial={{ opacity: 0, y: 10 }}
@@ -75,7 +75,7 @@ function WelcomeScreen() {
               transition={{ duration: 0.3 }}
               whileHover={{ scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setShowSections(true)}
+              onClick={() => setStep(1)}
               style={{
                 background: 'transparent',
                 color: 'var(--text-color)',
@@ -90,7 +90,50 @@ function WelcomeScreen() {
             >
               {language === 'EN' ? 'Enter' : 'Entrar'}
             </motion.button>
-          ) : (
+          )}
+
+          {step === 1 && (
+            <motion.div
+              key="advisory"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', width: '100%', maxWidth: '400px', margin: '0 auto' }}
+            >
+              <div style={{ border: '1px solid var(--border-color)', padding: '1.5rem', borderRadius: '8px', backgroundColor: 'rgba(255, 0, 0, 0.05)' }}>
+                <h3 style={{ fontSize: '1.1rem', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '1rem', color: '#ff4d4d' }}>
+                  {language === 'EN' ? 'Content Advisory' : 'Aviso de Contenido'}
+                </h3>
+                <p style={{ fontSize: '0.85rem', lineHeight: '1.6', opacity: 0.8, marginBottom: '0' }}>
+                  {language === 'EN' 
+                    ? 'This archive contains explicit imagery, mature language, and sensitive themes. By proceeding, you confirm you are 18 years of age or older, or have parental consent.' 
+                    : 'Este archivo contiene imágenes explícitas, lenguaje maduro y temas sensibles. Al continuar, confirmas que tienes 18 años o más, o cuentas con consentimiento parental.'}
+                </p>
+              </div>
+              <motion.button 
+                whileHover={{ scale: 1.02, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setStep(2)}
+                style={{
+                  background: 'transparent',
+                  color: 'var(--text-color)',
+                  border: '1px solid var(--text-color)',
+                  padding: '1rem',
+                  fontSize: '0.85rem',
+                  letterSpacing: '2px',
+                  textTransform: 'uppercase',
+                  cursor: 'pointer',
+                  borderRadius: '8px',
+                  transition: 'background 0.3s ease, color 0.3s ease'
+                }}
+              >
+                {language === 'EN' ? 'I Understand' : 'Comprendo'}
+              </motion.button>
+            </motion.div>
+          )}
+
+          {step === 2 && (
             <motion.div
               key="sections-list"
               initial={{ opacity: 0, y: 10 }}
