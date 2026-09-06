@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -62,13 +62,15 @@ export default function GlobalAdvisory({ children }) {
               }}
             >
               <h2 style={{ fontSize: '1.4rem', letterSpacing: '3px', textTransform: 'uppercase', marginBottom: '1.5rem', color: '#ff4d4d' }}>
-                {language === 'EN' ? 'Content Advisory' : 'Aviso de Contenido'}
+                CONTENT ADVISORY / AVISO DE CONTENIDO
               </h2>
               
+              <p style={{ fontSize: '0.95rem', lineHeight: '1.8', opacity: 0.8, marginBottom: '1.5rem', color: 'var(--text-color)' }}>
+                This archive contains explicit imagery, mature language, and sensitive themes. By proceeding, you confirm you are 18 years of age or older, or have parental consent.
+              </p>
+              
               <p style={{ fontSize: '0.95rem', lineHeight: '1.8', opacity: 0.8, marginBottom: '2.5rem', color: 'var(--text-color)' }}>
-                {language === 'EN' 
-                  ? 'This archive contains explicit imagery, mature language, and sensitive themes. By proceeding, you confirm you are 18 years of age or older, or have parental consent.' 
-                  : 'Este archivo contiene imágenes explícitas, lenguaje maduro y temas sensibles. Al continuar, confirmas que tienes 18 años o más, o cuentas con consentimiento parental.'}
+                Este archivo contiene imágenes explícitas, lenguaje maduro y temas sensibles. Al continuar, confirmas que tienes 18 años o más, o cuentas con consentimiento parental.
               </p>
 
               <motion.button 
@@ -88,7 +90,7 @@ export default function GlobalAdvisory({ children }) {
                   transition: 'background 0.3s ease, color 0.3s ease'
                 }}
               >
-                {language === 'EN' ? 'I Understand' : 'Comprendo'}
+                I UNDERSTAND / COMPRENDO
               </motion.button>
             </motion.div>
           </motion.div>
