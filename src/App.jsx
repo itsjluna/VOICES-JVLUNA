@@ -60,6 +60,8 @@ function AnimatedRoutes() {
   );
 }
 
+import GlobalAdvisory from './components/GlobalAdvisory';
+
 function App() {
   React.useEffect(() => {
     if ('scrollRestoration' in window.history) {
@@ -69,11 +71,13 @@ function App() {
 
   return (
     <Router>
-      <FlashlightOverlay />
-      <DockNav />
-      <div className="container">
-        <AnimatedRoutes />
-      </div>
+      <GlobalAdvisory>
+        <FlashlightOverlay />
+        <DockNav />
+        <div className="container">
+          <AnimatedRoutes />
+        </div>
+      </GlobalAdvisory>
     </Router>
   );
 }
