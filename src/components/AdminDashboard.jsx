@@ -144,9 +144,29 @@ function AdminDashboard() {
     if (token) fetchData();
   }, [token]);
 
-  const uploadFileToSupabase = async (file, idPrefix) => {
+  const uploadFileToSupabase = async (rawFile, idPrefix) => {
     try {
-      const ext = file.name.split('.').pop() || 'jpg';
+      let file = rawFile;
+      let ext = file.name.split('.').pop().toLowerCase() || 'jpg';
+      
+      if (ext === 'heic' || ext === 'heif') {
+        try {
+          const heic2any = (await import('heic2any')).default;
+          const convertedBlob = await heic2any({
+            blob: file,
+            toType: 'image/jpeg',
+            quality: 0.8
+          });
+          const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+          file = new File([blob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
+          ext = 'jpg';
+        } catch (convertErr) {
+          console.error("HEIC conversion failed:", convertErr);
+          alert("Could not process HEIC image. Please try converting to JPEG manually.");
+          return null;
+        }
+      }
+      
       const tokenRes = await api.post('/upload-token', { filename: idPrefix, ext });
       const { token, path } = tokenRes.data;
       
