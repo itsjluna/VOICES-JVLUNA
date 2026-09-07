@@ -136,6 +136,24 @@ app.post('/api/upload', authMiddleware, async (req, res) => {
   }
 });
 
+app.post('/api/upload-token', authMiddleware, async (req, res) => {
+  try {
+    const { filename, ext } = req.body;
+    const finalName = `${filename || 'upload'}_${Date.now()}.${ext || 'jpg'}`;
+    
+    const { data, error } = await supabase.storage
+      .from('anthology-images')
+      .createSignedUploadUrl(finalName);
+      
+    if (error) throw error;
+    
+    res.json({ token: data.token, path: data.path });
+  } catch (error) {
+    console.error('Signed URL error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.get('/api/chapters', async (req, res) => {
   try {
     if (req.query.lean === 'true') {
