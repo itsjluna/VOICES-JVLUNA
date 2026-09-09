@@ -98,14 +98,32 @@ const CassetteModal = ({ layoutIdId, track, onClose }) => {
           filter: 'drop-shadow(0 25px 50px rgba(0,0,0,0.7))'
         }}
       >
+        {/* 3D Extrusion Layers for depth */}
+        {[...Array(6)].map((_, i) => (
+          <img 
+            key={i}
+            src="/media/cassette.png" 
+            alt="" 
+            style={{ 
+              position: 'absolute', 
+              top: 0, 
+              left: 0, 
+              width: '100%', 
+              transform: `translateZ(-${(i + 1) * 2}px)`, 
+              filter: 'brightness(0.2) contrast(1.2)' 
+            }} 
+            draggable="false"
+          />
+        ))}
+        
         <img 
           src="/media/cassette.png" 
           alt="Cassette Tape" 
-          style={{ width: '100%', display: 'block', transform: 'translateZ(10px)' }} 
+          style={{ width: '100%', display: 'block', position: 'relative', zIndex: 1, transform: 'translateZ(0px)' }} 
         />
         <div style={{
           position: 'absolute',
-          top: '25.5%',
+          top: '18%',
           left: '17%',
           width: '66%',
           height: '24%',
@@ -118,7 +136,8 @@ const CassetteModal = ({ layoutIdId, track, onClose }) => {
           textAlign: 'center',
           padding: '0.5rem',
           boxSizing: 'border-box',
-          transform: 'translateZ(15px)'
+          transform: 'translateZ(15px)',
+          zIndex: 2
         }}>
           <strong style={{ fontSize: '1.2rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>{track.title}</strong>
           <span style={{ fontSize: '0.9rem', opacity: 0.8, marginTop: '2px' }}>{track.artist}</span>
