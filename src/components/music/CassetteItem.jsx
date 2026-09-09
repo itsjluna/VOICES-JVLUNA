@@ -34,14 +34,14 @@ const CassetteItem = ({ track }) => {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          fontFamily: 'monospace',
-          color: '#222',
+          fontFamily: '"Permanent Marker", cursive',
+          color: '#111',
           textAlign: 'center',
           padding: '0.2rem',
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
+          whiteSpace: 'nowrap'
         }}>
-          <strong style={{ fontSize: '1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>{track.title}</strong>
-          <span style={{ fontSize: '0.8rem', opacity: 0.8, marginTop: '2px' }}>{track.artist}</span>
+          <span style={{ display: 'block', width: '100%', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: '1.1rem' }}>{track.title} - {track.artist}</span>
         </div>
       </motion.div>
 

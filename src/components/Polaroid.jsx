@@ -70,6 +70,22 @@ const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperCla
             decoding="async" 
             onLoad={() => setImgLoaded(true)}
           />
+          {credit && (
+            <div style={{
+              position: 'absolute',
+              bottom: '5%',
+              right: '5%',
+              fontFamily: '"Permanent Marker", cursive',
+              fontSize: '1rem',
+              color: '#ff1493',
+              textShadow: '1px 1px 0px rgba(255,255,255,0.5)',
+              transform: 'rotate(-3deg) translateZ(15px)',
+              opacity: 0.9,
+              zIndex: 10
+            }}>
+              {credit}
+            </div>
+          )}
           {children}
           <div className="staple" style={{ transform: 'translateZ(15px)' }}></div>
         </motion.div>
@@ -163,9 +179,9 @@ const PolaroidModal = ({ src, alt, credit, onClose }) => {
             bottom: '5%',
             right: '5%',
             fontFamily: '"Permanent Marker", cursive',
-            fontSize: '1.2rem',
-            color: '#f0f0f0',
-            textShadow: '1px 1px 0px rgba(0,0,0,0.5), 0px 0px 4px rgba(255,255,255,0.7)',
+            fontSize: '1.4rem',
+            color: '#ff1493',
+            textShadow: '1px 1px 0px rgba(255,255,255,0.7), 0px 0px 4px rgba(255,255,255,0.7)',
             transform: 'rotate(-3deg) translateZ(25px)',
             opacity: 0.95,
             zIndex: 10
