@@ -13,6 +13,8 @@ const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperCla
   const rotateX = useTransform(y, [-100, 100], [15, -15]);
   const rotateY = useTransform(x, [-100, 100], [-15, 15]);
   
+  const layoutIdId = `polaroid-${src}`;
+  
   const handleMouseMove = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;
@@ -47,6 +49,7 @@ const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperCla
         style={{ cursor: 'pointer', perspective: '1000px', ...containerStyle }}
       >
         <motion.div 
+          layoutId={layoutIdId}
           className={`polaroid-container ${polaroidClass}`}
           style={{ 
             rotate: rotation,
@@ -78,7 +81,6 @@ const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperCla
               fontFamily: '"Permanent Marker", cursive',
               fontSize: '1rem',
               color: '#ff1493',
-              textShadow: '1px 1px 0px rgba(255,255,255,0.5)',
               transform: 'rotate(-3deg) translateZ(15px)',
               opacity: 0.9,
               zIndex: 10
@@ -94,7 +96,7 @@ const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperCla
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
           {isOpen && (
-            <PolaroidModal src={src} alt={alt} credit={credit} onClose={() => setIsOpen(false)} />
+            <PolaroidModal src={src} alt={alt} credit={credit} layoutIdId={layoutIdId} onClose={() => setIsOpen(false)} />
           )}
         </AnimatePresence>,
         document.body
@@ -103,7 +105,7 @@ const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperCla
   );
 });
 
-const PolaroidModal = ({ src, alt, credit, onClose }) => {
+const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
@@ -129,7 +131,7 @@ const PolaroidModal = ({ src, alt, credit, onClose }) => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      exit={{ opacity: 0, transition: { duration: 0.3 } }}
       onClick={onClose}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -152,9 +154,7 @@ const PolaroidModal = ({ src, alt, credit, onClose }) => {
       }}
     >
       <motion.div 
-        initial={{ scale: 0.5, y: 150, opacity: 0 }}
-        animate={{ scale: 1, y: 0, opacity: 1 }}
-        exit={{ scale: 0.8, y: 150, opacity: 0 }}
+        layoutId={layoutIdId}
         transition={{ type: "spring", stiffness: 500, damping: 25, mass: 0.8 }}
         className="polaroid-container"
         style={{
@@ -181,7 +181,6 @@ const PolaroidModal = ({ src, alt, credit, onClose }) => {
             fontFamily: '"Permanent Marker", cursive',
             fontSize: '1.4rem',
             color: '#ff1493',
-            textShadow: '1px 1px 0px rgba(255,255,255,0.7), 0px 0px 4px rgba(255,255,255,0.7)',
             transform: 'rotate(-3deg) translateZ(25px)',
             opacity: 0.95,
             zIndex: 10
