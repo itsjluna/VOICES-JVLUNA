@@ -112,6 +112,58 @@ export const MusicGraphics = React.memo(({ color }) => {
     );
   };
 
+  const FloatingEmoticon = () => {
+    const EMOTICON_MAP = {
+      '#b566ff': '(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧',
+      '#10ff70': '(✿◠‿◠)',
+      '#ff4040': '(♡μ_μ)',
+      '#ffe600': '(☆ω☆)',
+      '#1ab3ff': '(⌐■_■)',
+      '#ff8800': 'ʕ•ᴥ•ʔ'
+    };
+    const activeEmoticon = color ? EMOTICON_MAP[color] || '♪♫*•♪' : '♪♫*•♪';
+
+    return (
+      <div style={{
+        position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', overflow: 'hidden'
+      }}>
+        <div style={{
+          animation: 'bounceEmoX 20s linear infinite alternate',
+          position: 'absolute', top: 0, left: 0,
+        }}>
+          <div style={{
+            animation: 'bounceEmoY 15s linear infinite alternate',
+            position: 'absolute', top: 0, left: 0,
+          }}>
+            <div style={{
+              color: color || 'var(--text-color)',
+              fontFamily: 'monospace',
+              fontSize: '2rem',
+              opacity: 0.6,
+              textShadow: `0 0 15px ${color || 'var(--text-color)'}`,
+              transition: 'color 0.5s ease, text-shadow 0.5s ease',
+              whiteSpace: 'nowrap'
+            }}>
+              {activeEmoticon}
+            </div>
+          </div>
+        </div>
+        <style>
+          {`
+            @keyframes bounceEmoX {
+              0% { transform: translateX(5vw); }
+              100% { transform: translateX(75vw); }
+            }
+            @keyframes bounceEmoY {
+              0% { transform: translateY(70vh); }
+              100% { transform: translateY(15vh); }
+            }
+          `}
+        </style>
+      </div>
+    );
+  };
+
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', pointerEvents: 'none', zIndex: -1 }}>
       {/* Main Background Image */}
@@ -148,6 +200,7 @@ export const MusicGraphics = React.memo(({ color }) => {
       {/* Foreground Animated Elements */}
       <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0.8 }}>
         <BouncingLogo />
+        <FloatingEmoticon />
         <Equalizer />
         <div style={{ position: 'absolute', top: '2rem', right: '2rem', fontFamily: 'monospace', fontSize: '0.75rem', color: color || 'var(--text-color)', opacity: 0.7, textAlign: 'right', transition: 'color 0.5s ease' }}>
           SYS_M: AUDIO_LIB<br />

@@ -58,16 +58,6 @@ const CassetteModal = ({ layoutIdId, track, animColor, onClose }) => {
     e.stopPropagation();
   };
 
-  const EMOJI_MAP = {
-    '#b566ff': '👾',
-    '#10ff70': '👽',
-    '#ff4040': '👹',
-    '#ffe600': '⚡',
-    '#1ab3ff': '🌊',
-    '#ff8800': '🔥'
-  };
-  const activeEmoji = animColor ? EMOJI_MAP[animColor] || '🎵' : '🎵';
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -185,28 +175,11 @@ const CassetteModal = ({ layoutIdId, track, animColor, onClose }) => {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
             <div style={{ display: 'flex', gap: '3px', height: '16px', alignItems: 'flex-end' }}>
-              {[...Array(4)].map((_, i) => (
+              {[...Array(8)].map((_, i) => (
                 <motion.div
-                  key={`L-${i}`}
-                  animate={isPlaying ? { height: ['3px', '16px', '6px', '12px', '3px'] } : { height: '3px' }}
-                  transition={isPlaying ? { repeat: Infinity, duration: 0.5 + i * 0.1, ease: 'linear' } : {}}
-                  style={{ width: '3px', background: animColor || '#fff', borderRadius: '2px' }}
-                />
-              ))}
-            </div>
-            <motion.div
-              animate={isPlaying ? { scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] } : { scale: 1, rotate: 0 }}
-              transition={isPlaying ? { repeat: Infinity, duration: 0.6 } : {}}
-              style={{ fontSize: '1.5rem', display: 'flex', alignItems: 'center' }}
-            >
-              {activeEmoji}
-            </motion.div>
-            <div style={{ display: 'flex', gap: '3px', height: '16px', alignItems: 'flex-end' }}>
-              {[...Array(4)].map((_, i) => (
-                <motion.div
-                  key={`R-${i}`}
-                  animate={isPlaying ? { height: ['3px', '12px', '6px', '16px', '3px'] } : { height: '3px' }}
-                  transition={isPlaying ? { repeat: Infinity, duration: 0.5 + (3-i) * 0.1, ease: 'linear' } : {}}
+                  key={`wave-${i}`}
+                  animate={isPlaying ? { height: ['3px', `${10 + Math.random()*10}px`, '6px', `${12 + Math.random()*8}px`, '3px'] } : { height: '3px' }}
+                  transition={isPlaying ? { repeat: Infinity, duration: 0.5 + (i%3) * 0.1, ease: 'linear' } : {}}
                   style={{ width: '3px', background: animColor || '#fff', borderRadius: '2px' }}
                 />
               ))}
