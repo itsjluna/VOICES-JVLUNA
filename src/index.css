@@ -1,4 +1,4 @@
-
+﻿
 
 :root {
   --bg-color: #f9f9f7; /* Very slight off-white for book paper feel */
@@ -919,11 +919,11 @@ button:hover {
   border: 1px solid rgba(255,255,255,0.05);
 }
 
- . m u s i c - b g - i m g   { 
-     o p a c i t y :   0 . 1   ! i m p o r t a n t ; 
- } 
- : r o o t . d a r k   . m u s i c - b g - i m g   { 
-     o p a c i t y :   0 . 2   ! i m p o r t a n t ; 
- } 
-  
- 
+.music-bg-img {
+  opacity: 0.1 !important;
+}
+:root.dark .music-bg-img {
+  opacity: 0.2 !important;
+}
+
+
