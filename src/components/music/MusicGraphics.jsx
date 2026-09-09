@@ -206,7 +206,7 @@ export const MusicGraphics = React.memo(({ color }) => {
       {/* Foreground Animated Elements */}
       <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0.8 }}>
         <BouncingLogo />
-        <FloatingEmoticon />
+        <RisingEmoticons />
         <Equalizer />
         <div style={{ position: 'absolute', top: '2rem', right: '2rem', fontFamily: 'monospace', fontSize: '0.75rem', color: color || 'var(--text-color)', opacity: 0.7, textAlign: 'right', transition: 'color 0.5s ease' }}>
           SYS_M: AUDIO_LIB<br />
