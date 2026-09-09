@@ -27,24 +27,26 @@ export const MusicGraphics = React.memo(({ color }) => {
           </linearGradient>
         </defs>
         {bars.map(bar => (
-          <rect key={bar.id} x={bar.x} y="400" width="30" fill="url(#eq-grad)" rx="15">
+          <line 
+            key={bar.id} 
+            x1={bar.x} 
+            y1="400" 
+            x2={bar.x} 
+            y2="400" 
+            stroke="url(#eq-grad)" 
+            strokeWidth="30" 
+            strokeDasharray="20 10" 
+            strokeLinecap="butt"
+          >
             <animate 
-              attributeName="y" 
+              attributeName="y2" 
               values={`400; ${400 - bar.h1}; ${400 - bar.h2}; ${400 - bar.h3}; 400`} 
               dur={`${bar.dur}s`} 
               repeatCount="indefinite" 
               calcMode="spline"
               keySplines="0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1"
             />
-            <animate 
-              attributeName="height" 
-              values={`0; ${bar.h1}; ${bar.h2}; ${bar.h3}; 0`} 
-              dur={`${bar.dur}s`} 
-              repeatCount="indefinite" 
-              calcMode="spline"
-              keySplines="0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1"
-            />
-          </rect>
+          </line>
         ))}
       </svg>
     );
@@ -114,6 +116,7 @@ export const MusicGraphics = React.memo(({ color }) => {
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'hidden', pointerEvents: 'none', zIndex: -1 }}>
       {/* Main Background Image */}
       <div 
+        className="music-bg-img"
         style={{ 
           position: 'absolute', 
           top: 0, 
@@ -123,7 +126,6 @@ export const MusicGraphics = React.memo(({ color }) => {
           backgroundImage: 'url(/media/backgroundmusicthing.png)', 
           backgroundSize: 'cover', 
           backgroundPosition: 'center', 
-          opacity: 0.2,
           transition: 'all 0.5s ease'
         }} 
       />

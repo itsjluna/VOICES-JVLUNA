@@ -72,7 +72,7 @@ function MusicView() {
           alignItems: 'center'
         }}>
           {tracks.map(track => (
-            <CassetteItem key={track._id} track={track} />
+            <CassetteItem key={track._id} track={track} animColor={animColor} />
           ))}
           {!isLoading && tracks.length === 0 && (
             <div style={{ gridColumn: '1 / -1', opacity: 0.5 }}>

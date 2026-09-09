@@ -58,6 +58,16 @@ const CassetteModal = ({ layoutIdId, track, onClose }) => {
     e.stopPropagation();
   };
 
+  const EMOJI_MAP = {
+    '#b566ff': '👾',
+    '#10ff70': '👽',
+    '#ff4040': '👹',
+    '#ffe600': '⚡',
+    '#1ab3ff': '🌊',
+    '#ff8800': '🔥'
+  };
+  const activeEmoji = animColor ? EMOJI_MAP[animColor] || '🎵' : '🎵';
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -151,54 +161,90 @@ const CassetteModal = ({ layoutIdId, track, onClose }) => {
         onClick={handleModalClick}
         style={{ 
           marginTop: '2rem',
-          background: 'rgba(255, 255, 255, 0.1)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          borderRadius: '20px',
-          padding: '1.5rem',
+          background: 'rgba(255, 255, 255, 0.12)',
+          backdropFilter: 'blur(30px)',
+          WebkitBackdropFilter: 'blur(30px)',
+          border: '1px solid rgba(255, 255, 255, 0.25)',
+          borderRadius: '24px',
+          padding: '1.5rem 2rem',
           width: '90%',
-          maxWidth: '400px',
+          maxWidth: '420px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '1.5rem',
+          gap: '1rem',
           zIndex: 100000,
           color: '#fff',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
+          boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
         }}
       >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+          <div style={{ flex: 1, overflow: 'hidden' }}>
+            <h3 style={{ margin: 0, fontSize: '1.2rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{track.title}</h3>
+            <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.7 }}>{track.artist}</p>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+            <div style={{ display: 'flex', gap: '3px', height: '16px', alignItems: 'flex-end' }}>
+              {[...Array(4)].map((_, i) => (
+                <motion.div
+                  key={`L-${i}`}
+                  animate={isPlaying ? { height: ['3px', '16px', '6px', '12px', '3px'] } : { height: '3px' }}
+                  transition={isPlaying ? { repeat: Infinity, duration: 0.5 + i * 0.1, ease: 'linear' } : {}}
+                  style={{ width: '3px', background: animColor || '#fff', borderRadius: '2px' }}
+                />
+              ))}
+            </div>
+            <motion.div
+              animate={isPlaying ? { scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] } : { scale: 1, rotate: 0 }}
+              transition={isPlaying ? { repeat: Infinity, duration: 0.6 } : {}}
+              style={{ fontSize: '1.5rem', display: 'flex', alignItems: 'center' }}
+            >
+              {activeEmoji}
+            </motion.div>
+            <div style={{ display: 'flex', gap: '3px', height: '16px', alignItems: 'flex-end' }}>
+              {[...Array(4)].map((_, i) => (
+                <motion.div
+                  key={`R-${i}`}
+                  animate={isPlaying ? { height: ['3px', '12px', '6px', '16px', '3px'] } : { height: '3px' }}
+                  transition={isPlaying ? { repeat: Infinity, duration: 0.5 + (3-i) * 0.1, ease: 'linear' } : {}}
+                  style={{ width: '3px', background: animColor || '#fff', borderRadius: '2px' }}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
         <div 
           onClick={handleSeek}
-          style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.2)', borderRadius: '4px', cursor: 'pointer', position: 'relative', overflow: 'hidden' }}
+          style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.2)', borderRadius: '3px', cursor: 'pointer', position: 'relative', overflow: 'hidden', margin: '0.5rem 0' }}
         >
-          <div style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: `${progress}%`, background: '#fff', borderRadius: '4px', transition: 'width 0.1s linear' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: `${progress}%`, background: animColor || '#fff', borderRadius: '3px', transition: 'width 0.1s linear' }} />
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-          <button style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', opacity: 0.7 }}><FaStepBackward size={20} /></button>
+          <button style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', opacity: 0.7, padding: '10px' }}><FaStepBackward size={20} /></button>
           
           <button 
             onClick={() => setIsPlaying(!isPlaying)}
             style={{ 
-              background: 'rgba(255,255,255,0.2)', 
-              border: '1px solid rgba(255,255,255,0.3)', 
+              background: animColor ? `${animColor}40` : 'rgba(255,255,255,0.2)', 
+              border: `1px solid ${animColor || 'rgba(255,255,255,0.3)'}`, 
               color: '#fff', 
-              width: '60px', 
-              height: '60px', 
-              borderRadius: '30px', 
+              width: '64px', 
+              height: '64px', 
+              borderRadius: '32px', 
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'center',
               cursor: 'pointer',
               transition: 'all 0.2s',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+              boxShadow: `0 4px 15px ${animColor ? `${animColor}40` : 'rgba(0,0,0,0.2)'}`
             }}
           >
             {isPlaying ? <FaPause size={22} /> : <FaPlay size={22} style={{ marginLeft: '4px' }} />}
           </button>
           
-          <button style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', opacity: 0.7 }}><FaStepForward size={20} /></button>
+          <button style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', opacity: 0.7, padding: '10px' }}><FaStepForward size={20} /></button>
         </div>
       </motion.div>
       

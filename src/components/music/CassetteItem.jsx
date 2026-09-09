@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import CassetteModal from './CassetteModal';
 
-const CassetteItem = ({ track }) => {
+const CassetteItem = ({ track, animColor }) => {
   const [isOpen, setIsOpen] = useState(false);
   const layoutIdId = `cassette-${track._id}`;
   
@@ -51,6 +51,7 @@ const CassetteItem = ({ track }) => {
             <CassetteModal 
               layoutIdId={layoutIdId}
               track={track}
+              animColor={animColor}
               onClose={() => setIsOpen(false)}
             />
           )}
