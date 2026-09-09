@@ -123,7 +123,7 @@ export const MusicGraphics = React.memo(({ color }) => {
           backgroundImage: 'url(/media/backgroundmusicthing.png)', 
           backgroundSize: 'cover', 
           backgroundPosition: 'center', 
-          opacity: 0.4,
+          opacity: 0.2,
           transition: 'all 0.5s ease'
         }} 
       />

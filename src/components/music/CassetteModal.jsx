@@ -123,7 +123,7 @@ const CassetteModal = ({ layoutIdId, track, onClose }) => {
         />
         <div style={{
           position: 'absolute',
-          top: '18%',
+          top: '16.5%',
           left: '17%',
           width: '66%',
           height: '24%',
