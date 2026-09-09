@@ -96,8 +96,17 @@ const poemSchema = new mongoose.Schema({
 poemSchema.index({ chapterId: 1, order: 1 });
 poemSchema.index({ order: 1 });
 
+const trackSchema = new mongoose.Schema({
+  title: String,
+  artist: String,
+  audioUrl: String,
+  order: { type: Number, default: 0 }
+});
+trackSchema.index({ order: 1 });
+
 const Chapter = mongoose.model('Chapter', chapterSchema);
 const Poem = mongoose.model('Poem', poemSchema);
+const Track = mongoose.model('Track', trackSchema);
 
 const authMiddleware = (req, res, next) => {
   const token = req.headers.authorization;
@@ -302,6 +311,57 @@ app.put('/api/poems/:id', authMiddleware, async (req, res) => {
 app.delete('/api/poems/:id', authMiddleware, async (req, res) => {
   try {
     await Poem.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// --- Tracks ---
+app.get('/api/tracks', async (req, res) => {
+  try {
+    const tracks = await Track.find().sort({ order: 1 });
+    res.json(tracks);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/tracks', authMiddleware, async (req, res) => {
+  try {
+    const track = new Track(req.body);
+    await track.save();
+    res.json(track);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/api/tracks/reorder', authMiddleware, async (req, res) => {
+  try {
+    const { orderedIds } = req.body;
+    const promises = orderedIds.map((id, index) => 
+      Track.findByIdAndUpdate(id, { order: index })
+    );
+    await Promise.all(promises);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/api/tracks/:id', authMiddleware, async (req, res) => {
+  try {
+    const track = await Track.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
+    res.json(track);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/tracks/:id', authMiddleware, async (req, res) => {
+  try {
+    await Track.findByIdAndDelete(req.params.id);
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaSun, FaMoon, FaHome, FaBookOpen, FaLanguage, FaStickyNote, FaCamera, FaFilm, FaGamepad, FaPalette } from 'react-icons/fa';
+import { FaSun, FaMoon, FaHome, FaBookOpen, FaLanguage, FaStickyNote, FaCamera, FaFilm, FaGamepad, FaPalette, FaMusic, FaImage } from 'react-icons/fa';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -148,10 +148,10 @@ function DockNav() {
               language={language}
             />
             <MenuButton 
-              icon={<FaCamera size={16} />} 
-              label={language === 'EN' ? "Photography" : "Fotografía"}
-              active={location.pathname === '/photography'} 
-              onClick={() => { navigate('/photography'); setIsArtMenuOpen(false); }} 
+              icon={<FaImage size={16} />} 
+              label={language === 'EN' ? "Visuals" : "Visuales"}
+              active={location.pathname === '/visuals'} 
+              onClick={() => { navigate('/visuals'); setIsArtMenuOpen(false); }} 
               isDark={isDark}
               status="soon"
               language={language}
@@ -172,6 +172,15 @@ function DockNav() {
               onClick={() => { navigate('/gamedev'); setIsArtMenuOpen(false); }} 
               isDark={isDark}
               status="soon"
+              language={language}
+            />
+            <MenuButton 
+              icon={<FaMusic size={16} />} 
+              label={language === 'EN' ? "Music" : "Música"}
+              active={location.pathname === '/music'} 
+              onClick={() => { navigate('/music'); setIsArtMenuOpen(false); }} 
+              isDark={isDark}
+              status="available"
               language={language}
             />
           </motion.div>

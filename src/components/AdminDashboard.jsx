@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Editor from 'react-simple-wysiwyg';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaBookOpen, FaTicketAlt, FaFileAlt, FaArrowUp, FaArrowDown, FaImage, FaStickyNote, FaChevronDown, FaChevronRight, FaPlus, FaExpand, FaCompress } from 'react-icons/fa';
+import { FaBookOpen, FaTicketAlt, FaFileAlt, FaArrowUp, FaArrowDown, FaImage, FaStickyNote, FaChevronDown, FaChevronRight, FaPlus, FaExpand, FaCompress, FaMusic } from 'react-icons/fa';
 import { createClient } from '@supabase/supabase-js';
 import api from '../api';
 
@@ -11,6 +11,7 @@ function AdminDashboard() {
   
   const [chapters, setChapters] = useState([]);
   const [poems, setPoems] = useState([]);
+  const [tracks, setTracks] = useState([]);
   
   const [newChapterTitle, setNewChapterTitle] = useState('');
   
@@ -22,6 +23,9 @@ function AdminDashboard() {
 
   const [ventForm, setVentForm] = useState({ _id: null, title: '', titleEn: '', content: '', contentEn: '', image: '', imageCredit: '', isVent: true });
   const [isVentModalOpen, setIsVentModalOpen] = useState(false);
+
+  const [trackForm, setTrackForm] = useState({ _id: null, title: '', artist: '', audioUrl: '' });
+  const [isTrackModalOpen, setIsTrackModalOpen] = useState(false);
 
   const [chapterForm, setChapterForm] = useState({ _id: null, title: '', titleEn: '', image: '', imageCredit: '', theme: 'winter', writersNote: '', writersNoteEn: '' });
   const [isChapterModalOpen, setIsChapterModalOpen] = useState(false);
@@ -194,12 +198,14 @@ function AdminDashboard() {
 
   const fetchData = async () => {
     try {
-      const [chapRes, poemRes] = await Promise.all([
+      const [chapRes, poemRes, trackRes] = await Promise.all([
         api.get('/chapters?lean=true'),
-        api.get('/poems?lean=true')
+        api.get('/poems?lean=true'),
+        api.get('/tracks')
       ]);
       setChapters(chapRes.data);
       setPoems(poemRes.data);
+      setTracks(trackRes.data);
     } catch (err) {
       console.error(err);
       if (err.response?.status === 401) handleLogout();
@@ -237,6 +243,63 @@ function AdminDashboard() {
         setter(prev => ({ ...prev, image: '' }));
       }
     }
+  };
+
+  const handleAudioChange = async (e, setter) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 50 * 1024 * 1024) {
+        alert("File is too large (max 50MB)");
+        return;
+      }
+      setter(prev => ({ ...prev, audioUrl: 'Uploading...' }));
+      const url = await uploadFileToSupabase(file, 'audio_upload');
+      if (url) {
+        setter(prev => ({ ...prev, audioUrl: url }));
+      } else {
+        setter(prev => ({ ...prev, audioUrl: '' }));
+      }
+    }
+  };
+
+  // --- Track Actions ---
+  const saveTrack = async (e) => {
+    e.preventDefault();
+    if (trackForm._id) await api.put(`/tracks/${trackForm._id}`, trackForm);
+    else await api.post('/tracks', trackForm);
+    setIsTrackModalOpen(false);
+    fetchData();
+  };
+
+  const deleteTrack = async (id) => {
+    if (confirm('Delete this track?')) {
+      await api.delete(`/tracks/${id}`);
+      fetchData();
+    }
+  };
+
+  const moveTrack = async (trackId, direction) => {
+    const index = tracks.findIndex(t => t._id === trackId);
+    if (index === -1) return;
+    const newTracks = [...tracks];
+    if (direction === 'up' && index > 0) {
+      [newTracks[index - 1], newTracks[index]] = [newTracks[index], newTracks[index - 1]];
+    } else if (direction === 'down' && index < newTracks.length - 1) {
+      [newTracks[index + 1], newTracks[index]] = [newTracks[index], newTracks[index + 1]];
+    } else return;
+    
+    setTracks(newTracks);
+    await api.put('/tracks/reorder', { orderedIds: newTracks.map(t => t._id) });
+  };
+
+  const openTrackModalForNew = () => {
+    setTrackForm({ _id: null, title: '', artist: '', audioUrl: '' });
+    setIsTrackModalOpen(true);
+  };
+
+  const openTrackModalForEdit = (track) => {
+    setTrackForm(track);
+    setIsTrackModalOpen(true);
   };
 
   // --- Chapter Actions ---
@@ -428,6 +491,13 @@ function AdminDashboard() {
           >
             <FaStickyNote size={16} /> {!isScrolled && <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Add Vent</span>}
           </button>
+          <button 
+            onClick={openTrackModalForNew} 
+            style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none', cursor: 'pointer' }}
+            title="Add Track"
+          >
+            <FaPlus size={16} /> {!isScrolled && <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Add Track</span>}
+          </button>
           {selectedItems.size > 0 && (
             <button 
               onClick={handleBulkDelete}
@@ -464,6 +534,12 @@ function AdminDashboard() {
           >
             Vents
           </button>
+          <button 
+            onClick={() => setActiveTab('tracks')}
+            style={{ padding: '0.6rem 1.2rem', borderRadius: '20px', border: 'none', background: activeTab === 'tracks' ? 'var(--text-color)' : 'transparent', color: activeTab === 'tracks' ? 'var(--bg-color)' : 'var(--text-color)', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 600, transition: 'all 0.2s' }}
+          >
+            Music Tracks
+          </button>
         </div>
 
         <input 
@@ -488,9 +564,62 @@ function AdminDashboard() {
       </div>
 
       <ul className="admin-list" style={{ padding: 0 }}>
-        {chapters.filter(c => {
-          if (activeTab === 'vents' && !c.isVent) return false;
-          if (activeTab === 'main' && c.isVent) return false;
+        {activeTab === 'tracks' ? (
+          tracks.map((t, index) => (
+            <li key={t._id} style={{ display: 'block', padding: 0, marginBottom: '1rem', border: 'none' }}>
+              <div className="admin-list-item" style={{ 
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
+                padding: '1rem 1.5rem', 
+                userSelect: 'none',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.06)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.03)'; }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{ display: 'flex', gap: '0.2rem' }}>
+                    <button onClick={() => moveTrack(t._id, 'up')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }} title="Move Up"><FaArrowUp /></button>
+                    <button onClick={() => moveTrack(t._id, 'down')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }} title="Move Down"><FaArrowDown /></button>
+                  </div>
+                  
+                  <strong style={{ fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <FaMusic /> {t.title} <span style={{ fontWeight: 'normal', opacity: 0.8, fontSize: '0.9rem' }}>by {t.artist}</span>
+                  </strong>
+                </div>
+
+                <div className="admin-list-item-actions" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                  <div className="desktop-inline-actions" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginRight: '1rem' }}>
+                    <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.3rem 0.5rem', fontSize: '0.8rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}>
+                      <FaMusic /> {t.audioUrl ? 'Change Audio' : 'Upload Audio'}
+                      <input 
+                        type="file" 
+                        accept="audio/*" 
+                        style={{ display: 'none' }} 
+                        onChange={async (e) => {
+                          e.target.parentElement.style.opacity = 0.5;
+                          await handleAudioChange(e, (updater) => {
+                            const result = typeof updater === 'function' ? updater(t) : updater;
+                            if (result.audioUrl && result.audioUrl !== 'Uploading...') {
+                              api.put(`/tracks/${t._id}`, { audioUrl: result.audioUrl }).then(fetchData);
+                            }
+                          });
+                          e.target.parentElement.style.opacity = 1;
+                        }} 
+                      />
+                    </label>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <button onClick={() => openTrackModalForEdit(t)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }}>Edit Details</button>
+                    <button onClick={() => deleteTrack(t._id)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem', color: '#ff4d4d', borderColor: '#ff4d4d' }}>Delete</button>
+                  </div>
+                </div>
+              </div>
+            </li>
+          ))
+        ) : (
+          chapters.filter(c => {
+            if (activeTab === 'vents' && !c.isVent) return false;
+            if (activeTab === 'main' && c.isVent) return false;
 
           if (!searchQuery) return true;
           const query = searchQuery.toLowerCase();
@@ -715,7 +844,7 @@ function AdminDashboard() {
               )}
             </li>
           );
-        })}
+        }))}
       </ul>
 
       {/* CHAPTER MODAL */}
@@ -913,6 +1042,42 @@ function AdminDashboard() {
                 {ventForm.image && <img src={ventForm.image} alt="preview" style={{ width: '150px', display: 'block', marginTop: '1rem' }} />}
                 <button type="submit" style={{ marginTop: '2rem', padding: '1rem', background: '#fdfd96', color: '#111', border: '1px solid #111' }}>
                   {ventForm._id ? 'Save Vent' : 'Create Vent'}
+                </button>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* TRACK MODAL */}
+      <AnimatePresence>
+        {isTrackModalOpen && (
+          <motion.div 
+            className="modal-overlay"
+            onClick={(e) => { if (e.target === e.currentTarget) setIsTrackModalOpen(false); }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          >
+            <motion.div 
+              className="modal-content"
+              initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 50, opacity: 0 }}
+            >
+              <button className="modal-close" onClick={() => setIsTrackModalOpen(false)}>&times;</button>
+              <h2 style={{ marginBottom: '2rem' }}>{trackForm._id ? 'Edit Track' : 'Create Track'}</h2>
+              <form onSubmit={saveTrack} className="admin-form" style={{ border: 'none', padding: 0 }}>
+                <input type="text" placeholder="Track Title" value={trackForm.title} onChange={e => setTrackForm({...trackForm, title: e.target.value})} required />
+                <input type="text" placeholder="Artist" value={trackForm.artist} onChange={e => setTrackForm({...trackForm, artist: e.target.value})} required />
+                
+                <label>Audio File</label>
+                <input type="file" accept="audio/*" onChange={e => handleAudioChange(e, setTrackForm)} />
+                {trackForm.audioUrl && (
+                  <div style={{ marginTop: '1rem' }}>
+                    <audio controls src={trackForm.audioUrl} style={{ width: '100%' }} />
+                    <p style={{ fontSize: '0.8rem', opacity: 0.7, wordBreak: 'break-all' }}>{trackForm.audioUrl}</p>
+                  </div>
+                )}
+                
+                <button type="submit" style={{ marginTop: '2rem', padding: '1rem', background: 'var(--text-color)', color: 'var(--bg-color)' }}>
+                  {trackForm._id ? 'Save Track' : 'Create Track'}
                 </button>
               </form>
             </motion.div>
