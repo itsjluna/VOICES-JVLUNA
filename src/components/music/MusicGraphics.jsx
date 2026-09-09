@@ -112,51 +112,57 @@ export const MusicGraphics = React.memo(({ color }) => {
     );
   };
 
-  const FloatingEmoticon = () => {
-    const EMOTICON_MAP = {
-      '#b566ff': '(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧',
-      '#10ff70': '(✿◠‿◠)',
-      '#ff4040': '(♡μ_μ)',
-      '#ffe600': '(☆ω☆)',
-      '#1ab3ff': '(⌐■_■)',
-      '#ff8800': 'ʕ•ᴥ•ʔ'
-    };
-    const activeEmoticon = color ? EMOTICON_MAP[color] || '♪♫*•♪' : '♪♫*•♪';
+  const RisingEmoticons = () => {
+    const ALL_EMOTICONS = [
+      '(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧', '(✿◠‿◠)', '(♡μ_μ)', '(☆ω☆)', '(⌐■_■)', 'ʕ•ᴥ•ʔ', 
+      '(´・ω・`)', '(✯◡✯)', '( ˘▽˘)っ♨', '(*^‿^*)', 'ᕙ(⇀‸↼‶)ᕗ', '( ˶ˆ꒳ˆ˵ )',
+      '(~˘▾˘)~', '〜(꒪꒳꒪)〜', '(*¯︶¯*)', '(°◡°♡)'
+    ];
+
+    const particles = useMemo(() => {
+      const p = [];
+      for (let i = 0; i < 15; i++) {
+        p.push({
+          id: i,
+          emo: ALL_EMOTICONS[Math.floor(Math.random() * ALL_EMOTICONS.length)],
+          left: Math.random() * 90 + 5,
+          delay: Math.random() * 15,
+          dur: Math.random() * 15 + 15,
+          size: Math.random() * 0.5 + 0.8
+        });
+      }
+      return p;
+    }, []);
 
     return (
       <div style={{
         position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', overflow: 'hidden'
       }}>
-        <div style={{
-          animation: 'bounceEmoX 20s linear infinite alternate',
-          position: 'absolute', top: 0, left: 0,
-        }}>
-          <div style={{
-            animation: 'bounceEmoY 15s linear infinite alternate',
-            position: 'absolute', top: 0, left: 0,
-          }}>
-            <div style={{
+        {particles.map(p => (
+          <div
+            key={p.id}
+            style={{
+              position: 'absolute',
+              left: `${p.left}%`,
+              bottom: '-50px',
               color: color || 'var(--text-color)',
               fontFamily: 'monospace',
-              fontSize: '2rem',
-              opacity: 0.6,
-              textShadow: `0 0 15px ${color || 'var(--text-color)'}`,
-              transition: 'color 0.5s ease, text-shadow 0.5s ease',
+              fontSize: `${p.size}rem`,
+              opacity: 0,
+              animation: `riseUp ${p.dur}s linear ${p.delay}s infinite`,
               whiteSpace: 'nowrap'
-            }}>
-              {activeEmoticon}
-            </div>
+            }}
+          >
+            {p.emo}
           </div>
-        </div>
+        ))}
         <style>
           {`
-            @keyframes bounceEmoX {
-              0% { transform: translateX(5vw); }
-              100% { transform: translateX(75vw); }
-            }
-            @keyframes bounceEmoY {
-              0% { transform: translateY(70vh); }
-              100% { transform: translateY(15vh); }
+            @keyframes riseUp {
+              0% { transform: translateY(0) scale(0.8); opacity: 0; }
+              5% { opacity: 0.5; }
+              80% { opacity: 0.5; }
+              100% { transform: translateY(-110vh) scale(1.1); opacity: 0; }
             }
           `}
         </style>
