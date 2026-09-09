@@ -20,7 +20,7 @@ export const MusicGraphics = React.memo(({ color }) => {
     return (
       <svg style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%', willChange: 'transform' }} preserveAspectRatio="none" viewBox="0 0 1920 400">
         <defs>
-          <linearGradient id="eq-grad" x1="0" y1="1" x2="0" y2="0">
+          <linearGradient id="eq-grad" x1="0" y1="400" x2="0" y2="0" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stopColor={color || 'var(--text-color)'} stopOpacity="0" />
             <stop offset="50%" stopColor={color || 'var(--text-color)'} stopOpacity="0.25" />
             <stop offset="100%" stopColor={color || 'var(--text-color)'} stopOpacity="0.6" />
@@ -99,11 +99,11 @@ export const MusicGraphics = React.memo(({ color }) => {
         <style>
           {`
             @keyframes bounceX {
-              0% { transform: translateX(0vw); }
+              0% { transform: translateX(0px); }
               100% { transform: translateX(calc(100vw - 180px)); }
             }
             @keyframes bounceY {
-              0% { transform: translateY(0vh); }
+              0% { transform: translateY(0px); }
               100% { transform: translateY(calc(100vh - 60px)); }
             }
           `}
@@ -113,7 +113,7 @@ export const MusicGraphics = React.memo(({ color }) => {
   };
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'hidden', pointerEvents: 'none', zIndex: -1 }}>
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', pointerEvents: 'none', zIndex: -1 }}>
       {/* Main Background Image */}
       <div 
         className="music-bg-img"

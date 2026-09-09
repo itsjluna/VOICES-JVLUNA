@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { FaPlay, FaPause, FaStepBackward, FaStepForward } from 'react-icons/fa';
 
-const CassetteModal = ({ layoutIdId, track, onClose }) => {
+const CassetteModal = ({ layoutIdId, track, animColor, onClose }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
