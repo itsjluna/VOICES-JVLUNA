@@ -18,7 +18,7 @@ export const MusicGraphics = React.memo(({ color }) => {
     }, []);
 
     return (
-      <svg style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%', willChange: 'transform' }} preserveAspectRatio="none" viewBox="0 0 1920 400">
+      <svg className="music-accent-element" style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%', willChange: 'transform' }} preserveAspectRatio="none" viewBox="0 0 1920 400">
         <defs>
           <linearGradient id="eq-grad" x1="0" y1="400" x2="0" y2="0" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stopColor={color || 'var(--text-color)'} stopOpacity="0" />
@@ -141,6 +141,7 @@ export const MusicGraphics = React.memo(({ color }) => {
         {particles.map(p => (
           <div
             key={p.id}
+            className="music-accent-element"
             style={{
               position: 'absolute',
               left: `${p.left}%`,

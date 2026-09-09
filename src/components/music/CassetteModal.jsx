@@ -178,6 +178,7 @@ const CassetteModal = ({ layoutIdId, track, animColor, onClose }) => {
               {[...Array(8)].map((_, i) => (
                 <motion.div
                   key={`wave-${i}`}
+                  className="music-accent-element"
                   animate={isPlaying ? { height: ['3px', `${10 + Math.random()*10}px`, '6px', `${12 + Math.random()*8}px`, '3px'] } : { height: '3px' }}
                   transition={isPlaying ? { repeat: Infinity, duration: 0.5 + (i%3) * 0.1, ease: 'linear' } : {}}
                   style={{ width: '3px', background: animColor || '#fff', borderRadius: '2px' }}
@@ -191,7 +192,7 @@ const CassetteModal = ({ layoutIdId, track, animColor, onClose }) => {
           onClick={handleSeek}
           style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.2)', borderRadius: '3px', cursor: 'pointer', position: 'relative', overflow: 'hidden', margin: '0.5rem 0' }}
         >
-          <div style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: `${progress}%`, background: animColor || '#fff', borderRadius: '3px', transition: 'width 0.1s linear' }} />
+          <div className="music-accent-element" style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: `${progress}%`, background: animColor || '#fff', borderRadius: '3px', transition: 'width 0.1s linear' }} />
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
