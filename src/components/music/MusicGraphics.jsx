@@ -111,13 +111,47 @@ export const MusicGraphics = React.memo(({ color }) => {
   };
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'hidden', pointerEvents: 'none', zIndex: -1, opacity: 0.8 }}>
-      <BouncingLogo />
-      <Equalizer />
-      <div style={{ position: 'absolute', top: '2rem', right: '2rem', fontFamily: 'monospace', fontSize: '0.75rem', color: color || 'var(--text-color)', opacity: 0.7, textAlign: 'right', transition: 'color 0.5s ease' }}>
-        SYS_M: AUDIO_LIB<br />
-        T_MODE: CASSETTE<br />
-        VIOLET/A
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'hidden', pointerEvents: 'none', zIndex: -1 }}>
+      {/* Main Background Image */}
+      <div 
+        style={{ 
+          position: 'absolute', 
+          top: 0, 
+          left: 0, 
+          width: '100%', 
+          height: '100%', 
+          backgroundImage: 'url(/media/backgroundmusicthing.png)', 
+          backgroundSize: 'cover', 
+          backgroundPosition: 'center', 
+          opacity: 0.4,
+          transition: 'all 0.5s ease'
+        }} 
+      />
+
+      {/* Dynamic Color Tint Overlay */}
+      <div 
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: color || 'var(--bg-color)',
+          mixBlendMode: 'color',
+          opacity: 0.5,
+          transition: 'background-color 0.5s ease'
+        }}
+      />
+      
+      {/* Foreground Animated Elements */}
+      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0.8 }}>
+        <BouncingLogo />
+        <Equalizer />
+        <div style={{ position: 'absolute', top: '2rem', right: '2rem', fontFamily: 'monospace', fontSize: '0.75rem', color: color || 'var(--text-color)', opacity: 0.7, textAlign: 'right', transition: 'color 0.5s ease' }}>
+          SYS_M: AUDIO_LIB<br />
+          T_MODE: CASSETTE<br />
+          VIOLET/A
+        </div>
       </div>
     </div>
   );
