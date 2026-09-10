@@ -85,14 +85,15 @@ export default function GamesView() {
       <div style={{ 
         position: 'relative', 
         zIndex: 1, 
-        maxWidth: '1400px', 
+        width: '100%',
         margin: '0 auto', 
         minHeight: '100vh', 
         display: 'flex', 
         flexDirection: 'column', 
         justifyContent: 'center', 
-        padding: '2rem',
-        paddingTop: '6rem'
+        padding: '2rem 5%',
+        paddingTop: '6rem',
+        boxSizing: 'border-box'
       }}>
         
         {/* Main Content Layout */}
@@ -135,11 +136,11 @@ export default function GamesView() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <button 
                   onClick={prevGame}
-                  style={{ background: 'none', border: '1px solid var(--text-color)', color: 'var(--text-color)', width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s ease' }}
+                  style={{ flexShrink: 0, background: 'none', border: '1px solid var(--text-color)', color: 'var(--text-color)', width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s ease' }}
                 >
                   <FaChevronLeft />
                 </button>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                   {MOCK_GAMES.map((_, i) => (
                     <div 
                       key={i}
@@ -149,14 +150,15 @@ export default function GamesView() {
                         borderRadius: '50%',
                         background: 'var(--text-color)',
                         opacity: i === activeIndex ? 1 : 0.2,
-                        transition: 'opacity 0.2s ease'
+                        transition: 'opacity 0.2s ease',
+                        flexShrink: 0
                       }}
                     />
                   ))}
                 </div>
                 <button 
                   onClick={nextGame}
-                  style={{ background: 'none', border: '1px solid var(--text-color)', color: 'var(--text-color)', width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s ease' }}
+                  style={{ flexShrink: 0, background: 'none', border: '1px solid var(--text-color)', color: 'var(--text-color)', width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s ease' }}
                 >
                   <FaChevronRight />
                 </button>
@@ -165,8 +167,8 @@ export default function GamesView() {
           </div>
 
           {/* Right Side: 3D TV Canvas */}
-          <div style={{ flex: '1 1 400px', minHeight: '50vh', position: 'relative' }}>
-            <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
+          <div style={{ flex: '1 1 400px', minHeight: '60vh', position: 'relative' }}>
+            <Canvas camera={{ position: [0, 0, 3], fov: 45 }}>
               <ambientLight intensity={1.5} />
               <directionalLight position={[10, 10, 5]} intensity={2} />
               <Suspense fallback={null}>
