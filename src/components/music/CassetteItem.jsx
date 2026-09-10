@@ -30,26 +30,7 @@ const CassetteItem = ({ track, animColor, isActive, onMakeActive }) => {
           transformStyle: 'preserve-3d'
         }}
       >
-        {/* Extrude geometry of the cassette using PNG layers for a transparent plastic 3D look */}
-        {[...Array(10)].map((_, i) => (
-          <img 
-            key={i}
-            src="/media/cassette.png" 
-            alt={i === 0 ? "Cassette Tape" : ""} 
-            style={{ 
-              position: i === 0 ? 'relative' : 'absolute',
-              top: 0, left: 0,
-              width: '100%', height: '100%', display: 'block',
-              transform: `translateZ(${-i * 3}px)`,
-              opacity: i === 0 || i === 9 ? 1 : 0.3, // Inner layers transparent
-              filter: (i !== 0 && i !== 9) ? 'brightness(1.5) blur(1px)' : (i === 9 ? 'drop-shadow(0 15px 25px rgba(0,0,0,0.5))' : 'none'),
-              pointerEvents: 'none'
-            }} 
-            draggable="false" 
-          />
-        ))}
-
-        {/* Sticker and Text Layer - Place on the front-most Z-index */}
+        <img src="/media/cassette.png" alt="Cassette Tape" style={{ width: '100%', display: 'block' }} draggable="false" />
         <div style={{
           position: 'absolute',
           top: '16.5%',
@@ -66,7 +47,6 @@ const CassetteItem = ({ track, animColor, isActive, onMakeActive }) => {
           padding: '0.2rem',
           boxSizing: 'border-box',
           whiteSpace: 'nowrap',
-          transform: 'translateZ(2px)', // Slightly in front of the front PNG layer
           pointerEvents: 'none'
         }}>
           <span style={{ display: 'block', width: '100%', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: '1.1rem' }}>{track.title} - {track.artist}</span>

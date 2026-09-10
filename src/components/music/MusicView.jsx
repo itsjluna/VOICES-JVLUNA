@@ -44,8 +44,8 @@ function MusicView() {
       <MusicGraphics color={animColor} />
       <BackButton />
       
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem', display: 'flex', flexDirection: 'column', minHeight: '80vh' }}>
-        <div style={{ marginBottom: '1rem', textAlign: 'center', color: 'var(--text-color)' }}>
+      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', minHeight: '80vh', paddingTop: '2rem' }}>
+        <div style={{ maxWidth: '1200px', width: '100%', margin: '0 auto', padding: '0 2rem', marginBottom: '1rem', textAlign: 'center', color: 'var(--text-color)' }}>
           <h1 style={{ fontSize: '3rem', fontFamily: 'var(--font-serif)', marginBottom: '0.5rem' }}>
             {language === 'EN' ? 'Music Library' : 'Biblioteca Musical'}
           </h1>
@@ -84,7 +84,8 @@ function MusicView() {
           overflow: 'hidden',
           perspective: '1200px',
           marginTop: '2rem',
-          minHeight: '300px'
+          minHeight: '350px',
+          width: '100%'
         }}>
           {tracks.length > 0 && (
             <>
@@ -92,7 +93,7 @@ function MusicView() {
                 onClick={handlePrev}
                 disabled={activeIndex === 0}
                 style={{
-                  position: 'absolute', left: '5%', zIndex: 1000,
+                  position: 'absolute', left: '2rem', zIndex: 1000,
                   background: 'rgba(255,255,255,0.1)', border: 'none', color: 'var(--text-color)',
                   width: '50px', height: '50px', borderRadius: '50%',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -111,16 +112,16 @@ function MusicView() {
                     const offset = i - activeIndex;
                     const absOffset = Math.abs(offset);
                     const isActive = offset === 0;
-                    const isVisible = absOffset <= 3;
+                    const isVisible = absOffset <= 7;
 
                     if (!isVisible) return null;
 
                     // Calculate Cover Flow properties
-                    const x = offset * 180; // Distance between items
+                    const x = offset * 220; // Increased distance between items
                     const scale = isActive ? 1 : Math.max(0.6, 1 - absOffset * 0.15);
                     const rotateY = isActive ? 0 : (offset > 0 ? -45 : 45);
                     const z = isActive ? 100 : -absOffset * 150;
-                    const opacity = isActive ? 1 : Math.max(0, 1 - absOffset * 0.3);
+                    const opacity = isActive ? 1 : Math.max(0, 1 - absOffset * 0.2);
                     const zIndex = 100 - absOffset;
 
                     return (
@@ -152,7 +153,7 @@ function MusicView() {
                 onClick={handleNext}
                 disabled={activeIndex === tracks.length - 1}
                 style={{
-                  position: 'absolute', right: '5%', zIndex: 1000,
+                  position: 'absolute', right: '2rem', zIndex: 1000,
                   background: 'rgba(255,255,255,0.1)', border: 'none', color: 'var(--text-color)',
                   width: '50px', height: '50px', borderRadius: '50%',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
