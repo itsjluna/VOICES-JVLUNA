@@ -64,15 +64,11 @@ function MusicView() {
           </div>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-          gap: '3rem 2rem',
-          justifyItems: 'center',
-          alignItems: 'center'
-        }}>
+        <div className="cassette-grid">
           {tracks.map(track => (
-            <CassetteItem key={track._id} track={track} animColor={animColor} />
+            <div key={track._id} className="cassette-shelf-wrapper">
+              <CassetteItem track={track} animColor={animColor} />
+            </div>
           ))}
           {!isLoading && tracks.length === 0 && (
             <div style={{ gridColumn: '1 / -1', opacity: 0.5 }}>
