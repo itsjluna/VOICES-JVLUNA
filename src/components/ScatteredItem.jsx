@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
-const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimation, style, className, draggable = true }) => {
+const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimation, style, className, draggable = true, disableLayout = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
   const hasOpened = React.useRef(false);
-  const layoutId = `scattered-${src}-${title}`.replace(/[^a-zA-Z0-9]/g, '-');
+  
+  // Use a predictable layoutId, or undefined if disableLayout is true
+  const layoutId = disableLayout ? undefined : `scattered-${src}-${title}`.replace(/[^a-zA-Z0-9]/g, '-');
   
   const dragX = useMotionValue(0);
   const dragY = useMotionValue(0);
@@ -69,15 +71,16 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
           {isOpen && (
-            <ScatteredModal 
-              src={src} 
-              alt={alt} 
-              title={title}
-              description={description}
-              className={className} 
-              onClose={() => setIsOpen(false)} 
-              layoutId={layoutId}
-            />
+              <ScatteredModal 
+                src={src} 
+                alt={alt} 
+                title={title}
+                description={description}
+                className={className} 
+                onClose={() => setIsOpen(false)} 
+                layoutId={layoutId}
+                disableLayout={disableLayout}
+              />
           )}
         </AnimatePresence>,
         document.body
@@ -86,7 +89,7 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
   );
 });
 
-const ScatteredModal = ({ src, alt, title, description, className, onClose, layoutId }) => {
+const ScatteredModal = ({ src, alt, title, description, className, onClose, layoutId, disableLayout }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
@@ -138,6 +141,8 @@ const ScatteredModal = ({ src, alt, title, description, className, onClose, layo
     >
       <motion.div
         layoutId={layoutId}
+        initial={disableLayout ? { scale: 0.8, opacity: 0 } : false}
+        animate={disableLayout ? { scale: 1, opacity: 1 } : undefined}
         transition={{ type: "spring", stiffness: 1500, damping: 25 }}
         style={{
           rotateX: rotateX,

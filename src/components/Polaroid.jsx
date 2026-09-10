@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
-const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperClass = "", polaroidClass = "", children }) => {
+const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperClass = "", polaroidClass = "", children, disableLayout = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
   const [rotation] = useState(() => (Math.random() * 8) - 4); // Random between -4 and 4 degrees
@@ -13,7 +13,7 @@ const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperCla
   const rotateX = useTransform(y, [-100, 100], [15, -15]);
   const rotateY = useTransform(x, [-100, 100], [-15, 15]);
   
-  const layoutIdId = `polaroid-${src}`;
+  const layoutIdId = disableLayout ? undefined : `polaroid-${src}`;
   
   const handleMouseMove = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -96,7 +96,7 @@ const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperCla
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
           {isOpen && (
-            <PolaroidModal src={src} alt={alt} credit={credit} layoutIdId={layoutIdId} onClose={() => setIsOpen(false)} />
+            <PolaroidModal src={src} alt={alt} credit={credit} layoutIdId={layoutIdId} onClose={() => setIsOpen(false)} disableLayout={disableLayout} />
           )}
         </AnimatePresence>,
         document.body
@@ -105,7 +105,7 @@ const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperCla
   );
 });
 
-const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
+const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose, disableLayout }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
@@ -148,13 +148,14 @@ const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        flexDirection: 'column',
         cursor: 'pointer',
-        perspective: '1200px'
+        perspective: '1000px'
       }}
     >
       <motion.div 
         layoutId={layoutIdId}
+        initial={disableLayout ? { scale: 0.8, opacity: 0 } : false}
+        animate={disableLayout ? { scale: 1, opacity: 1 } : undefined}
         transition={{ type: "spring", stiffness: 500, damping: 25, mass: 0.8 }}
         className="polaroid-container"
         style={{
