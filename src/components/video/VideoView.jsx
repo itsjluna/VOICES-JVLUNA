@@ -21,9 +21,14 @@ function VideoView() {
     }
   });
 
+  const [showTutorial, setShowTutorial] = useState(false);
+
   useEffect(() => {
     if (videos.length > 0) {
       setCards(videos);
+    }
+    if (!localStorage.getItem('videoSwipeTutorialSeen')) {
+      setShowTutorial(true);
     }
   }, [videos]);
 
@@ -36,6 +41,10 @@ function VideoView() {
   }, []);
 
   const handleSwipe = (id, direction) => {
+    if (showTutorial) {
+      setShowTutorial(false);
+      localStorage.setItem('videoSwipeTutorialSeen', 'true');
+    }
     setCards(prev => prev.filter(card => card._id !== id));
   };
 
@@ -92,6 +101,41 @@ function VideoView() {
                 />
               );
             }).reverse()}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {showTutorial && cards.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                style={{
+                  position: 'absolute',
+                  top: 0, left: 0, right: 0, bottom: 0,
+                  backgroundColor: 'rgba(0,0,0,0.6)',
+                  zIndex: 200,
+                  borderRadius: '20px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  pointerEvents: 'none',
+                  color: '#fff',
+                  fontFamily: 'monospace'
+                }}
+              >
+                <motion.div
+                  animate={{ x: [-20, 20, -20] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                  style={{ fontSize: '3rem', marginBottom: '1rem' }}
+                >
+                  👆
+                </motion.div>
+                <h2 style={{ margin: 0, textShadow: '1px 1px 3px #000' }}>
+                  {language === 'EN' ? 'Swipe to explore' : 'Desliza para explorar'}
+                </h2>
+              </motion.div>
+            )}
           </AnimatePresence>
           
           {cards.length === 0 && (
