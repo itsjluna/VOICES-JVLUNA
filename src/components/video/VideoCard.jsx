@@ -5,19 +5,16 @@ import { FiHeart, FiMessageCircle, FiPlay, FiBookmark, FiShare2, FiMaximize, FiM
 const GEN_Z_SLANG = ["body so tea", "spill the tea", "im so delulu fr", "im just like him fr", "bro thinks hes him", "shes just like me", "girl like", "its giving video", "lowkey cringe", "hear me out", "btw means by the way btw", "fuck it we ball", "its so over", "in my flop era", "what is bro yapping about", "mejor mierda"];
 const USERNAMES = ["user204", "alex_199", "sadgirl", "jvluna_fan", "the_real_one", "anon992", "vibes_only"];
 
-function VideoCard({ video, isTop, onSwipe, index }) {
+function VideoCard({ video, isTop, onSwipe, index, dragX }) {
   const videoRef = useRef(null);
   const containerRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const controls = useAnimation();
 
-  const x = useMotionValue(0);
+  const internalX = useMotionValue(0);
+  const x = dragX || internalX;
   const rotate = useTransform(x, [-200, 200], [-10, 10]);
-  const slayOpacity = useTransform(x, [50, 150], [0, 1]);
-  const slayScale = useTransform(x, [50, 150], [0.5, 1.2]);
-  const flopOpacity = useTransform(x, [-50, -150], [0, 1]);
-  const flopScale = useTransform(x, [-50, -150], [0.5, 1.2]);
 
   const [isMuted, setIsMuted] = useState(true);
   
@@ -175,23 +172,6 @@ function VideoCard({ video, isTop, onSwipe, index }) {
         style={{ flex: 1, position: 'relative', backgroundColor: '#000', width: '100%', height: '100%' }}
         onClick={togglePlay}
       >
-        {/* Swipe Stamps */}
-        <motion.div style={{
-          position: 'absolute', top: '20%', left: '10%', opacity: slayOpacity, scale: slayScale, rotate: -15,
-          color: '#4ade80', border: '4px solid #4ade80', borderRadius: '10px', padding: '10px 20px',
-          fontSize: '3rem', fontWeight: '900', fontFamily: 'var(--font-serif)', zIndex: 50, pointerEvents: 'none',
-          textShadow: '0 0 10px rgba(74,222,128,0.5)', boxShadow: '0 0 20px rgba(74,222,128,0.3)'
-        }}>
-          SLAY
-        </motion.div>
-        <motion.div style={{
-          position: 'absolute', top: '20%', right: '10%', opacity: flopOpacity, scale: flopScale, rotate: 15,
-          color: '#f87171', border: '4px solid #f87171', borderRadius: '10px', padding: '10px 20px',
-          fontSize: '3rem', fontWeight: '900', fontFamily: 'var(--font-serif)', zIndex: 50, pointerEvents: 'none',
-          textShadow: '0 0 10px rgba(248,113,113,0.5)', boxShadow: '0 0 20px rgba(248,113,113,0.3)'
-        }}>
-          FLOP
-        </motion.div>
         {video.url.includes('youtube.com/embed') ? (
           <iframe
             src={video.url}

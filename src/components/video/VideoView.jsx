@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import PageWrapper from '../PageWrapper';
 import BackButton from '../BackButton';
@@ -22,6 +22,16 @@ function VideoView() {
   });
 
   const [showTutorial, setShowTutorial] = useState(false);
+
+  const dragX = useMotionValue(0);
+  const slayOpacity = useTransform(dragX, [50, 150], [0, 1]);
+  const slayScale = useTransform(dragX, [50, 150], [0.5, 1.2]);
+  const flopOpacity = useTransform(dragX, [-50, -150], [0, 1]);
+  const flopScale = useTransform(dragX, [-50, -150], [0.5, 1.2]);
+
+  // Glow effects based on drag
+  const slayGlow = useTransform(dragX, [50, 150], ['rgba(74,222,128,0)', 'rgba(74,222,128,0.5)']);
+  const flopGlow = useTransform(dragX, [-50, -150], ['rgba(248,113,113,0)', 'rgba(248,113,113,0.5)']);
 
   useEffect(() => {
     let initialCards = [...videos];
@@ -54,6 +64,7 @@ function VideoView() {
       localStorage.setItem('videoSwipeTutorialSeen', 'true');
     }
     setCards(prev => prev.filter(card => card._id !== id));
+    dragX.set(0); // reset background stamps
   };
 
   const handleRefresh = async () => {
@@ -96,6 +107,31 @@ function VideoView() {
           alignItems: 'center',
           justifyContent: 'center'
         }}>
+          {/* Background Ambient Glows and Stamps */}
+          {cards.length > 0 && (
+            <>
+              {/* SLAY Element (Right Side, meaning dragged right) */}
+              <motion.div style={{
+                position: 'absolute', right: '10px', top: '50%', marginTop: '-50px', rotate: 15,
+                opacity: slayOpacity, scale: slayScale, color: '#4ade80', fontSize: '4.5rem', fontWeight: '900',
+                fontFamily: 'var(--font-serif)', textShadow: '0 0 30px rgba(74,222,128,0.8)', pointerEvents: 'none', zIndex: 0
+              }}>
+                SLAY
+                <motion.div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '200px', height: '400px', background: slayGlow, filter: 'blur(50px)', zIndex: -1, borderRadius: '50%' }} />
+              </motion.div>
+
+              {/* FLOP Element (Left Side, meaning dragged left) */}
+              <motion.div style={{
+                position: 'absolute', left: '10px', top: '50%', marginTop: '-50px', rotate: -15,
+                opacity: flopOpacity, scale: flopScale, color: '#f87171', fontSize: '4.5rem', fontWeight: '900',
+                fontFamily: 'var(--font-serif)', textShadow: '0 0 30px rgba(248,113,113,0.8)', pointerEvents: 'none', zIndex: 0
+              }}>
+                FLOP
+                <motion.div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '200px', height: '400px', background: flopGlow, filter: 'blur(50px)', zIndex: -1, borderRadius: '50%' }} />
+              </motion.div>
+            </>
+          )}
+
           <AnimatePresence>
             {cards.map((video, index) => {
               const isTop = index === 0;
@@ -106,6 +142,7 @@ function VideoView() {
                   isTop={isTop}
                   onSwipe={(dir) => handleSwipe(video._id, dir)}
                   index={index}
+                  dragX={isTop ? dragX : undefined}
                 />
               );
             }).reverse()}
