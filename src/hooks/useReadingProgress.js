@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 
 export function useReadingProgress() {
   const [readChapters, setReadChapters] = useState(() => {
@@ -10,7 +10,7 @@ export function useReadingProgress() {
     }
   });
 
-  const markAsRead = (id) => {
+  const markAsRead = useCallback((id) => {
     if (!id) return;
     setReadChapters((prev) => {
       if (!prev.includes(id)) {
@@ -20,7 +20,7 @@ export function useReadingProgress() {
       }
       return prev;
     });
-  };
+  }, []);
 
   return { readChapters, markAsRead };
 }
