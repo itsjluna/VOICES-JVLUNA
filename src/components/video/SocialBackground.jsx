@@ -13,14 +13,14 @@ const GEN_Z_ITEMS = [
   "🥀", "🫠", "👄", "🙏", "💁‍♀️"
 ];
 
-function FloatingItem({ item, delay, duration, startX, startY, endX, endY, scale }) {
+function FloatingItem({ item, isImage, delay, duration, startX, startY, endX, endY, scale }) {
   return (
     <motion.div
       initial={{ x: startX, y: startY, opacity: 0, scale }}
       animate={{ 
         x: endX, 
         y: endY, 
-        opacity: [0, 0.4, 0.4, 0],
+        opacity: [0, isImage ? 0.2 : 0.4, isImage ? 0.2 : 0.4, 0],
         rotate: [0, Math.random() * 20 - 10, Math.random() * -20 + 10, 0]
       }}
       transition={{ 
@@ -40,7 +40,15 @@ function FloatingItem({ item, delay, duration, startX, startY, endX, endY, scale
         zIndex: 0
       }}
     >
-      {item}
+      {isImage ? (
+        <img 
+          src={item} 
+          alt="meme" 
+          style={{ width: '150px', height: 'auto', borderRadius: '10px', filter: 'grayscale(30%)' }} 
+        />
+      ) : (
+        item
+      )}
     </motion.div>
   );
 }
@@ -48,9 +56,20 @@ function FloatingItem({ item, delay, duration, startX, startY, endX, endY, scale
 function SocialBackground() {
   const floatingItems = useMemo(() => {
     // Generate an array of random items with random paths
-    return Array.from({ length: 35 }).map((_, i) => {
-      const item = GEN_Z_ITEMS[Math.floor(Math.random() * GEN_Z_ITEMS.length)];
-      const isIcon = item.length <= 2; // Roughly check if it's an emoji
+    return Array.from({ length: 45 }).map((_, i) => {
+      const isMeme = Math.random() > 0.75; // 25% chance to be a meme image
+      let item, isIcon, scale;
+      
+      if (isMeme) {
+        const randomMemeIndex = Math.floor(Math.random() * 24) + 1; // memes 1 to 24
+        item = `/socialmedia/meme${randomMemeIndex}.jpeg`;
+        isIcon = false;
+        scale = 0.6 + Math.random() * 0.4;
+      } else {
+        item = GEN_Z_ITEMS[Math.floor(Math.random() * GEN_Z_ITEMS.length)];
+        isIcon = item.length <= 2; // Roughly check if it's an emoji
+        scale = isIcon ? 1.5 + Math.random() * 1.5 : 0.8 + Math.random() * 1;
+      }
       
       const startX = `${Math.random() * 100}vw`;
       const startY = `${100 + Math.random() * 20}vh`; // Start below screen
@@ -59,9 +78,8 @@ function SocialBackground() {
       
       const duration = 15 + Math.random() * 20; // 15-35s
       const delay = Math.random() * 15; // 0-15s start delay
-      const scale = isIcon ? 1.5 + Math.random() * 1.5 : 0.8 + Math.random() * 1;
       
-      return { id: i, item, startX, startY, endX, endY, duration, delay, scale };
+      return { id: i, item, isImage: isMeme, startX, startY, endX, endY, duration, delay, scale };
     });
   }, []);
 
