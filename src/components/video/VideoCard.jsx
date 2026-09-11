@@ -250,6 +250,8 @@ function VideoCard({ video, isTop, onSwipe, index }) {
                 fontFamily: 'monospace',
                 fontSize: '1rem',
                 fontWeight: 'bold',
+                textAlign: 'center',
+                whiteSpace: 'nowrap',
                 zIndex: 9999,
                 pointerEvents: 'none',
                 boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
