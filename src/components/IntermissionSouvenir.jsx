@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
-const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimation, style, className, draggable = true }) => {
+const IntermissionSouvenir = React.memo(({ src, alt, title, description, initialAnimation, style, className, draggable = true }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [imgLoaded, setImgLoaded] = useState(false);
   const hasOpened = React.useRef(false);
-  const layoutId = `scattered-${src}-${title}`.replace(/[^a-zA-Z0-9]/g, '-');
   
   const dragX = useMotionValue(0);
   const dragY = useMotionValue(0);
@@ -25,27 +23,14 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
     setIsOpen(true);
   };
 
-  // Enhance the initial opacity animation to wait for image load
-  const animatedOpacity = initialAnimation.animate?.opacity;
-  const initialOpacity = initialAnimation.initial?.opacity;
-  const combinedAnimate = { 
-    ...initialAnimation.animate, 
-    opacity: imgLoaded ? (animatedOpacity !== undefined ? animatedOpacity : 1) : 0 
-  };
-  const combinedInitial = {
-    ...initialAnimation.initial,
-    opacity: 0
-  };
-
   return (
     <>
       <motion.div
-        initial={hasOpened.current ? false : combinedInitial}
-        animate={combinedAnimate}
+        initial={hasOpened.current ? false : initialAnimation.initial}
+        animate={initialAnimation.animate}
         transition={{ 
           ...initialAnimation.transition, 
-          delay: hasOpened.current ? 0 : (initialAnimation.transition?.delay || 0),
-          opacity: { duration: 0.6 } // Add a smooth fade specifically for opacity
+          delay: hasOpened.current ? 0 : (initialAnimation.transition?.delay || 0)
         }}
         style={{ ...style, cursor: draggable ? 'grab' : 'pointer', x: dragX, y: dragY }}
         drag={draggable}
@@ -57,11 +42,8 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
         className={className}
       >
         <motion.img 
-          layoutId={layoutId}
           src={src}
           alt={alt}
-          onLoad={() => setImgLoaded(true)}
-          transition={{ layout: { type: "spring", stiffness: 1200, damping: 30 } }}
           style={{ width: '100%', height: '100%', objectFit: 'contain', pointerEvents: 'none' }}
         />
       </motion.div>
@@ -69,15 +51,14 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
           {isOpen && (
-            <ScatteredModal 
-              src={src} 
-              alt={alt} 
-              title={title}
-              description={description}
-              className={className} 
-              onClose={() => setIsOpen(false)} 
-              layoutId={layoutId}
-            />
+              <ScatteredModal 
+                src={src} 
+                alt={alt} 
+                title={title}
+                description={description}
+                className={className} 
+                onClose={() => setIsOpen(false)} 
+              />
           )}
         </AnimatePresence>,
         document.body
@@ -86,7 +67,7 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
   );
 });
 
-const ScatteredModal = ({ src, alt, title, description, className, onClose, layoutId }) => {
+const ScatteredModal = ({ src, alt, title, description, className, onClose }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
@@ -137,7 +118,9 @@ const ScatteredModal = ({ src, alt, title, description, className, onClose, layo
       }}
     >
       <motion.div
-        layoutId={layoutId}
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.8, opacity: 0 }}
         transition={{ type: "spring", stiffness: 1500, damping: 25 }}
         style={{
           rotateX: rotateX,

@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { FaPlane, FaTrain, FaBus } from 'react-icons/fa';
 import api from '../api';
-import Polaroid from './Polaroid';
-import ScatteredItem from './ScatteredItem';
+import IntermissionPolaroid from './IntermissionPolaroid';
+import IntermissionSouvenir from './IntermissionSouvenir';
 import { TravelGraphics } from './TravelGraphics';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -179,7 +179,7 @@ function IntermissionView() {
             transition={{ duration: 1, delay: 0.6 }}
             className="intermission-polaroid"
           >
-            <Polaroid disableLayout={true} src={intermission.image} alt={intermission.title} credit={intermission.imageCredit} containerStyle={{ margin: 0, boxShadow: '0 20px 40px rgba(0,0,0,0.3)', position: 'relative', zIndex: 1 }} />
+            <IntermissionPolaroid src={intermission.image} alt={intermission.title} credit={intermission.imageCredit} containerStyle={{ margin: 0, boxShadow: '0 20px 40px rgba(0,0,0,0.3)', position: 'relative', zIndex: 1 }} />
             
             {/* Metallic Paperclip (Clipping to the ticket on the left) */}
             <svg 
@@ -200,8 +200,7 @@ function IntermissionView() {
             </svg>
             
             {randomSouvenir && (
-              <ScatteredItem 
-                disableLayout={true}
+              <IntermissionSouvenir 
                 src={randomSouvenir.src}
                 title={language === 'EN' ? randomSouvenir.titleEn : randomSouvenir.titleEs}
                 description={language === 'EN' ? randomSouvenir.descEn : randomSouvenir.descEs}

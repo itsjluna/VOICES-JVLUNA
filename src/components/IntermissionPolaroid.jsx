@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
-const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperClass = "", polaroidClass = "", children }) => {
+const IntermissionPolaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperClass = "", polaroidClass = "", children }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [imgLoaded, setImgLoaded] = useState(false);
   const [rotation] = useState(() => (Math.random() * 8) - 4); // Random between -4 and 4 degrees
   
   const x = useMotionValue(0);
@@ -12,8 +11,6 @@ const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperCla
   
   const rotateX = useTransform(y, [-100, 100], [15, -15]);
   const rotateY = useTransform(x, [-100, 100], [-15, 15]);
-  
-  const layoutIdId = `polaroid-${src}`;
   
   const handleMouseMove = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -49,45 +46,17 @@ const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperCla
         style={{ cursor: 'pointer', perspective: '1000px', ...containerStyle }}
       >
         <motion.div 
-          layoutId={layoutIdId}
           className={`polaroid-container ${polaroidClass}`}
           style={{ 
             rotate: rotation,
             rotateX: rotateX,
             rotateY: rotateY,
             transformStyle: 'preserve-3d',
-            transition: 'transform 0.1s ease-out',
-            opacity: imgLoaded ? 1 : 0
+            transition: 'transform 0.1s ease-out'
           }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: imgLoaded ? 1 : 0 }}
-          transition={{ duration: 0.6 }}
           whileHover={{ scale: 1.05, zIndex: 50 }}
         >
-          <img 
-            src={src} 
-            alt={alt} 
-            className="polaroid-img" 
-            style={{ transform: 'translateZ(10px)' }} 
-            loading="lazy" 
-            decoding="async" 
-            onLoad={() => setImgLoaded(true)}
-          />
-          {credit && (
-            <div style={{
-              position: 'absolute',
-              bottom: '5%',
-              right: '5%',
-              fontFamily: '"Permanent Marker", cursive',
-              fontSize: '1rem',
-              color: '#ff1493',
-              transform: 'rotate(-3deg) translateZ(15px)',
-              opacity: 0.9,
-              zIndex: 10
-            }}>
-              {credit}
-            </div>
-          )}
+          <img src={src} alt={alt} className="polaroid-img" style={{ transform: 'translateZ(10px)' }} loading="lazy" decoding="async" />
           {children}
           <div className="staple" style={{ transform: 'translateZ(15px)' }}></div>
         </motion.div>
@@ -96,7 +65,7 @@ const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperCla
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
           {isOpen && (
-            <PolaroidModal src={src} alt={alt} credit={credit} layoutIdId={layoutIdId} onClose={() => setIsOpen(false)} />
+            <PolaroidModal src={src} alt={alt} credit={credit} onClose={() => setIsOpen(false)} />
           )}
         </AnimatePresence>,
         document.body
@@ -105,7 +74,7 @@ const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperCla
   );
 });
 
-const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
+const PolaroidModal = ({ src, alt, credit, onClose }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
@@ -131,7 +100,7 @@ const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.3 } }}
+      exit={{ opacity: 0 }}
       onClick={onClose}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -154,8 +123,10 @@ const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
       }}
     >
       <motion.div 
-        layoutId={layoutIdId}
-        transition={{ type: "spring", stiffness: 500, damping: 25, mass: 0.8 }}
+        initial={{ scale: 0.5, y: 300, opacity: 0 }}
+        animate={{ scale: 1, y: 0, opacity: 1 }}
+        exit={{ scale: 0.7, y: 300, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 250, damping: 20, mass: 1.2 }}
         className="polaroid-container"
         style={{
           margin: 0,
@@ -179,8 +150,9 @@ const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
             bottom: '5%',
             right: '5%',
             fontFamily: '"Permanent Marker", cursive',
-            fontSize: '1.4rem',
-            color: '#ff1493',
+            fontSize: '1.2rem',
+            color: '#f0f0f0',
+            textShadow: '1px 1px 0px rgba(0,0,0,0.5), 0px 0px 4px rgba(255,255,255,0.7)',
             transform: 'rotate(-3deg) translateZ(25px)',
             opacity: 0.95,
             zIndex: 10
@@ -193,4 +165,4 @@ const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
   );
 };
 
-export default Polaroid;
+export default IntermissionPolaroid;
