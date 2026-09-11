@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useAnimation, useMotionValue, useTransform } from 'framer-motion';
-import { FiHeart, FiMessageCircle, FiPlay, FiMusic, FiBookmark, FiShare2, FiMaximize, FiMinimize } from 'react-icons/fi';
+import { FiHeart, FiMessageCircle, FiPlay, FiMusic, FiBookmark, FiShare2, FiMaximize, FiMinimize, FiVolume2, FiVolumeX } from 'react-icons/fi';
 
 function VideoCard({ video, isTop, onSwipe, index }) {
   const videoRef = useRef(null);
@@ -11,6 +11,30 @@ function VideoCard({ video, isTop, onSwipe, index }) {
 
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-10, 10]);
+
+  const [isMuted, setIsMuted] = useState(true);
+
+  const formatNumber = (num) => {
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+    return num;
+  };
+
+  const handleShare = (e) => {
+    e.stopPropagation();
+    const url = `${window.location.origin}/video`;
+    navigator.clipboard.writeText(url).then(() => {
+      alert("Link copied!");
+    });
+  };
+
+  const toggleMute = (e) => {
+    e.stopPropagation();
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(videoRef.current.muted);
+    }
+  };
 
   useEffect(() => {
     if (isTop && videoRef.current) {
@@ -106,28 +130,51 @@ function VideoCard({ video, isTop, onSwipe, index }) {
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           loop
           playsInline
-          muted // Muted to allow autoplay policies
+          muted={isMuted} // Muted to allow autoplay policies, toggleable
         />
         
-        {/* Fullscreen Toggle */}
-        <div 
-          onClick={toggleFullscreen}
-          style={{
-            position: 'absolute',
-            top: '20px',
-            right: '20px',
-            color: '#fff',
-            cursor: 'pointer',
-            padding: '10px',
-            backgroundColor: 'rgba(0,0,0,0.3)',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 10
-          }}
-        >
-          {isFullscreen ? <FiMinimize size={24} /> : <FiMaximize size={24} />}
+        {/* Top Right Controls */}
+        <div style={{
+          position: 'absolute',
+          top: '20px',
+          right: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px',
+          zIndex: 10
+        }}>
+          <div 
+            onClick={toggleMute}
+            style={{
+              color: '#fff',
+              cursor: 'pointer',
+              width: '44px',
+              height: '44px',
+              backgroundColor: 'rgba(0,0,0,0.3)',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            {isMuted ? <FiVolumeX size={24} /> : <FiVolume2 size={24} />}
+          </div>
+          <div 
+            onClick={toggleFullscreen}
+            style={{
+              color: '#fff',
+              cursor: 'pointer',
+              width: '44px',
+              height: '44px',
+              backgroundColor: 'rgba(0,0,0,0.3)',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            {isFullscreen ? <FiMinimize size={24} /> : <FiMaximize size={24} />}
+          </div>
         </div>
         
         {/* Bottom Gradient for readability */}
@@ -174,14 +221,10 @@ function VideoCard({ video, isTop, onSwipe, index }) {
           <p style={{ margin: 0, fontSize: '0.9rem', fontFamily: 'monospace', lineHeight: '1.3' }}>{video.description}</p>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', fontFamily: 'monospace', marginTop: '5px' }}>
-            <FiMusic size={14} />
-            <motion.div
-              animate={{ x: [0, -100] }}
-              transition={{ repeat: Infinity, duration: 5, ease: "linear" }}
-              style={{ whiteSpace: 'nowrap', overflow: 'hidden', width: '150px' }}
-            >
+            <FiMusic size={14} style={{ flexShrink: 0 }} />
+            <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px' }}>
               Original Sound - {video.author} ✨
-            </motion.div>
+            </div>
           </div>
         </div>
 
@@ -198,25 +241,19 @@ function VideoCard({ video, isTop, onSwipe, index }) {
           textShadow: '1px 1px 3px rgba(0,0,0,0.8)'
         }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
-            <div style={{ backgroundColor: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '50%' }}>
+            <div style={{ backgroundColor: 'rgba(0,0,0,0.3)', width: '44px', height: '44px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <FiHeart size={24} />
             </div>
-            <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', marginTop: '4px' }}>{video.likes}</span>
+            <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', marginTop: '4px' }}>{formatNumber(video.likes)}</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
-            <div style={{ backgroundColor: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '50%' }}>
+            <div style={{ backgroundColor: 'rgba(0,0,0,0.3)', width: '44px', height: '44px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <FiMessageCircle size={24} />
             </div>
-            <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', marginTop: '4px' }}>{video.comments}</span>
+            <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', marginTop: '4px' }}>{formatNumber(video.comments)}</span>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
-            <div style={{ backgroundColor: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '50%' }}>
-              <FiBookmark size={24} />
-            </div>
-            <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', marginTop: '4px' }}>Save</span>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
-            <div style={{ backgroundColor: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '50%' }}>
+          <div onClick={handleShare} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+            <div style={{ backgroundColor: 'rgba(0,0,0,0.3)', width: '44px', height: '44px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <FiShare2 size={24} />
             </div>
             <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', marginTop: '4px' }}>Share</span>
