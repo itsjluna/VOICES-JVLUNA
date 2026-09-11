@@ -5,7 +5,7 @@ import { FaBookOpen, FaTicketAlt, FaSun, FaMoon, FaStickyNote, FaCloud, FaCloudR
 import api from '../api';
 import { useQuery } from '@tanstack/react-query';
 import { IndexScatter } from './IndexScatter';
-import { useReadingProgress } from '../hooks/useReadingProgress';
+
 import { useLanguage } from '../contexts/LanguageContext';
 import PageWrapper from './PageWrapper';
 
@@ -32,7 +32,6 @@ function IndexView() {
   const [showSky, setShowSky] = useState(true);
   const [showQuote, setShowQuote] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
-  const { readChapters } = useReadingProgress();
   const { language } = useLanguage();
   const navigate = useNavigate();
 
@@ -530,7 +529,7 @@ function IndexView() {
                       <div style={{ display: 'flex', alignItems: 'baseline', flexShrink: 1, paddingRight: '1rem' }}>
                         <span style={{ 
                           marginRight: '1rem',
-                          color: (isInt || isVent) ? iconColor : (readChapters.includes(chapter._id) ? 'rgba(150, 150, 150, 0.4)' : iconColor),
+                          color: iconColor,
                           fontSize: '0.9rem',
                           display: 'flex',
                           alignItems: 'center',
@@ -545,10 +544,8 @@ function IndexView() {
                           fontStyle: (isInt || isVent) ? 'italic' : 'normal',
                           fontWeight: (isInt || isVent) ? 'normal' : '500',
                           letterSpacing: '0.05em',
-                          color: readChapters.includes(chapter._id) && !isInt && !isVent 
-                            ? 'var(--text-color)' 
-                            : 'inherit',
-                          opacity: readChapters.includes(chapter._id) && !isInt && !isVent ? 0.5 : 1,
+                          color: 'inherit',
+                          opacity: 1,
                           wordWrap: 'break-word',
                           overflowWrap: 'break-word',
                           wordBreak: 'break-word',
@@ -565,7 +562,7 @@ function IndexView() {
                         <span style={{ 
                           fontFamily: 'var(--font-mono)', 
                           fontSize: '1rem', 
-                          opacity: readChapters.includes(chapter._id) ? 0.3 : 0.8,
+                          opacity: 0.8,
                           letterSpacing: '0.1em',
                           color: 'var(--text-color)',
                           flexShrink: 0

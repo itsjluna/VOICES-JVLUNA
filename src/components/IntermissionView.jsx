@@ -7,7 +7,7 @@ import api from '../api';
 import IntermissionPolaroid from './IntermissionPolaroid';
 import IntermissionSouvenir from './IntermissionSouvenir';
 import { TravelGraphics } from './TravelGraphics';
-import { useReadingProgress } from '../hooks/useReadingProgress';
+
 import { useLanguage } from '../contexts/LanguageContext';
 import { FaLanguage } from 'react-icons/fa';
 import PageWrapper from './PageWrapper';
@@ -39,7 +39,7 @@ function IntermissionView() {
   });
 
   const [passenger, setPassenger] = useState('WANDERING SOUL');
-  const { markAsRead } = useReadingProgress();
+
   const { language } = useLanguage();
   const [intermissionLanguage, setIntermissionLanguage] = useState(language);
   const [randomSouvenir, setRandomSouvenir] = useState(null);
@@ -76,8 +76,6 @@ function IntermissionView() {
   }, [ticketType]);
 
   useEffect(() => {
-    if (id) markAsRead(id);
-    
     async function fetchIp() {
       try {
         const res = await fetch('https://api.ipify.org?format=json');
@@ -90,7 +88,7 @@ function IntermissionView() {
 
     fetchIp();
     setRandomSouvenir({ ...souvenirs[Math.floor(Math.random() * souvenirs.length)], rotate: Math.random() * 40 - 20 });
-  }, [id, markAsRead]);
+  }, [id]);
 
   return (
     <PageWrapper 

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { IndexScatter } from './IndexScatter';
-import { useReadingProgress } from '../hooks/useReadingProgress';
+
 import api from '../api';
 import Polaroid from './Polaroid';
 import Marginalia from './Marginalia';
@@ -26,7 +26,6 @@ function PoemView() {
     enabled: !!id,
   });
 
-  const { markAsRead } = useReadingProgress();
   const { language } = useLanguage();
   const [poemLanguage, setPoemLanguage] = useState(language);
 
@@ -42,10 +41,6 @@ function PoemView() {
       navigate('/index');
     }
   };
-
-  useEffect(() => {
-    if (id) markAsRead(id);
-  }, [id, markAsRead]);
 
   const titleText = poemLanguage === 'EN' ? poem?.titleEn : poem?.titleEs;
   const contentText = poemLanguage === 'EN' ? poem?.contentEn : poem?.contentEs;

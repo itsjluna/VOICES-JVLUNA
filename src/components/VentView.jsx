@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../api';
 import Polaroid from './Polaroid';
 import Sticker from './Sticker';
-import { useReadingProgress } from '../hooks/useReadingProgress';
+
 import { useLanguage } from '../contexts/LanguageContext';
 import { FaLanguage } from 'react-icons/fa';
 import PageWrapper from './PageWrapper';
@@ -24,7 +24,6 @@ function VentView() {
     enabled: !!id,
   });
 
-  const { markAsRead } = useReadingProgress();
   const { language } = useLanguage();
   const [ventLanguage, setVentLanguage] = useState(language);
 
@@ -40,10 +39,6 @@ function VentView() {
       navigate('/index');
     }
   };
-
-  useEffect(() => {
-    if (id) markAsRead(id);
-  }, [id, markAsRead]);
 
   const isNotebook = vent?.theme !== 'postits';
 
