@@ -77,6 +77,20 @@ function VideoView() {
   return (
     <PageWrapper isLoading={isLoading} loadingTextEn="Loading feed..." loadingTextEs="Cargando videos...">
       <SocialBackground />
+      
+      {/* Fullscreen Radial Ambient Glows */}
+      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
+        <motion.div style={{
+          position: 'absolute', right: '-20vw', top: '50%', transform: 'translateY(-50%)',
+          width: '80vw', height: '80vw', maxWidth: '800px', maxHeight: '800px',
+          background: slayGlow, filter: 'blur(100px)', borderRadius: '50%'
+        }} />
+        <motion.div style={{
+          position: 'absolute', left: '-20vw', top: '50%', transform: 'translateY(-50%)',
+          width: '80vw', height: '80vw', maxWidth: '800px', maxHeight: '800px',
+          background: flopGlow, filter: 'blur(100px)', borderRadius: '50%'
+        }} />
+      </div>
       <BackButton />
       
       <div style={{
@@ -107,22 +121,6 @@ function VideoView() {
           alignItems: 'center',
           justifyContent: 'center'
         }}>
-          {/* Background Ambient Glows */}
-          {cards.length > 0 && (
-            <>
-              {/* SLAY Glow (Right Side) */}
-              <motion.div style={{
-                position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)',
-                width: '300px', height: '600px', background: slayGlow, filter: 'blur(80px)', zIndex: 0, pointerEvents: 'none', borderRadius: '50%'
-              }} />
-
-              {/* FLOP Glow (Left Side) */}
-              <motion.div style={{
-                position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)',
-                width: '300px', height: '600px', background: flopGlow, filter: 'blur(80px)', zIndex: 0, pointerEvents: 'none', borderRadius: '50%'
-              }} />
-            </>
-          )}
 
           <AnimatePresence>
             {cards.map((video, index) => {
