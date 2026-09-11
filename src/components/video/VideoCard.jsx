@@ -167,7 +167,7 @@ function VideoCard({ video, isTop, onSwipe, index }) {
         {video.url.includes('youtube.com/embed') ? (
           <iframe
             src={video.url}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none', border: 'none' }}
+            style={{ width: '100%', height: '100%', objectFit: isFullscreen ? 'contain' : 'cover', pointerEvents: 'none', border: 'none' }}
             allow="autoplay; encrypted-media; fullscreen"
             allowFullScreen
             title="tutorial"
@@ -176,7 +176,7 @@ function VideoCard({ video, isTop, onSwipe, index }) {
           <video
             ref={videoRef}
             src={video.url}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            style={{ width: '100%', height: '100%', objectFit: isFullscreen ? 'contain' : 'cover' }}
             loop
             playsInline
             muted={isMuted} // Muted to allow autoplay policies, toggleable
