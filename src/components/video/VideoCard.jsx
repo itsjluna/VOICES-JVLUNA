@@ -1,6 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useAnimation, useMotionValue, useTransform } from 'framer-motion';
-import { FiHeart, FiMessageCircle, FiPlay, FiMusic, FiBookmark, FiShare2, FiMaximize, FiMinimize, FiVolume2, FiVolumeX } from 'react-icons/fi';
+import { motion, useAnimation, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
+import { FiHeart, FiMessageCircle, FiPlay, FiBookmark, FiShare2, FiMaximize, FiMinimize, FiVolume2, FiVolumeX } from 'react-icons/fi';
+
+const GEN_Z_SLANG = ["body so tea", "spill the tea", "im so delulu fr", "im just like him fr", "bro thinks hes him", "shes just like me", "girl like", "its giving video", "lowkey cringe", "hear me out", "btw means by the way btw", "fuck it we ball", "its so over", "in my flop era", "what is bro yapping about", "mejor mierda"];
+const USERNAMES = ["user204", "alex_199", "sadgirl", "jvluna_fan", "the_real_one", "anon992", "vibes_only"];
 
 function VideoCard({ video, isTop, onSwipe, index }) {
   const videoRef = useRef(null);
@@ -11,8 +14,54 @@ function VideoCard({ video, isTop, onSwipe, index }) {
 
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-10, 10]);
+  const slayOpacity = useTransform(x, [50, 150], [0, 1]);
+  const slayScale = useTransform(x, [50, 150], [0.5, 1.2]);
+  const flopOpacity = useTransform(x, [-50, -150], [0, 1]);
+  const flopScale = useTransform(x, [-50, -150], [0.5, 1.2]);
 
   const [isMuted, setIsMuted] = useState(true);
+  
+  const [isLiked, setIsLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(video.likes);
+  const [likeParticles, setLikeParticles] = useState([]);
+  const [liveComments, setLiveComments] = useState([]);
+
+  const handleLike = (e) => {
+    e.stopPropagation();
+    if (isLiked) {
+      setIsLiked(false);
+      setLikesCount(prev => prev - 1);
+    } else {
+      setIsLiked(true);
+      setLikesCount(prev => prev + 1);
+      const newParticles = Array.from({ length: 6 }).map((_, i) => ({
+        id: Date.now() + i,
+        emoji: Math.random() > 0.5 ? '🥀' : '❤️',
+        x: (Math.random() - 0.5) * 60,
+        y: -(Math.random() * 60 + 40),
+        rotation: (Math.random() - 0.5) * 60
+      }));
+      setLikeParticles(prev => [...prev, ...newParticles]);
+      setTimeout(() => {
+        setLikeParticles(prev => prev.filter(p => !newParticles.find(np => np.id === p.id)));
+      }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    if (!isTop || !isPlaying) return;
+    const interval = setInterval(() => {
+      if (Math.random() > 0.5) {
+        const newComment = {
+          id: Date.now(),
+          user: USERNAMES[Math.floor(Math.random() * USERNAMES.length)],
+          text: GEN_Z_SLANG[Math.floor(Math.random() * GEN_Z_SLANG.length)]
+        };
+        setLiveComments(prev => [...prev.slice(-2), newComment]);
+      }
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [isTop, isPlaying]);
 
   const formatNumber = (num) => {
     if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
@@ -126,6 +175,23 @@ function VideoCard({ video, isTop, onSwipe, index }) {
         style={{ flex: 1, position: 'relative', backgroundColor: '#000', width: '100%', height: '100%' }}
         onClick={togglePlay}
       >
+        {/* Swipe Stamps */}
+        <motion.div style={{
+          position: 'absolute', top: '20%', left: '10%', opacity: slayOpacity, scale: slayScale, rotate: -15,
+          color: '#4ade80', border: '4px solid #4ade80', borderRadius: '10px', padding: '10px 20px',
+          fontSize: '3rem', fontWeight: '900', fontFamily: 'var(--font-serif)', zIndex: 50, pointerEvents: 'none',
+          textShadow: '0 0 10px rgba(74,222,128,0.5)', boxShadow: '0 0 20px rgba(74,222,128,0.3)'
+        }}>
+          SLAY
+        </motion.div>
+        <motion.div style={{
+          position: 'absolute', top: '20%', right: '10%', opacity: flopOpacity, scale: flopScale, rotate: 15,
+          color: '#f87171', border: '4px solid #f87171', borderRadius: '10px', padding: '10px 20px',
+          fontSize: '3rem', fontWeight: '900', fontFamily: 'var(--font-serif)', zIndex: 50, pointerEvents: 'none',
+          textShadow: '0 0 10px rgba(248,113,113,0.5)', boxShadow: '0 0 20px rgba(248,113,113,0.3)'
+        }}>
+          FLOP
+        </motion.div>
         {video.url.includes('youtube.com/embed') ? (
           <iframe
             src={video.url}
@@ -238,6 +304,23 @@ function VideoCard({ video, isTop, onSwipe, index }) {
           flexDirection: 'column',
           gap: '10px'
         }}>
+          {/* Live comments */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '4px', height: '40px', justifyContent: 'flex-end', overflow: 'hidden' }}>
+            <AnimatePresence>
+              {liveComments.map(c => (
+                <motion.div
+                  key={c.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 0.8, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  style={{ fontSize: '0.75rem', fontFamily: 'monospace' }}
+                >
+                  <span style={{ opacity: 0.6 }}>@{c.user}:</span> {c.text}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{
               width: '35px',
@@ -259,7 +342,11 @@ function VideoCard({ video, isTop, onSwipe, index }) {
           <p style={{ margin: 0, fontSize: '0.9rem', fontFamily: 'monospace', lineHeight: '1.3' }}>{video.description}</p>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', fontFamily: 'monospace', marginTop: '5px' }}>
-            <FiMusic size={14} style={{ flexShrink: 0 }} />
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: '2px', height: '14px', flexShrink: 0 }}>
+              <motion.div animate={{ height: isPlaying && !isMuted ? [4, 12, 4] : 4 }} transition={{ repeat: Infinity, duration: 0.5 }} style={{ width: '3px', backgroundColor: '#fff', borderRadius: '2px' }} />
+              <motion.div animate={{ height: isPlaying && !isMuted ? [8, 4, 8] : 8 }} transition={{ repeat: Infinity, duration: 0.6 }} style={{ width: '3px', backgroundColor: '#fff', borderRadius: '2px' }} />
+              <motion.div animate={{ height: isPlaying && !isMuted ? [3, 14, 3] : 3 }} transition={{ repeat: Infinity, duration: 0.4 }} style={{ width: '3px', backgroundColor: '#fff', borderRadius: '2px' }} />
+            </div>
             <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px' }}>
               Original Sound - {video.author} ✨
             </div>
@@ -278,11 +365,27 @@ function VideoCard({ video, isTop, onSwipe, index }) {
           color: '#fff',
           textShadow: '1px 1px 3px rgba(0,0,0,0.8)'
         }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+          <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }} onClick={handleLike}>
             <div style={{ backgroundColor: 'rgba(0,0,0,0.3)', width: '44px', height: '44px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <FiHeart size={24} />
+              <FiHeart size={24} fill={isLiked ? '#ef4444' : 'transparent'} color={isLiked ? '#ef4444' : '#fff'} />
             </div>
-            <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', marginTop: '4px' }}>{formatNumber(video.likes)}</span>
+            <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', marginTop: '4px' }}>{formatNumber(likesCount)}</span>
+            
+            {/* Particles */}
+            <AnimatePresence>
+              {likeParticles.map(p => (
+                <motion.div
+                  key={p.id}
+                  initial={{ opacity: 1, x: 0, y: 0, scale: 0.5, rotate: 0 }}
+                  animate={{ opacity: 0, x: p.x, y: p.y, scale: 1.5, rotate: p.rotation }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  style={{ position: 'absolute', top: '10px', pointerEvents: 'none', fontSize: '1.2rem' }}
+                >
+                  {p.emoji}
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
             <div style={{ backgroundColor: 'rgba(0,0,0,0.3)', width: '44px', height: '44px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
