@@ -43,6 +43,8 @@ function VideoCard({ video, isTop, onSwipe, index }) {
     } else if (!isTop && videoRef.current) {
       videoRef.current.pause();
       setIsPlaying(false);
+    } else if (isTop) {
+      setIsPlaying(true); // Assume iframe autoplays
     }
   }, [isTop]);
 
@@ -124,14 +126,23 @@ function VideoCard({ video, isTop, onSwipe, index }) {
         style={{ flex: 1, position: 'relative', backgroundColor: '#000', width: '100%', height: '100%' }}
         onClick={togglePlay}
       >
-        <video
-          ref={videoRef}
-          src={video.url}
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          loop
-          playsInline
-          muted={isMuted} // Muted to allow autoplay policies, toggleable
-        />
+        {video.url.includes('youtube.com/embed') ? (
+          <iframe
+            src={video.url}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none', border: 'none' }}
+            allow="autoplay; encrypted-media"
+            title="tutorial"
+          />
+        ) : (
+          <video
+            ref={videoRef}
+            src={video.url}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            loop
+            playsInline
+            muted={isMuted} // Muted to allow autoplay policies, toggleable
+          />
+        )}
         
         {/* Top Right Controls */}
         <div style={{
@@ -187,6 +198,33 @@ function VideoCard({ video, isTop, onSwipe, index }) {
           background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
           pointerEvents: 'none'
         }} />
+
+        {video.isTutorial && (
+          <div style={{
+            position: 'absolute',
+            top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.4)',
+            zIndex: 100,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            pointerEvents: 'none',
+            color: '#fff',
+            fontFamily: 'monospace'
+          }}>
+            <motion.div
+              animate={{ x: [-20, 20, -20] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ fontSize: '3rem', marginBottom: '1rem' }}
+            >
+              👆
+            </motion.div>
+            <h2 style={{ margin: 0, textShadow: '1px 1px 3px #000' }}>
+              Swipe to explore
+            </h2>
+          </div>
+        )}
 
         {/* Mock social media UI overlay (Left: Info) */}
         <div style={{
