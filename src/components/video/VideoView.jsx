@@ -107,28 +107,20 @@ function VideoView() {
           alignItems: 'center',
           justifyContent: 'center'
         }}>
-          {/* Background Ambient Glows and Stamps */}
+          {/* Background Ambient Glows */}
           {cards.length > 0 && (
             <>
-              {/* SLAY Element (Right Side, meaning dragged right) */}
+              {/* SLAY Glow (Right Side) */}
               <motion.div style={{
-                position: 'absolute', right: '10px', top: '50%', marginTop: '-50px', rotate: 15,
-                opacity: slayOpacity, scale: slayScale, color: '#4ade80', fontSize: '4.5rem', fontWeight: '900',
-                fontFamily: 'var(--font-serif)', textShadow: '0 0 30px rgba(74,222,128,0.8)', pointerEvents: 'none', zIndex: 0
-              }}>
-                SLAY
-                <motion.div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '200px', height: '400px', background: slayGlow, filter: 'blur(50px)', zIndex: -1, borderRadius: '50%' }} />
-              </motion.div>
+                position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)',
+                width: '300px', height: '600px', background: slayGlow, filter: 'blur(80px)', zIndex: 0, pointerEvents: 'none', borderRadius: '50%'
+              }} />
 
-              {/* FLOP Element (Left Side, meaning dragged left) */}
+              {/* FLOP Glow (Left Side) */}
               <motion.div style={{
-                position: 'absolute', left: '10px', top: '50%', marginTop: '-50px', rotate: -15,
-                opacity: flopOpacity, scale: flopScale, color: '#f87171', fontSize: '4.5rem', fontWeight: '900',
-                fontFamily: 'var(--font-serif)', textShadow: '0 0 30px rgba(248,113,113,0.8)', pointerEvents: 'none', zIndex: 0
-              }}>
-                FLOP
-                <motion.div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '200px', height: '400px', background: flopGlow, filter: 'blur(50px)', zIndex: -1, borderRadius: '50%' }} />
-              </motion.div>
+                position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)',
+                width: '300px', height: '600px', background: flopGlow, filter: 'blur(80px)', zIndex: 0, pointerEvents: 'none', borderRadius: '50%'
+              }} />
             </>
           )}
 
