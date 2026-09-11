@@ -12,9 +12,15 @@ function VideoCard({ video, isTop, onSwipe, index, dragX }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const controls = useAnimation();
 
-  const internalX = useMotionValue(0);
-  const x = dragX || internalX;
+  const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-10, 10]);
+
+  useEffect(() => {
+    if (isTop && dragX) {
+      const unsubscribe = x.on('change', (v) => dragX.set(v));
+      return () => unsubscribe();
+    }
+  }, [isTop, dragX, x]);
 
   const [isMuted, setIsMuted] = useState(true);
   
@@ -135,9 +141,10 @@ function VideoCard({ video, isTop, onSwipe, index, dragX }) {
   };
 
   useEffect(() => {
+    const springTransition = { type: 'spring', stiffness: 300, damping: 25 };
     controls.start(isTop 
-      ? { scale: 1, y: 0, opacity: 1, x: 0 } 
-      : { scale: 1 - index * 0.05, y: index * 20, opacity: 1 - index * 0.2, x: 0 }
+      ? { scale: 1, y: 0, opacity: 1, x: 0, transition: springTransition } 
+      : { scale: 1 - index * 0.05, y: index * 20, opacity: 1 - index * 0.2, x: 0, transition: springTransition }
     );
   }, [isTop, index, controls]);
 
@@ -176,7 +183,8 @@ function VideoCard({ video, isTop, onSwipe, index, dragX }) {
           <iframe
             src={video.url}
             style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none', border: 'none' }}
-            allow="autoplay; encrypted-media"
+            allow="autoplay; encrypted-media; fullscreen"
+            allowFullScreen
             title="tutorial"
           />
         ) : (
@@ -202,6 +210,7 @@ function VideoCard({ video, isTop, onSwipe, index, dragX }) {
         }}>
           <div 
             onClick={toggleMute}
+            onPointerDown={(e) => e.stopPropagation()}
             style={{
               color: '#fff',
               cursor: 'pointer',
@@ -218,6 +227,7 @@ function VideoCard({ video, isTop, onSwipe, index, dragX }) {
           </div>
           <div 
             onClick={toggleFullscreen}
+            onPointerDown={(e) => e.stopPropagation()}
             style={{
               color: '#fff',
               cursor: 'pointer',
@@ -345,7 +355,7 @@ function VideoCard({ video, isTop, onSwipe, index, dragX }) {
           color: '#fff',
           textShadow: '1px 1px 3px rgba(0,0,0,0.8)'
         }}>
-          <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }} onClick={handleLike}>
+          <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }} onClick={handleLike} onPointerDown={(e) => e.stopPropagation()}>
             <div style={{ backgroundColor: 'rgba(0,0,0,0.3)', width: '44px', height: '44px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <FiHeart size={24} fill={isLiked ? '#ef4444' : 'transparent'} color={isLiked ? '#ef4444' : '#fff'} />
             </div>
@@ -367,13 +377,13 @@ function VideoCard({ video, isTop, onSwipe, index, dragX }) {
               ))}
             </AnimatePresence>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }} onPointerDown={(e) => e.stopPropagation()}>
             <div style={{ backgroundColor: 'rgba(0,0,0,0.3)', width: '44px', height: '44px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <FiMessageCircle size={24} />
             </div>
             <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', marginTop: '4px' }}>{formatNumber(video.comments)}</span>
           </div>
-          <div onClick={handleShare} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+          <div onClick={handleShare} onPointerDown={(e) => e.stopPropagation()} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
             <div style={{ backgroundColor: 'rgba(0,0,0,0.3)', width: '44px', height: '44px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <FiShare2 size={24} />
             </div>
