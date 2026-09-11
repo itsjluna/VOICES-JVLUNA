@@ -65,11 +65,14 @@ function VideoCard({ video, isTop, onSwipe, index }) {
     return num;
   };
 
+  const [showToast, setShowToast] = useState(false);
+
   const handleShare = (e) => {
     e.stopPropagation();
     const url = `${window.location.origin}/video`;
     navigator.clipboard.writeText(url).then(() => {
-      alert("Link copied!");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2000);
     });
   };
 
@@ -225,6 +228,38 @@ function VideoCard({ video, isTop, onSwipe, index }) {
             {isFullscreen ? <FiMinimize size={24} /> : <FiMaximize size={24} />}
           </div>
         </div>
+        
+        {/* Glassmorphism Toast Notification */}
+        <AnimatePresence>
+          {showToast && (
+            <motion.div
+              initial={{ opacity: 0, x: "-50%", y: "-30%", scale: 0.9 }}
+              animate={{ opacity: 1, x: "-50%", y: "-50%", scale: 1 }}
+              exit={{ opacity: 0, x: "-50%", y: "-30%", scale: 0.9 }}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                padding: '12px 24px',
+                background: 'rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '30px',
+                color: '#fff',
+                fontFamily: 'monospace',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                zIndex: 9999,
+                pointerEvents: 'none',
+                boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+                textShadow: '0px 2px 4px rgba(0,0,0,0.5)'
+              }}
+            >
+              Link copied!
+            </motion.div>
+          )}
+        </AnimatePresence>
         
         {/* Bottom Gradient for readability */}
         <div style={{
