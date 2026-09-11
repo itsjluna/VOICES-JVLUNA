@@ -137,8 +137,6 @@ const ScatteredModal = ({ src, alt, title, description, className, onClose, layo
       }}
     >
       <motion.div
-        layoutId={layoutId}
-        transition={{ type: "spring", stiffness: 1500, damping: 25 }}
         style={{
           rotateX: rotateX,
           rotateY: rotateY,
@@ -149,38 +147,44 @@ const ScatteredModal = ({ src, alt, title, description, className, onClose, layo
           alignItems: 'center'
         }}
       >
-        <img 
-          src={src}
-          alt={alt}
-          className={className}
-          style={{
-            maxWidth: '90vw',
-            maxHeight: '75vh',
-            objectFit: 'contain',
-            filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.6))',
-            transform: 'translateZ(20px)'
-          }}
-        />
-        
-        {(title || description) && (
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.05 }}
+        <motion.div
+          layoutId={layoutId}
+          transition={{ type: "spring", stiffness: 1500, damping: 25 }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+        >
+          <img 
+            src={src}
+            alt={alt}
+            className={className}
             style={{
-              marginTop: '2rem',
-              color: '#fff',
-              textAlign: 'center',
-              maxWidth: '400px',
-              fontFamily: 'var(--font-serif)',
-              transform: 'translateZ(30px)',
-              textShadow: '0 2px 10px rgba(0,0,0,0.5)'
+              maxWidth: '90vw',
+              maxHeight: '75vh',
+              objectFit: 'contain',
+              filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.6))',
+              transform: 'translateZ(20px)'
             }}
-          >
-            {title && <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.5rem', fontWeight: 'normal', letterSpacing: '2px', textTransform: 'uppercase' }}>{title}</h3>}
-            {description && <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.8, fontStyle: 'italic', fontFamily: 'var(--font-sans)', lineHeight: '1.5' }}>{description}</p>}
-          </motion.div>
-        )}
+          />
+          
+          {(title || description) && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 }}
+              style={{
+                marginTop: '2rem',
+                color: '#fff',
+                textAlign: 'center',
+                maxWidth: '400px',
+                fontFamily: 'var(--font-serif)',
+                transform: 'translateZ(30px)',
+                textShadow: '0 2px 10px rgba(0,0,0,0.5)'
+              }}
+            >
+              {title && <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.5rem', fontWeight: 'normal', letterSpacing: '2px', textTransform: 'uppercase' }}>{title}</h3>}
+              {description && <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.8, fontStyle: 'italic', fontFamily: 'var(--font-sans)', lineHeight: '1.5' }}>{description}</p>}
+            </motion.div>
+          )}
+        </motion.div>
       </motion.div>
     </motion.div>
   );

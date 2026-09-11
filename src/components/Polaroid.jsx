@@ -153,41 +153,51 @@ const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
         perspective: '1200px'
       }}
     >
-      <motion.div 
-        layoutId={layoutIdId}
-        transition={{ type: "spring", stiffness: 500, damping: 25, mass: 0.8 }}
+      <motion.div
         className="polaroid-container"
         style={{
-          margin: 0,
-          display: 'inline-block',
-          width: 'auto',
-          maxWidth: '90vw',
-          maxHeight: '90vh',
-          pointerEvents: 'auto',
-          boxShadow: '0 30px 60px rgba(0,0,0,0.6)',
-          transformStyle: 'preserve-3d',
           rotateX: rotateX,
           rotateY: rotateY,
-          position: 'relative'
+          transformStyle: 'preserve-3d',
+          pointerEvents: 'auto',
+          background: '#fff',
+          padding: '1rem 1rem 3rem 1rem',
+          boxShadow: '0 30px 60px rgba(0,0,0,0.5)',
+          maxWidth: '90vw',
+          maxHeight: '90vh'
         }}
       >
-        <img src={src} alt={alt} style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain', transform: 'translateZ(20px)' }} className="polaroid-img" loading="lazy" decoding="async" />
-        <div className="staple" style={{ transform: 'rotate(-15deg) translateZ(25px)' }}></div>
-        {credit && (
-          <div style={{
-            position: 'absolute',
-            bottom: '5%',
-            right: '5%',
-            fontFamily: '"Permanent Marker", cursive',
-            fontSize: '1.4rem',
-            color: '#ff1493',
-            transform: 'rotate(-3deg) translateZ(25px)',
-            opacity: 0.95,
-            zIndex: 10
-          }}>
-            {credit}
-          </div>
-        )}
+        <motion.div 
+          layoutId={layoutIdId}
+          transition={{ type: "spring", stiffness: 500, damping: 25, mass: 0.8 }}
+          style={{ width: '100%', height: '100%', position: 'relative' }}
+        >
+          <img 
+            src={src}
+            alt={alt}
+            style={{
+              width: '100%',
+              height: 'auto',
+              maxHeight: 'calc(90vh - 4rem)',
+              objectFit: 'contain'
+            }}
+          />
+          {credit && (
+            <div style={{
+              position: 'absolute',
+              bottom: '1rem',
+              left: 0,
+              right: 0,
+              textAlign: 'center',
+              fontFamily: '"Permanent Marker", cursive',
+              fontSize: '1.2rem',
+              color: '#ff1493',
+              transform: 'translateZ(10px)'
+            }}>
+              {credit}
+            </div>
+          )}
+        </motion.div>
       </motion.div>
     </motion.div>
   );
