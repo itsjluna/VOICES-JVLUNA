@@ -268,6 +268,23 @@ function AdminDashboard() {
     }
   };
 
+  const handleVideoChange = async (e, setter) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 150 * 1024 * 1024) {
+        alert("File is too large (max 150MB)");
+        return;
+      }
+      setter(prev => ({ ...prev, url: 'Uploading...' }));
+      const url = await uploadFileToSupabase(file, 'video_upload');
+      if (url) {
+        setter(prev => ({ ...prev, url: url }));
+      } else {
+        setter(prev => ({ ...prev, url: '' }));
+      }
+    }
+  };
+
   // --- Track Actions ---
   const saveTrack = async (e) => {
     e.preventDefault();
@@ -1190,6 +1207,9 @@ function AdminDashboard() {
               <h2 style={{ marginBottom: '2rem' }}>{videoForm._id ? 'Edit Video' : 'Add Video'}</h2>
               <form onSubmit={saveVideo} className="admin-form" style={{ border: 'none', padding: 0 }}>
                 <input type="text" placeholder="Video URL (e.g. https://.../video.mp4)" value={videoForm.url} onChange={e => setVideoForm({...videoForm, url: e.target.value})} required />
+                <label>Or Upload Video File (Max 150MB)</label>
+                <input type="file" accept="video/*" onChange={e => handleVideoChange(e, setVideoForm)} style={{ marginBottom: '1rem' }} />
+                
                 <input type="text" placeholder="Author (e.g. username)" value={videoForm.author} onChange={e => setVideoForm({...videoForm, author: e.target.value})} required />
                 <textarea placeholder="Description" value={videoForm.description} onChange={e => setVideoForm({...videoForm, description: e.target.value})} required style={{ padding: '0.8rem', borderRadius: '10px', minHeight: '100px', border: '1px solid var(--border-color)', background: 'transparent', color: 'var(--text-color)', fontFamily: 'inherit' }} />
                 

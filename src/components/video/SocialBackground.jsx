@@ -20,7 +20,7 @@ function FloatingItem({ item, isImage, delay, duration, startX, startY, endX, en
       animate={{ 
         x: endX, 
         y: endY, 
-        opacity: [0, isImage ? 0.2 : 0.4, isImage ? 0.2 : 0.4, 0],
+        opacity: [0, isImage ? 0.6 : 0.4, isImage ? 0.6 : 0.4, 0],
         rotate: [0, Math.random() * 20 - 10, Math.random() * -20 + 10, 0]
       }}
       transition={{ 
@@ -33,7 +33,7 @@ function FloatingItem({ item, isImage, delay, duration, startX, startY, endX, en
         position: 'absolute',
         fontSize: '1.5rem',
         fontWeight: 'bold',
-        fontFamily: 'var(--font-serif)',
+        fontFamily: 'monospace',
         color: 'var(--text-color)',
         pointerEvents: 'none',
         whiteSpace: 'nowrap',
