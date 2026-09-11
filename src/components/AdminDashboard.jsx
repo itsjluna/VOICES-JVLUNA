@@ -1174,6 +1174,50 @@ function AdminDashboard() {
           </motion.div>
         )}
       </AnimatePresence>
+      {/* VIDEO MODAL */}
+      <AnimatePresence>
+        {isVideoModalOpen && (
+          <motion.div 
+            className="modal-overlay"
+            onClick={(e) => { if (e.target === e.currentTarget) setIsVideoModalOpen(false); }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          >
+            <motion.div 
+              className="modal-content"
+              initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 50, opacity: 0 }}
+            >
+              <button className="modal-close" onClick={() => setIsVideoModalOpen(false)}>&times;</button>
+              <h2 style={{ marginBottom: '2rem' }}>{videoForm._id ? 'Edit Video' : 'Add Video'}</h2>
+              <form onSubmit={saveVideo} className="admin-form" style={{ border: 'none', padding: 0 }}>
+                <input type="text" placeholder="Video URL (e.g. https://.../video.mp4)" value={videoForm.url} onChange={e => setVideoForm({...videoForm, url: e.target.value})} required />
+                <input type="text" placeholder="Author (e.g. username)" value={videoForm.author} onChange={e => setVideoForm({...videoForm, author: e.target.value})} required />
+                <textarea placeholder="Description" value={videoForm.description} onChange={e => setVideoForm({...videoForm, description: e.target.value})} required style={{ padding: '0.8rem', borderRadius: '10px', minHeight: '100px', border: '1px solid var(--border-color)', background: 'transparent', color: 'var(--text-color)', fontFamily: 'inherit' }} />
+                
+                <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                  <div style={{ flex: 1 }}>
+                    <label>Likes</label>
+                    <input type="number" value={videoForm.likes} onChange={e => setVideoForm({...videoForm, likes: parseInt(e.target.value) || 0})} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label>Comments</label>
+                    <input type="number" value={videoForm.comments} onChange={e => setVideoForm({...videoForm, comments: parseInt(e.target.value) || 0})} />
+                  </div>
+                </div>
+
+                {videoForm.url && (
+                  <div style={{ marginTop: '1rem' }}>
+                    <video controls src={videoForm.url} style={{ width: '100%', maxHeight: '200px', background: '#000' }} />
+                  </div>
+                )}
+                
+                <button type="submit" style={{ marginTop: '2rem', padding: '1rem', background: 'var(--text-color)', color: 'var(--bg-color)' }}>
+                  {videoForm._id ? 'Save Video' : 'Add Video'}
+                </button>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

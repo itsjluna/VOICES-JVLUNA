@@ -1,41 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
 import PageWrapper from '../PageWrapper';
 import BackButton from '../BackButton';
 import VideoCard from './VideoCard';
+import SocialBackground from './SocialBackground';
 import { useLanguage } from '../../contexts/LanguageContext';
-
-const MOCK_VIDEOS = [
-  {
-    id: 1,
-    url: 'https://www.w3schools.com/html/mov_bbb.mp4',
-    author: 'w3schools',
-    description: 'Big Buck Bunny trailer',
-    likes: 1240,
-    comments: 45
-  },
-  {
-    id: 2,
-    url: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
-    author: 'blender_foundation',
-    description: 'Sintel Trailer',
-    likes: 8900,
-    comments: 312
-  },
-  {
-    id: 3,
-    url: 'https://www.w3schools.com/html/mov_bbb.mp4',
-    author: 'bunny_fan_99',
-    description: 'Look at this bunny again!',
-    likes: 245,
-    comments: 12
-  }
-];
+import api from '../../api';
 
 function VideoView() {
   const { language } = useLanguage();
-  const [cards, setCards] = useState(MOCK_VIDEOS);
+  const [cards, setCards] = useState([]);
   const [browserInfo, setBrowserInfo] = useState('');
+
+  const { data: videos = [], isLoading, refetch } = useQuery({
+    queryKey: ['videos'],
+    queryFn: async () => {
+      const res = await api.get('/videos');
+      return res.data;
+    }
+  });
+
+  useEffect(() => {
+    if (videos.length > 0) {
+      setCards(videos);
+    }
+  }, [videos]);
 
   useEffect(() => {
     // Gather browser info to personalize
@@ -46,15 +36,19 @@ function VideoView() {
   }, []);
 
   const handleSwipe = (id, direction) => {
-    setCards(prev => prev.filter(card => card.id !== id));
+    setCards(prev => prev.filter(card => card._id !== id));
   };
 
-  const handleRefresh = () => {
-    setCards([...MOCK_VIDEOS].sort(() => Math.random() - 0.5));
+  const handleRefresh = async () => {
+    const { data } = await refetch();
+    if (data && data.length > 0) {
+      setCards([...data].sort(() => Math.random() - 0.5));
+    }
   };
 
   return (
-    <PageWrapper>
+    <PageWrapper isLoading={isLoading} loadingTextEn="Loading feed..." loadingTextEs="Cargando videos...">
+      <SocialBackground />
       <BackButton />
       
       <div style={{
@@ -63,7 +57,9 @@ function VideoView() {
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: '80vh',
-        padding: '2rem 1rem'
+        padding: '2rem 1rem',
+        position: 'relative',
+        zIndex: 10
       }}>
         <div style={{ textAlign: 'center', marginBottom: '1rem', color: 'var(--text-color)' }}>
           <h1 style={{ fontFamily: 'var(--font-serif)', marginBottom: '0.5rem' }}>
@@ -88,10 +84,10 @@ function VideoView() {
               const isTop = index === 0;
               return (
                 <VideoCard
-                  key={video.id}
+                  key={video._id}
                   video={video}
                   isTop={isTop}
-                  onSwipe={(dir) => handleSwipe(video.id, dir)}
+                  onSwipe={(dir) => handleSwipe(video._id, dir)}
                   index={index}
                 />
               );
