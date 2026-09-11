@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import PageWrapper from '../PageWrapper';
 import BackButton from '../BackButton';
@@ -22,16 +22,6 @@ function VideoView() {
   });
 
   const [showTutorial, setShowTutorial] = useState(false);
-
-  const dragX = useMotionValue(0);
-  const slayOpacity = useTransform(dragX, [50, 150], [0, 1]);
-  const slayScale = useTransform(dragX, [50, 150], [0.5, 1.2]);
-  const flopOpacity = useTransform(dragX, [-50, -150], [0, 1]);
-  const flopScale = useTransform(dragX, [-50, -150], [0.5, 1.2]);
-
-  // Glow effects based on drag
-  const slayGlow = useTransform(dragX, [50, 150], ['rgba(74,222,128,0)', 'rgba(74,222,128,0.5)']);
-  const flopGlow = useTransform(dragX, [-50, -150], ['rgba(248,113,113,0)', 'rgba(248,113,113,0.5)']);
 
   useEffect(() => {
     let initialCards = [...videos];
@@ -63,8 +53,16 @@ function VideoView() {
       setShowTutorial(false);
       localStorage.setItem('videoSwipeTutorialSeen', 'true');
     }
-    setCards(prev => prev.filter(card => card._id !== id));
-    dragX.set(0); // reset background stamps
+    setCards(prev => {
+      const swipedCard = prev.find(c => c._id === id);
+      const newCards = prev.filter(c => c._id !== id);
+      if (swipedCard) {
+        // Clone it with a new id to force a remount at the bottom of the stack (infinite loop)
+        const clone = { ...swipedCard, _id: swipedCard._id.split('-')[0] + '-' + Date.now() };
+        newCards.push(clone);
+      }
+      return newCards;
+    });
   };
 
   const handleRefresh = async () => {
@@ -77,20 +75,6 @@ function VideoView() {
   return (
     <PageWrapper isLoading={isLoading} loadingTextEn="Loading feed..." loadingTextEs="Cargando videos...">
       <SocialBackground />
-      
-      {/* Fullscreen Radial Ambient Glows */}
-      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
-        <motion.div style={{
-          position: 'absolute', right: '-20vw', top: '50%', transform: 'translateY(-50%)',
-          width: '80vw', height: '80vw', maxWidth: '800px', maxHeight: '800px',
-          background: slayGlow, filter: 'blur(100px)', borderRadius: '50%'
-        }} />
-        <motion.div style={{
-          position: 'absolute', left: '-20vw', top: '50%', transform: 'translateY(-50%)',
-          width: '80vw', height: '80vw', maxWidth: '800px', maxHeight: '800px',
-          background: flopGlow, filter: 'blur(100px)', borderRadius: '50%'
-        }} />
-      </div>
       <BackButton />
       
       <div style={{
@@ -132,32 +116,10 @@ function VideoView() {
                   isTop={isTop}
                   onSwipe={(dir) => handleSwipe(video._id, dir)}
                   index={index}
-                  dragX={isTop ? dragX : undefined}
                 />
               );
             }).reverse()}
           </AnimatePresence>
-          
-          {cards.length === 0 && (
-            <div style={{ color: 'var(--text-color)', textAlign: 'center' }}>
-              <p>{language === 'EN' ? "You've seen everything!" : "¡Has visto todo!"}</p>
-              <button 
-                onClick={handleRefresh}
-                style={{
-                  marginTop: '1rem',
-                  padding: '0.5rem 1rem',
-                  background: 'var(--text-color)',
-                  color: 'var(--bg-color)',
-                  border: 'none',
-                  borderRadius: '20px',
-                  cursor: 'pointer',
-                  fontFamily: 'monospace'
-                }}
-              >
-                {language === 'EN' ? "Refresh Feed" : "Actualizar"}
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </PageWrapper>

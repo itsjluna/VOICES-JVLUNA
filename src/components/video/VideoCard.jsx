@@ -5,7 +5,7 @@ import { FiHeart, FiMessageCircle, FiPlay, FiBookmark, FiShare2, FiMaximize, FiM
 const GEN_Z_SLANG = ["body so tea", "spill the tea", "im so delulu fr", "im just like him fr", "bro thinks hes him", "shes just like me", "girl like", "its giving video", "lowkey cringe", "hear me out", "btw means by the way btw", "fuck it we ball", "its so over", "in my flop era", "what is bro yapping about", "mejor mierda"];
 const USERNAMES = ["user204", "alex_199", "sadgirl", "jvluna_fan", "the_real_one", "anon992", "vibes_only"];
 
-function VideoCard({ video, isTop, onSwipe, index, dragX }) {
+function VideoCard({ video, isTop, onSwipe, index }) {
   const videoRef = useRef(null);
   const containerRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -14,13 +14,6 @@ function VideoCard({ video, isTop, onSwipe, index, dragX }) {
 
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-10, 10]);
-
-  useEffect(() => {
-    if (isTop && dragX) {
-      const unsubscribe = x.on('change', (v) => dragX.set(v));
-      return () => unsubscribe();
-    }
-  }, [isTop, dragX, x]);
 
   const [isMuted, setIsMuted] = useState(true);
   
@@ -100,23 +93,10 @@ function VideoCard({ video, isTop, onSwipe, index, dragX }) {
     }
   }, [isTop]);
 
-  useEffect(() => {
-    const onFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-    document.addEventListener('fullscreenchange', onFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
-  }, []);
-
   const toggleFullscreen = (e) => {
     e.stopPropagation();
-    if (!document.fullscreenElement) {
-      containerRef.current.requestFullscreen().catch(err => {
-        console.log(`Error attempting to enable fullscreen mode: ${err.message}`);
-      });
-    } else {
-      document.exitFullscreen();
-    }
+    // Use purely CSS-based fullscreen to bypass strict mobile browser policies!
+    setIsFullscreen(!isFullscreen);
   };
 
   const handleDragEnd = (event, info) => {
@@ -157,9 +137,11 @@ function VideoCard({ video, isTop, onSwipe, index, dragX }) {
       initial={{ scale: 0.95, y: 20, opacity: 0 }}
       exit={{ x: -500, opacity: 0 }}
       style={{
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
+        position: isFullscreen ? 'fixed' : 'absolute',
+        top: isFullscreen ? 0 : undefined,
+        left: isFullscreen ? 0 : undefined,
+        width: isFullscreen ? '100vw' : '100%',
+        height: isFullscreen ? '100dvh' : '100%',
         backgroundColor: 'var(--bg-color)',
         border: isFullscreen ? 'none' : '1px solid var(--text-color)',
         borderRadius: isFullscreen ? '0px' : '20px',
@@ -168,7 +150,7 @@ function VideoCard({ video, isTop, onSwipe, index, dragX }) {
         display: 'flex',
         flexDirection: 'column',
         cursor: isTop ? 'grab' : 'default',
-        zIndex: 100 - index,
+        zIndex: isFullscreen ? 99999 : 100 - index,
         x,
         rotate
       }}
