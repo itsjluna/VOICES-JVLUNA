@@ -12,6 +12,7 @@ function AdminDashboard() {
   const [chapters, setChapters] = useState([]);
   const [poems, setPoems] = useState([]);
   const [tracks, setTracks] = useState([]);
+  const [videos, setVideos] = useState([]);
   
   const [newChapterTitle, setNewChapterTitle] = useState('');
   
@@ -29,6 +30,9 @@ function AdminDashboard() {
 
   const [chapterForm, setChapterForm] = useState({ _id: null, title: '', titleEn: '', image: '', imageCredit: '', theme: 'winter', writersNote: '', writersNoteEn: '' });
   const [isChapterModalOpen, setIsChapterModalOpen] = useState(false);
+
+  const [videoForm, setVideoForm] = useState({ _id: null, url: '', author: '', description: '', likes: 0, comments: 0 });
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   const [expandedChapters, setExpandedChapters] = useState(new Set());
   const [searchQuery, setSearchQuery] = useState('');
@@ -198,14 +202,16 @@ function AdminDashboard() {
 
   const fetchData = async () => {
     try {
-      const [chapRes, poemRes, trackRes] = await Promise.all([
+      const [chapRes, poemRes, trackRes, videoRes] = await Promise.all([
         api.get('/chapters?lean=true'),
         api.get('/poems?lean=true'),
-        api.get('/tracks')
+        api.get('/tracks'),
+        api.get('/videos')
       ]);
       setChapters(chapRes.data);
       setPoems(poemRes.data);
       setTracks(trackRes.data);
+      setVideos(videoRes.data);
     } catch (err) {
       console.error(err);
       if (err.response?.status === 401) handleLogout();
@@ -300,6 +306,46 @@ function AdminDashboard() {
   const openTrackModalForEdit = (track) => {
     setTrackForm(track);
     setIsTrackModalOpen(true);
+  };
+
+  // --- Video Actions ---
+  const saveVideo = async (e) => {
+    e.preventDefault();
+    if (videoForm._id) await api.put(`/videos/${videoForm._id}`, videoForm);
+    else await api.post('/videos', videoForm);
+    setIsVideoModalOpen(false);
+    fetchData();
+  };
+
+  const deleteVideo = async (id) => {
+    if (confirm('Delete this video?')) {
+      await api.delete(`/videos/${id}`);
+      fetchData();
+    }
+  };
+
+  const moveVideo = async (videoId, direction) => {
+    const index = videos.findIndex(v => v._id === videoId);
+    if (index === -1) return;
+    const newVideos = [...videos];
+    if (direction === 'up' && index > 0) {
+      [newVideos[index - 1], newVideos[index]] = [newVideos[index], newVideos[index - 1]];
+    } else if (direction === 'down' && index < newVideos.length - 1) {
+      [newVideos[index + 1], newVideos[index]] = [newVideos[index], newVideos[index + 1]];
+    } else return;
+    
+    setVideos(newVideos);
+    await api.put('/videos/reorder', { orderedIds: newVideos.map(v => v._id) });
+  };
+
+  const openVideoModalForNew = () => {
+    setVideoForm({ _id: null, url: '', author: '', description: '', likes: 0, comments: 0 });
+    setIsVideoModalOpen(true);
+  };
+
+  const openVideoModalForEdit = (video) => {
+    setVideoForm(video);
+    setIsVideoModalOpen(true);
   };
 
   // --- Chapter Actions ---
@@ -498,6 +544,13 @@ function AdminDashboard() {
           >
             <FaPlus size={16} /> {!isScrolled && <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Add Track</span>}
           </button>
+          <button 
+            onClick={openVideoModalForNew} 
+            style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none', cursor: 'pointer' }}
+            title="Add Video"
+          >
+            <FaPlus size={16} /> {!isScrolled && <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Add Video</span>}
+          </button>
           {selectedItems.size > 0 && (
             <button 
               onClick={handleBulkDelete}
@@ -539,6 +592,12 @@ function AdminDashboard() {
             style={{ padding: '0.6rem 1.2rem', borderRadius: '20px', border: 'none', background: activeTab === 'tracks' ? 'var(--text-color)' : 'transparent', color: activeTab === 'tracks' ? 'var(--bg-color)' : 'var(--text-color)', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 600, transition: 'all 0.2s' }}
           >
             Music Tracks
+          </button>
+          <button 
+            onClick={() => setActiveTab('videos')}
+            style={{ padding: '0.6rem 1.2rem', borderRadius: '20px', border: 'none', background: activeTab === 'videos' ? 'var(--text-color)' : 'transparent', color: activeTab === 'videos' ? 'var(--bg-color)' : 'var(--text-color)', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 600, transition: 'all 0.2s' }}
+          >
+            Videos
           </button>
         </div>
 
@@ -611,6 +670,37 @@ function AdminDashboard() {
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
                     <button onClick={() => openTrackModalForEdit(t)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }}>Edit Details</button>
                     <button onClick={() => deleteTrack(t._id)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem', color: '#ff4d4d', borderColor: '#ff4d4d' }}>Delete</button>
+                  </div>
+                </div>
+              </div>
+            </li>
+          ))
+        ) : activeTab === 'videos' ? (
+          videos.map((v, index) => (
+            <li key={v._id} style={{ display: 'block', padding: 0, marginBottom: '1rem', border: 'none' }}>
+              <div className="admin-list-item" style={{ 
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
+                padding: '1rem 1.5rem', 
+                userSelect: 'none',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.06)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.03)'; }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{ display: 'flex', gap: '0.2rem' }}>
+                    <button onClick={() => moveVideo(v._id, 'up')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }} title="Move Up"><FaArrowUp /></button>
+                    <button onClick={() => moveVideo(v._id, 'down')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }} title="Move Down"><FaArrowDown /></button>
+                  </div>
+                  
+                  <strong style={{ fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    @{v.author} <span style={{ fontWeight: 'normal', opacity: 0.8, fontSize: '0.9rem' }}>{v.description.substring(0, 30)}...</span>
+                  </strong>
+                </div>
+
+                <div className="admin-list-item-actions" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <button onClick={() => openVideoModalForEdit(v)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }}>Edit Details</button>
+                    <button onClick={() => deleteVideo(v._id)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem', color: '#ff4d4d', borderColor: '#ff4d4d' }}>Delete</button>
                   </div>
                 </div>
               </div>

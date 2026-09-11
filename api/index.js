@@ -104,9 +104,20 @@ const trackSchema = new mongoose.Schema({
 });
 trackSchema.index({ order: 1 });
 
+const videoSchema = new mongoose.Schema({
+  url: String,
+  author: String,
+  description: String,
+  likes: { type: Number, default: 0 },
+  comments: { type: Number, default: 0 },
+  order: { type: Number, default: 0 }
+});
+videoSchema.index({ order: 1 });
+
 const Chapter = mongoose.model('Chapter', chapterSchema);
 const Poem = mongoose.model('Poem', poemSchema);
 const Track = mongoose.model('Track', trackSchema);
+const Video = mongoose.model('Video', videoSchema);
 
 const authMiddleware = (req, res, next) => {
   const token = req.headers.authorization;
@@ -362,6 +373,57 @@ app.put('/api/tracks/:id', authMiddleware, async (req, res) => {
 app.delete('/api/tracks/:id', authMiddleware, async (req, res) => {
   try {
     await Track.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// --- Videos ---
+app.get('/api/videos', async (req, res) => {
+  try {
+    const videos = await Video.find().sort({ order: 1 });
+    res.json(videos);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/videos', authMiddleware, async (req, res) => {
+  try {
+    const video = new Video(req.body);
+    await video.save();
+    res.json(video);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/api/videos/reorder', authMiddleware, async (req, res) => {
+  try {
+    const { orderedIds } = req.body;
+    const promises = orderedIds.map((id, index) => 
+      Video.findByIdAndUpdate(id, { order: index })
+    );
+    await Promise.all(promises);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/api/videos/:id', authMiddleware, async (req, res) => {
+  try {
+    const video = await Video.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
+    res.json(video);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/videos/:id', authMiddleware, async (req, res) => {
+  try {
+    await Video.findByIdAndDelete(req.params.id);
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
