@@ -20,6 +20,9 @@ function VideoCard({ video, isTop, onSwipe, index }) {
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(video.likes);
   const [likeParticles, setLikeParticles] = useState([]);
+  
+  const [commentsCount, setCommentsCount] = useState(video.comments);
+  const [isCommenting, setIsCommenting] = useState(false);
   const [liveComments, setLiveComments] = useState([]);
 
   const handleLike = (e) => {
@@ -42,6 +45,20 @@ function VideoCard({ video, isTop, onSwipe, index }) {
         setLikeParticles(prev => prev.filter(p => !newParticles.find(np => np.id === p.id)));
       }, 1000);
     }
+  };
+
+  const handleComment = (e) => {
+    e.stopPropagation();
+    setCommentsCount(prev => prev + 1);
+    setIsCommenting(true);
+    setTimeout(() => setIsCommenting(false), 300);
+    
+    const newComment = {
+      id: Date.now() + Math.random(),
+      user: 'you',
+      text: GEN_Z_SLANG[Math.floor(Math.random() * GEN_Z_SLANG.length)]
+    };
+    setLiveComments(prev => [...prev.slice(-2), newComment]);
   };
 
   useEffect(() => {
@@ -396,12 +413,18 @@ function VideoCard({ video, isTop, onSwipe, index }) {
               ))}
             </AnimatePresence>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }} onPointerDown={(e) => e.stopPropagation()}>
+          <motion.div 
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }} 
+            onClick={handleComment}
+            onPointerDown={(e) => e.stopPropagation()}
+            animate={isCommenting ? { scale: [1, 1.4, 1], rotate: [0, -15, 15, 0] } : {}}
+            transition={{ duration: 0.3 }}
+          >
             <div style={{ backgroundColor: 'rgba(0,0,0,0.3)', width: '44px', height: '44px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <FiMessageCircle size={24} />
             </div>
-            <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', marginTop: '4px' }}>{formatNumber(video.comments)}</span>
-          </div>
+            <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', marginTop: '4px' }}>{formatNumber(commentsCount)}</span>
+          </motion.div>
           <div onClick={handleShare} onPointerDown={(e) => e.stopPropagation()} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
             <div style={{ backgroundColor: 'rgba(0,0,0,0.3)', width: '44px', height: '44px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <FiShare2 size={24} />
