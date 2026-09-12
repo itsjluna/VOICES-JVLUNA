@@ -125,6 +125,11 @@ function VisualsView() {
               }}
             />
           ))}
+          <img 
+            src="/brushestrokes.svg" 
+            className="brush-strokes-bg" 
+            alt="" 
+          />
           {souvenirs.map((sov, idx) => (
             <img key={idx} src={sov.src} className="souvenir-bg" style={sov.style} alt="" />
           ))}
