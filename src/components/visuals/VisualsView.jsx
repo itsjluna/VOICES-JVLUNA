@@ -105,7 +105,7 @@ function VisualsView() {
       <PageWrapper 
         isLoading={isLoading} 
         loadingTextEn="Preparing gallery..." 
-        loadingTextEs="Preparando galerÃƒÂ­a..."
+        loadingTextEs="Preparando galería..."
         style={{ minHeight: '100vh' }}
       >
         <div className="museum-wall">
@@ -163,7 +163,7 @@ function VisualsView() {
               >
                 <div className="studio-btn-sketch-inner">
                   <FaPencilAlt size={18} style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }} />
-                  <span>{language === 'EN' ? 'Take your pencil' : 'Toma tu lÃ¡piz'}</span>
+                  <span>{language === 'EN' ? 'Take your pencil' : 'Toma tu lápiz'}</span>
                 </div>
               </button>
             </motion.div>
@@ -171,7 +171,7 @@ function VisualsView() {
 
           {visuals.length === 0 && !isLoading && (
             <div style={{ textAlign: 'center', opacity: 0.5, marginTop: '4rem' }}>
-              {language === 'EN' ? 'No artworks on display yet.' : 'AÃƒÂºn no hay obras en exhibiciÃƒÂ³n.'}
+              {language === 'EN' ? 'No artworks on display yet.' : 'Aún no hay obras en exhibición.'}
             </div>
           )}
 
@@ -253,11 +253,11 @@ function VisualsView() {
                     <span>{selectedVisual.author}</span>
                   </div>
                   <div className="meta-row">
-                    <span>{language === 'EN' ? 'Technique' : 'TÃƒÂ©cnica'}</span>
+                    <span>{language === 'EN' ? 'Technique' : 'Técnica'}</span>
                     <span>{language === 'EN' ? (selectedVisual.techniqueEn || selectedVisual.techniqueEs) : (selectedVisual.techniqueEs || selectedVisual.techniqueEn)}</span>
                   </div>
                   <div className="meta-row">
-                    <span>{language === 'EN' ? 'Year' : 'AÃƒÂ±o'}</span>
+                    <span>{language === 'EN' ? 'Year' : 'Año'}</span>
                     <span>{selectedVisual.year}</span>
                   </div>
                   

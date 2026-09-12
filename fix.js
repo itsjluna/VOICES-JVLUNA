@@ -1,0 +1,1 @@
+const fs = require('fs'); let c = fs.readFileSync('src/components/visuals/VisualsView.jsx', 'utf8'); c = c.replace(/Toma tu l.*?piz/g, 'Toma tu lápiz'); c = c.replace(/A.*?n no hay obras en exhibici.*?n\./g, 'Aún no hay obras en exhibición.'); fs.writeFileSync('src/components/visuals/VisualsView.jsx', c, 'utf8');
