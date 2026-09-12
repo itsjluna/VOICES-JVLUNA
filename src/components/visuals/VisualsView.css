@@ -389,3 +389,39 @@
   background: rgba(30, 30, 30, 0.8);
 }
 
+
+/* Studio Button */
+.studio-btn {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  padding: 0.75rem 1.5rem;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: #111;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.studio-btn:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+:root.dark .studio-btn {
+  background: rgba(30, 30, 35, 0.5);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #eee;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+:root.dark .studio-btn:hover {
+  background: rgba(50, 50, 55, 0.8);
+}

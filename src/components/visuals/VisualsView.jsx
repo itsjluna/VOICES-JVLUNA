@@ -3,8 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../../contexts/LanguageContext';
 import PageWrapper from '../PageWrapper';
 import BackButton from '../BackButton';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaPalette } from 'react-icons/fa';
 import api from '../../api';
+import Sketchpad from './Sketchpad';
 import './VisualsView.css';
 
 function VisualsView() {
@@ -13,6 +14,7 @@ function VisualsView() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedVisual, setSelectedVisual] = useState(null);
   const [columnsCount, setColumnsCount] = useState(3);
+  const [isSketchpadOpen, setIsSketchpadOpen] = useState(false);
 
   useEffect(() => {
     const fetchVisuals = async () => {
@@ -107,7 +109,15 @@ function VisualsView() {
         </div>
         
         <div className="visuals-container">
-          <BackButton style={{ position: 'relative', zIndex: 100 }} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative', zIndex: 100 }}>
+            <BackButton />
+            <button 
+              className="studio-btn"
+              onClick={() => setIsSketchpadOpen(true)}
+            >
+              <FaPalette /> {language === 'EN' ? 'Studio' : 'Estudio'}
+            </button>
+          </div>
           
           <div className="visuals-header">
             <motion.h1 
@@ -209,6 +219,12 @@ function VisualsView() {
                 </div>
               </motion.div>
             </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {isSketchpadOpen && (
+            <Sketchpad onClose={() => setIsSketchpadOpen(false)} />
           )}
         </AnimatePresence>
       </PageWrapper>
