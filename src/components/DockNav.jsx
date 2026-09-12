@@ -13,6 +13,16 @@ function DockNav() {
   const navigate = useNavigate();
   const location = useLocation();
   const { language, toggleLanguage } = useLanguage();
+  
+  const [isHidden, setIsHidden] = useState(false);
+
+  useEffect(() => {
+    const handleFullscreenChange = (e) => {
+      setIsHidden(e.detail);
+    };
+    window.addEventListener('video-fullscreen-change', handleFullscreenChange);
+    return () => window.removeEventListener('video-fullscreen-change', handleFullscreenChange);
+  }, []);
 
   useEffect(() => {
     if (isDark) {
@@ -51,12 +61,14 @@ function DockNav() {
   return (
     <motion.div 
       initial={{ y: 50, opacity: 0, x: '-50%' }}
-      animate={{ y: 0, opacity: 1, x: '-50%' }}
+      animate={{ y: isHidden ? 150 : 0, opacity: isHidden ? 0 : 1, x: '-50%' }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
       style={{
         position: 'fixed',
         bottom: '2rem',
         left: '50%',
-        zIndex: 5000
+        zIndex: 5000,
+        pointerEvents: isHidden ? 'none' : 'auto'
       }}
     >
       <div 

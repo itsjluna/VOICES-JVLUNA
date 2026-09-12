@@ -113,10 +113,27 @@ function VideoCard({ video, isTop, onSwipe, index }) {
     }
   }, [isTop]);
 
+  useEffect(() => {
+    if (!isTop && isFullscreen) {
+      setIsFullscreen(false);
+      window.dispatchEvent(new CustomEvent('video-fullscreen-change', { detail: false }));
+    }
+  }, [isTop, isFullscreen]);
+
+  useEffect(() => {
+    return () => {
+      if (isFullscreen) {
+        window.dispatchEvent(new CustomEvent('video-fullscreen-change', { detail: false }));
+      }
+    };
+  }, [isFullscreen]);
+
   const toggleFullscreen = (e) => {
     e.stopPropagation();
     // Use purely CSS-based fullscreen to bypass strict mobile browser policies!
-    setIsFullscreen(!isFullscreen);
+    const nextState = !isFullscreen;
+    setIsFullscreen(nextState);
+    window.dispatchEvent(new CustomEvent('video-fullscreen-change', { detail: nextState }));
   };
 
   const handleDragEnd = (event, info) => {
