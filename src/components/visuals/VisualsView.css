@@ -24,24 +24,25 @@
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: radial-gradient(circle 800px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 230, 180, 0.15), transparent 80%);
+  background: radial-gradient(circle 400px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 230, 180, 0.2), transparent 80%);
   pointer-events: none;
   z-index: 1;
 }
 :root.dark .museum-wall::after {
-  background: radial-gradient(circle 800px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 220, 180, 0.05), transparent 80%);
+  background: radial-gradient(circle 400px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 220, 180, 0.08), transparent 80%);
 }
 
 .souvenir-bg {
   position: absolute;
   pointer-events: none;
-  opacity: 0.6;
-  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+  opacity: 0.85; /* Increased for better visibility in light theme */
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15));
   z-index: 2;
   animation: floatSouvenir var(--float-duration, 6s) ease-in-out infinite alternate;
 }
 :root.dark .souvenir-bg {
-  opacity: 0.3;
+  opacity: 0.4;
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4));
 }
 
 @keyframes floatSouvenir {
@@ -52,13 +53,18 @@
 /* Dust Particles */
 .dust-particle {
   position: fixed;
-  background: white;
+  background: rgba(100, 80, 60, 0.3); /* Darker/warmer for light theme visibility */
   border-radius: 50%;
   pointer-events: none;
   z-index: 2;
   opacity: 0;
-  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 10px 2px rgba(100, 80, 60, 0.1);
   animation: floatDust var(--duration, 15s) linear infinite;
+}
+
+:root.dark .dust-particle {
+  background: white;
+  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.4);
 }
 
 @keyframes floatDust {
