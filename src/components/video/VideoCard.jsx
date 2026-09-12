@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion, useAnimation, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
 import { FiHeart, FiMessageCircle, FiPlay, FiBookmark, FiShare2, FiMaximize, FiMinimize, FiVolume2, FiVolumeX } from 'react-icons/fi';
 
-const GEN_Z_SLANG = ["body so tea", "spill the tea", "im so delulu fr", "im just like him fr", "bro thinks hes him", "shes just like me", "girl like", "its giving video", "lowkey cringe", "hear me out", "btw means by the way btw", "fuck it we ball", "its so over", "in my flop era", "what is bro yapping about", "mejor mierda"];
+const GEN_Z_SLANG = ["oe yara", "perú es clave", "qliao x dios", "bruh", "it's so peak", "bart summer", "barf simmons", "gyatt", "whimsymaxxing with this one", "we thundering our bolts", "we edgin to this in the big 2026", "vamos cerrando el papoi", "mega 🫦", "clock it", "es trans 👏", "vetealv", "top 10 videos", "vdd", "so true", "very demure very mindful", "sybau 😭", "NMMS SI", "Soy", "cigarros de papoi", "i'm from tucuman and this is my fav video"];
 const USERNAMES = ["user204", "alex_199", "sadgirl", "jvluna_fan", "the_real_one", "anon992", "vibes_only"];
 
 function VideoCard({ video, isTop, onSwipe, index }) {
