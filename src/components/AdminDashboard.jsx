@@ -13,6 +13,7 @@ function AdminDashboard() {
   const [poems, setPoems] = useState([]);
   const [tracks, setTracks] = useState([]);
   const [videos, setVideos] = useState([]);
+  const [visuals, setVisuals] = useState([]);
   
   const [newChapterTitle, setNewChapterTitle] = useState('');
   
@@ -33,6 +34,9 @@ function AdminDashboard() {
 
   const [videoForm, setVideoForm] = useState({ _id: null, url: '', author: '', description: '', likes: 0, comments: 0 });
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+
+  const [visualForm, setVisualForm] = useState({ _id: null, titleEn: '', titleEs: '', techniqueEn: '', techniqueEs: '', author: '', descriptionEn: '', descriptionEs: '', year: '', image: '' });
+  const [isVisualModalOpen, setIsVisualModalOpen] = useState(false);
 
   const [expandedChapters, setExpandedChapters] = useState(new Set());
   const [searchQuery, setSearchQuery] = useState('');
@@ -110,11 +114,12 @@ function AdminDashboard() {
     if (isPoemModalOpen && !poemForm._id) { drafts.poem = poemForm; changed = true; }
     if (isIntermissionModalOpen && !intermissionForm._id) { drafts.intermission = intermissionForm; changed = true; }
     if (isVentModalOpen && !ventForm._id) { drafts.vent = ventForm; changed = true; }
+    if (isVisualModalOpen && !visualForm._id) { drafts.visual = visualForm; changed = true; }
     
     if (changed) {
       localStorage.setItem('admin_drafts', JSON.stringify(drafts));
     }
-  }, [chapterForm, poemForm, intermissionForm, ventForm, isChapterModalOpen, isPoemModalOpen, isIntermissionModalOpen, isVentModalOpen]);
+  }, [chapterForm, poemForm, intermissionForm, ventForm, visualForm, isChapterModalOpen, isPoemModalOpen, isIntermissionModalOpen, isVentModalOpen, isVisualModalOpen]);
 
   const clearDraft = (type) => {
     try {
@@ -128,7 +133,7 @@ function AdminDashboard() {
     try {
       const drafts = JSON.parse(localStorage.getItem('admin_drafts') || '{}');
       const draft = drafts[type];
-      if (draft && (draft.title || draft.content)) {
+      if (draft && (draft.title || draft.content || draft.titleEn)) {
         if (confirm(`You have an unsaved draft for a ${type}. Would you like to load it?`)) {
           return { ...defaultForm, ...draft };
         } else {
@@ -202,16 +207,18 @@ function AdminDashboard() {
 
   const fetchData = async () => {
     try {
-      const [chapRes, poemRes, trackRes, videoRes] = await Promise.all([
+      const [chapRes, poemRes, trackRes, videoRes, visualRes] = await Promise.all([
         api.get('/chapters?lean=true'),
         api.get('/poems?lean=true'),
         api.get('/tracks'),
-        api.get('/videos')
+        api.get('/videos'),
+        api.get('/visuals')
       ]);
       setChapters(chapRes.data);
       setPoems(poemRes.data);
       setTracks(trackRes.data);
       setVideos(videoRes.data);
+      setVisuals(visualRes.data);
     } catch (err) {
       console.error(err);
       if (err.response?.status === 401) handleLogout();
@@ -283,6 +290,47 @@ function AdminDashboard() {
         setter(prev => ({ ...prev, url: '' }));
       }
     }
+  };
+
+  // --- Visual Actions ---
+  const saveVisual = async (e) => {
+    e.preventDefault();
+    if (visualForm._id) await api.put(`/visuals/${visualForm._id}`, visualForm);
+    else await api.post('/visuals', visualForm);
+    clearDraft('visual');
+    setIsVisualModalOpen(false);
+    fetchData();
+  };
+
+  const deleteVisual = async (id) => {
+    if (confirm('Delete this artwork?')) {
+      await api.delete(`/visuals/${id}`);
+      fetchData();
+    }
+  };
+
+  const moveVisual = async (visualId, direction) => {
+    const index = visuals.findIndex(v => v._id === visualId);
+    if (index === -1) return;
+    const newVisuals = [...visuals];
+    if (direction === 'up' && index > 0) {
+      [newVisuals[index - 1], newVisuals[index]] = [newVisuals[index], newVisuals[index - 1]];
+    } else if (direction === 'down' && index < newVisuals.length - 1) {
+      [newVisuals[index + 1], newVisuals[index]] = [newVisuals[index], newVisuals[index + 1]];
+    } else return;
+    
+    setVisuals(newVisuals);
+    await api.put('/visuals/reorder', { orderedIds: newVisuals.map(v => v._id) });
+  };
+
+  const openVisualModalForNew = () => {
+    setVisualForm(loadDraft('visual', { _id: null, titleEn: '', titleEs: '', techniqueEn: '', techniqueEs: '', author: '', descriptionEn: '', descriptionEs: '', year: '', image: '' }));
+    setIsVisualModalOpen(true);
+  };
+
+  const openVisualModalForEdit = (visual) => {
+    setVisualForm(visual);
+    setIsVisualModalOpen(true);
   };
 
   // --- Track Actions ---
@@ -555,6 +603,13 @@ function AdminDashboard() {
             <FaStickyNote size={16} /> {!isScrolled && <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Add Vent</span>}
           </button>
           <button 
+            onClick={openVisualModalForNew} 
+            style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none', cursor: 'pointer' }}
+            title="Add Visual Art"
+          >
+            <FaImage size={16} /> {!isScrolled && <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>Add Artwork</span>}
+          </button>
+          <button 
             onClick={openTrackModalForNew} 
             style={{ padding: isScrolled ? '0.5rem' : '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', color: 'var(--text-color)', border: 'none', cursor: 'pointer' }}
             title="Add Track"
@@ -591,12 +646,12 @@ function AdminDashboard() {
         </div>
       </motion.div>
 
-        <div style={{ display: 'flex', gap: '0.5rem', background: isDark ? 'rgba(30,30,30,0.6)' : 'rgba(255,255,255,0.7)', padding: '0.3rem', borderRadius: '25px', backdropFilter: 'blur(10px)', border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}` }}>
+        <div style={{ display: 'flex', gap: '0.5rem', background: isDark ? 'rgba(30,30,30,0.6)' : 'rgba(255,255,255,0.7)', padding: '0.3rem', borderRadius: '25px', backdropFilter: 'blur(10px)', border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`, overflowX: 'auto', maxWidth: '100vw' }}>
           <button 
             onClick={() => setActiveTab('main')}
-            style={{ padding: '0.6rem 1.2rem', borderRadius: '20px', border: 'none', background: activeTab === 'main' ? 'var(--text-color)' : 'transparent', color: activeTab === 'main' ? 'var(--bg-color)' : 'var(--text-color)', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 600, transition: 'all 0.2s' }}
+            style={{ padding: '0.6rem 1.2rem', borderRadius: '20px', border: 'none', background: activeTab === 'main' ? 'var(--text-color)' : 'transparent', color: activeTab === 'main' ? 'var(--bg-color)' : 'var(--text-color)', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 600, transition: 'all 0.2s', whiteSpace: 'nowrap' }}
           >
-            Chapters & Intermissions
+            Chapters
           </button>
           <button 
             onClick={() => setActiveTab('vents')}
@@ -605,10 +660,16 @@ function AdminDashboard() {
             Vents
           </button>
           <button 
-            onClick={() => setActiveTab('tracks')}
-            style={{ padding: '0.6rem 1.2rem', borderRadius: '20px', border: 'none', background: activeTab === 'tracks' ? 'var(--text-color)' : 'transparent', color: activeTab === 'tracks' ? 'var(--bg-color)' : 'var(--text-color)', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 600, transition: 'all 0.2s' }}
+            onClick={() => setActiveTab('visuals')}
+            style={{ padding: '0.6rem 1.2rem', borderRadius: '20px', border: 'none', background: activeTab === 'visuals' ? 'var(--text-color)' : 'transparent', color: activeTab === 'visuals' ? 'var(--bg-color)' : 'var(--text-color)', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 600, transition: 'all 0.2s' }}
           >
-            Music Tracks
+            Visual Arts
+          </button>
+          <button 
+            onClick={() => setActiveTab('tracks')}
+            style={{ padding: '0.6rem 1.2rem', borderRadius: '20px', border: 'none', background: activeTab === 'tracks' ? 'var(--text-color)' : 'transparent', color: activeTab === 'tracks' ? 'var(--bg-color)' : 'var(--text-color)', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 600, transition: 'all 0.2s', whiteSpace: 'nowrap' }}
+          >
+            Music
           </button>
           <button 
             onClick={() => setActiveTab('videos')}
@@ -620,7 +681,7 @@ function AdminDashboard() {
 
         <input 
           type="text" 
-          placeholder="Search chapters, vents, and poems..." 
+          placeholder="Search items..." 
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           style={{ 
@@ -640,7 +701,38 @@ function AdminDashboard() {
       </div>
 
       <ul className="admin-list" style={{ padding: 0 }}>
-        {activeTab === 'tracks' ? (
+        {activeTab === 'visuals' ? (
+          visuals.map((v, index) => (
+            <li key={v._id} style={{ display: 'block', padding: 0, marginBottom: '1rem', border: 'none' }}>
+              <div className="admin-list-item" style={{ 
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
+                padding: '1rem 1.5rem', 
+                userSelect: 'none',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.06)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.03)'; }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{ display: 'flex', gap: '0.2rem' }}>
+                    <button onClick={() => moveVisual(v._id, 'up')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }} title="Move Up"><FaArrowUp /></button>
+                    <button onClick={() => moveVisual(v._id, 'down')} style={{ padding: '0.2rem 0.4rem', fontSize: '0.8rem' }} title="Move Down"><FaArrowDown /></button>
+                  </div>
+                  
+                  <strong style={{ fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <FaImage /> {v.titleEn || v.titleEs} <span style={{ fontWeight: 'normal', opacity: 0.8, fontSize: '0.9rem' }}>by {v.author}</span>
+                  </strong>
+                </div>
+
+                <div className="admin-list-item-actions" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <button onClick={() => openVisualModalForEdit(v)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }}>Edit</button>
+                    <button onClick={() => deleteVisual(v._id)} style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem', color: '#ff4d4d', borderColor: '#ff4d4d' }}>Delete</button>
+                  </div>
+                </div>
+              </div>
+            </li>
+          ))
+        ) : activeTab === 'tracks' ? (
           tracks.map((t, index) => (
             <li key={t._id} style={{ display: 'block', padding: 0, marginBottom: '1rem', border: 'none' }}>
               <div className="admin-list-item" style={{ 
@@ -1232,6 +1324,48 @@ function AdminDashboard() {
                 
                 <button type="submit" style={{ marginTop: '2rem', padding: '1rem', background: 'var(--text-color)', color: 'var(--bg-color)' }}>
                   {videoForm._id ? 'Save Video' : 'Add Video'}
+                </button>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* VISUAL MODAL */}
+      <AnimatePresence>
+        {isVisualModalOpen && (
+          <motion.div 
+            className="modal-overlay"
+            onClick={(e) => { if (e.target === e.currentTarget) setIsVisualModalOpen(false); }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          >
+            <motion.div 
+              className="modal-content"
+              initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 50, opacity: 0 }}
+            >
+              <button className="modal-close" onClick={() => setIsVisualModalOpen(false)}>&times;</button>
+              <h2 style={{ marginBottom: '2rem' }}>{visualForm._id ? 'Edit Artwork' : 'Add Artwork'}</h2>
+              <form onSubmit={saveVisual} className="admin-form" style={{ border: 'none', padding: 0 }}>
+                <input type="text" placeholder="Title (EN)" value={visualForm.titleEn} onChange={e => setVisualForm({...visualForm, titleEn: e.target.value})} required />
+                <input type="text" placeholder="Title (ES)" value={visualForm.titleEs} onChange={e => setVisualForm({...visualForm, titleEs: e.target.value})} />
+                
+                <input type="text" placeholder="Author" value={visualForm.author} onChange={e => setVisualForm({...visualForm, author: e.target.value})} required />
+                
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                  <input type="text" placeholder="Technique (EN)" value={visualForm.techniqueEn} onChange={e => setVisualForm({...visualForm, techniqueEn: e.target.value})} style={{ flex: 1 }} />
+                  <input type="text" placeholder="Technique (ES)" value={visualForm.techniqueEs} onChange={e => setVisualForm({...visualForm, techniqueEs: e.target.value})} style={{ flex: 1 }} />
+                </div>
+                
+                <input type="text" placeholder="Year" value={visualForm.year} onChange={e => setVisualForm({...visualForm, year: e.target.value})} />
+                
+                <textarea placeholder="Description (EN)" value={visualForm.descriptionEn} onChange={e => setVisualForm({...visualForm, descriptionEn: e.target.value})} style={{ width: '100%', marginBottom: '1rem', padding: '0.5rem', borderRadius: '4px', border: '1px solid rgba(0,0,0,0.2)', background: 'rgba(255,255,255,0.8)' }} rows="3" />
+                <textarea placeholder="Description (ES)" value={visualForm.descriptionEs} onChange={e => setVisualForm({...visualForm, descriptionEs: e.target.value})} style={{ width: '100%', marginBottom: '1rem', padding: '0.5rem', borderRadius: '4px', border: '1px solid rgba(0,0,0,0.2)', background: 'rgba(255,255,255,0.8)' }} rows="3" />
+                
+                <label>Artwork Image (Max 15MB)</label>
+                <input type="file" accept="image/*" onChange={e => handleFileChange(e, setVisualForm)} />
+                {visualForm.image && <img src={visualForm.image} alt="preview" style={{ width: '150px', display: 'block', marginTop: '1rem' }} />}
+                
+                <button type="submit" style={{ marginTop: '2rem', padding: '1rem', background: 'var(--text-color)', color: 'var(--bg-color)' }}>
+                  {visualForm._id ? 'Save Artwork' : 'Add Artwork'}
                 </button>
               </form>
             </motion.div>

@@ -114,10 +114,25 @@ const videoSchema = new mongoose.Schema({
 });
 videoSchema.index({ order: 1 });
 
+const visualSchema = new mongoose.Schema({
+  titleEn: String,
+  titleEs: String,
+  techniqueEn: String,
+  techniqueEs: String,
+  author: String,
+  descriptionEn: String,
+  descriptionEs: String,
+  year: String,
+  image: String,
+  order: { type: Number, default: 0 }
+});
+visualSchema.index({ order: 1 });
+
 const Chapter = mongoose.model('Chapter', chapterSchema);
 const Poem = mongoose.model('Poem', poemSchema);
 const Track = mongoose.model('Track', trackSchema);
 const Video = mongoose.model('Video', videoSchema);
+const Visual = mongoose.model('Visual', visualSchema);
 
 const authMiddleware = (req, res, next) => {
   const token = req.headers.authorization;
@@ -424,6 +439,65 @@ app.put('/api/videos/:id', authMiddleware, async (req, res) => {
 app.delete('/api/videos/:id', authMiddleware, async (req, res) => {
   try {
     await Video.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// --- Visuals ---
+app.get('/api/visuals', async (req, res) => {
+  try {
+    const visuals = await Visual.find().sort({ order: 1 });
+    res.json(visuals);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/visuals', authMiddleware, async (req, res) => {
+  try {
+    if (req.body.image && req.body.image.startsWith('data:image')) {
+      const visualId = new mongoose.Types.ObjectId();
+      req.body._id = visualId;
+      req.body.image = await uploadToSupabase(req.body.image, `visual_${visualId}`);
+    }
+    const visual = new Visual(req.body);
+    await visual.save();
+    res.json(visual);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/api/visuals/reorder', authMiddleware, async (req, res) => {
+  try {
+    const { orderedIds } = req.body;
+    const promises = orderedIds.map((id, index) => 
+      Visual.findByIdAndUpdate(id, { order: index })
+    );
+    await Promise.all(promises);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/api/visuals/:id', authMiddleware, async (req, res) => {
+  try {
+    if (req.body.image && req.body.image.startsWith('data:image')) {
+      req.body.image = await uploadToSupabase(req.body.image, `visual_${req.params.id}`);
+    }
+    const visual = await Visual.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
+    res.json(visual);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/visuals/:id', authMiddleware, async (req, res) => {
+  try {
+    await Visual.findByIdAndDelete(req.params.id);
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });

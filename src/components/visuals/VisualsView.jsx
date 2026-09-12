@@ -1,35 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../../contexts/LanguageContext';
 import PageWrapper from '../PageWrapper';
 import BackButton from '../BackButton';
+import { FaTimes } from 'react-icons/fa';
+import api from '../../api';
 import './VisualsView.css';
-
-// Using Unsplash as a temporary placeholder until a backend is integrated
-const MOCK_VISUALS = [
-  { id: 1, src: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=800&auto=format&fit=crop', titleEn: 'Abstract Thought', titleEs: 'Pensamiento Abstracto', mediumEn: 'Oil on Canvas', mediumEs: 'Óleo sobre Lienzo', year: '2026' },
-  { id: 2, src: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=800&auto=format&fit=crop', titleEn: 'The Gaze', titleEs: 'La Mirada', mediumEn: 'Charcoal', mediumEs: 'Carbón', year: '2025' },
-  { id: 3, src: 'https://images.unsplash.com/photo-1578301978693-85fa9c026f43?q=80&w=800&auto=format&fit=crop', titleEn: 'Texture 01', titleEs: 'Textura 01', mediumEn: 'Mixed Media', mediumEs: 'Técnica Mixta', year: '2023' },
-  { id: 4, src: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=800&auto=format&fit=crop', titleEn: 'Urban Geometry', titleEs: 'Geometría Urbana', mediumEn: 'Digital Illustration', mediumEs: 'Ilustración Digital', year: '2026' },
-  { id: 5, src: 'https://images.unsplash.com/photo-1580136608260-4ebf15fac362?q=80&w=800&auto=format&fit=crop', titleEn: 'Sculpted Mind', titleEs: 'Mente Esculpida', mediumEn: 'Digital Painting', mediumEs: 'Pintura Digital', year: '2026' },
-  { id: 6, src: 'https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?q=80&w=800&auto=format&fit=crop', titleEn: 'Color Study', titleEs: 'Estudio de Color', mediumEn: 'Acrylic', mediumEs: 'Acrílico', year: '2024' },
-  { id: 7, src: 'https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?q=80&w=800&auto=format&fit=crop', titleEn: 'Serenity', titleEs: 'Serenidad', mediumEn: 'Watercolor', mediumEs: 'Acuarela', year: '2025' },
-  { id: 8, src: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop', titleEn: 'Form & Space', titleEs: 'Forma y Espacio', mediumEn: 'Ink', mediumEs: 'Tinta', year: '2023' }
-];
 
 function VisualsView() {
   const { language } = useLanguage();
   const [visuals, setVisuals] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedVisual, setSelectedVisual] = useState(null);
 
   useEffect(() => {
-    // Simulate loading data
-    const timer = setTimeout(() => {
-      setVisuals(MOCK_VISUALS);
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
+    const fetchVisuals = async () => {
+      try {
+        const res = await api.get('/visuals');
+        setVisuals(res.data);
+      } catch (err) {
+        console.error("Error fetching visuals:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchVisuals();
   }, []);
+
+  const closeModal = () => setSelectedVisual(null);
+
+  // Static souvenirs for background clutter
+  const souvenirs = [
+    { src: '/souvenirs/conepine.png', style: { top: '10%', left: '5%', transform: 'rotate(-15deg)', width: '80px' } },
+    { src: '/souvenirs/mapleleaf.png', style: { top: '30%', right: '8%', transform: 'rotate(25deg)', width: '90px' } },
+    { src: '/souvenirs/marquesitayucateca.png', style: { top: '60%', left: '12%', transform: 'rotate(-5deg)', width: '120px' } },
+    { src: '/souvenirs/conepine.png', style: { top: '80%', right: '15%', transform: 'rotate(45deg) scale(0.8)', width: '80px' } }
+  ];
 
   return (
     <PageWrapper 
@@ -38,7 +44,11 @@ function VisualsView() {
       loadingTextEs="Preparando galería..."
       style={{ minHeight: '100vh' }}
     >
-      <div className="museum-wall" />
+      <div className="museum-wall">
+        {souvenirs.map((sov, idx) => (
+          <img key={idx} src={sov.src} className="souvenir-bg" style={sov.style} alt="" />
+        ))}
+      </div>
       
       <div className="visuals-container">
         <BackButton style={{ position: 'relative', zIndex: 100 }} />
@@ -60,30 +70,83 @@ function VisualsView() {
           </motion.p>
         </div>
 
+        {visuals.length === 0 && !isLoading && (
+          <div style={{ textAlign: 'center', opacity: 0.5, marginTop: '4rem' }}>
+            {language === 'EN' ? 'No artworks on display yet.' : 'Aún no hay obras en exhibición.'}
+          </div>
+        )}
+
         <div className="visuals-masonry">
           {visuals.map((visual, index) => (
             <motion.div 
-              key={visual.id} 
+              key={visual._id} 
               className="visuals-masonry-item"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 + (index * 0.1) }}
+              onClick={() => setSelectedVisual(visual)}
             >
               <div className="metallic-frame-wrapper">
-                <img src={visual.src} alt={language === 'EN' ? visual.titleEn : visual.titleEs} className="artwork-image" loading="lazy" />
+                <img src={visual.image} alt={language === 'EN' ? visual.titleEn : visual.titleEs} className="artwork-image" loading="lazy" />
               </div>
-              <div className="museum-plaque">
-                <div className="museum-plaque-title">
-                  {language === 'EN' ? visual.titleEn : visual.titleEs}
+              <div className="glass-plaque">
+                <div className="glass-plaque-title">
+                  {language === 'EN' ? (visual.titleEn || visual.titleEs) : (visual.titleEs || visual.titleEn)}
                 </div>
-                <div className="museum-plaque-meta">
-                  {language === 'EN' ? visual.mediumEn : visual.mediumEs}, {visual.year}
+                <div className="glass-plaque-meta">
+                  {visual.author}
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
+
+      <AnimatePresence>
+        {selectedVisual && (
+          <motion.div 
+            className="visual-modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeModal}
+          >
+            <motion.div 
+              className="visual-modal-content"
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              onClick={e => e.stopPropagation()}
+            >
+              <button className="visual-modal-close" onClick={closeModal}><FaTimes size={16} /></button>
+              <div className="visual-modal-image-container">
+                <img src={selectedVisual.image} alt="Artwork" />
+              </div>
+              <div className="visual-modal-info">
+                <h2>{language === 'EN' ? (selectedVisual.titleEn || selectedVisual.titleEs) : (selectedVisual.titleEs || selectedVisual.titleEn)}</h2>
+                
+                <div className="meta-row">
+                  <span>{language === 'EN' ? 'Author' : 'Autor'}</span>
+                  <span>{selectedVisual.author}</span>
+                </div>
+                <div className="meta-row">
+                  <span>{language === 'EN' ? 'Technique' : 'Técnica'}</span>
+                  <span>{language === 'EN' ? (selectedVisual.techniqueEn || selectedVisual.techniqueEs) : (selectedVisual.techniqueEs || selectedVisual.techniqueEn)}</span>
+                </div>
+                <div className="meta-row">
+                  <span>{language === 'EN' ? 'Year' : 'Año'}</span>
+                  <span>{selectedVisual.year}</span>
+                </div>
+                
+                <p>
+                  {language === 'EN' ? (selectedVisual.descriptionEn || selectedVisual.descriptionEs) : (selectedVisual.descriptionEs || selectedVisual.descriptionEn)}
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </PageWrapper>
   );
 }
