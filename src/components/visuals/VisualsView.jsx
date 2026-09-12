@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../../contexts/LanguageContext';
 import PageWrapper from '../PageWrapper';
@@ -181,6 +181,7 @@ function VisualsView() {
                 {col.map((visual, index) => {
                   // Calculate a staggered delay based on total index for a nice wave entry
                   const totalIndex = (index * activeCols) + colIndex;
+                  const isFirst = totalIndex === 0;
                   // Frame styles logic
                   const frameColors = ['frame-gold', 'frame-silver', 'frame-wood'];
                   const frameColor = frameColors[totalIndex % frameColors.length];
@@ -194,12 +195,26 @@ function VisualsView() {
                       whileHover={{ scale: 1.02, zIndex: 10 }}
                       transition={{ duration: 0.6, delay: 0.1 + (totalIndex * 0.1) }}
                       onClick={() => handleArtworkClick(visual)}
+                      style={{ zIndex: (showTapHint && isFirst) ? 9999991 : 'auto', position: 'relative' }}
                     >
                       <div className={`artwork-frame-wrapper ${frameColor}`}>
                         <div className="frame-border"></div>
                         <div className="frame-matte">
                           <img src={visual.image} alt={language === 'EN' ? visual.titleEn : visual.titleEs} className="artwork-image" loading="lazy" />
                         </div>
+                        <AnimatePresence>
+                          {showTapHint && isFirst && (
+                            <motion.div 
+                              className="tutorial-pointer"
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                            >
+                              <span className="tap-hint-icon">👇</span>
+                              <p>{language === 'EN' ? 'Tap to view details' : 'Toca para ver detalles'}</p>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     </motion.div>
                   );
@@ -258,15 +273,15 @@ function VisualsView() {
         <AnimatePresence>
           {showTapHint && (
             <motion.div 
-              className="tap-hint-toast"
-              initial={{ opacity: 0, y: 50, x: '-50%' }}
-              animate={{ opacity: 1, y: 0, x: '-50%' }}
-              exit={{ opacity: 0, y: 20, x: '-50%' }}
-              transition={{ delay: 1, duration: 0.5 }}
-            >
-              <span className="tap-hint-icon">ðŸ‘†</span>
-              {language === 'EN' ? 'Tap any artwork for details' : 'Toca cualquier obra para ver detalles'}
-            </motion.div>
+              className="tutorial-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => {
+                setShowTapHint(false);
+                localStorage.setItem('voices_visuals_hint_seen', 'true');
+              }}
+            />
           )}
         </AnimatePresence>
 
