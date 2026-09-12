@@ -33,7 +33,7 @@ function MusicView() {
       <MusicGraphics color={animColor} />
       <BackButton />
       
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
+      <div style={{ width: '100%', maxWidth: '1400px', margin: '0 auto', padding: '2rem 1rem', boxSizing: 'border-box' }}>
         <div style={{ marginBottom: '2rem', textAlign: 'center', color: 'var(--text-color)' }}>
           <h1 style={{ fontSize: '3rem', fontFamily: 'var(--font-serif)', marginBottom: '0.5rem' }}>
             {language === 'EN' ? 'Music Library' : 'Biblioteca Musical'}
@@ -64,13 +64,32 @@ function MusicView() {
           </div>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-          gap: '3rem 2rem',
-          justifyItems: 'center',
-          alignItems: 'center'
-        }}>
+        <style>{`
+          .music-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem 2rem;
+            justify-items: center;
+            align-items: start;
+          }
+          @media (min-width: 600px) {
+            .music-grid {
+              grid-template-columns: repeat(2, 1fr);
+            }
+          }
+          @media (min-width: 960px) {
+            .music-grid {
+              grid-template-columns: repeat(3, 1fr);
+            }
+          }
+          @media (min-width: 1280px) {
+            .music-grid {
+              grid-template-columns: repeat(4, 1fr);
+            }
+          }
+        `}</style>
+
+        <div className="music-grid">
           {tracks.map(track => (
             <CassetteItem key={track._id} track={track} animColor={animColor} />
           ))}
@@ -86,3 +105,4 @@ function MusicView() {
 }
 
 export default MusicView;
+
