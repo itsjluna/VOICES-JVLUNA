@@ -170,28 +170,28 @@ function VisualsView() {
                 {col.map((visual, index) => {
                   // Calculate a staggered delay based on total index for a nice wave entry
                   const totalIndex = (index * activeCols) + colIndex;
-                  // Frame styles and scattered rotation logic
-                  const frameStyles = ['frame-museum', 'frame-freepik', 'frame-canvas'];
-                  const frameClass = frameStyles[totalIndex % frameStyles.length];
-                  const rotations = [-2, 1, 3, -1, 2, -3, 0];
-                  const rotation = rotations[totalIndex % rotations.length];
+                  // Frame styles logic
+                  const frameColors = ['frame-gold', 'frame-silver', 'frame-wood'];
+                  const frameColor = frameColors[totalIndex % frameColors.length];
                   
                   return (
                   <motion.div 
                       key={visual._id} 
                       className="visuals-masonry-item"
-                      initial={{ opacity: 0, y: 30, rotate: rotation }}
-                      animate={{ opacity: 1, y: 0, rotate: rotation }}
-                      whileHover={{ scale: 1.02, rotate: 0, zIndex: 10 }}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      whileHover={{ scale: 1.02, zIndex: 10 }}
                       transition={{ duration: 0.6, delay: 0.1 + (totalIndex * 0.1) }}
                       onClick={() => setSelectedVisual(visual)}
-                      style={{ transformOrigin: 'center center' }}
                     >
-                      <div className={`artwork-frame-wrapper ${frameClass}`}>
-                        <img src={visual.image} alt={language === 'EN' ? visual.titleEn : visual.titleEs} className="artwork-image" loading="lazy" />
-                        <div className="museum-placard">
-                          <span className="placard-title">{language === 'EN' ? (visual.titleEn || visual.titleEs) : (visual.titleEs || visual.titleEn)}</span>
-                          {visual.author && <span className="placard-author">{visual.author}</span>}
+                      <div className={`artwork-frame-wrapper ${frameColor}`}>
+                        <div className="frame-border"></div>
+                        <div className="frame-matte">
+                          <img src={visual.image} alt={language === 'EN' ? visual.titleEn : visual.titleEs} className="artwork-image" loading="lazy" />
+                          <div className="museum-placard">
+                            <span className="placard-title">{language === 'EN' ? (visual.titleEn || visual.titleEs) : (visual.titleEs || visual.titleEn)}</span>
+                            {visual.author && <span className="placard-author">{visual.author}</span>}
+                          </div>
                         </div>
                       </div>
                     </motion.div>
