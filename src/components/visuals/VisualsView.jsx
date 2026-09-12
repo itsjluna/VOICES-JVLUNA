@@ -29,6 +29,25 @@ function VisualsView() {
 
   const closeModal = () => setSelectedVisual(null);
 
+  // Optimized souvenirs for background clutter
+  const souvenirs = [
+    { src: '/souvenirs/conepine.png', style: { top: '10%', left: '5%', '--rot': '-15deg', width: '80px', '--float-duration': '6s' } },
+    { src: '/souvenirs/mapleleaf.png', style: { top: '30%', right: '8%', '--rot': '25deg', width: '90px', '--float-duration': '8s' } },
+    { src: '/souvenirs/marquesitayucateca.png', style: { top: '60%', left: '12%', '--rot': '-5deg', width: '120px', '--float-duration': '7s' } },
+    { src: '/souvenirs/conepine.png', style: { top: '80%', right: '15%', '--rot': '45deg', width: '60px', '--float-duration': '9s' } }
+  ];
+
+  // Optimized dust particles (reduced count)
+  const dustParticles = Array.from({ length: 8 }).map((_, i) => ({
+    id: i,
+    left: `${Math.random() * 100}vw`,
+    width: `${Math.random() * 4 + 2}px`,
+    height: `${Math.random() * 4 + 2}px`,
+    duration: `${Math.random() * 15 + 15}s`,
+    delay: `${Math.random() * 10}s`,
+    maxOpacity: Math.random() * 0.2 + 0.1
+  }));
+
   const masonryClass = `visuals-masonry items-${Math.min(visuals.length, 3)}`;
 
   return (
@@ -39,7 +58,25 @@ function VisualsView() {
         loadingTextEs="Preparando galería..."
         style={{ minHeight: '100vh' }}
       >
-        <div className="museum-wall"></div>
+        <div className="museum-wall">
+          {dustParticles.map(particle => (
+            <div 
+              key={particle.id}
+              className="dust-particle"
+              style={{
+                left: particle.left,
+                width: particle.width,
+                height: particle.height,
+                '--duration': particle.duration,
+                animationDelay: particle.delay,
+                '--max-opacity': particle.maxOpacity
+              }}
+            />
+          ))}
+          {souvenirs.map((sov, idx) => (
+            <img key={idx} src={sov.src} className="souvenir-bg" style={sov.style} alt="" />
+          ))}
+        </div>
         
         <div className="visuals-container">
           <BackButton style={{ position: 'relative', zIndex: 100 }} />

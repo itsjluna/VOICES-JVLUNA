@@ -19,6 +19,47 @@
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.01'/%3E%3C/svg%3E");
 }
 
+/* Optimized Souvenirs */
+.souvenir-bg {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.5; /* Removed drop-shadow filter for better performance, adjusted opacity to compensate */
+  z-index: 2;
+  will-change: transform;
+  animation: floatSouvenir var(--float-duration, 6s) ease-in-out infinite alternate;
+}
+:root.dark .souvenir-bg {
+  opacity: 0.2;
+}
+
+@keyframes floatSouvenir {
+  0% { transform: translate3d(0, 0px, 0) rotate(var(--rot)); }
+  100% { transform: translate3d(0, -15px, 0) rotate(calc(var(--rot) + 5deg)); }
+}
+
+/* Optimized Dust Particles */
+.dust-particle {
+  position: fixed;
+  background: rgba(100, 80, 60, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: floatDust var(--duration, 15s) linear infinite;
+}
+
+:root.dark .dust-particle {
+  background: white;
+}
+
+@keyframes floatDust {
+  0% { transform: translate3d(0, 100vh, 0) scale(0); opacity: 0; }
+  10% { opacity: var(--max-opacity, 0.2); transform: translate3d(0, 80vh, 0) scale(1); }
+  90% { opacity: var(--max-opacity, 0.2); }
+  100% { transform: translate3d(0, -20vh, 0) scale(0.5); opacity: 0; }
+}
+
 .visuals-container {
   padding: 0 1rem 4rem 1rem;
   max-width: 1400px;
