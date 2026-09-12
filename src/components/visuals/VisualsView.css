@@ -1,4 +1,4 @@
-.museum-wall {
+﻿.museum-wall {
   position: fixed;
   top: 0;
   left: 0;
@@ -524,16 +524,6 @@
 
 
 
-.brush-strokes-bg {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  object-fit: cover;
-  opacity: 0.15;
-  z-index: 1;
-  pointer-events: none;
-  will-change: transform;
-}
-:root.dark .brush-strokes-bg {
-  filter: invert(1);
-  opacity: 0.08;
-}
+
+:root.dark 
+
