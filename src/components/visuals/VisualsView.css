@@ -419,6 +419,16 @@
 }
 
 /* Studio Button Sketched Crayon */
+@property --trace-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes spinTrace {
+  to { --trace-angle: 360deg; }
+}
+
 .studio-btn-sketch {
   position: relative;
   background: rgba(255, 255, 255, 0.4);
@@ -427,19 +437,21 @@
   border: none;
   cursor: pointer;
   padding: 0.8rem 2rem;
-  border-radius: 47px;
+  border-radius: 50px;
   color: var(--text-color);
   font-family: var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  transition: transform 0.2s ease, background 0.3s ease;
+  transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.2s ease;
   outline: none;
   z-index: 1;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
 .studio-btn-sketch:hover {
   transform: translateY(-2px) scale(1.02);
   background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
 :root.dark .studio-btn-sketch {
@@ -451,41 +463,34 @@
   background: rgba(50, 50, 55, 0.7);
 }
 
-/* Sketched Crayon borders using SVG filter texture */
-.studio-btn-sketch::before,
+/* Faint static crayon border */
 .studio-btn-sketch::after {
   content: '';
   position: absolute;
-  inset: -2px;
-  border: 3px solid var(--text-color);
-  z-index: -1;
+  inset: -1.5px;
+  border: 1.5px solid var(--text-color);
+  border-radius: inherit;
+  opacity: 0.15;
+  filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' result='n'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='n' scale='3' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3C/svg%3E#c");
   pointer-events: none;
-  opacity: 0.8;
-  filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.3' numOctaves='3' result='n'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='n' scale='5' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3C/svg%3E#c");
+  z-index: -1;
 }
 
+/* The dynamic tracing crayon stroke */
 .studio-btn-sketch::before {
-  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
-  transform: rotate(-0.5deg);
-  animation: sketch-anim-1 0.3s steps(3) infinite alternate;
-}
-
-.studio-btn-sketch::after {
-  border-radius: 15px 255px 15px 225px/225px 15px 255px 15px;
-  transform: rotate(0.5deg);
-  animation: sketch-anim-2 0.3s steps(3) infinite alternate-reverse;
-}
-
-@keyframes sketch-anim-1 {
-  0% { border-radius: 255px 15px 225px 15px/15px 225px 15px 255px; transform: rotate(-1deg); }
-  50% { border-radius: 225px 15px 255px 15px/15px 255px 15px 225px; transform: rotate(0deg); }
-  100% { border-radius: 255px 25px 225px 25px/25px 225px 25px 255px; transform: rotate(-1.5deg); }
-}
-
-@keyframes sketch-anim-2 {
-  0% { border-radius: 15px 255px 15px 225px/225px 15px 255px 15px; transform: rotate(1deg); }
-  50% { border-radius: 15px 225px 15px 255px/225px 15px 255px 15px; transform: rotate(0.5deg); }
-  100% { border-radius: 25px 255px 25px 225px/225px 25px 255px 25px; transform: rotate(1.5deg); }
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  padding: 3px; 
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  background: conic-gradient(from var(--trace-angle), transparent 20%, var(--text-color) 80%, transparent 100%);
+  animation: spinTrace 2s linear infinite;
+  filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' result='n'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='n' scale='5' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3C/svg%3E#c");
+  pointer-events: none;
+  z-index: -1;
 }
 
 .studio-btn-sketch-inner {
