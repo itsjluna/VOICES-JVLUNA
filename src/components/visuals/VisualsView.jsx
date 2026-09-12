@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../../contexts/LanguageContext';
 import PageWrapper from '../PageWrapper';
 import BackButton from '../BackButton';
-import { FaTimes, FaPencilAlt } from 'react-icons/fa';
+import { FaTimes, FaPencilAlt, FaHandPointDown } from 'react-icons/fa';
 import api from '../../api';
 import Sketchpad from './Sketchpad';
 import './VisualsView.css';
@@ -105,7 +105,7 @@ function VisualsView() {
       <PageWrapper 
         isLoading={isLoading} 
         loadingTextEn="Preparing gallery..." 
-        loadingTextEs="Preparando galerÃ­a..."
+        loadingTextEs="Preparando galerÃƒÂ­a..."
         style={{ minHeight: '100vh' }}
       >
         <div className="museum-wall">
@@ -163,7 +163,7 @@ function VisualsView() {
               >
                 <div className="studio-btn-sketch-inner">
                   <FaPencilAlt size={18} style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }} />
-                  <span>{language === 'EN' ? 'Take your pencil' : 'Toma tu lápiz'}</span>
+                  <span>{language === 'EN' ? 'Take your pencil' : 'Toma tu lÃ¡piz'}</span>
                 </div>
               </button>
             </motion.div>
@@ -171,7 +171,7 @@ function VisualsView() {
 
           {visuals.length === 0 && !isLoading && (
             <div style={{ textAlign: 'center', opacity: 0.5, marginTop: '4rem' }}>
-              {language === 'EN' ? 'No artworks on display yet.' : 'AÃºn no hay obras en exhibiciÃ³n.'}
+              {language === 'EN' ? 'No artworks on display yet.' : 'AÃƒÂºn no hay obras en exhibiciÃƒÂ³n.'}
             </div>
           )}
 
@@ -210,7 +210,7 @@ function VisualsView() {
                               animate={{ opacity: 1, y: 0 }}
                               exit={{ opacity: 0, y: -10 }}
                             >
-                              <span className="tap-hint-icon">👇</span>
+                                <FaHandPointDown className="tap-hint-icon" />
                               <p>{language === 'EN' ? 'Tap to view details' : 'Toca para ver detalles'}</p>
                             </motion.div>
                           )}
@@ -253,11 +253,11 @@ function VisualsView() {
                     <span>{selectedVisual.author}</span>
                   </div>
                   <div className="meta-row">
-                    <span>{language === 'EN' ? 'Technique' : 'TÃ©cnica'}</span>
+                    <span>{language === 'EN' ? 'Technique' : 'TÃƒÂ©cnica'}</span>
                     <span>{language === 'EN' ? (selectedVisual.techniqueEn || selectedVisual.techniqueEs) : (selectedVisual.techniqueEs || selectedVisual.techniqueEn)}</span>
                   </div>
                   <div className="meta-row">
-                    <span>{language === 'EN' ? 'Year' : 'AÃ±o'}</span>
+                    <span>{language === 'EN' ? 'Year' : 'AÃƒÂ±o'}</span>
                     <span>{selectedVisual.year}</span>
                   </div>
                   
@@ -296,5 +296,6 @@ function VisualsView() {
 }
 
 export default React.memo(VisualsView);
+
 
 

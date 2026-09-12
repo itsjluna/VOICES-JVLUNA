@@ -1,4 +1,4 @@
-﻿.museum-wall {
+.museum-wall {
   position: fixed;
   top: 0;
   left: 0;
@@ -399,7 +399,7 @@
 :root.dark .visual-modal-close {
   background: rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
+  color: var(--text-color);
 }
 :root.dark .visual-modal-close:hover {
   background: rgba(30, 30, 30, 0.8);
@@ -449,7 +449,7 @@
 
 :root.dark .studio-btn-sketch {
   background: rgba(30, 30, 35, 0.5);
-  color: #fff;
+  color: var(--text-color);
 }
 
 :root.dark .studio-btn-sketch:hover {
@@ -484,9 +484,7 @@
 .tutorial-overlay {
   position: fixed;
   top: 0; left: 0; width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.8);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background: transparent;
   z-index: 999990;
   cursor: pointer;
 }
@@ -499,12 +497,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #fff;
+  color: var(--text-color);
   font-family: var(--font-sans);
   font-size: 1.1rem;
   font-weight: 700;
   text-align: center;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  text-shadow: none;
   pointer-events: none;
   width: max-content;
   z-index: 9999992;
@@ -521,5 +519,7 @@
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(5px); }
 }
+
+
 
 
