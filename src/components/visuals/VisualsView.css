@@ -405,91 +405,79 @@
   font-size: 0.95rem;
 }
 
-/* Studio Button RGB Skeuomorphic */
-@property --rgb-angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-
-.studio-btn-rgb {
+/* Studio Button Sketched Crayon */
+.studio-btn-sketch {
   position: relative;
-  padding: 3px; 
-  border-radius: 50px;
-  background: conic-gradient(
-    from var(--rgb-angle),
-    #ff0000,
-    #ffff00,
-    #00ff00,
-    #00ffff,
-    #0000ff,
-    #ff00ff,
-    #ff0000
-  );
-  animation: spinRGB 4s linear infinite;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  outline: none;
-}
-
-.studio-btn-rgb:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-}
-
-.studio-btn-rgb:active {
-  transform: translateY(1px);
-}
-
-.studio-btn-rgb-inner {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  background: rgba(244, 244, 240, 0.95);
+  background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  border: none;
+  cursor: pointer;
   padding: 0.8rem 2rem;
   border-radius: 47px;
+  color: var(--text-color);
   font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: #111;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  transition: background 0.3s ease;
+  transition: transform 0.2s ease, background 0.3s ease;
+  outline: none;
+  z-index: 1;
 }
 
-:root.dark .studio-btn-rgb-inner {
-  background: rgba(22, 22, 24, 0.95);
+.studio-btn-sketch:hover {
+  transform: translateY(-2px) scale(1.02);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+:root.dark .studio-btn-sketch {
+  background: rgba(30, 30, 35, 0.5);
   color: #fff;
 }
 
-.studio-btn-rgb:hover .studio-btn-rgb-inner {
-  background: rgba(255, 255, 255, 0.98);
-}
-:root.dark .studio-btn-rgb:hover .studio-btn-rgb-inner {
-  background: rgba(30, 30, 35, 0.98);
+:root.dark .studio-btn-sketch:hover {
+  background: rgba(50, 50, 55, 0.7);
 }
 
-@keyframes spinRGB {
-  to { --rgb-angle: 360deg; }
-}
-
-.studio-btn-rgb::after {
+/* Sketched borders */
+.studio-btn-sketch::before,
+.studio-btn-sketch::after {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: inherit;
-  border-radius: inherit;
-  filter: blur(15px);
-  opacity: 0.6;
+  inset: -3px;
+  border: 2px solid var(--text-color);
   z-index: -1;
-  animation: inherit;
-  transition: opacity 0.3s ease;
+  pointer-events: none;
+  opacity: 0.7;
 }
 
-.studio-btn-rgb:hover::after {
-  opacity: 1;
+.studio-btn-sketch::before {
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  transform: rotate(-1deg);
+  animation: sketch-anim-1 0.4s steps(3) infinite alternate;
+}
+
+.studio-btn-sketch::after {
+  border-radius: 15px 255px 15px 225px/225px 15px 255px 15px;
+  transform: rotate(1deg);
+  animation: sketch-anim-2 0.4s steps(3) infinite alternate-reverse;
+}
+
+@keyframes sketch-anim-1 {
+  0% { border-radius: 255px 15px 225px 15px/15px 225px 15px 255px; transform: rotate(-1deg); }
+  50% { border-radius: 225px 15px 255px 15px/15px 255px 15px 225px; transform: rotate(0deg); }
+  100% { border-radius: 255px 25px 225px 25px/25px 225px 25px 255px; transform: rotate(-1.5deg); }
+}
+
+@keyframes sketch-anim-2 {
+  0% { border-radius: 15px 255px 15px 225px/225px 15px 255px 15px; transform: rotate(1deg); }
+  50% { border-radius: 15px 225px 15px 255px/225px 15px 255px 15px; transform: rotate(0.5deg); }
+  100% { border-radius: 25px 255px 25px 225px/225px 25px 255px 25px; transform: rotate(1.5deg); }
+}
+
+.studio-btn-sketch-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 700;
+  font-size: 1.1rem;
 }

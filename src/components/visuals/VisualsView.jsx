@@ -146,10 +146,10 @@ function VisualsView() {
               style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}
             >
               <button 
-                className="studio-btn-rgb"
+                className="studio-btn-sketch"
                 onClick={() => setIsSketchpadOpen(true)}
               >
-                <div className="studio-btn-rgb-inner">
+                <div className="studio-btn-sketch-inner">
                   <span style={{ fontSize: '1.4rem', lineHeight: 1, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }}>🎨</span> 
                   <span>{language === 'EN' ? 'Open Studio' : 'Abrir Estudio'}</span>
                 </div>
