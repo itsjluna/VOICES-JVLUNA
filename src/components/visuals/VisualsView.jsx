@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../../contexts/LanguageContext';
 import PageWrapper from '../PageWrapper';
@@ -60,33 +60,34 @@ function VisualsView() {
   ];
 
   // Watercolor Blooms for background - smaller, more liquid and varied
-  const bloomColors = [
-    'rgba(173, 216, 230, 0.5)', 
-    'rgba(255, 182, 193, 0.5)', 
-    'rgba(152, 251, 152, 0.4)', 
-    'rgba(255, 239, 150, 0.5)', 
-    'rgba(221, 160, 221, 0.5)', 
-    'rgba(255, 204, 153, 0.5)', 
-  ];
-
-  const watercolorBlooms = Array.from({ length: 12 }).map((_, i) => {
-    const br1 = Math.floor(40 + Math.random() * 20);
-    const br2 = Math.floor(40 + Math.random() * 20);
-    const br3 = Math.floor(40 + Math.random() * 20);
-    const br4 = Math.floor(40 + Math.random() * 20);
-    const size = Math.random() * 100 + 100; // 100px to 200px
-    return {
-      id: i,
-      left: `${Math.random() * 90 + 5}vw`,
-      top: `${Math.random() * 90 + 5}vh`,
-      width: `${size}px`,
-      height: `${size * (0.8 + Math.random() * 0.4)}px`,
-      color: bloomColors[i % bloomColors.length],
-      duration: `${Math.random() * 15 + 15}s`,
-      delay: `${Math.random() * 15}s`,
-      borderRadius: `${br1}% ${100-br1}% ${br2}% ${100-br2}% / ${br3}% ${br4}% ${100-br4}% ${100-br3}%`
-    };
-  });
+  const watercolorBlooms = useMemo(() => {
+    const bloomColors = [
+      'rgba(173, 216, 230, 0.5)', 
+      'rgba(255, 182, 193, 0.5)', 
+      'rgba(152, 251, 152, 0.4)', 
+      'rgba(255, 239, 150, 0.5)', 
+      'rgba(221, 160, 221, 0.5)', 
+      'rgba(255, 204, 153, 0.5)', 
+    ];
+    return Array.from({ length: 12 }).map((_, i) => {
+      const br1 = Math.floor(40 + Math.random() * 20);
+      const br2 = Math.floor(40 + Math.random() * 20);
+      const br3 = Math.floor(40 + Math.random() * 20);
+      const br4 = Math.floor(40 + Math.random() * 20);
+      const size = Math.random() * 100 + 100; // 100px to 200px
+      return {
+        id: i,
+        left: `${Math.random() * 90 + 5}vw`,
+        top: `${Math.random() * 90 + 5}vh`,
+        width: `${size}px`,
+        height: `${size * (0.8 + Math.random() * 0.4)}px`,
+        color: bloomColors[i % bloomColors.length],
+        duration: `${Math.random() * 15 + 15}s`,
+        delay: `${Math.random() * 15}s`,
+        borderRadius: `${br1}% ${100-br1}% ${br2}% ${100-br2}% / ${br3}% ${br4}% ${100-br4}% ${100-br3}%`
+      };
+    });
+  }, []);
 
   return (
     <div style={{ minHeight: '100vh', position: 'relative' }}>
