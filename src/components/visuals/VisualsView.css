@@ -91,36 +91,24 @@
   letter-spacing: 0.05em;
 }
 
-/* Dynamic Masonry Columns */
-.visuals-masonry {
-  column-gap: 3rem;
+/* Bulletproof Flex Masonry */
+.visuals-masonry-flex {
+  display: flex;
+  gap: 3rem;
   width: 100%;
 }
 
-.visuals-masonry.items-1 { column-count: 1; }
-.visuals-masonry.items-2 { column-count: 1; }
-.visuals-masonry.items-3 { column-count: 1; }
-
-@media (min-width: 640px) {
-  .visuals-masonry.items-2,
-  .visuals-masonry.items-3 {
-    column-count: 2;
-  }
-}
-
-@media (min-width: 1024px) {
-  .visuals-masonry.items-3 {
-    column-count: 3;
-  }
+.visuals-masonry-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .visuals-masonry-item {
-  break-inside: avoid;
-  margin-bottom: 4rem;
-  display: inline-block;
-  width: 100%;
   position: relative;
-  padding: 2rem 1rem;
+  width: 100%;
   cursor: pointer;
 }
 

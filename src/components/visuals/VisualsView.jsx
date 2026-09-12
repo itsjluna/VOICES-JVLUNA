@@ -12,6 +12,7 @@ function VisualsView() {
   const [visuals, setVisuals] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedVisual, setSelectedVisual] = useState(null);
+  const [columnsCount, setColumnsCount] = useState(3);
 
   useEffect(() => {
     const fetchVisuals = async () => {
@@ -27,7 +28,26 @@ function VisualsView() {
     fetchVisuals();
   }, []);
 
+  // Update columns count based on window resize
+  useEffect(() => {
+    const updateColumns = () => {
+      if (window.innerWidth >= 1024) setColumnsCount(3);
+      else if (window.innerWidth >= 640) setColumnsCount(2);
+      else setColumnsCount(1);
+    };
+    updateColumns();
+    window.addEventListener('resize', updateColumns);
+    return () => window.removeEventListener('resize', updateColumns);
+  }, []);
+
   const closeModal = () => setSelectedVisual(null);
+
+  // Distribute items into columns (bulletproof masonry)
+  const activeCols = Math.max(1, Math.min(visuals.length, columnsCount));
+  const columnData = Array.from({ length: activeCols }, () => []);
+  visuals.forEach((visual, index) => {
+    columnData[index % activeCols].push(visual);
+  });
 
   // Optimized souvenirs for background clutter
   const souvenirs = [
@@ -47,8 +67,6 @@ function VisualsView() {
     delay: `${Math.random() * 10}s`,
     maxOpacity: Math.random() * 0.2 + 0.1
   }));
-
-  const masonryClass = `visuals-masonry items-${Math.min(visuals.length, 3)}`;
 
   return (
     <div style={{ minHeight: '100vh', position: 'relative' }}>
@@ -104,28 +122,36 @@ function VisualsView() {
             </div>
           )}
 
-          <div className={masonryClass}>
-            {visuals.map((visual, index) => (
-              <motion.div 
-                key={visual._id} 
-                className="visuals-masonry-item"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 + (index * 0.1) }}
-                onClick={() => setSelectedVisual(visual)}
-              >
-                <div className="metallic-frame-wrapper">
-                  <img src={visual.image} alt={language === 'EN' ? visual.titleEn : visual.titleEs} className="artwork-image" loading="lazy" />
-                </div>
-                <div className="glass-plaque">
-                  <div className="glass-plaque-title">
-                    {language === 'EN' ? (visual.titleEn || visual.titleEs) : (visual.titleEs || visual.titleEn)}
-                  </div>
-                  <div className="glass-plaque-meta">
-                    {visual.author}
-                  </div>
-                </div>
-              </motion.div>
+          <div className="visuals-masonry-flex">
+            {columnData.map((col, colIndex) => (
+              <div key={colIndex} className="visuals-masonry-col">
+                {col.map((visual, index) => {
+                  // Calculate a staggered delay based on total index for a nice wave entry
+                  const totalIndex = (index * activeCols) + colIndex;
+                  return (
+                    <motion.div 
+                      key={visual._id} 
+                      className="visuals-masonry-item"
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.1 + (totalIndex * 0.1) }}
+                      onClick={() => setSelectedVisual(visual)}
+                    >
+                      <div className="metallic-frame-wrapper">
+                        <img src={visual.image} alt={language === 'EN' ? visual.titleEn : visual.titleEs} className="artwork-image" loading="lazy" />
+                      </div>
+                      <div className="glass-plaque">
+                        <div className="glass-plaque-title">
+                          {language === 'EN' ? (visual.titleEn || visual.titleEs) : (visual.titleEs || visual.titleEn)}
+                        </div>
+                        <div className="glass-plaque-meta">
+                          {visual.author}
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
             ))}
           </div>
         </div>
