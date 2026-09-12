@@ -170,7 +170,7 @@ function VisualsView() {
                   // Calculate a staggered delay based on total index for a nice wave entry
                   const totalIndex = (index * activeCols) + colIndex;
                   return (
-                    <motion.div 
+                  <motion.div 
                       key={visual._id} 
                       className="visuals-masonry-item"
                       initial={{ opacity: 0, y: 30 }}
@@ -180,13 +180,9 @@ function VisualsView() {
                     >
                       <div className="metallic-frame-wrapper">
                         <img src={visual.image} alt={language === 'EN' ? visual.titleEn : visual.titleEs} className="artwork-image" loading="lazy" />
-                      </div>
-                      <div className="glass-plaque">
-                        <div className="glass-plaque-title">
-                          {language === 'EN' ? (visual.titleEn || visual.titleEs) : (visual.titleEs || visual.titleEn)}
-                        </div>
-                        <div className="glass-plaque-meta">
-                          {visual.author}
+                        <div className="tape-plaque">
+                          <span className="tape-title">{language === 'EN' ? (visual.titleEn || visual.titleEs) : (visual.titleEs || visual.titleEn)}</span>
+                          <span className="tape-author">{visual.author}</span>
                         </div>
                       </div>
                     </motion.div>
