@@ -19,61 +19,6 @@
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.01'/%3E%3C/svg%3E");
 }
 
-/* Spotlight Effect */
-.museum-wall::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: radial-gradient(circle 400px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 230, 180, 0.2), transparent 80%);
-  pointer-events: none;
-  z-index: 1;
-}
-:root.dark .museum-wall::after {
-  background: radial-gradient(circle 400px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 220, 180, 0.08), transparent 80%);
-}
-
-.souvenir-bg {
-  position: absolute;
-  pointer-events: none;
-  opacity: 0.85; /* Increased for better visibility in light theme */
-  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15));
-  z-index: 2;
-  animation: floatSouvenir var(--float-duration, 6s) ease-in-out infinite alternate;
-}
-:root.dark .souvenir-bg {
-  opacity: 0.4;
-  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4));
-}
-
-@keyframes floatSouvenir {
-  0% { transform: translateY(0px) rotate(var(--rot)); }
-  100% { transform: translateY(-20px) rotate(calc(var(--rot) + 5deg)); }
-}
-
-/* Dust Particles */
-.dust-particle {
-  position: fixed;
-  background: rgba(100, 80, 60, 0.3); /* Darker/warmer for light theme visibility */
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 2;
-  opacity: 0;
-  box-shadow: 0 0 10px 2px rgba(100, 80, 60, 0.1);
-  animation: floatDust var(--duration, 15s) linear infinite;
-}
-
-:root.dark .dust-particle {
-  background: white;
-  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.4);
-}
-
-@keyframes floatDust {
-  0% { transform: translateY(100vh) scale(0); opacity: 0; }
-  10% { opacity: var(--max-opacity, 0.3); transform: translateY(80vh) scale(1); }
-  90% { opacity: var(--max-opacity, 0.3); }
-  100% { transform: translateY(-20vh) scale(0.5); opacity: 0; }
-}
-
 .visuals-container {
   padding: 0 1rem 4rem 1rem;
   max-width: 1400px;
@@ -105,20 +50,25 @@
   letter-spacing: 0.05em;
 }
 
+/* Dynamic Masonry Columns */
 .visuals-masonry {
-  column-count: 1;
   column-gap: 3rem;
   width: 100%;
 }
 
+.visuals-masonry.items-1 { column-count: 1; }
+.visuals-masonry.items-2 { column-count: 1; }
+.visuals-masonry.items-3 { column-count: 1; }
+
 @media (min-width: 640px) {
-  .visuals-masonry {
+  .visuals-masonry.items-2,
+  .visuals-masonry.items-3 {
     column-count: 2;
   }
 }
 
 @media (min-width: 1024px) {
-  .visuals-masonry {
+  .visuals-masonry.items-3 {
     column-count: 3;
   }
 }
@@ -131,23 +81,6 @@
   position: relative;
   padding: 2rem 1rem;
   cursor: pointer;
-}
-
-/* Simulated hanging rope/wire */
-.visuals-masonry-item::before {
-  content: '';
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 2px;
-  height: 40px;
-  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.1) 100%);
-  z-index: -1;
-  pointer-events: none;
-}
-:root.dark .visuals-masonry-item::before {
-  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 100%);
 }
 
 .metallic-frame-wrapper {
