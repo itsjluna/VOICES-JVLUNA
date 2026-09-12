@@ -150,7 +150,7 @@ function VisualsView() {
                 onClick={() => setIsSketchpadOpen(true)}
               >
                 <div className="studio-btn-rgb-inner">
-                  <FaPalette size={18} /> 
+                  <span style={{ fontSize: '1.4rem', lineHeight: 1, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }}>🎨</span> 
                   <span>{language === 'EN' ? 'Open Studio' : 'Abrir Estudio'}</span>
                 </div>
               </button>

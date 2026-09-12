@@ -124,8 +124,16 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 10;
+  z-index: 9999999;
   transition: transform 0.2s;
+  padding: 0;
+}
+
+.sketchpad-close svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  display: block;
 }
 
 .sketchpad-close:hover {

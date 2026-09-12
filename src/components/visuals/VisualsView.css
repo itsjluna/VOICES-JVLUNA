@@ -406,12 +406,18 @@
 }
 
 /* Studio Button RGB Skeuomorphic */
+@property --rgb-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
 .studio-btn-rgb {
   position: relative;
   padding: 3px; 
   border-radius: 50px;
-  background: linear-gradient(
-    90deg,
+  background: conic-gradient(
+    from var(--rgb-angle),
     #ff0000,
     #ffff00,
     #00ff00,
@@ -420,8 +426,7 @@
     #ff00ff,
     #ff0000
   );
-  background-size: 200% 100%;
-  animation: rgbGlow 4s linear infinite;
+  animation: spinRGB 4s linear infinite;
   border: none;
   cursor: pointer;
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
@@ -468,9 +473,8 @@
   background: rgba(30, 30, 35, 0.98);
 }
 
-@keyframes rgbGlow {
-  0% { background-position: 200% 0; }
-  100% { background-position: 0 0; }
+@keyframes spinRGB {
+  to { --rgb-angle: 360deg; }
 }
 
 .studio-btn-rgb::after {
@@ -482,7 +486,7 @@
   filter: blur(15px);
   opacity: 0.6;
   z-index: -1;
-  animation: rgbGlow 4s linear infinite;
+  animation: inherit;
   transition: opacity 0.3s ease;
 }
 
