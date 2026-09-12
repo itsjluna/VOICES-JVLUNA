@@ -9,6 +9,21 @@ const CassetteItem = ({ track, animColor }) => {
   
   return (
     <>
+      <style>{`
+        .cassette-label-text {
+          font-size: 1.1rem;
+        }
+        @media (min-width: 600px) {
+          .cassette-label-text { font-size: 0.8rem; }
+        }
+        @media (min-width: 960px) {
+          .cassette-label-text { font-size: 0.7rem; }
+        }
+        @media (min-width: 1280px) {
+          .cassette-label-text { font-size: 0.65rem; }
+        }
+      `}</style>
+
       <motion.div
         layoutId={layoutIdId}
         onClick={() => setIsOpen(true)}
@@ -41,7 +56,7 @@ const CassetteItem = ({ track, animColor }) => {
           boxSizing: 'border-box',
           whiteSpace: 'nowrap'
         }}>
-          <span style={{ display: 'block', width: '100%', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: '1.1rem' }}>{track.title} - {track.artist}</span>
+          <span className="cassette-label-text" style={{ display: 'block', width: '100%', overflow: 'hidden', textOverflow: 'ellipsis' }}>{track.title} - {track.artist}</span>
         </div>
       </motion.div>
 
@@ -63,3 +78,4 @@ const CassetteItem = ({ track, animColor }) => {
 };
 
 export default CassetteItem;
+

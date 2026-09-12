@@ -29,7 +29,7 @@ function MusicView() {
   });
 
   return (
-    <PageWrapper isLoading={isLoading} loadingTextEn="Loading tracks..." loadingTextEs="Cargando pistas..." style={{ minHeight: '100vh', padding: '2rem 0' }}>
+    <PageWrapper isLoading={isLoading} loadingTextEn="Loading tracks..." loadingTextEs="Cargando pistas..." style={{ minHeight: '100vh', paddingBottom: '2rem' }}>
       <MusicGraphics color={animColor} />
       <BackButton />
       

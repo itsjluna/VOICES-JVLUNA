@@ -466,7 +466,7 @@ function ChapterView() {
       isLoading={!chapter}
       loadingTextEn="Opening chapter..."
       loadingTextEs="Abriendo capítulo..."
-      style={{ flex: 1, padding: '2rem 0', position: 'relative' }}
+      style={{ flex: 1, paddingBottom: '2rem', position: 'relative' }}
     >
       {chapter && (
         <>

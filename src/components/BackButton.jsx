@@ -17,7 +17,7 @@ const BackButton = ({ style, className }) => {
   return (
     <button 
       className={`back-button ${className || ''}`}
-      style={{ marginBottom: '2rem', alignSelf: 'flex-start', ...style }} 
+      style={{ marginTop: '2rem', marginBottom: '2rem', alignSelf: 'flex-start', ...style }} 
       onClick={handleBack}
     >
       &larr; {language === 'EN' ? 'Back' : 'Volver'}

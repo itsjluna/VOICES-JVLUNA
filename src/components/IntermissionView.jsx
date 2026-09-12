@@ -94,7 +94,7 @@ function IntermissionView() {
       isLoading={!intermission}
       loadingTextEn="Opening intermission..."
       loadingTextEs="Abriendo intermedio..."
-      style={{ flex: 1, padding: '2rem 0', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}
+      style={{ flex: 1, paddingBottom: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}
     >
       {intermission && (
         <>

@@ -67,7 +67,7 @@ function PoemView() {
       isLoading={!poem}
       loadingTextEn="Opening poem..."
       loadingTextEs="Abriendo poema..."
-      style={{ flex: 1, padding: '2rem 0', position: 'relative' }}
+      style={{ flex: 1, paddingBottom: '2rem', position: 'relative' }}
     >
       {poem && (
         <>
