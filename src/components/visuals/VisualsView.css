@@ -225,24 +225,34 @@
 .visual-modal-content {
   display: flex;
   flex-direction: column;
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
   border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 20px;
   overflow: hidden;
   max-width: 1000px;
   width: 100%;
-  max-height: 90vh;
-  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255,255,255,0.4);
   position: relative;
-  color: var(--text-color);
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.visual-modal-content::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  z-index: -1;
+  border-radius: inherit;
 }
 
 :root.dark .visual-modal-content {
-  background: rgba(30, 30, 30, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+
+:root.dark .visual-modal-content::before {
+  background: rgba(30, 30, 30, 0.65);
 }
 
 @media (min-width: 768px) {
@@ -389,39 +399,93 @@
   background: rgba(30, 30, 30, 0.8);
 }
 
+.visual-modal-info p {
+  line-height: 1.6;
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
 
-/* Studio Button */
-.studio-btn {
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  padding: 0.75rem 1.5rem;
-  border-radius: 30px;
+/* Studio Button RGB Skeuomorphic */
+.studio-btn-rgb {
+  position: relative;
+  padding: 3px; 
+  border-radius: 50px;
+  background: linear-gradient(
+    90deg,
+    #ff0000,
+    #ffff00,
+    #00ff00,
+    #00ffff,
+    #0000ff,
+    #ff00ff,
+    #ff0000
+  );
+  background-size: 200% 100%;
+  animation: rgbGlow 4s linear infinite;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.studio-btn-rgb:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+.studio-btn-rgb:active {
+  transform: translateY(1px);
+}
+
+.studio-btn-rgb-inner {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-weight: 600;
+  gap: 0.75rem;
+  background: rgba(244, 244, 240, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 0.8rem 2rem;
+  border-radius: 47px;
   font-family: var(--font-sans);
-  font-size: 0.9rem;
+  font-weight: 700;
+  font-size: 1.1rem;
   color: #111;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: background 0.3s ease;
 }
 
-.studio-btn:hover {
-  background: rgba(255, 255, 255, 0.8);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+:root.dark .studio-btn-rgb-inner {
+  background: rgba(22, 22, 24, 0.95);
+  color: #fff;
 }
 
-:root.dark .studio-btn {
-  background: rgba(30, 30, 35, 0.5);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: #eee;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+.studio-btn-rgb:hover .studio-btn-rgb-inner {
+  background: rgba(255, 255, 255, 0.98);
+}
+:root.dark .studio-btn-rgb:hover .studio-btn-rgb-inner {
+  background: rgba(30, 30, 35, 0.98);
 }
 
-:root.dark .studio-btn:hover {
-  background: rgba(50, 50, 55, 0.8);
+@keyframes rgbGlow {
+  0% { background-position: 200% 0; }
+  100% { background-position: 0 0; }
+}
+
+.studio-btn-rgb::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: inherit;
+  border-radius: inherit;
+  filter: blur(15px);
+  opacity: 0.6;
+  z-index: -1;
+  animation: rgbGlow 4s linear infinite;
+  transition: opacity 0.3s ease;
+}
+
+.studio-btn-rgb:hover::after {
+  opacity: 1;
 }

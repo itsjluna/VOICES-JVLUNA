@@ -59,25 +59,34 @@ function VisualsView() {
     { src: '/souvenirs/conepine.png', style: { top: '80%', right: '15%', '--rot': '45deg', width: '60px', '--float-duration': '9s' } }
   ];
 
-  // Watercolor Blooms for background
+  // Watercolor Blooms for background - smaller, more liquid and varied
   const bloomColors = [
-    'rgba(173, 216, 230, 0.5)', // soft blue
-    'rgba(255, 182, 193, 0.5)', // soft pink
-    'rgba(152, 251, 152, 0.4)', // soft mint
-    'rgba(255, 239, 150, 0.5)', // pale yellow
-    'rgba(221, 160, 221, 0.5)', // soft plum
-    'rgba(255, 204, 153, 0.5)', // warm peach
+    'rgba(173, 216, 230, 0.5)', 
+    'rgba(255, 182, 193, 0.5)', 
+    'rgba(152, 251, 152, 0.4)', 
+    'rgba(255, 239, 150, 0.5)', 
+    'rgba(221, 160, 221, 0.5)', 
+    'rgba(255, 204, 153, 0.5)', 
   ];
 
-  const watercolorBlooms = Array.from({ length: 6 }).map((_, i) => ({
-    id: i,
-    left: `${Math.random() * 80 + 10}vw`,
-    top: `${Math.random() * 80 + 10}vh`,
-    size: `${Math.random() * 200 + 200}px`, // 200px to 400px
-    color: bloomColors[i % bloomColors.length],
-    duration: `${Math.random() * 15 + 20}s`, // 20s to 35s
-    delay: `${Math.random() * 15}s`,
-  }));
+  const watercolorBlooms = Array.from({ length: 12 }).map((_, i) => {
+    const br1 = Math.floor(40 + Math.random() * 20);
+    const br2 = Math.floor(40 + Math.random() * 20);
+    const br3 = Math.floor(40 + Math.random() * 20);
+    const br4 = Math.floor(40 + Math.random() * 20);
+    const size = Math.random() * 100 + 100; // 100px to 200px
+    return {
+      id: i,
+      left: `${Math.random() * 90 + 5}vw`,
+      top: `${Math.random() * 90 + 5}vh`,
+      width: `${size}px`,
+      height: `${size * (0.8 + Math.random() * 0.4)}px`,
+      color: bloomColors[i % bloomColors.length],
+      duration: `${Math.random() * 15 + 15}s`,
+      delay: `${Math.random() * 15}s`,
+      borderRadius: `${br1}% ${100-br1}% ${br2}% ${100-br2}% / ${br3}% ${br4}% ${100-br4}% ${100-br3}%`
+    };
+  });
 
   return (
     <div style={{ minHeight: '100vh', position: 'relative' }}>
@@ -95,9 +104,10 @@ function VisualsView() {
               style={{
                 left: bloom.left,
                 top: bloom.top,
-                width: bloom.size,
-                height: bloom.size,
+                width: bloom.width,
+                height: bloom.height,
                 backgroundColor: bloom.color,
+                borderRadius: bloom.borderRadius,
                 '--duration': bloom.duration,
                 animationDelay: bloom.delay
               }}
@@ -109,14 +119,8 @@ function VisualsView() {
         </div>
         
         <div className="visuals-container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative', zIndex: 100 }}>
+          <div style={{ position: 'relative', zIndex: 100 }}>
             <BackButton />
-            <button 
-              className="studio-btn"
-              onClick={() => setIsSketchpadOpen(true)}
-            >
-              <FaPalette /> {language === 'EN' ? 'Studio' : 'Estudio'}
-            </button>
           </div>
           
           <div className="visuals-header">
@@ -134,6 +138,23 @@ function VisualsView() {
             >
               {language === 'EN' ? 'Paintings, Drawings & Digital Illustrations' : 'Pinturas, Dibujos e Ilustraciones Digitales'}
             </motion.p>
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}
+            >
+              <button 
+                className="studio-btn-rgb"
+                onClick={() => setIsSketchpadOpen(true)}
+              >
+                <div className="studio-btn-rgb-inner">
+                  <FaPalette size={18} /> 
+                  <span>{language === 'EN' ? 'Open Studio' : 'Abrir Estudio'}</span>
+                </div>
+              </button>
+            </motion.div>
           </div>
 
           {visuals.length === 0 && !isLoading && (
