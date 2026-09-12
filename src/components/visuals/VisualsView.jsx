@@ -57,15 +57,24 @@ function VisualsView() {
     { src: '/souvenirs/conepine.png', style: { top: '80%', right: '15%', '--rot': '45deg', width: '60px', '--float-duration': '9s' } }
   ];
 
-  // Optimized dust particles (reduced count)
-  const dustParticles = Array.from({ length: 8 }).map((_, i) => ({
+  // Watercolor Blooms for background
+  const bloomColors = [
+    'rgba(173, 216, 230, 0.5)', // soft blue
+    'rgba(255, 182, 193, 0.5)', // soft pink
+    'rgba(152, 251, 152, 0.4)', // soft mint
+    'rgba(255, 239, 150, 0.5)', // pale yellow
+    'rgba(221, 160, 221, 0.5)', // soft plum
+    'rgba(255, 204, 153, 0.5)', // warm peach
+  ];
+
+  const watercolorBlooms = Array.from({ length: 6 }).map((_, i) => ({
     id: i,
-    left: `${Math.random() * 100}vw`,
-    width: `${Math.random() * 4 + 2}px`,
-    height: `${Math.random() * 4 + 2}px`,
-    duration: `${Math.random() * 15 + 15}s`,
-    delay: `${Math.random() * 10}s`,
-    maxOpacity: Math.random() * 0.2 + 0.1
+    left: `${Math.random() * 80 + 10}vw`,
+    top: `${Math.random() * 80 + 10}vh`,
+    size: `${Math.random() * 200 + 200}px`, // 200px to 400px
+    color: bloomColors[i % bloomColors.length],
+    duration: `${Math.random() * 15 + 20}s`, // 20s to 35s
+    delay: `${Math.random() * 15}s`,
   }));
 
   return (
@@ -77,17 +86,18 @@ function VisualsView() {
         style={{ minHeight: '100vh' }}
       >
         <div className="museum-wall">
-          {dustParticles.map(particle => (
+          {watercolorBlooms.map(bloom => (
             <div 
-              key={particle.id}
-              className="dust-particle"
+              key={bloom.id}
+              className="watercolor-bloom"
               style={{
-                left: particle.left,
-                width: particle.width,
-                height: particle.height,
-                '--duration': particle.duration,
-                animationDelay: particle.delay,
-                '--max-opacity': particle.maxOpacity
+                left: bloom.left,
+                top: bloom.top,
+                width: bloom.size,
+                height: bloom.size,
+                backgroundColor: bloom.color,
+                '--duration': bloom.duration,
+                animationDelay: bloom.delay
               }}
             />
           ))}

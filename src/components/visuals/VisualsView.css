@@ -37,27 +37,30 @@
   100% { transform: translate3d(0, -15px, 0) rotate(calc(var(--rot) + 5deg)); }
 }
 
-/* Optimized Dust Particles */
-.dust-particle {
-  position: fixed;
-  background: rgba(100, 80, 60, 0.4);
+/* Watercolor Blooms */
+.watercolor-bloom {
+  position: absolute;
   border-radius: 50%;
+  filter: blur(50px);
   pointer-events: none;
-  z-index: 2;
+  z-index: 1;
   opacity: 0;
+  mix-blend-mode: multiply;
   will-change: transform, opacity;
-  animation: floatDust var(--duration, 15s) linear infinite;
+  animation: bloomAnim var(--duration) ease-in-out infinite alternate;
+  transform: translate(-50%, -50%) scale(0.5);
 }
 
-:root.dark .dust-particle {
-  background: white;
+:root.dark .watercolor-bloom {
+  mix-blend-mode: screen;
+  filter: blur(60px);
 }
 
-@keyframes floatDust {
-  0% { transform: translate3d(0, 100vh, 0) scale(0); opacity: 0; }
-  10% { opacity: var(--max-opacity, 0.2); transform: translate3d(0, 80vh, 0) scale(1); }
-  90% { opacity: var(--max-opacity, 0.2); }
-  100% { transform: translate3d(0, -20vh, 0) scale(0.5); opacity: 0; }
+@keyframes bloomAnim {
+  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+  30% { opacity: 0.8; }
+  70% { opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
 }
 
 .visuals-container {
