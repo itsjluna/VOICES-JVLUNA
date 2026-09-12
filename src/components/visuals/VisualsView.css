@@ -1,4 +1,4 @@
-﻿.museum-wall {
+.museum-wall {
   position: fixed;
   top: 0;
   left: 0;
@@ -519,11 +519,3 @@
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(5px); }
 }
-
-
-
-
-
-
-:root.dark 
-
