@@ -172,9 +172,9 @@ function VisualsView() {
                   const totalIndex = (index * activeCols) + colIndex;
                   // Frame styles and scattered rotation logic
                   const frameStyles = ['frame-museum', 'frame-freepik', 'frame-canvas'];
-                  const frameClass = frameStyles[index % frameStyles.length];
+                  const frameClass = frameStyles[totalIndex % frameStyles.length];
                   const rotations = [-2, 1, 3, -1, 2, -3, 0];
-                  const rotation = rotations[index % rotations.length];
+                  const rotation = rotations[totalIndex % rotations.length];
                   
                   return (
                   <motion.div 
