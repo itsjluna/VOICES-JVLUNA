@@ -12,7 +12,7 @@ function WelcomeScreen() {
 
   const sections = [
     { id: 'poetry', path: '/index', labelEN: 'Index', labelES: 'Índice', status: 'available' },
-    { id: 'photography', path: '/photography', labelEN: 'Photography', labelES: 'Fotografía', status: 'soon' },
+    { id: 'photography', path: '/visuals', labelEN: 'Visuals', labelES: 'Visuales', status: 'available' },
     { id: 'video', path: '/video', labelEN: 'Videos', labelES: 'Videos', status: 'soon' },
     { id: 'gamedev', path: '/gamedev', labelEN: 'Games', labelES: 'Juegos', status: 'soon' },
   ];

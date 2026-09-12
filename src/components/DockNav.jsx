@@ -165,7 +165,7 @@ function DockNav() {
               active={location.pathname === '/visuals'} 
               onClick={() => { navigate('/visuals'); setIsArtMenuOpen(false); }} 
               isDark={isDark}
-              status="soon"
+              status="available"
               language={language}
             />
             <MenuButton 

@@ -1,0 +1,199 @@
+.museum-wall {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background-color: #f4f4f0;
+  background-image: 
+    radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.8) 0%, rgba(244,244,240,0) 70%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+  transition: background-color 0.3s ease;
+}
+
+:root.dark .museum-wall {
+  background-color: #161618;
+  background-image: 
+    radial-gradient(ellipse at 50% 0%, rgba(60,60,65,0.5) 0%, rgba(22,22,24,0) 70%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+.visuals-container {
+  padding: 0 1rem 4rem 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.visuals-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  position: relative;
+  z-index: 10;
+}
+
+.visuals-header h1 {
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-family: var(--font-serif);
+  margin-bottom: 1rem;
+  font-weight: 300;
+}
+
+.visuals-header p {
+  font-size: 1.1rem;
+  opacity: 0.7;
+  font-family: var(--font-sans);
+  letter-spacing: 0.05em;
+}
+
+.visuals-masonry {
+  column-count: 1;
+  column-gap: 3rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .visuals-masonry {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .visuals-masonry {
+    column-count: 3;
+  }
+}
+
+.visuals-masonry-item {
+  break-inside: avoid;
+  margin-bottom: 4rem;
+  display: inline-block;
+  width: 100%;
+  position: relative;
+  background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 60%);
+  padding: 2rem 1rem;
+}
+
+:root.dark .visuals-masonry-item {
+  background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
+}
+
+.metallic-frame-wrapper {
+  position: relative;
+  box-shadow: 
+    0 30px 60px -15px rgba(0,0,0,0.4),
+    0 10px 20px -5px rgba(0,0,0,0.2);
+  border: 6px solid transparent;
+  border-image: linear-gradient(
+    135deg, 
+    #d1d5db 0%, 
+    #ffffff 20%, 
+    #9ca3af 50%, 
+    #ffffff 80%, 
+    #d1d5db 100%
+  ) 1;
+  background: #fdfdfc;
+  padding: clamp(1rem, 3vw, 2.5rem); /* Mat board */
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+:root.dark .metallic-frame-wrapper {
+  box-shadow: 
+    0 30px 60px -15px rgba(0,0,0,0.8),
+    0 10px 20px -5px rgba(0,0,0,0.5);
+  border-image: linear-gradient(
+    135deg, 
+    #4b5563 0%, 
+    #9ca3af 20%, 
+    #374151 50%, 
+    #9ca3af 80%, 
+    #4b5563 100%
+  ) 1;
+  background: #1f1f1f;
+}
+
+.metallic-frame-wrapper:hover {
+  transform: scale(1.02) translateY(-5px);
+}
+
+.artwork-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  box-shadow: inset 0 2px 15px rgba(0,0,0,0.1), 0 2px 10px rgba(0,0,0,0.15);
+}
+
+:root.dark .artwork-image {
+  box-shadow: inset 0 2px 15px rgba(0,0,0,0.4), 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.museum-plaque {
+  margin: 1.5rem auto 0 auto;
+  background: linear-gradient(135deg, #f3f4f6, #ffffff);
+  border: 1px solid #d1d5db;
+  padding: 0.8rem 1.2rem;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  font-family: var(--font-sans, sans-serif);
+  text-align: center;
+  position: relative;
+  width: max-content;
+  max-width: 90%;
+  min-width: 150px;
+}
+
+:root.dark .museum-plaque {
+  background: linear-gradient(135deg, #374151, #1f2937);
+  border: 1px solid #4b5563;
+  color: #f3f4f6;
+}
+
+.museum-plaque::before,
+.museum-plaque::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  background: linear-gradient(135deg, #d1d5db, #9ca3af);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: 
+    inset 1px 1px 2px rgba(255,255,255,0.5),
+    1px 1px 2px rgba(0,0,0,0.3);
+}
+
+:root.dark .museum-plaque::before,
+:root.dark .museum-plaque::after {
+  background: linear-gradient(135deg, #9ca3af, #4b5563);
+  box-shadow: 
+    inset 1px 1px 2px rgba(255,255,255,0.2),
+    1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.museum-plaque::before {
+  left: 0.5rem;
+}
+
+.museum-plaque::after {
+  right: 0.5rem;
+}
+
+.museum-plaque-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+  font-family: var(--font-serif, serif);
+}
+
+.museum-plaque-meta {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  font-style: italic;
+  letter-spacing: 0.05em;
+}

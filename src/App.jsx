@@ -17,6 +17,7 @@ const ErrorView = React.lazy(() => import('./components/ErrorView'));
 const PlaceholderView = React.lazy(() => import('./components/PlaceholderView'));
 const MusicView = React.lazy(() => import('./components/music/MusicView'));
 const VideoView = React.lazy(() => import('./components/video/VideoView'));
+const VisualsView = React.lazy(() => import('./components/visuals/VisualsView'));
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -50,7 +51,7 @@ function AnimatedRoutes() {
           <Route path="/intermission/:id" element={<IntermissionView />} />
           <Route path="/vent/:id" element={<VentView />} />
           <Route path="/poem/:id" element={<PoemView />} />
-          <Route path="/visuals" element={<PlaceholderView title="Visuals" />} />
+          <Route path="/visuals" element={<VisualsView />} />
           <Route path="/video" element={<VideoView />} />
           <Route path="/gamedev" element={<PlaceholderView title="Games" />} />
           <Route path="/music" element={<MusicView />} />
