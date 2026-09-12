@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="122.84 52.71 554.32 694.59">
+  <!-- Generator: Adobe Illustrator 30.7.0, SVG Export Plug-In . SVG Version: 2.1.4 Build 114)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: url(#linear-gradient2);
+      }
+
+      .st1 {
+        fill: url(#linear-gradient1);
+      }
+
+      .st2 {
+        isolation: isolate;
+      }
+
+      .st3 {
+        fill: url(#linear-gradient4);
+      }
+
+      .st4 {
+        mix-blend-mode: multiply;
+      }
+
+      .st5 {
+        fill: url(#linear-gradient3);
+      }
+
+      .st6 {
+        fill: url(#linear-gradient);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="133.48" y1="87.62" x2="661.33" y2="87.62" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f6f6f7"/>
+      <stop offset="1" stop-color="#d8d9dd"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient1" y1="702.82" y2="702.82" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient2" y1="395.22" x2="179.27" y2="395.22" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient3" x1="615.54" y1="395.22" y2="395.22" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient4" x1="122.84" y1="400" x2="677.16" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000"/>
+      <stop offset="1" stop-color="#434040"/>
+    </linearGradient>
+  </defs>
+  <g class="st2">
+    <g id="_x31_4">
+      <g>
+        <polygon class="st6" points="661.33 67.04 661.33 67.04 133.48 67.04 179.27 108.21 615.54 108.21 661.33 67.04"/>
+        <polygon class="st1" points="133.48 723.4 133.48 723.4 661.33 723.4 615.54 682.24 179.27 682.24 133.48 723.4"/>
+        <path class="st0" d="M179.27,682.24V108.21l-45.79-41.17v656.36l45.79-41.17Z"/>
+        <path class="st5" d="M615.54,108.21v574.03l45.79,41.17V67.04l-45.79,41.17Z"/>
+      </g>
+      <g class="st4">
+        <image width="90" height="722" transform="translate(103 36)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAALSCAYAAABd1MaeAAAACXBIWXMAAAsSAAALEgHS3X78AAAK50lEQVR4nO3WwWoc2RlH8f9XVd1qtRU59kDIeBJwDNHC8xKdN1PeTHmDrGcRBEOGYcAysWQZtbrry0J2konNxFnMkUjOD5pLNV3Vtw6XW5VIkiRJkiRJkiRJkiRJkiRJ+pnVfU/gEz45p+7+/AtUktTnnwB4SKHr9PS0zs7OhpOTk0qS16+f1ddff/zDly9ffvICL1686CS5vLzszWYzJ+mqhxF8vO8JJMnp6emQbMbkfPH06dOD6+vF6tGjafXFF/Pq6iqrcdyv1uv1ahwfrx4/PlxdJatst6vlcrlKjlZHR8vV48e/OZim/cHNzWoxjr8c/zJf1fmff5nf/a5ydnZ277EfwoquzeZ0PDn5bnl5ebler9ePqmo9juNymg7H1WpVi8Ui6/U6PzUeHh72cnmwn6Zpe3BweD3P12+TZ9eXl19uN5vs73tlT/f550lyenpa5+fn0+XlzXqxWDzt7l91D0+HYThKalE1D8OQmjMnqcw1p6ZKd2cYhnQn0zT1MAxz1f52mhZX87C92A/TD+Puuzx/fjMnz+ck/9eh6+zsbDg+frE4Olo/SvpX+/3w+2EYfltVT6vm9TzXmAwZMmQck6ErQw8ZhiRDUmMyZ87c875qeb3vXCz2w7cH45jl+vjmr3+9uTk/P9t1973u1/cdOicnJ3V1dTXt9+N6sVg8Tfq3SX7fnV8nOUp6qurq9wuyk6SS7qRSSSdV1VW1656vhqrvu+bMNb7a79++Oj7uN9vtL+59i7z30K9fv67d7nB49Gheds9HwzA+repfJ/lNd46rMnXfPUv+8YbXneRu+0gl6XR375K8STpVw6ua90c1DstpejKM498MnSTTNA7JOHb3sqoOu+soyXFVjruzyI8e2vWva/vD0FV1myTdOUrqcE6W+/0wbrfvhoMD8m4+7UGETpJ5nmuaaujOOAyZqjLdPQzr30J/vM32neTufqaqHpNhqKp7X8kfPJjQ/9SVpN5vF9V9d/xTZ9z1rEqqUqmeq2og5vr5Hth0/ncZGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoiKEhhoYYGmJoyHTfE/hYdZKuyvux+j+d0d2dvP90uobupH7+qf4XHkzoYRi6u+eq7Luz684u6dvuTn5U7eOAVdVVdZtkl2TXXfuk535/8kPwIELvdvv54GDeV03b7n43DH2V5E13UpUpP6rb7w/ef3U3dHfvkrypylXS74bUdhzn/XJ5OM/zFr2fT7n30E+ePOmrq6v59nbcrlbDVXcuuuv7JKnKUXemqruc9SF3VZJOVSWdpNJVtUtyldT33X3R43TVPW9vby/m7XZ77yv73kN/8803fXz8Ynd0VNfdfVFV3yZJVV4lWSc1dlfqX9fx3UpP524r7u50975quJ67L8Yevx06F+P46PriYru7vX31fx+6N5vNfH5+fntzc/M2WfwwjlOSetU9HHUPi2HoIZlrzpz9Ppmr747mJHPS+2TI0EMNc/fudqzpqsf54ibzD7vrd2+/+uqL2+fPN/PnPFR/Tg/h0Vybzel4cvLd8vLycr1erx9V1Xocx+U0HY6r1aoWi0XW63V+ajw8POzl8mA/TdP24ODwep6v3ybPri8vv9xuNtnfd+j7XtFJ0ptN5rOzZ9vnz8/n7r5592755smTYVitxtpuq5bLXaap071M1S671SrzfJPFYpHb2yEHB/sMw7qXy31vt4t5vx92t199cZvzL3d/+tMf5z/84fTet46HsKI/qNPT0zo7OxtOTk4qSV6/flZff/3xD1++fPnJC7x48aKT5PLysjebzZzPfA8nPKTQH3xyTv/NK/Hd28nDCCxJkiRJkiRJkiRJkiRJkiQJ83c61C0+OHnRrQAAAABJRU5ErkJggg=="/>
+      </g>
+      <g class="st4">
+        <image width="599" height="85" transform="translate(98 36)" xlink:href="data:image/png;base64,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"/>
+      </g>
+      <path class="st3" d="M139.78,52.71h537.38v694.59H122.84V52.71h16.94ZM653.22,76.59H146.73v646.81h506.49V76.59Z"/>
+    </g>
+  </g>
+</svg>

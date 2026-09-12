@@ -170,16 +170,24 @@ function VisualsView() {
                 {col.map((visual, index) => {
                   // Calculate a staggered delay based on total index for a nice wave entry
                   const totalIndex = (index * activeCols) + colIndex;
+                  // Frame styles and scattered rotation logic
+                  const frameStyles = ['frame-museum', 'frame-freepik', 'frame-canvas'];
+                  const frameClass = frameStyles[index % frameStyles.length];
+                  const rotations = [-2, 1, 3, -1, 2, -3, 0];
+                  const rotation = rotations[index % rotations.length];
+                  
                   return (
                   <motion.div 
                       key={visual._id} 
                       className="visuals-masonry-item"
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      initial={{ opacity: 0, y: 30, rotate: rotation }}
+                      animate={{ opacity: 1, y: 0, rotate: rotation }}
+                      whileHover={{ scale: 1.02, rotate: 0, zIndex: 10 }}
                       transition={{ duration: 0.6, delay: 0.1 + (totalIndex * 0.1) }}
                       onClick={() => setSelectedVisual(visual)}
+                      style={{ transformOrigin: 'center center' }}
                     >
-                      <div className="metallic-frame-wrapper">
+                      <div className={`artwork-frame-wrapper ${frameClass}`}>
                         <img src={visual.image} alt={language === 'EN' ? visual.titleEn : visual.titleEs} className="artwork-image" loading="lazy" />
                         <div className="museum-placard">
                           <span className="placard-title">{language === 'EN' ? (visual.titleEn || visual.titleEs) : (visual.titleEs || visual.titleEn)}</span>

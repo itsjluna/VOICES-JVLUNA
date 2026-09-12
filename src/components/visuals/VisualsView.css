@@ -115,8 +115,13 @@
   cursor: pointer;
 }
 
-.metallic-frame-wrapper {
+.artwork-frame-wrapper {
   position: relative;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 1. Classic Metallic Museum Frame (existing) */
+.frame-museum {
   box-shadow: 
     0 30px 60px -15px rgba(0,0,0,0.4),
     0 10px 20px -5px rgba(0,0,0,0.2);
@@ -131,10 +136,8 @@
   ) 1;
   background: #fdfdfc;
   padding: clamp(1rem, 3vw, 2.5rem); /* Mat board */
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-
-:root.dark .metallic-frame-wrapper {
+:root.dark .frame-museum {
   box-shadow: 
     0 30px 60px -15px rgba(0,0,0,0.8),
     0 10px 20px -5px rgba(0,0,0,0.5);
@@ -149,8 +152,39 @@
   background: #1f1f1f;
 }
 
-.metallic-frame-wrapper:hover {
-  transform: scale(1.02) translateY(-5px);
+/* 2. Freepik SVG Border Image Frame */
+.frame-freepik {
+  border-style: solid;
+  border-image-source: url('/4359%20SV.svg');
+  border-image-slice: 24; 
+  border-image-width: 24px;
+  border-image-outset: 0;
+  border-image-repeat: stretch;
+  background: #fdfdf9; /* matte */
+  padding: clamp(1rem, 3vw, 2.5rem); /* matte thickness */
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+:root.dark .frame-freepik {
+  background: #2a2a2a;
+}
+
+/* 3. Stretched Canvas (frameless) */
+.frame-canvas {
+  background: #fff;
+  padding: 0; /* no matte */
+  box-shadow: 
+    -2px 2px 5px rgba(0,0,0,0.1),
+    -5px 5px 15px rgba(0,0,0,0.2),
+    -10px 10px 30px rgba(0,0,0,0.3);
+}
+/* canvas texture overlay */
+.frame-canvas::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  mix-blend-mode: multiply;
 }
 
 .artwork-image {
