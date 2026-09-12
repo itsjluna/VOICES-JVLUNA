@@ -152,7 +152,7 @@ function VisualsView() {
               >
                 <div className="studio-btn-sketch-inner">
                   <span style={{ fontSize: '1.4rem', lineHeight: 1, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }}>🎨</span> 
-                  <span>{language === 'EN' ? 'Open Studio' : 'Abrir Estudio'}</span>
+                  <span>{language === 'EN' ? 'Take your pencil' : 'Toma tu lápiz'}</span>
                 </div>
               </button>
             </motion.div>
