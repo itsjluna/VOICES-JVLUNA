@@ -137,10 +137,15 @@ function VideoCard({ video, isTop, onSwipe, index }) {
   };
 
   const handleDragEnd = (event, info) => {
-    const swipeThreshold = 100;
-    if (info.offset.x > swipeThreshold) {
+    const swipeThreshold = 50;
+    const velocityThreshold = 400;
+    
+    const isRightSwipe = info.offset.x > swipeThreshold || info.velocity.x > velocityThreshold;
+    const isLeftSwipe = info.offset.x < -swipeThreshold || info.velocity.x < -velocityThreshold;
+
+    if (isRightSwipe) {
       controls.start({ x: 500, opacity: 0, transition: { duration: 0.3 } }).then(() => onSwipe('right'));
-    } else if (info.offset.x < -swipeThreshold) {
+    } else if (isLeftSwipe) {
       controls.start({ x: -500, opacity: 0, transition: { duration: 0.3 } }).then(() => onSwipe('left'));
     } else {
       controls.start({ x: 0, y: 0, transition: { type: 'spring', stiffness: 300, damping: 20 } });
@@ -169,6 +174,7 @@ function VideoCard({ video, isTop, onSwipe, index }) {
     <motion.div
       drag={isTop ? 'x' : false}
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+      dragDirectionLock={true}
       onDragEnd={handleDragEnd}
       animate={controls}
       initial={{ scale: 0.95, y: 20, opacity: 0 }}
