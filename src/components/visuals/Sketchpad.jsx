@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaTimes, FaTrash, FaPen } from 'react-icons/fa';
+import { FaTimes, FaTrash, FaPen, FaDownload } from 'react-icons/fa';
 import './Sketchpad.css';
 
 export default function Sketchpad({ onClose }) {
@@ -91,6 +91,31 @@ export default function Sketchpad({ onClose }) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   };
 
+  const downloadCanvas = () => {
+    const canvas = canvasRef.current;
+    
+    // Create a temporary canvas to draw a background
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+    const tempCtx = tempCanvas.getContext('2d');
+    
+    // Fill with background color matching the Sketchpad theme
+    const isDark = document.documentElement.classList.contains('dark');
+    tempCtx.fillStyle = isDark ? '#161618' : '#f4f4f0';
+    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+    
+    // Draw the drawing on top
+    tempCtx.drawImage(canvas, 0, 0);
+    
+    // Export and download
+    const dataUrl = tempCanvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = `my-sketch-${Date.now()}.png`;
+    link.href = dataUrl;
+    link.click();
+  };
+
   return (
     <motion.div 
       className="sketchpad-overlay"
@@ -135,9 +160,14 @@ export default function Sketchpad({ onClose }) {
           />
         </div>
 
-        <button className="sketchpad-action-btn" onClick={clearCanvas} title="Clear Canvas">
-          <FaTrash />
-        </button>
+        <div className="sketchpad-actions" style={{ display: 'flex', gap: '0.5rem' }}>
+          <button className="sketchpad-action-btn" onClick={downloadCanvas} title="Download Drawing">
+            <FaDownload />
+          </button>
+          <button className="sketchpad-action-btn" onClick={clearCanvas} title="Clear Canvas">
+            <FaTrash />
+          </button>
+        </div>
       </div>
 
       <button className="sketchpad-close" onClick={onClose} title="Close Studio">
@@ -146,3 +176,4 @@ export default function Sketchpad({ onClose }) {
     </motion.div>
   );
 }
+
