@@ -15,6 +15,17 @@ function VisualsView() {
   const [selectedVisual, setSelectedVisual] = useState(null);
   const [columnsCount, setColumnsCount] = useState(3);
   const [isSketchpadOpen, setIsSketchpadOpen] = useState(false);
+  const [showTapHint, setShowTapHint] = useState(() => {
+    return localStorage.getItem('voices_visuals_hint_seen') !== 'true';
+  });
+
+  const handleArtworkClick = (visual) => {
+    setSelectedVisual(visual);
+    if (showTapHint) {
+      setShowTapHint(false);
+      localStorage.setItem('voices_visuals_hint_seen', 'true');
+    }
+  };
 
   useEffect(() => {
     const fetchVisuals = async () => {
@@ -182,16 +193,12 @@ function VisualsView() {
                       animate={{ opacity: 1, y: 0 }}
                       whileHover={{ scale: 1.02, zIndex: 10 }}
                       transition={{ duration: 0.6, delay: 0.1 + (totalIndex * 0.1) }}
-                      onClick={() => setSelectedVisual(visual)}
+                      onClick={() => handleArtworkClick(visual)}
                     >
                       <div className={`artwork-frame-wrapper ${frameColor}`}>
                         <div className="frame-border"></div>
                         <div className="frame-matte">
                           <img src={visual.image} alt={language === 'EN' ? visual.titleEn : visual.titleEs} className="artwork-image" loading="lazy" />
-                          <div className="museum-placard">
-                            <span className="placard-title">{language === 'EN' ? (visual.titleEn || visual.titleEs) : (visual.titleEs || visual.titleEn)}</span>
-                            {visual.author && <span className="placard-author">{visual.author}</span>}
-                          </div>
                         </div>
                       </div>
                     </motion.div>
@@ -244,6 +251,21 @@ function VisualsView() {
                   </p>
                 </div>
               </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {showTapHint && (
+            <motion.div 
+              className="tap-hint-toast"
+              initial={{ opacity: 0, y: 50, x: '-50%' }}
+              animate={{ opacity: 1, y: 0, x: '-50%' }}
+              exit={{ opacity: 0, y: 20, x: '-50%' }}
+              transition={{ delay: 1, duration: 0.5 }}
+            >
+              <span className="tap-hint-icon">👆</span>
+              {language === 'EN' ? 'Tap any artwork for details' : 'Toca cualquier obra para ver detalles'}
             </motion.div>
           )}
         </AnimatePresence>

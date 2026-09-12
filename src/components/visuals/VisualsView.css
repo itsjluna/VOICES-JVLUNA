@@ -480,3 +480,8 @@
   font-weight: 700;
   font-size: 1.1rem;
 }
+
+.tap-hint-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: rgba(20, 20, 20, 0.85); backdrop-filter: blur(10px); color: #fff; padding: 12px 24px; border-radius: 50px; display: flex; align-items: center; gap: 10px; z-index: 100; box-shadow: 0 10px 25px rgba(0,0,0,0.2); font-family: var(--font-sans); font-size: 0.95rem; font-weight: 600; letter-spacing: 0.05em; pointer-events: none; }
+:root.dark .tap-hint-toast { background: rgba(255, 255, 255, 0.85); color: #111; }
+.tap-hint-icon { font-size: 1.2rem; animation: bounceHint 1.5s infinite; }
+@keyframes bounceHint { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
