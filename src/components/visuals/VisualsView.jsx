@@ -181,9 +181,9 @@ function VisualsView() {
                     >
                       <div className="metallic-frame-wrapper">
                         <img src={visual.image} alt={language === 'EN' ? visual.titleEn : visual.titleEs} className="artwork-image" loading="lazy" />
-                        <div className="tape-plaque">
-                          <span className="tape-title">{language === 'EN' ? (visual.titleEn || visual.titleEs) : (visual.titleEs || visual.titleEn)}</span>
-                          <span className="tape-author">{visual.author}</span>
+                        <div className="museum-placard">
+                          <span className="placard-title">{language === 'EN' ? (visual.titleEn || visual.titleEs) : (visual.titleEs || visual.titleEn)}</span>
+                          {visual.author && <span className="placard-author">{visual.author}</span>}
                         </div>
                       </div>
                     </motion.div>
