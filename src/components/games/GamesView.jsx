@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes, FaPlay, FaSlidersH, FaCopy, FaTint, FaSeedling, FaSun, FaCloud, FaHeart, FaGamepad } from 'react-icons/fa';
+import { FaTimes, FaPlay, FaTint, FaSeedling, FaSun, FaCloud, FaHeart, FaGamepad } from 'react-icons/fa';
 import { useLanguage } from '../../contexts/LanguageContext';
 import PageWrapper from '../PageWrapper';
 import BackButton from '../BackButton';
@@ -12,6 +12,18 @@ const THEMES = [
   { id: 'spring', name: 'Spring Bloom', icon: FaSun, bg: 'linear-gradient(-45deg, #a8e063, #56ab2f, #d4fc79, #96e6a1)', p1: '#56ab2f', p2: '#96e6a1' },
   { id: 'skydive', name: 'Skydive', icon: FaCloud, bg: 'linear-gradient(-45deg, #89f7fe, #66a6ff, #a1c4fd, #c2e9fb)', p1: '#66a6ff', p2: '#89f7fe' },
   { id: 'girlypop', name: 'Girlypop', icon: FaHeart, bg: 'linear-gradient(-45deg, #ff0844, #ffb199, #fbc2eb, #a6c1ee)', p1: '#ff0844', p2: '#ffb199' }
+];
+
+const GRAPHICS = [
+  { src: 'y2kstar.png', style: { top: '20%', left: '30%', width: '80px', animationDelay: '0s' } },
+  { src: 'y2kheart.png', style: { top: '10%', right: '35%', width: '90px', animationDelay: '1s' } },
+  { src: 'y2ksphere.png', style: { bottom: '20%', left: '25%', width: '120px', animationDelay: '2s' } },
+  { src: 'y2kflower.png', style: { bottom: '30%', right: '20%', width: '100px', animationDelay: '0.5s' } },
+  { src: 'y2kstar2.png', style: { top: '40%', right: '5%', width: '70px', animationDelay: '1.5s' } },
+  { src: 'y2keart.png', style: { bottom: '15%', right: '40%', width: '85px', animationDelay: '2.5s' } },
+  { src: 'y2kclover.png', style: { top: '60%', left: '15%', width: '95px', animationDelay: '0.2s' } },
+  { src: 'y2kflag.png', style: { top: '5%', left: '50%', width: '110px', animationDelay: '1.2s' } },
+  { src: 'y2kshine.png', style: { bottom: '5%', left: '45%', width: '60px', animationDelay: '0.8s' } }
 ];
 
 export default function GamesView() {
@@ -80,15 +92,9 @@ export default function GamesView() {
 
         {/* Y2K Graphic Elements */}
         <div className="games-graphics">
-          <img src="/games/graphics/y2kstar.png" className="graphic-img" style={{ top: '20%', left: '30%', width: '80px', animationDelay: '0s' }} />
-          <img src="/games/graphics/y2kheart.png" className="graphic-img" style={{ top: '10%', right: '35%', width: '90px', animationDelay: '1s' }} />
-          <img src="/games/graphics/y2ksphere.png" className="graphic-img" style={{ bottom: '20%', left: '25%', width: '120px', animationDelay: '2s' }} />
-          <img src="/games/graphics/y2kflower.png" className="graphic-img" style={{ bottom: '30%', right: '20%', width: '100px', animationDelay: '0.5s' }} />
-          <img src="/games/graphics/y2kstar2.png" className="graphic-img" style={{ top: '40%', right: '5%', width: '70px', animationDelay: '1.5s' }} />
-          <img src="/games/graphics/y2keart.png" className="graphic-img" style={{ bottom: '15%', right: '40%', width: '85px', animationDelay: '2.5s' }} />
-          <img src="/games/graphics/y2kclover.png" className="graphic-img" style={{ top: '60%', left: '15%', width: '95px', animationDelay: '0.2s' }} />
-          <img src="/games/graphics/y2kflag.png" className="graphic-img" style={{ top: '5%', left: '50%', width: '110px', animationDelay: '1.2s' }} />
-          <img src="/games/graphics/y2kshine.png" className="graphic-img" style={{ bottom: '5%', left: '45%', width: '60px', animationDelay: '0.8s' }} />
+          {GRAPHICS.map((g, i) => (
+            <img key={i} src={`/games/graphics/${g.src}`} className="graphic-img" style={g.style} />
+          ))}
         </div>
 
 
