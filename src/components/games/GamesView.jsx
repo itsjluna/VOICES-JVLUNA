@@ -197,7 +197,7 @@ export default function GamesView() {
               onClick={e => e.stopPropagation()}
             >
               <button className="game-modal-close" onClick={() => setIsModalOpen(false)}>
-                <FaTimes />
+                <FaTimes size={20} color="#ffffff" style={{ display: 'block' }} />
               </button>
               
               <div className="game-iframe-wrapper">
