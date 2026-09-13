@@ -133,11 +133,21 @@ export default function GamesView() {
               transition={{ duration: 0.8, delay: 0.6 }}
             >
               <button 
-                className="games-play-btn frutiger-button"
+                className="games-play-btn desktop-play-btn frutiger-button"
                 onClick={() => setIsModalOpen(true)}
               >
                 <FaPlay style={{ fontSize: '0.9em' }} /> {language === 'EN' ? 'Play Now' : 'Jugar Ahora'}
               </button>
+
+              <a 
+                href="https://play.unity.com/en/games/5b9d3b61-8f55-4209-87c5-d6989ecadd0b/jam-dog"
+                target="_blank"
+                rel="noreferrer"
+                className="games-play-btn mobile-play-btn frutiger-button"
+                style={{ textDecoration: 'none' }}
+              >
+                <FaPlay style={{ fontSize: '0.9em' }} /> {language === 'EN' ? 'Go to Unity' : 'Ir a Unity'}
+              </a>
             </motion.div>
           </div>
 

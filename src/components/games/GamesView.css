@@ -583,3 +583,9 @@
     left: 12%; right: 12%; height: 45%; border-radius: 50% 50% 50% 50% / 50% 50% 40% 40%;
   }
 }
+
+.mobile-play-btn { display: none !important; }
+@media (max-width: 768px) {
+  .desktop-play-btn { display: none !important; }
+  .mobile-play-btn { display: flex !important; }
+}
