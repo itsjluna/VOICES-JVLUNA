@@ -187,8 +187,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transform-style: preserve-3d;
-  -webkit-transform-style: preserve-3d;
+  
+  -webkit-
 }
 
 .imac-image {
@@ -226,11 +226,21 @@
   box-shadow: inset 0 0 35px rgba(0,0,0,1), inset 0 0 15px rgba(0,0,0,0.8);
   z-index: 1;
   
-  border-radius: 0% / 0%;
-  width: 46.1%;
-  height: 47.7%;
-  -webkit-transform: perspective(37vw) translate3d(-82.6%, -68.7%, -50px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
-  transform: perspective(37vw) translate3d(-82.6%, -68.7%, -50px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
+  transform: perspective(600px) translate3d(-80.6%, -69.2%, 0px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
+  width: 44.5%;
+  height: 48.7%;
+  -webkit-transform: perspective(600px) translate3d(-80.6%, -69.2%, 0px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
+  transform: perspective(600px) translate3d(-80.6%, -69.2%, 0px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
+}
+
+@media (max-width: 768px) {
+  .imac-screen {
+    border-radius: 14% / 0%;
+    width: 46.1%;
+    height: 47.7%;
+    -webkit-transform: perspective(95vw) translate3d(-82.6%, -68.7%, 0px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
+    transform: perspective(95vw) translate3d(-82.6%, -68.7%, 0px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
+  }
 }
 
 /* If the user uses an iMac PNG, they need to make the screen part transparent 
@@ -525,32 +535,12 @@
     border-radius: 50%;
     background: #333;
     color: #fff;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    font-weight: bold;
-    display: flex; justify-content: center; align-items: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.2);
-    border: 2px solid #111;
-  }
-  .action-btn.y { top: 0; left: 47.5px; background: var(--theme-p1); color: #000; text-shadow: none; }
-  .action-btn.x { top: 47.5px; left: 0; background: var(--theme-p2); color: #000; text-shadow: none;}
-  .action-btn.b { top: 47.5px; right: 0; }
-  .action-btn.a { bottom: 0; left: 47.5px; background: #fff; color: #000; text-shadow: none;}
-}
 
 @keyframes staticNoise {
   0% { transform: translate(0,0); }
   100% { transform: translate(10%, 10%); }
 }
 
-@media (max-width: 768px) {
-.imac-screen {
-    border-radius: 14% / 0%;
-    width: 46.1%;
-    height: 47.7%;
-    -webkit-transform: perspective(95vw) translate3d(-82.6%, -68.7%, -50px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
-    transform: perspective(95vw) translate3d(-82.6%, -68.7%, -50px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
-  }
-}
 
 /* ========================================= */
 /* FRUTIGER AERO BUTTON BASE                 */
