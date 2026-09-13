@@ -1,17 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes, FaPlay, FaSlidersH, FaCopy } from 'react-icons/fa';
+import { FaTimes, FaPlay, FaSlidersH, FaCopy, FaTint, FaSeedling, FaSun, FaCloud, FaHeart, FaGamepad } from 'react-icons/fa';
 import { useLanguage } from '../../contexts/LanguageContext';
 import PageWrapper from '../PageWrapper';
 import BackButton from '../BackButton';
 import './GamesView.css';
 
 const THEMES = [
-  { id: 'underwater', name: 'Underwater', icon: '🐬', bg: 'linear-gradient(120deg, #0f2027, #203a43, #2c5364, #00b4db)' },
-  { id: 'blossom', name: 'Blossom', icon: '🌸', bg: 'linear-gradient(120deg, #fbc2eb, #a6c1ee, #ff9a9e, #fecfef)' },
-  { id: 'spring', name: 'Spring Bloom', icon: '🌻', bg: 'linear-gradient(120deg, #a8e063, #56ab2f, #d4fc79, #96e6a1)' },
-  { id: 'skydive', name: 'Skydive', icon: '🪂', bg: 'linear-gradient(120deg, #89f7fe, #66a6ff, #a1c4fd, #c2e9fb)' },
-  { id: 'girlypop', name: 'Girlypop', icon: '💅', bg: 'linear-gradient(120deg, #ff0844, #ffb199, #fbc2eb, #a6c1ee)' }
+  { id: 'underwater', name: 'Underwater', icon: FaTint, bg: 'linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #00b4db)', p1: '#00b4db', p2: '#0f2027' },
+  { id: 'blossom', name: 'Blossom', icon: FaSeedling, bg: 'linear-gradient(-45deg, #fbc2eb, #a6c1ee, #ff9a9e, #fecfef)', p1: '#fbc2eb', p2: '#ff9a9e' },
+  { id: 'spring', name: 'Spring Bloom', icon: FaSun, bg: 'linear-gradient(-45deg, #a8e063, #56ab2f, #d4fc79, #96e6a1)', p1: '#56ab2f', p2: '#96e6a1' },
+  { id: 'skydive', name: 'Skydive', icon: FaCloud, bg: 'linear-gradient(-45deg, #89f7fe, #66a6ff, #a1c4fd, #c2e9fb)', p1: '#66a6ff', p2: '#89f7fe' },
+  { id: 'girlypop', name: 'Girlypop', icon: FaHeart, bg: 'linear-gradient(-45deg, #ff0844, #ffb199, #fbc2eb, #a6c1ee)', p1: '#ff0844', p2: '#ffb199' }
 ];
 
 export default function GamesView() {
@@ -20,6 +20,7 @@ export default function GamesView() {
   const [themeIdx, setThemeIdx] = useState(0);
 
   const activeTheme = THEMES[themeIdx];
+  const ThemeIcon = activeTheme.icon;
 
   const cycleTheme = () => {
     setThemeIdx((prev) => (prev + 1) % THEMES.length);
@@ -27,21 +28,19 @@ export default function GamesView() {
 
   return (
     <PageWrapper>
-      <div className="games-fullbleed-bg" style={{ '--active-bg': activeTheme.bg }}>
-        {/* Core base gradient */}
-        <div className="games-bg-base"></div>
-        
-        {/* XMB Style 3D Morphing Ribbons/Waves */}
-        <div className="xmb-wave xmb-wave-1"></div>
-        <div className="xmb-wave xmb-wave-2"></div>
-        <div className="xmb-wave xmb-wave-3"></div>
-        <div className="xmb-wave xmb-wave-4"></div>
-      </div>
-      
-      <div className="games-wall">
+      <div 
+        className="games-wall"
+        style={{ 
+          '--active-bg': activeTheme.bg,
+          '--theme-p1': activeTheme.p1,
+          '--theme-p2': activeTheme.p2
+        }}
+      >
+        <div className="games-fullbleed-bg"></div>
+
         {/* Theme Cycler */}
         <button className="theme-cycler-btn" onClick={cycleTheme}>
-          <span className="theme-icon">{activeTheme.icon}</span> 
+          <ThemeIcon className="theme-icon" /> 
           <span className="theme-text">Vibe: {activeTheme.name}</span>
         </button>
 
