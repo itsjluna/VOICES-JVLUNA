@@ -114,7 +114,6 @@ export default function GamesView() {
           <div className="imac-container">
             <motion.div 
               className="imac-wrapper"
-              ref={wrapperRef}
               initial={{ opacity: 0, rotateY: 30, scale: 0.8 }}
               animate={{ opacity: 1, rotateY: 0, scale: 1 }}
               transition={{ duration: 1, type: "spring" }}
@@ -132,19 +131,17 @@ export default function GamesView() {
                 />
               </div>
 
-              <div className="imac-scaler" style={{ position: 'absolute', top: '50%', left: '50%', width: 0, height: 0, transform: `scale(${scaleFactor})` }}>
-                <div className="imac-screen" style={crtStyle}>
-                  <iframe 
-                    className="crt-video"
-                    src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&mute=1&loop=1&controls=0&playlist=ScMzIvxBSi4" 
-                    title="Game Trailer"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  ></iframe>
-                  <div className="crt-glass"></div>
-                  <div className="crt-glare"></div>
-                  <div className="crt-static"></div>
-                </div>
+              <div className="imac-screen" style={crtStyle}>
+                <iframe 
+                  className="crt-video"
+                  src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&mute=1&loop=1&controls=0&playlist=ScMzIvxBSi4" 
+                  title="Game Trailer"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                ></iframe>
+                <div className="crt-glass"></div>
+                <div className="crt-glare"></div>
+                <div className="crt-static"></div>
               </div>
             </motion.div>
           </div>
