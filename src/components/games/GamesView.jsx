@@ -26,7 +26,8 @@ export default function GamesView() {
     skx: 7.2,
     sky: -0.7,
     brX: 25,
-    brY: 15
+    brY: 15,
+    p: 1000
   });
 
   const handleT = (key, val) => setT(prev => ({ ...prev, [key]: parseFloat(val) }));
@@ -40,7 +41,7 @@ export default function GamesView() {
     width: `${t.w}px`,
     height: `${t.h}px`,
     borderRadius: `${t.brX}% / ${t.brY}%`,
-    transform: `translate3d(${t.x}px, ${t.y}px, ${t.z}px) rotateX(${t.rx}deg) rotateY(${t.ry}deg) rotateZ(${t.rz}deg) scale(${t.sx}, ${t.sy}) skew(${t.skx}deg, ${t.sky}deg)`
+    transform: `perspective(${t.p}px) translate3d(${t.x}px, ${t.y}px, ${t.z}px) rotateX(${t.rx}deg) rotateY(${t.ry}deg) rotateZ(${t.rz}deg) scale(${t.sx}, ${t.sy}) skew(${t.skx}deg, ${t.sky}deg)`
   };
 
   return (
@@ -168,6 +169,10 @@ export default function GamesView() {
             <div className="dev-slider">
               <label>Curve Y: {t.brY}%</label>
               <input type="range" min="0" max="50" value={t.brY} onChange={e => handleT('brY', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Perspective: {t.p}px</label>
+              <input type="range" min="100" max="3000" value={t.p} onChange={e => handleT('p', e.target.value)} />
             </div>
             
             <div className="dev-slider">
