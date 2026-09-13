@@ -24,7 +24,9 @@ export default function GamesView() {
     w: 202,
     h: 220,
     skx: 7.2,
-    sky: -0.7
+    sky: -0.7,
+    brX: 25,
+    brY: 15
   });
 
   const handleT = (key, val) => setT(prev => ({ ...prev, [key]: parseFloat(val) }));
@@ -37,6 +39,7 @@ export default function GamesView() {
   const crtStyle = {
     width: `${t.w}px`,
     height: `${t.h}px`,
+    borderRadius: `${t.brX}% / ${t.brY}%`,
     transform: `translate3d(${t.x}px, ${t.y}px, ${t.z}px) rotateX(${t.rx}deg) rotateY(${t.ry}deg) rotateZ(${t.rz}deg) scale(${t.sx}, ${t.sy}) skew(${t.skx}deg, ${t.sky}deg)`
   };
 
@@ -156,6 +159,15 @@ export default function GamesView() {
             <div className="dev-header">
               <h4>Screen Calibration</h4>
               <button onClick={() => setShowControls(false)}><FaTimes /></button>
+            </div>
+            
+            <div className="dev-slider">
+              <label>Curve X: {t.brX}%</label>
+              <input type="range" min="0" max="50" value={t.brX} onChange={e => handleT('brX', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Curve Y: {t.brY}%</label>
+              <input type="range" min="0" max="50" value={t.brY} onChange={e => handleT('brY', e.target.value)} />
             </div>
             
             <div className="dev-slider">
