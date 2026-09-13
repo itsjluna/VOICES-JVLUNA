@@ -60,7 +60,11 @@ export default function GamesView() {
         </div>
 
         {/* Theme Cycler */}
-        <button className="theme-cycler-btn" onClick={cycleTheme}>
+        <button 
+          className="theme-cycler-btn frutiger-button" 
+          onClick={cycleTheme}
+          style={{ '--theme-p1': activeTheme.p1, '--theme-p2': activeTheme.p2 }}
+        >
           <ThemeIcon className="theme-icon" /> 
           <span className="theme-text">Vibe: {activeTheme.name}</span>
         </button>
@@ -129,10 +133,10 @@ export default function GamesView() {
               transition={{ duration: 0.8, delay: 0.6 }}
             >
               <button 
-                className="games-play-btn"
+                className="games-play-btn frutiger-button"
                 onClick={() => setIsModalOpen(true)}
               >
-                <FaPlay style={{ fontSize: '0.9em' }} /> {language === 'EN' ? 'Play Game' : 'Jugar'}
+                <FaPlay style={{ fontSize: '0.9em' }} /> {language === 'EN' ? 'Play Now' : 'Jugar Ahora'}
               </button>
             </motion.div>
           </div>
@@ -191,20 +195,22 @@ export default function GamesView() {
           >
             <motion.div 
               className="game-modal-content"
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
+              exit={{ scale: 0.8, opacity: 0 }}
               onClick={e => e.stopPropagation()}
             >
-              <button className="game-modal-close" onClick={() => setIsModalOpen(false)}>
+              <button className="game-modal-close frutiger-button circle" onClick={() => setIsModalOpen(false)}>
                 <FaTimes size={20} color="#ffffff" style={{ display: 'block' }} />
               </button>
               
               <div className="game-iframe-wrapper">
                 <iframe 
-                  src="https://play.unity.com/api/v1/games/game/5b9d3b61-8f55-4209-87c5-d6989ecadd0b/build/latest/frame" 
                   className="game-iframe"
-                  allowFullScreen
+                  src="https://play.unity.com/api/v1/games/game/5b9d3b61-8f55-4209-87c5-d6989ecadd0b/build/latest/frame" 
+                  title="JAM-DOG"
+                  frameBorder="0"
+                  allow="autoplay; fullscreen; encrypted-media"
                 ></iframe>
               </div>
 
@@ -218,10 +224,10 @@ export default function GamesView() {
                   <div className="d-pad-center"></div>
                 </div>
                 <div className="action-buttons">
-                  <div className="action-btn y">Y</div>
-                  <div className="action-btn x">X</div>
-                  <div className="action-btn a">A</div>
-                  <div className="action-btn b">B</div>
+                  <div className="action-btn y frutiger-button circle">Y</div>
+                  <div className="action-btn x frutiger-button circle">X</div>
+                  <div className="action-btn b frutiger-button circle">B</div>
+                  <div className="action-btn a frutiger-button circle">A</div>
                 </div>
               </div>
             </motion.div>
