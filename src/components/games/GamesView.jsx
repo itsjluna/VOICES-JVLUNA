@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes, FaPlay, FaSlidersH, FaCopy } from 'react-icons/fa';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -37,11 +37,25 @@ export default function GamesView() {
     alert('Transform config copied! Send it over when you nail it.');
   };
 
+  const wrapperRef = useRef(null);
+  const [scaleFactor, setScaleFactor] = useState(1);
+
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+    const observer = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        setScaleFactor(entry.contentRect.width / 568);
+      }
+    });
+    observer.observe(wrapperRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   const crtStyle = {
-    width: `calc(${t.w}px * 100cqi / 568)`,
-    height: `calc(${t.h}px * 100cqi / 568)`,
+    width: `${t.w}px`,
+    height: `${t.h}px`,
     borderRadius: `${t.brX}% / ${t.brY}%`,
-    transform: `perspective(calc(${t.p}px * 100cqi / 568)) translate3d(calc(${t.x}px * 100cqi / 568), calc(${t.y}px * 100cqi / 568), calc(${t.z}px * 100cqi / 568)) rotateX(${t.rx}deg) rotateY(${t.ry}deg) rotateZ(${t.rz}deg) scale(${t.sx}, ${t.sy}) skew(${t.skx}deg, ${t.sky}deg)`
+    transform: `perspective(${t.p}px) translate3d(${t.x}px, ${t.y}px, ${t.z}px) rotateX(${t.rx}deg) rotateY(${t.ry}deg) rotateZ(${t.rz}deg) scale(${t.sx}, ${t.sy}) skew(${t.skx}deg, ${t.sky}deg)`
   };
 
   return (
@@ -114,6 +128,7 @@ export default function GamesView() {
           <div className="imac-container">
             <motion.div 
               className="imac-wrapper"
+              ref={wrapperRef}
               initial={{ opacity: 0, rotateY: 30, scale: 0.8 }}
               animate={{ opacity: 1, rotateY: 0, scale: 1 }}
               transition={{ duration: 1, type: "spring" }}
@@ -131,17 +146,19 @@ export default function GamesView() {
                 />
               </div>
 
-              <div className="imac-screen" style={crtStyle}>
-                <iframe 
-                  className="crt-video"
-                  src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&mute=1&loop=1&controls=0&playlist=ScMzIvxBSi4" 
-                  title="Game Trailer"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                ></iframe>
-                <div className="crt-glass"></div>
-                <div className="crt-glare"></div>
-                <div className="crt-static"></div>
+              <div className="imac-scaler" style={{ position: 'absolute', top: '50%', left: '50%', width: 0, height: 0, transform: `scale(${scaleFactor})` }}>
+                <div className="imac-screen" style={crtStyle}>
+                  <iframe 
+                    className="crt-video"
+                    src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&mute=1&loop=1&controls=0&playlist=ScMzIvxBSi4" 
+                    title="Game Trailer"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  ></iframe>
+                  <div className="crt-glass"></div>
+                  <div className="crt-glare"></div>
+                  <div className="crt-static"></div>
+                </div>
               </div>
             </motion.div>
           </div>
