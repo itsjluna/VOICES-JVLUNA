@@ -154,7 +154,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transform-style: preserve-3d;
 }
 
 .imac-image {
@@ -184,16 +183,18 @@
 /* THE SCREEN ITSELF */
 .imac-screen {
   position: absolute;
-  /* Start centered relative to wrapper */
   top: 50%;
   left: 50%;
-  /* Transform origin center to make scaling/rotating intuitive */
   transform-origin: center center;
   background: #000;
-  border-radius: 5%; /* Slight inner curve */
+  border-radius: 5%;
   overflow: hidden;
   box-shadow: inset 0 0 20px rgba(0,0,0,1);
-  z-index: 1; /* Render behind the iMac bezel PNG if it has transparent screen cutout */
+  z-index: 1;
+  
+  width: 202px;
+  height: 220px;
+  transform: translate3d(-172px, -146px, 0px) rotateX(12.9deg) rotateY(-11.8deg) rotateZ(15.7deg) scale(1, 1) skew(7.2deg, -0.7deg);
 }
 
 /* If the user uses an iMac PNG, they need to make the screen part transparent 
@@ -236,92 +237,6 @@
 @keyframes staticNoise {
   0% { transform: translate(0,0); }
   100% { transform: translate(10%, 10%); }
-}
-
-/* DEV CONTROLS */
-.dev-controls {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(10px);
-  padding: 1.5rem;
-  border-radius: 15px;
-  color: #00ff00;
-  font-family: monospace;
-  z-index: 999999;
-  border: 1px solid #00ff00;
-  box-shadow: 0 10px 30px rgba(0,255,0,0.2);
-  width: 300px;
-  max-height: 80vh;
-  overflow-y: auto;
-  cursor: grab;
-}
-.dev-controls:active {
-  cursor: grabbing;
-}
-.dev-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #00ff00;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-}
-.dev-header h4 {
-  margin: 0;
-  font-size: 1.1rem;
-}
-.dev-header button {
-  background: transparent;
-  border: none;
-  color: #00ff00;
-  cursor: pointer;
-}
-.dev-slider {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0.8rem;
-}
-.dev-slider label {
-  font-size: 0.85rem;
-  margin-bottom: 0.2rem;
-}
-.dev-slider input {
-  accent-color: #00ff00;
-}
-.dev-copy-btn {
-  width: 100%;
-  padding: 0.8rem;
-  background: #00ff00;
-  color: #000;
-  border: none;
-  font-weight: bold;
-  font-family: monospace;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-.dev-toggle-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #00ff00;
-  border: 1px solid #00ff00;
-  padding: 0.8rem 1.2rem;
-  border-radius: 30px;
-  cursor: pointer;
-  font-family: monospace;
-  font-weight: bold;
-  z-index: 999999;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
 /* GAME MODAL */
@@ -368,3 +283,4 @@
 .game-modal-close:hover {
   background: rgba(255,255,255,0.4);
 }
+

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import fs from 'fs';
+const jsx = `import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes, FaPlay } from 'react-icons/fa';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -21,11 +22,11 @@ export default function GamesView() {
               key={i} 
               className="aero-bubble"
               style={{
-                width: `${Math.random() * 60 + 20}px`,
-                height: `${Math.random() * 60 + 20}px`,
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 15}s`,
-                animationDuration: `${Math.random() * 10 + 10}s`
+                width: \\`\\${Math.random() * 60 + 20}px\\`,
+                height: \\`\\${Math.random() * 60 + 20}px\\`,
+                left: \\`\\${Math.random() * 100}%\\`,
+                animationDelay: \\`\\${Math.random() * 15}s\\`,
+                animationDuration: \\`\\${Math.random() * 10 + 10}s\\`
               }}
             />
           ))}
@@ -52,7 +53,7 @@ export default function GamesView() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              {language === 'EN' ? 'Stealth Collectathon Parody' : 'Parodia de Sigilo y Recolecci√≥n'}
+              {language === 'EN' ? 'Stealth Collectathon Parody' : 'Parodia de Sigilo y RecolecciÛn'}
             </motion.h3>
 
             <motion.p 
@@ -63,7 +64,7 @@ export default function GamesView() {
             >
               {language === 'EN' 
                 ? 'JAM-DOG is a small demo proof of concept of a collectathon genre game about a dog that has to collect the ingredients to make a PB and jelly sandwich without their owner noticing them, inspired and being a parody to metal gear stealth mechanics and made as a college project.'
-                : 'JAM-DOG es una peque√±a demo prueba de concepto de un juego del g√©nero collectathon sobre un perro que tiene que recolectar los ingredientes para hacer un s√°ndwich de mantequilla de man√≠ y mermelada sin que su due√±o lo note, inspirado y siendo una parodia de las mec√°nicas de sigilo de Metal Gear, hecho como proyecto universitario.'}
+                : 'JAM-DOG es una pequeÒa demo prueba de concepto de un juego del gÈnero collectathon sobre un perro que tiene que recolectar los ingredientes para hacer un l·ndwich de mantequilla de manÌ y mermelada sin que su dueÒo lo note, inspirado y siendo una parodia de las mec·nicas de sigilo de Metal Gear, hecho como proyecto universitario.'}
             </motion.p>
 
             <motion.button 
@@ -84,7 +85,6 @@ export default function GamesView() {
               animate={{ opacity: 1, rotateY: 0, scale: 1 }}
               transition={{ duration: 1, type: "spring" }}
             >
-              {/* Fallback box if imacg3.png is missing. Add your PNG to public/imacg3.png! */}
               <div className="imac-image-placeholder">
                 <img 
                   src="/imacg3.png" 
@@ -145,3 +145,5 @@ export default function GamesView() {
     </PageWrapper>
   );
 }
+`;
+fs.writeFileSync('src/components/games/GamesView.jsx', jsx, 'utf8');

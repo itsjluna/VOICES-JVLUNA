@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+﻿const fs = require('fs');
+
+const jsx = \import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes, FaPlay } from 'react-icons/fa';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -21,11 +23,11 @@ export default function GamesView() {
               key={i} 
               className="aero-bubble"
               style={{
-                width: `${Math.random() * 60 + 20}px`,
-                height: `${Math.random() * 60 + 20}px`,
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 15}s`,
-                animationDuration: `${Math.random() * 10 + 10}s`
+                width: \\\\$\\{Math.random() * 60 + 20\\}px\\\,
+                height: \\\\$\\{Math.random() * 60 + 20\\}px\\\,
+                left: \\\\$\\{Math.random() * 100\\}%\\\,
+                animationDelay: \\\\$\\{Math.random() * 15\\}s\\\,
+                animationDuration: \\\\$\\{Math.random() * 10 + 10\\}s\\\
               }}
             />
           ))}
@@ -84,7 +86,6 @@ export default function GamesView() {
               animate={{ opacity: 1, rotateY: 0, scale: 1 }}
               transition={{ duration: 1, type: "spring" }}
             >
-              {/* Fallback box if imacg3.png is missing. Add your PNG to public/imacg3.png! */}
               <div className="imac-image-placeholder">
                 <img 
                   src="/imacg3.png" 
@@ -145,3 +146,6 @@ export default function GamesView() {
     </PageWrapper>
   );
 }
+\;
+
+fs.writeFileSync('src/components/games/GamesView.jsx', jsx, 'utf8');
