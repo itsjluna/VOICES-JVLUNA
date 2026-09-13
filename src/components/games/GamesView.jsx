@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes, FaPlay } from 'react-icons/fa';
+import { FaTimes, FaPlay, FaSlidersH, FaCopy } from 'react-icons/fa';
 import { useLanguage } from '../../contexts/LanguageContext';
 import PageWrapper from '../PageWrapper';
 import BackButton from '../BackButton';
@@ -9,6 +9,36 @@ import './GamesView.css';
 export default function GamesView() {
   const { language } = useLanguage();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showControls, setShowControls] = useState(true); // Toggle for the dev tool
+
+  // State for transforming the video inside the iMac PNG
+  const [t, setT] = useState({
+    x: 0,
+    y: 0,
+    z: 0,
+    rx: 0,
+    ry: 0,
+    rz: 0,
+    sx: 1,
+    sy: 1,
+    w: 320,
+    h: 240,
+    skx: 0,
+    sky: 0
+  });
+
+  const handleT = (key, val) => setT(prev => ({ ...prev, [key]: parseFloat(val) }));
+
+  const copyConfig = () => {
+    navigator.clipboard.writeText(JSON.stringify(t, null, 2));
+    alert('Transform config copied to clipboard! You can paste this in the code when you are done.');
+  };
+
+  const transformStyle = {
+    width: `${t.w}px`,
+    height: `${t.h}px`,
+    transform: `translate3d(${t.x}px, ${t.y}px, ${t.z}px) rotateX(${t.rx}deg) rotateY(${t.ry}deg) rotateZ(${t.rz}deg) scale(${t.sx}, ${t.sy}) skew(${t.skx}deg, ${t.sky}deg)`
+  };
 
   return (
     <PageWrapper>
@@ -43,7 +73,7 @@ export default function GamesView() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              {language === 'EN' ? 'PROJECT: NEON' : 'PROYECTO: NEON'}
+              JAM-DOG
             </motion.h1>
             
             <motion.h3 
@@ -52,7 +82,7 @@ export default function GamesView() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              {language === 'EN' ? 'First-Person Platformer' : 'Plataformas en Primera Persona'}
+              {language === 'EN' ? 'Stealth Collectathon Parody' : 'Parodia de Sigilo y Recolección'}
             </motion.h3>
 
             <motion.p 
@@ -62,8 +92,8 @@ export default function GamesView() {
               transition={{ duration: 0.8, delay: 0.4 }}
             >
               {language === 'EN' 
-                ? 'An experimental unity game exploring the boundaries between digital dimensions. Navigate through liminal spaces, manipulate gravity, and escape the simulation before it collapses.'
-                : 'Un juego experimental en Unity que explora los límites entre dimensiones digitales. Navega por espacios liminales, manipula la gravedad y escapa de la simulación antes de que colapse.'}
+                ? 'JAM-DOG is a small demo proof of concept of a collectathon genre game about a dog that has to collect the ingredients to make a PB and jelly sandwich without their owner noticing them, inspired and being a parody to metal gear stealth mechanics and made as a college project.'
+                : 'JAM-DOG es una pequeña demo prueba de concepto de un juego del género collectathon sobre un perro que tiene que recolectar los ingredientes para hacer un sándwich de mantequilla de maní y mermelada sin que su dueño lo note, inspirado y siendo una parodia de las mecánicas de sigilo de Metal Gear, hecho como proyecto universitario.'}
             </motion.p>
 
             <motion.button 
@@ -77,31 +107,114 @@ export default function GamesView() {
             </motion.button>
           </div>
 
-          <div className="crt-container">
+          <div className="imac-container">
             <motion.div 
-              className="crt-monitor"
+              className="imac-wrapper"
               initial={{ opacity: 0, rotateY: 30, scale: 0.8 }}
-              animate={{ opacity: 1, rotateY: -10, scale: 1 }}
+              animate={{ opacity: 1, rotateY: 0, scale: 1 }}
               transition={{ duration: 1, type: "spring" }}
             >
-              <div className="crt-screen-bezel">
-                <div className="crt-screen">
-                  <iframe 
-                    className="crt-video"
-                    src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&mute=1&loop=1&controls=0&playlist=ScMzIvxBSi4" 
-                    title="Game Trailer"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  ></iframe>
-                  <div className="crt-glass"></div>
-                  <div className="crt-glare"></div>
-                  <div className="crt-static"></div>
-                </div>
+              {/* Fallback box if imacg3.png is missing. Add your PNG to public/imacg3.png! */}
+              <div className="imac-image-placeholder">
+                <img 
+                  src="/imacg3.png" 
+                  alt="iMac G3" 
+                  className="imac-image"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.parentElement.classList.add('missing-img');
+                  }}
+                />
+              </div>
+
+              <div className="imac-screen" style={transformStyle}>
+                <iframe 
+                  className="crt-video"
+                  src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&mute=1&loop=1&controls=0&playlist=ScMzIvxBSi4" 
+                  title="Game Trailer"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                ></iframe>
+                <div className="crt-glass"></div>
+                <div className="crt-glare"></div>
+                <div className="crt-static"></div>
               </div>
             </motion.div>
           </div>
         </div>
       </div>
+
+      {/* DEV TOOLS FOR PERSPECTIVE CALIBRATION */}
+      <AnimatePresence>
+        {showControls && (
+          <motion.div 
+            className="dev-controls"
+            initial={{ opacity: 0, x: 200 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 200 }}
+            drag
+          >
+            <div className="dev-header">
+              <h4>Screen Calibration Tools</h4>
+              <button onClick={() => setShowControls(false)}><FaTimes /></button>
+            </div>
+            
+            <div className="dev-slider">
+              <label>Width: {t.w}px</label>
+              <input type="range" min="100" max="800" value={t.w} onChange={e => handleT('w', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Height: {t.h}px</label>
+              <input type="range" min="100" max="800" value={t.h} onChange={e => handleT('h', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Trans X: {t.x}px</label>
+              <input type="range" min="-500" max="500" value={t.x} onChange={e => handleT('x', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Trans Y: {t.y}px</label>
+              <input type="range" min="-500" max="500" value={t.y} onChange={e => handleT('y', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Rotate X: {t.rx}°</label>
+              <input type="range" min="-90" max="90" step="0.1" value={t.rx} onChange={e => handleT('rx', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Rotate Y: {t.ry}°</label>
+              <input type="range" min="-90" max="90" step="0.1" value={t.ry} onChange={e => handleT('ry', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Rotate Z: {t.rz}°</label>
+              <input type="range" min="-180" max="180" step="0.1" value={t.rz} onChange={e => handleT('rz', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Skew X: {t.skx}°</label>
+              <input type="range" min="-90" max="90" step="0.1" value={t.skx} onChange={e => handleT('skx', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Skew Y: {t.sky}°</label>
+              <input type="range" min="-90" max="90" step="0.1" value={t.sky} onChange={e => handleT('sky', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Scale X: {t.sx}</label>
+              <input type="range" min="0.1" max="3" step="0.01" value={t.sx} onChange={e => handleT('sx', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Scale Y: {t.sy}</label>
+              <input type="range" min="0.1" max="3" step="0.01" value={t.sy} onChange={e => handleT('sy', e.target.value)} />
+            </div>
+            
+            <button className="dev-copy-btn" onClick={copyConfig}>
+              <FaCopy /> Copy Final Config
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {!showControls && (
+        <button className="dev-toggle-btn" onClick={() => setShowControls(true)}>
+          <FaSlidersH /> Calibrate CRT
+        </button>
+      )}
 
       <AnimatePresence>
         {isModalOpen && (

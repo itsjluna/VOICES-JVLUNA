@@ -139,73 +139,65 @@
   border-color: #a8f5ff;
 }
 
-/* CRT MONITOR */
-.crt-container {
+/* IMAC G3 CONTAINER */
+.imac-container {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  perspective: 1000px;
+  perspective: 1200px;
 }
-.crt-monitor {
+.imac-wrapper {
+  position: relative;
   width: 100%;
-  max-width: 500px;
-  aspect-ratio: 4/3;
-  background: linear-gradient(145deg, #e6e6e6, #ffffff);
+  max-width: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-style: preserve-3d;
+}
+
+.imac-image {
+  width: 100%;
+  height: auto;
+  position: relative;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.imac-image-placeholder.missing-img {
+  width: 500px;
+  height: 400px;
+  background: rgba(255,255,255,0.2);
+  border: 2px dashed rgba(255,255,255,0.5);
   border-radius: 30px;
-  padding: 30px;
-  box-shadow: 
-    20px 20px 60px rgba(0,0,0,0.2),
-    -20px -20px 60px rgba(255,255,255,0.8),
-    inset 0 0 10px rgba(0,0,0,0.1);
-  position: relative;
-  transform: rotateY(-10deg);
-  transition: transform 0.5s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-:root.dark .crt-monitor {
-  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-  box-shadow: 
-    20px 20px 60px rgba(0,0,0,0.6),
-    -5px -5px 20px rgba(255,255,255,0.05),
-    inset 0 0 10px rgba(0,0,0,0.5);
-}
-@media (max-width: 900px) {
-  .crt-monitor { transform: none; }
+.imac-image-placeholder.missing-img::after {
+  content: 'Missing imacg3.png';
+  color: #fff;
+  font-family: monospace;
 }
 
-.crt-monitor::after {
-  content: '';
+/* THE SCREEN ITSELF */
+.imac-screen {
   position: absolute;
-  bottom: 10px;
-  right: 30px;
-  width: 10px;
-  height: 10px;
-  background: #22c55e; /* power light */
-  border-radius: 50%;
-  box-shadow: 0 0 10px #22c55e;
-}
-
-.crt-screen-bezel {
-  width: 100%;
-  height: 100%;
-  background: #111;
-  border-radius: 20px;
-  padding: 15px;
-  box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 2px 5px rgba(255,255,255,0.5);
-}
-:root.dark .crt-screen-bezel {
-  box-shadow: inset 0 0 15px rgba(0,0,0,0.9), 0 2px 5px rgba(0,0,0,0.5);
-}
-
-.crt-screen {
-  width: 100%;
-  height: 100%;
+  /* Start centered relative to wrapper */
+  top: 50%;
+  left: 50%;
+  /* Transform origin center to make scaling/rotating intuitive */
+  transform-origin: center center;
   background: #000;
-  border-radius: 10%; /* classic crt curve */
+  border-radius: 5%; /* Slight inner curve */
   overflow: hidden;
-  position: relative;
   box-shadow: inset 0 0 20px rgba(0,0,0,1);
+  z-index: 1; /* Render behind the iMac bezel PNG if it has transparent screen cutout */
 }
+
+/* If the user uses an iMac PNG, they need to make the screen part transparent 
+   so this video renders behind it. Therefore, z-index: 1, while imac-image is z-index: 5. */
 
 /* CRT EFFECTS */
 .crt-video {
@@ -213,7 +205,7 @@
   height: 100%;
   object-fit: cover;
   border: none;
-  pointer-events: none; /* purely visual, no youtube clicking */
+  pointer-events: none;
 }
 
 .crt-glass {
@@ -232,8 +224,6 @@
   pointer-events: none;
   z-index: 3;
 }
-
-/* Static Noise */
 .crt-static {
   position: absolute;
   top: -50%; left: -50%; right: -50%; bottom: -50%;
@@ -246,6 +236,92 @@
 @keyframes staticNoise {
   0% { transform: translate(0,0); }
   100% { transform: translate(10%, 10%); }
+}
+
+/* DEV CONTROLS */
+.dev-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 1.5rem;
+  border-radius: 15px;
+  color: #00ff00;
+  font-family: monospace;
+  z-index: 999999;
+  border: 1px solid #00ff00;
+  box-shadow: 0 10px 30px rgba(0,255,0,0.2);
+  width: 300px;
+  max-height: 80vh;
+  overflow-y: auto;
+  cursor: grab;
+}
+.dev-controls:active {
+  cursor: grabbing;
+}
+.dev-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #00ff00;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+}
+.dev-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+.dev-header button {
+  background: transparent;
+  border: none;
+  color: #00ff00;
+  cursor: pointer;
+}
+.dev-slider {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.8rem;
+}
+.dev-slider label {
+  font-size: 0.85rem;
+  margin-bottom: 0.2rem;
+}
+.dev-slider input {
+  accent-color: #00ff00;
+}
+.dev-copy-btn {
+  width: 100%;
+  padding: 0.8rem;
+  background: #00ff00;
+  color: #000;
+  border: none;
+  font-weight: bold;
+  font-family: monospace;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.dev-toggle-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  padding: 0.8rem 1.2rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: monospace;
+  font-weight: bold;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 /* GAME MODAL */
