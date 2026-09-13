@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes, FaPlay, FaSlidersH, FaCopy } from 'react-icons/fa';
+import { FaTimes, FaPlay } from 'react-icons/fa';
 import { useLanguage } from '../../contexts/LanguageContext';
 import PageWrapper from '../PageWrapper';
 import BackButton from '../BackButton';
@@ -9,8 +9,6 @@ import './GamesView.css';
 export default function GamesView() {
   const { language } = useLanguage();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showControls, setShowControls] = useState(false);
-
   // CRT Transform state matching user config
   const [t, setT] = useState({
     x: -182,
@@ -29,13 +27,6 @@ export default function GamesView() {
     brY: 11,
     p: 883
   });
-
-  const handleT = (key, val) => setT(prev => ({ ...prev, [key]: parseFloat(val) }));
-
-  const copyConfig = () => {
-    navigator.clipboard.writeText(JSON.stringify(t, null, 2));
-    alert('Transform config copied! Send it over when you nail it.');
-  };
 
   const wrapperRef = useRef(null);
   const [scaleFactor, setScaleFactor] = useState(1);
@@ -164,90 +155,6 @@ export default function GamesView() {
           </div>
         </div>
       </div>
-
-      <AnimatePresence>
-        {showControls && (
-          <motion.div 
-            className="dev-controls"
-            initial={{ opacity: 0, x: 200 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 200 }}
-            drag
-          >
-            <div className="dev-header">
-              <h4>Screen Calibration</h4>
-              <button onClick={() => setShowControls(false)}><FaTimes /></button>
-            </div>
-            
-            <div className="dev-slider">
-              <label>Curve X: {t.brX}%</label>
-              <input type="range" min="0" max="50" value={t.brX} onChange={e => handleT('brX', e.target.value)} />
-            </div>
-            <div className="dev-slider">
-              <label>Curve Y: {t.brY}%</label>
-              <input type="range" min="0" max="50" value={t.brY} onChange={e => handleT('brY', e.target.value)} />
-            </div>
-            <div className="dev-slider">
-              <label>Perspective: {t.p}px</label>
-              <input type="range" min="100" max="3000" value={t.p} onChange={e => handleT('p', e.target.value)} />
-            </div>
-            
-            <div className="dev-slider">
-              <label>Width: {t.w}px</label>
-              <input type="range" min="100" max="800" value={t.w} onChange={e => handleT('w', e.target.value)} />
-            </div>
-            <div className="dev-slider">
-              <label>Height: {t.h}px</label>
-              <input type="range" min="100" max="800" value={t.h} onChange={e => handleT('h', e.target.value)} />
-            </div>
-            <div className="dev-slider">
-              <label>Trans X: {t.x}px</label>
-              <input type="range" min="-500" max="500" value={t.x} onChange={e => handleT('x', e.target.value)} />
-            </div>
-            <div className="dev-slider">
-              <label>Trans Y: {t.y}px</label>
-              <input type="range" min="-500" max="500" value={t.y} onChange={e => handleT('y', e.target.value)} />
-            </div>
-            <div className="dev-slider">
-              <label>Rotate X: {t.rx}°</label>
-              <input type="range" min="-90" max="90" step="0.1" value={t.rx} onChange={e => handleT('rx', e.target.value)} />
-            </div>
-            <div className="dev-slider">
-              <label>Rotate Y: {t.ry}°</label>
-              <input type="range" min="-90" max="90" step="0.1" value={t.ry} onChange={e => handleT('ry', e.target.value)} />
-            </div>
-            <div className="dev-slider">
-              <label>Rotate Z: {t.rz}°</label>
-              <input type="range" min="-180" max="180" step="0.1" value={t.rz} onChange={e => handleT('rz', e.target.value)} />
-            </div>
-            <div className="dev-slider">
-              <label>Skew X: {t.skx}°</label>
-              <input type="range" min="-90" max="90" step="0.1" value={t.skx} onChange={e => handleT('skx', e.target.value)} />
-            </div>
-            <div className="dev-slider">
-              <label>Skew Y: {t.sky}°</label>
-              <input type="range" min="-90" max="90" step="0.1" value={t.sky} onChange={e => handleT('sky', e.target.value)} />
-            </div>
-            <div className="dev-slider">
-              <label>Scale X: {t.sx}</label>
-              <input type="range" min="0.1" max="3" step="0.01" value={t.sx} onChange={e => handleT('sx', e.target.value)} />
-            </div>
-            <div className="dev-slider">
-              <label>Scale Y: {t.sy}</label>
-              <input type="range" min="0.1" max="3" step="0.01" value={t.sy} onChange={e => handleT('sy', e.target.value)} />
-            </div>
-            
-            <button className="dev-copy-btn" onClick={copyConfig}>
-              <FaCopy /> Copy Config
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      {!showControls && (
-        <button className="dev-toggle-btn" onClick={() => setShowControls(true)}>
-          <FaSlidersH /> Calibrate CRT
-        </button>
-      )}
 
       <AnimatePresence>
         {isModalOpen && (
