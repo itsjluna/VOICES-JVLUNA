@@ -49,7 +49,9 @@ export default function GamesView() {
                     height: size,
                     left: `${Math.random() * 100}%`,
                     animationDuration: `${Math.random() * 10 + 10}s`,
-                    animationDelay: `-${Math.random() * 10}s`
+                    animationDelay: `-${Math.random() * 10}s`,
+                    '--iri-rot': `${Math.random() * 360}deg`,
+                    '--iri-hue': `${Math.random() * 90 - 45}deg`
                   }}
                 ></div>
               );

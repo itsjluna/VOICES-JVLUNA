@@ -19,8 +19,17 @@
   position: absolute;
   border-radius: 50%;
   aspect-ratio: 1 / 1;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.02) 60%, rgba(255, 255, 255, 0.1) 100%);
-  box-shadow: inset 0 0 10px rgba(255,255,255,0.2), 0 4px 10px rgba(0,0,0,0.05);
+  /* More transparent base + Iridescent random rotation layer */
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.01) 60%, rgba(255, 255, 255, 0.05) 100%),
+    linear-gradient(var(--iri-rot, 45deg), rgba(255, 180, 200, 0.1) 0%, rgba(180, 255, 220, 0.1) 50%, rgba(220, 200, 255, 0.1) 100%);
+  box-shadow: 
+    inset 0 0 15px rgba(255,255,255,0.1), 
+    inset -5px -5px 15px rgba(255, 200, 255, 0.05),
+    inset 5px 5px 15px rgba(200, 255, 255, 0.05),
+    0 4px 10px rgba(0,0,0,0.02);
+  filter: hue-rotate(var(--iri-hue, 0deg));
+  backdrop-filter: blur(2px);
   animation: floatUp 15s infinite linear;
 }
 @keyframes floatUp {
@@ -419,16 +428,19 @@
 
 @media (max-width: 768px) {
   .theme-cycler-btn {
-    top: 2rem;
-    left: 6rem;
-    right: auto;
-    padding: 0.6rem;
+    top: 1.5rem;
+    right: 1.5rem;
+    left: auto;
+    padding: 0;
     border-radius: 50%;
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 3.2rem;
+    height: 3.2rem;
     justify-content: center;
   }
   .theme-text {
     display: none;
+  }
+  .theme-icon {
+    margin: 0;
   }
 }
