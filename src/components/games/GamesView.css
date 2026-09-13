@@ -1,4 +1,4 @@
-/* FRUTIGER AERO BACKGROUND */
+﻿/* FRUTIGER AERO BACKGROUND */
 .games-wall {
   min-height: 100vh;
   position: relative;
@@ -264,13 +264,6 @@
   z-index: 4;
   pointer-events: none;
   mix-blend-mode: overlay;
-}
-  .imac-screen {
-    border-radius: 14% / 0%;
-    width: 46.1%;
-    height: 47.7%;
-    transform: perspective(95vw) translate3d(-82.6%, -68.7%, 0px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
-  }
 }
 
 /* CLUTTER AND GRAPHICS */
