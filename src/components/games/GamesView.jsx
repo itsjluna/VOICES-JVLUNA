@@ -13,21 +13,21 @@ export default function GamesView() {
 
   // CRT Transform state matching user config
   const [t, setT] = useState({
-    x: -172,
-    y: -146,
+    x: -182,
+    y: -150,
     z: 0,
-    rx: 12.9,
-    ry: -11.8,
-    rz: 15.7,
+    rx: 5.9,
+    ry: -16.4,
+    rz: 14.5,
     sx: 1,
     sy: 1,
-    w: 202,
-    h: 220,
-    skx: 7.2,
-    sky: -0.7,
-    brX: 25,
-    brY: 15,
-    p: 1000
+    w: 225,
+    h: 223,
+    skx: 6.6,
+    sky: 2,
+    brX: 13,
+    brY: 11,
+    p: 883
   });
 
   const handleT = (key, val) => setT(prev => ({ ...prev, [key]: parseFloat(val) }));
