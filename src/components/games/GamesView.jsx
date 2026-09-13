@@ -7,11 +7,11 @@ import BackButton from '../BackButton';
 import './GamesView.css';
 
 const THEMES = [
-  { id: 'underwater', name: 'Underwater', bg: 'linear-gradient(120deg, #0f2027, #203a43, #2c5364, #00b4db)' },
-  { id: 'blossom', name: 'Blossom', bg: 'linear-gradient(120deg, #fbc2eb, #a6c1ee, #ff9a9e, #fecfef)' },
-  { id: 'spring', name: 'Spring Bloom', bg: 'linear-gradient(120deg, #a8e063, #56ab2f, #d4fc79, #96e6a1)' },
-  { id: 'skydive', name: 'Skydive', bg: 'linear-gradient(120deg, #89f7fe, #66a6ff, #a1c4fd, #c2e9fb)' },
-  { id: 'girlypop', name: 'Girlypop', bg: 'linear-gradient(120deg, #ff0844, #ffb199, #fbc2eb, #a6c1ee)' }
+  { id: 'underwater', name: 'Underwater', icon: '🐬', bg: 'linear-gradient(120deg, #0f2027, #203a43, #2c5364, #00b4db)' },
+  { id: 'blossom', name: 'Blossom', icon: '🌸', bg: 'linear-gradient(120deg, #fbc2eb, #a6c1ee, #ff9a9e, #fecfef)' },
+  { id: 'spring', name: 'Spring Bloom', icon: '🌻', bg: 'linear-gradient(120deg, #a8e063, #56ab2f, #d4fc79, #96e6a1)' },
+  { id: 'skydive', name: 'Skydive', icon: '🪂', bg: 'linear-gradient(120deg, #89f7fe, #66a6ff, #a1c4fd, #c2e9fb)' },
+  { id: 'girlypop', name: 'Girlypop', icon: '💅', bg: 'linear-gradient(120deg, #ff0844, #ffb199, #fbc2eb, #a6c1ee)' }
 ];
 
 export default function GamesView() {
@@ -41,12 +41,10 @@ export default function GamesView() {
       <div className="games-wall">
         {/* Theme Cycler */}
         <button className="theme-cycler-btn" onClick={cycleTheme}>
-          Theme: {activeTheme.name}
+          <span className="theme-icon">{activeTheme.icon}</span> 
+          <span className="theme-text">Vibe: {activeTheme.name}</span>
         </button>
 
-        {/* Frutiger Aero Background Elements */}
-        <div className="aero-light"></div>
-        
         {/* Background Clutter (Skeuomorphic Devices) */}
         <div className="games-clutter">
           <img src="/games/ps2.png" className="clutter-img" style={{ top: '5%', left: '5%', width: '300px', transform: 'rotate(-15deg)', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }} />
@@ -94,34 +92,32 @@ export default function GamesView() {
 
         <div className="games-container">
           <div className="games-info">
-            <motion.h1 
-              className="games-title"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              JAM-DOG
-            </motion.h1>
-            
-            <motion.h3 
-              className="games-genre"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              {language === 'EN' ? 'Stealth Collectathon Parody' : 'Parodia de Sigilo y Recolección'}
-            </motion.h3>
-
-            <motion.p 
-              className="games-desc"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              {language === 'EN' 
-                ? 'JAM-DOG is a small demo proof of concept of a collectathon genre game about a dog that has to collect the ingredients to make a PB and jelly sandwich without their owner noticing them, inspired and being a parody to metal gear stealth mechanics and made as a college project.'
-                : 'JAM-DOG es una pequeña demo prueba de concepto de un juego del género collectathon sobre un perro que tiene que recolectar los ingredientes para hacer un sándwich de mantequilla de maní y mermelada sin que su dueño lo note, inspirado y siendo una parodia de las mecánicas de sigilo de Metal Gear, hecho como proyecto universitario.'}
-            </motion.p>
+            <div className="games-text-content">
+              <motion.h1 
+                className="games-title"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                JAM-DOG
+              </motion.h1>
+              
+              <motion.div 
+                className="games-desc"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
+                <div className="games-genre-tag">
+                  🎮 {language === 'EN' ? 'Stealth Collectathon Parody' : 'Parodia de Sigilo y Recolección'}
+                </div>
+                <p>
+                  {language === 'EN' 
+                    ? "Play as a JAM-DOG (a dog with a jam head) on a mission to bring jams to other jam-dogs. Built in Unity using C#. Explore the neighborhood, sneak past the humans, and deliver the goods!"
+                    : "Juega como un JAM-DOG (un perro con cabeza de mermelada) en una misión para llevar mermeladas a otros jam-dogs. Construido en Unity usando C#. ¡Explora el vecindario, escabúllete de los humanos y entrega la mercancía!"}
+                </p>
+              </motion.div>
+            </div>
 
             <motion.button 
               className="games-play-btn"

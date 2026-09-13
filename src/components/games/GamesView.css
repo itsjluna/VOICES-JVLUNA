@@ -83,27 +83,49 @@
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 }
-.games-genre {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  font-size: 1.2rem;
-  color: #a8f5ff;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
+
 .games-desc {
   font-family: var(--font-sans);
   font-size: 1.1rem;
   line-height: 1.6;
   background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
   padding: 1.5rem;
-  border-radius: 15px;
-  border: 1px solid rgba(255,255,255,0.3);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15), inset 0 0 20px rgba(255,255,255,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 :root.dark .games-desc {
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 0 20px rgba(255,255,255,0.05);
+}
+
+.games-genre-tag {
+  align-self: flex-start;
+  background: linear-gradient(135deg, #FF9A9E, #FECFEF);
+  color: #d32f2f;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 10px rgba(255, 154, 158, 0.4);
+  margin-bottom: 0.5rem;
+}
+:root.dark .games-genre-tag {
+  background: linear-gradient(135deg, #1fa2ff, #12d8fa);
+  color: #004d61;
+  box-shadow: 0 4px 10px rgba(18, 216, 250, 0.3);
+}
+
+.games-desc p {
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 .games-play-btn {
@@ -417,24 +439,51 @@
   position: absolute;
   top: 2rem;
   right: 2rem;
-  padding: 0.8rem 1.5rem;
-  background: rgba(255,255,255,0.2);
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.4);
+  border: 2px solid #fff;
   border-radius: 50px;
-  color: #fff;
+  color: #333;
   font-family: 'Inter', sans-serif;
-  font-weight: bold;
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 1px;
   cursor: pointer;
   z-index: 100;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2), inset 0 2px 10px rgba(255,255,255,0.8);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+:root.dark .theme-cycler-btn {
+  background: linear-gradient(135deg, rgba(30, 30, 30, 0.9), rgba(10, 10, 10, 0.7));
+  color: #fff;
+  border-color: #555;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5), inset 0 2px 10px rgba(255,255,255,0.1);
 }
 
 .theme-cycler-btn:hover {
-  background: rgba(255,255,255,0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255,255,255,0.4);
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3), inset 0 2px 10px rgba(255,255,255,0.9);
+}
+:root.dark .theme-cycler-btn:hover {
+  box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 2px 10px rgba(255,255,255,0.2);
+}
+
+.theme-icon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+.theme-text {
+  background: linear-gradient(90deg, #ff0844, #ffb199);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 0.9rem;
+}
+:root.dark .theme-text {
+  background: linear-gradient(90deg, #1fa2ff, #12d8fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
