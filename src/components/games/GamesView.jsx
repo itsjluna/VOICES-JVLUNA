@@ -7,11 +7,11 @@ import BackButton from '../BackButton';
 import './GamesView.css';
 
 const THEMES = [
-  { id: 'underwater', name: 'Underwater', icon: FaTint, bg: 'linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #00b4db)', p1: '#00b4db', p2: '#0f2027' },
-  { id: 'blossom', name: 'Blossom', icon: FaSeedling, bg: 'linear-gradient(-45deg, #fbc2eb, #a6c1ee, #ff9a9e, #fecfef)', p1: '#fbc2eb', p2: '#ff9a9e' },
-  { id: 'spring', name: 'Spring Bloom', icon: FaSun, bg: 'linear-gradient(-45deg, #a8e063, #56ab2f, #d4fc79, #96e6a1)', p1: '#56ab2f', p2: '#96e6a1' },
-  { id: 'skydive', name: 'Skydive', icon: FaCloud, bg: 'linear-gradient(-45deg, #89f7fe, #66a6ff, #a1c4fd, #c2e9fb)', p1: '#66a6ff', p2: '#89f7fe' },
-  { id: 'girlypop', name: 'Girlypop', icon: FaHeart, bg: 'linear-gradient(-45deg, #ff0844, #ffb199, #fbc2eb, #a6c1ee)', p1: '#ff0844', p2: '#ffb199' }
+  { id: 'underwater', name: 'Underwater', icon: FaTint, c1: '#0f2027', c2: '#203a43', c3: '#2c5364', c4: '#00b4db', p1: '#00b4db', p2: '#0f2027' },
+  { id: 'blossom', name: 'Blossom', icon: FaSeedling, c1: '#fbc2eb', c2: '#a6c1ee', c3: '#ff9a9e', c4: '#fecfef', p1: '#fbc2eb', p2: '#ff9a9e' },
+  { id: 'spring', name: 'Spring Bloom', icon: FaSun, c1: '#56ab2f', c2: '#a8e063', c3: '#d4fc79', c4: '#96e6a1', p1: '#56ab2f', p2: '#96e6a1' },
+  { id: 'skydive', name: 'Skydive', icon: FaCloud, c1: '#66a6ff', c2: '#89f7fe', c3: '#a1c4fd', c4: '#c2e9fb', p1: '#66a6ff', p2: '#89f7fe' },
+  { id: 'girlypop', name: 'Girlypop', icon: FaHeart, c1: '#ff0844', c2: '#ffb199', c3: '#fbc2eb', c4: '#a6c1ee', p1: '#ff0844', p2: '#ffb199' }
 ];
 
 const GRAPHICS = [
@@ -34,6 +34,17 @@ export default function GamesView() {
   const activeTheme = THEMES[themeIdx];
   const ThemeIcon = activeTheme.icon;
 
+  // Generate randomized razor-thin light rays
+  const rapidRays = React.useMemo(() => {
+    return Array.from({ length: 6 }).map(() => ({
+      top: `${Math.random() * 100}%`,
+      duration: `${Math.random() * 6 + 4}s`,
+      delay: `${Math.random() * 8}s`,
+      rotate: `${Math.random() * -30 - 15}deg`,
+      opacity: Math.random() * 0.5 + 0.3
+    }));
+  }, []);
+
   const cycleTheme = () => {
     setThemeIdx((prev) => (prev + 1) % THEMES.length);
   };
@@ -43,12 +54,35 @@ export default function GamesView() {
       <div 
         className="games-wall"
         style={{ 
-          '--active-bg': activeTheme.bg,
+          '--theme-c1': activeTheme.c1,
+          '--theme-c2': activeTheme.c2,
+          '--theme-c3': activeTheme.c3,
+          '--theme-c4': activeTheme.c4,
           '--theme-p1': activeTheme.p1,
           '--theme-p2': activeTheme.p2
         }}
       >
         <div className="games-fullbleed-bg">
+          <div className="mesh-orb orb-1"></div>
+          <div className="mesh-orb orb-2"></div>
+          <div className="mesh-orb orb-3"></div>
+          <div className="aurora-ray ray-1"></div>
+          <div className="aurora-ray ray-2"></div>
+          <div className="aurora-ray ray-4"></div>
+
+          {rapidRays.map((ray, i) => (
+            <div 
+              key={`ray-${i}`}
+              className="aurora-ray sharp-ray"
+              style={{
+                top: ray.top,
+                animationDuration: ray.duration,
+                animationDelay: ray.delay,
+                '--ray-rot': ray.rotate,
+                '--ray-op': ray.opacity
+              }}
+            />
+          ))}
           <div className="aero-bubbles">
             {Array.from({ length: 15 }).map((_, i) => {
               const size = `${Math.random() * 60 + 20}px`;
@@ -230,22 +264,7 @@ export default function GamesView() {
                 ></iframe>
               </div>
 
-              {/* Virtual Controllers for Mobile */}
-              <div className="mobile-virtual-controllers">
-                <div className="d-pad">
-                  <motion.button className="d-pad-btn up" whileTap={{ scale: 0.8, filter: 'brightness(1.5)' }}></motion.button>
-                  <motion.button className="d-pad-btn right" whileTap={{ scale: 0.8, filter: 'brightness(1.5)' }}></motion.button>
-                  <motion.button className="d-pad-btn down" whileTap={{ scale: 0.8, filter: 'brightness(1.5)' }}></motion.button>
-                  <motion.button className="d-pad-btn left" whileTap={{ scale: 0.8, filter: 'brightness(1.5)' }}></motion.button>
-                  <div className="d-pad-center"></div>
-                </div>
-                <div className="action-buttons">
-                  <motion.button className="action-btn y frutiger-button circle" whileTap={{ scale: 0.8, filter: 'brightness(1.5)' }}>Y</motion.button>
-                  <motion.button className="action-btn x frutiger-button circle" whileTap={{ scale: 0.8, filter: 'brightness(1.5)' }}>X</motion.button>
-                  <motion.button className="action-btn b frutiger-button circle" whileTap={{ scale: 0.8, filter: 'brightness(1.5)' }}>B</motion.button>
-                  <motion.button className="action-btn a frutiger-button circle" whileTap={{ scale: 0.8, filter: 'brightness(1.5)' }}>A</motion.button>
-                </div>
-              </div>
+              
             </motion.div>
           </motion.div>
         )}
