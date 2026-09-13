@@ -6,13 +6,38 @@ import PageWrapper from '../PageWrapper';
 import BackButton from '../BackButton';
 import './GamesView.css';
 
+const THEMES = [
+  { id: 'underwater', name: 'Underwater', bg: 'linear-gradient(120deg, #0f2027, #203a43, #2c5364, #00b4db)' },
+  { id: 'blossom', name: 'Blossom', bg: 'linear-gradient(120deg, #fbc2eb, #a6c1ee, #ff9a9e, #fecfef)' },
+  { id: 'spring', name: 'Spring Bloom', bg: 'linear-gradient(120deg, #a8e063, #56ab2f, #d4fc79, #96e6a1)' },
+  { id: 'skydive', name: 'Skydive', bg: 'linear-gradient(120deg, #89f7fe, #66a6ff, #a1c4fd, #c2e9fb)' },
+  { id: 'girlypop', name: 'Girlypop', bg: 'linear-gradient(120deg, #ff0844, #ffb199, #fbc2eb, #a6c1ee)' }
+];
+
 export default function GamesView() {
   const { language } = useLanguage();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [themeIdx, setThemeIdx] = useState(0);
+
+  const activeTheme = THEMES[themeIdx];
+
+  const cycleTheme = () => {
+    setThemeIdx((prev) => (prev + 1) % THEMES.length);
+  };
 
   return (
     <PageWrapper>
+      <div className="games-fullbleed-bg" style={{ '--active-bg': activeTheme.bg }}>
+        <div className="games-bg-wave"></div>
+        <div className="games-bg-wave-2"></div>
+      </div>
+      
       <div className="games-wall">
+        {/* Theme Cycler */}
+        <button className="theme-cycler-btn" onClick={cycleTheme}>
+          Theme: {activeTheme.name}
+        </button>
+
         {/* Frutiger Aero Background Elements */}
         <div className="aero-light"></div>
         

@@ -2,32 +2,10 @@
 .games-wall {
   min-height: 100vh;
   position: relative;
-  overflow: hidden;
-  
-  /* Break out of .container */
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  
-  /* Animated Background */
-  background: linear-gradient(-45deg, #74ebd5, #9face6, #fbc2eb, #a18cd1);
-  background-size: 400% 400%;
-  animation: y2kBackground 15s ease infinite;
-  
+  /* Normal flow to respect .container */
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-:root.dark .games-wall {
-  background: linear-gradient(-45deg, #1b263b, #415a77, #0d1b2a, #1a2a6c);
-  background-size: 400% 400%;
-  animation: y2kBackground 15s ease infinite;
-}
-
-@keyframes y2kBackground {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 
 .aero-bubbles {
@@ -343,3 +321,63 @@
 }
 
 .games-container { z-index: 10; }
+
+/* DYNAMIC FULL BLEED BACKGROUND */
+.games-fullbleed-bg {
+  position: absolute;
+  top: 0; left: 50%;
+  width: 100vw;
+  height: 100%;
+  min-height: 100vh;
+  transform: translateX(-50%);
+  z-index: -2;
+  overflow: hidden;
+}
+
+.games-bg-wave, .games-bg-wave-2 {
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: var(--active-bg);
+  background-size: 300% 300%;
+  animation: bgWaveFlow 20s infinite alternate ease-in-out;
+  transition: background 1s ease;
+}
+
+.games-bg-wave-2 {
+  background: radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 60%);
+  mix-blend-mode: overlay;
+  animation: bgWaveFlow 15s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes bgWaveFlow {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); background-position: 0% 0%; }
+  50% { transform: translate(-2%, 2%) scale(1.05) rotate(2deg); background-position: 100% 100%; }
+  100% { transform: translate(2%, -2%) scale(1.1) rotate(-2deg); background-position: 0% 50%; }
+}
+
+.theme-cycler-btn {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  padding: 0.8rem 1.5rem;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 50px;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  z-index: 100;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.theme-cycler-btn:hover {
+  background: rgba(255,255,255,0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255,255,255,0.4);
+}
