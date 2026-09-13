@@ -29,13 +29,12 @@ export default function GamesView() {
   });
 
   const wrapperRef = useRef(null);
-  const [scaleFactor, setScaleFactor] = useState(1);
 
   useEffect(() => {
     if (!wrapperRef.current) return;
     const observer = new ResizeObserver(entries => {
       for (let entry of entries) {
-        setScaleFactor(entry.contentRect.width / 568);
+        wrapperRef.current.style.setProperty('--s', entry.contentRect.width / 568);
       }
     });
     observer.observe(wrapperRef.current);
@@ -43,10 +42,10 @@ export default function GamesView() {
   }, []);
 
   const crtStyle = {
-    width: `${t.w}px`,
-    height: `${t.h}px`,
+    width: `calc(${t.w}px * var(--s, 1))`,
+    height: `calc(${t.h}px * var(--s, 1))`,
     borderRadius: `${t.brX}% / ${t.brY}%`,
-    transform: `perspective(${t.p}px) translate3d(${t.x}px, ${t.y}px, ${t.z}px) rotateX(${t.rx}deg) rotateY(${t.ry}deg) rotateZ(${t.rz}deg) scale(${t.sx}, ${t.sy}) skew(${t.skx}deg, ${t.sky}deg)`
+    transform: `perspective(calc(${t.p}px * var(--s, 1))) translate3d(calc(${t.x}px * var(--s, 1)), calc(${t.y}px * var(--s, 1)), calc(${t.z}px * var(--s, 1))) rotateX(${t.rx}deg) rotateY(${t.ry}deg) rotateZ(${t.rz}deg) scale(${t.sx}, ${t.sy}) skew(${t.skx}deg, ${t.sky}deg)`
   };
 
   return (
@@ -137,19 +136,17 @@ export default function GamesView() {
                 />
               </div>
 
-              <div className="imac-scaler" style={{ position: 'absolute', top: '50%', left: '50%', width: 0, height: 0, transform: `scale(${scaleFactor})` }}>
-                <div className="imac-screen" style={crtStyle}>
-                  <iframe 
-                    className="crt-video"
-                    src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&mute=1&loop=1&controls=0&playlist=ScMzIvxBSi4" 
-                    title="Game Trailer"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  ></iframe>
-                  <div className="crt-glass"></div>
-                  <div className="crt-glare"></div>
-                  <div className="crt-static"></div>
-                </div>
+              <div className="imac-screen" style={crtStyle}>
+                <iframe 
+                  className="crt-video"
+                  src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&mute=1&loop=1&controls=0&playlist=ScMzIvxBSi4" 
+                  title="Game Trailer"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                ></iframe>
+                <div className="crt-glass"></div>
+                <div className="crt-glare"></div>
+                <div className="crt-static"></div>
               </div>
             </motion.div>
           </div>
