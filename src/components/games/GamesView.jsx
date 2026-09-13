@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes, FaPlay } from 'react-icons/fa';
+import { FaTimes, FaPlay, FaSlidersH, FaCopy } from 'react-icons/fa';
 import { useLanguage } from '../../contexts/LanguageContext';
 import PageWrapper from '../PageWrapper';
 import BackButton from '../BackButton';
@@ -9,43 +9,39 @@ import './GamesView.css';
 export default function GamesView() {
   const { language } = useLanguage();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showControls, setShowControls] = useState(false);
+
   // CRT Transform state matching user config
   const [t, setT] = useState({
-    x: -182,
-    y: -150,
+    x: -32,
+    y: -26,
     z: 0,
     rx: 5.9,
     ry: -16.4,
     rz: 14.5,
     sx: 1,
     sy: 1,
-    w: 225,
-    h: 223,
+    w: 39.6,
+    h: 39.2,
     skx: 6.6,
     sky: 2,
     brX: 13,
     brY: 11,
-    p: 883
+    p: 155
   });
 
-  const wrapperRef = useRef(null);
+  const handleT = (key, val) => setT(prev => ({ ...prev, [key]: parseFloat(val) }));
 
-  useEffect(() => {
-    if (!wrapperRef.current) return;
-    const observer = new ResizeObserver(entries => {
-      for (let entry of entries) {
-        wrapperRef.current.style.setProperty('--s', entry.contentRect.width / 568);
-      }
-    });
-    observer.observe(wrapperRef.current);
-    return () => observer.disconnect();
-  }, []);
+  const copyConfig = () => {
+    navigator.clipboard.writeText(JSON.stringify(t, null, 2));
+    alert('Transform config copied! Send it over when you nail it.');
+  };
 
   const crtStyle = {
-    width: `calc(${t.w}px * var(--s, 1))`,
-    height: `calc(${t.h}px * var(--s, 1))`,
+    width: `${t.w}%`,
+    height: `${t.h}%`,
     borderRadius: `${t.brX}% / ${t.brY}%`,
-    transform: `perspective(calc(${t.p}px * var(--s, 1))) translate3d(calc(${t.x}px * var(--s, 1)), calc(${t.y}px * var(--s, 1)), calc(${t.z}px * var(--s, 1))) rotateX(${t.rx}deg) rotateY(${t.ry}deg) rotateZ(${t.rz}deg) scale(${t.sx}, ${t.sy}) skew(${t.skx}deg, ${t.sky}deg)`
+    transform: `perspective(${t.p}vw) translate3d(${t.x}%, ${t.y}%, ${t.z}px) rotateX(${t.rx}deg) rotateY(${t.ry}deg) rotateZ(${t.rz}deg) scale(${t.sx}, ${t.sy}) skew(${t.skx}deg, ${t.sky}deg)`
   };
 
   return (
@@ -136,22 +132,108 @@ export default function GamesView() {
                 />
               </div>
 
-              <div className="imac-screen" style={crtStyle}>
-                <iframe 
-                  className="crt-video"
-                  src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&mute=1&loop=1&controls=0&playlist=ScMzIvxBSi4" 
-                  title="Game Trailer"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                ></iframe>
-                <div className="crt-glass"></div>
-                <div className="crt-glare"></div>
-                <div className="crt-static"></div>
+              <div className="imac-scaler" style={{ position: 'absolute', top: '50%', left: '50%', width: 0, height: 0, transform: `scale(${scaleFactor})` }}>
+                <div className="imac-screen" style={crtStyle}>
+                  <iframe 
+                    className="crt-video"
+                    src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&mute=1&loop=1&controls=0&playlist=ScMzIvxBSi4" 
+                    title="Game Trailer"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  ></iframe>
+                  <div className="crt-glass"></div>
+                  <div className="crt-glare"></div>
+                  <div className="crt-static"></div>
+                </div>
               </div>
             </motion.div>
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {showControls && (
+          <motion.div 
+            className="dev-controls"
+            initial={{ opacity: 0, x: 200 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 200 }}
+            drag
+          >
+            <div className="dev-header">
+              <h4>Screen Calibration</h4>
+              <button onClick={() => setShowControls(false)}><FaTimes /></button>
+            </div>
+            
+            <div className="dev-slider">
+              <label>Curve X: {t.brX}%</label>
+              <input type="range" min="0" max="50" value={t.brX} onChange={e => handleT('brX', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Curve Y: {t.brY}%</label>
+              <input type="range" min="0" max="50" value={t.brY} onChange={e => handleT('brY', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Perspective: {t.p}vw</label>
+              <input type="range" min="10" max="300" step="1" value={t.p} onChange={e => handleT('p', e.target.value)} />
+            </div>
+            
+            <div className="dev-slider">
+              <label>Width: {t.w}%</label>
+              <input type="range" min="10" max="100" step="0.1" value={t.w} onChange={e => handleT('w', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Height: {t.h}%</label>
+              <input type="range" min="10" max="100" step="0.1" value={t.h} onChange={e => handleT('h', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Trans X: {t.x}%</label>
+              <input type="range" min="-100" max="100" step="0.1" value={t.x} onChange={e => handleT('x', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Trans Y: {t.y}%</label>
+              <input type="range" min="-100" max="100" step="0.1" value={t.y} onChange={e => handleT('y', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Rotate X: {t.rx}°</label>
+              <input type="range" min="-90" max="90" step="0.1" value={t.rx} onChange={e => handleT('rx', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Rotate Y: {t.ry}°</label>
+              <input type="range" min="-90" max="90" step="0.1" value={t.ry} onChange={e => handleT('ry', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Rotate Z: {t.rz}°</label>
+              <input type="range" min="-180" max="180" step="0.1" value={t.rz} onChange={e => handleT('rz', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Skew X: {t.skx}°</label>
+              <input type="range" min="-90" max="90" step="0.1" value={t.skx} onChange={e => handleT('skx', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Skew Y: {t.sky}°</label>
+              <input type="range" min="-90" max="90" step="0.1" value={t.sky} onChange={e => handleT('sky', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Scale X: {t.sx}</label>
+              <input type="range" min="0.1" max="3" step="0.01" value={t.sx} onChange={e => handleT('sx', e.target.value)} />
+            </div>
+            <div className="dev-slider">
+              <label>Scale Y: {t.sy}</label>
+              <input type="range" min="0.1" max="3" step="0.01" value={t.sy} onChange={e => handleT('sy', e.target.value)} />
+            </div>
+            
+            <button className="dev-copy-btn" onClick={copyConfig}>
+              <FaCopy /> Copy Config
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {!showControls && (
+        <button className="dev-toggle-btn" onClick={() => setShowControls(true)}>
+          <FaSlidersH /> Calibrate CRT
+        </button>
+      )}
 
       <AnimatePresence>
         {isModalOpen && (
