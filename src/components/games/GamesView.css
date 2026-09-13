@@ -322,7 +322,7 @@
 
 .games-container { z-index: 10; }
 
-/* DYNAMIC FULL BLEED BACKGROUND */
+/* DYNAMIC FULL BLEED BACKGROUND - XMB MORPHING WAVES */
 .games-fullbleed-bg {
   position: absolute;
   top: 0; left: 50%;
@@ -332,28 +332,85 @@
   transform: translateX(-50%);
   z-index: -2;
   overflow: hidden;
-}
-
-.games-bg-wave, .games-bg-wave-2 {
-  position: absolute;
-  top: -50%; left: -50%;
-  width: 200%; height: 200%;
   background: var(--active-bg);
-  background-size: 300% 300%;
-  animation: bgWaveFlow 20s infinite alternate ease-in-out;
-  transition: background 1s ease;
+  background-size: 200% 200%;
+  animation: bgPan 20s infinite alternate ease-in-out;
+  transition: background 1.5s ease;
 }
 
-.games-bg-wave-2 {
-  background: radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 60%);
+@keyframes bgPan {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+.games-bg-base {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.1) 100%);
+  z-index: 0;
+}
+
+/* XMB RIBBONS */
+.xmb-wave {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 150vw; height: 150vw;
+  margin-top: -75vw; margin-left: -75vw;
+  border-radius: 40% 60% 50% 50% / 40% 50% 60% 50%;
+  transform-origin: center;
   mix-blend-mode: overlay;
-  animation: bgWaveFlow 15s infinite alternate-reverse ease-in-out;
+  z-index: 1;
 }
 
-@keyframes bgWaveFlow {
-  0% { transform: translate(0, 0) scale(1) rotate(0deg); background-position: 0% 0%; }
-  50% { transform: translate(-2%, 2%) scale(1.05) rotate(2deg); background-position: 100% 100%; }
-  100% { transform: translate(2%, -2%) scale(1.1) rotate(-2deg); background-position: 0% 50%; }
+.xmb-wave-1 {
+  background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0));
+  animation: morphWave1 18s infinite linear;
+}
+
+.xmb-wave-2 {
+  background: linear-gradient(45deg, rgba(255,255,255,0.4), rgba(255,255,255,0.05));
+  animation: morphWave2 24s infinite linear reverse;
+  width: 180vw; height: 180vw;
+  margin-top: -90vw; margin-left: -90vw;
+}
+
+.xmb-wave-3 {
+  background: linear-gradient(to right, rgba(255,255,255,0.5), transparent);
+  animation: morphWave3 20s infinite linear;
+  width: 120vw; height: 120vw;
+  margin-top: -60vw; margin-left: -60vw;
+  border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%;
+}
+
+.xmb-wave-4 {
+  background: linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(0,0,0,0.1));
+  animation: morphWave4 30s infinite linear reverse;
+  width: 200vw; height: 200vw;
+  margin-top: -100vw; margin-left: -100vw;
+}
+
+@keyframes morphWave1 {
+  0% { transform: rotate(0deg) scale(1) skew(0deg); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+  50% { transform: rotate(180deg) scale(1.1) skew(10deg); border-radius: 60% 40% 30% 70% / 50% 60% 50% 40%; }
+  100% { transform: rotate(360deg) scale(1) skew(0deg); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+}
+
+@keyframes morphWave2 {
+  0% { transform: rotate(0deg) scale(1.2) translateY(5%); border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%; }
+  50% { transform: rotate(180deg) scale(0.9) translateY(-5%); border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+  100% { transform: rotate(360deg) scale(1.2) translateY(5%); border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%; }
+}
+
+@keyframes morphWave3 {
+  0% { transform: rotate(0deg) scale(0.8) scaleX(1); border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%; }
+  50% { transform: rotate(180deg) scale(1) scaleX(1.5); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+  100% { transform: rotate(360deg) scale(0.8) scaleX(1); border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%; }
+}
+
+@keyframes morphWave4 {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.05); }
+  100% { transform: rotate(360deg) scale(1); }
 }
 
 .theme-cycler-btn {

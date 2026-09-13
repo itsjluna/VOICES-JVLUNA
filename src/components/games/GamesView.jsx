@@ -28,8 +28,14 @@ export default function GamesView() {
   return (
     <PageWrapper>
       <div className="games-fullbleed-bg" style={{ '--active-bg': activeTheme.bg }}>
-        <div className="games-bg-wave"></div>
-        <div className="games-bg-wave-2"></div>
+        {/* Core base gradient */}
+        <div className="games-bg-base"></div>
+        
+        {/* XMB Style 3D Morphing Ribbons/Waves */}
+        <div className="xmb-wave xmb-wave-1"></div>
+        <div className="xmb-wave xmb-wave-2"></div>
+        <div className="xmb-wave xmb-wave-3"></div>
+        <div className="xmb-wave xmb-wave-4"></div>
       </div>
       
       <div className="games-wall">
