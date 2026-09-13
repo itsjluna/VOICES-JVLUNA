@@ -122,7 +122,7 @@ export default function GamesView() {
               {/* Fallback box if imacg3.png is missing. Add your PNG to public/imacg3.png! */}
               <div className="imac-image-placeholder">
                 <img 
-                  src="/imacg3.png" 
+                  src="/games/imacg3.png" 
                   alt="iMac G3" 
                   className="imac-image"
                   onError={(e) => {
