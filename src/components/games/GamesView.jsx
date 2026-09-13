@@ -40,19 +40,22 @@ export default function GamesView() {
         {/* Frutiger Aero Background Elements */}
         <div className="aero-light"></div>
         <div className="aero-bubbles">
-          {Array.from({ length: 15 }).map((_, i) => (
-            <div 
-              key={i} 
-              className="aero-bubble"
-              style={{
-                width: `${Math.random() * 60 + 20}px`,
-                height: `${Math.random() * 60 + 20}px`,
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 15}s`,
-                animationDuration: `${Math.random() * 10 + 10}s`
-              }}
-            />
-          ))}
+          {Array.from({ length: 15 }).map((_, i) => {
+            const size = `${Math.random() * 60 + 20}px`;
+            return (
+              <div 
+                key={i} 
+                className="aero-bubble"
+                style={{
+                  width: size,
+                  height: size,
+                  left: `${Math.random() * 100}%`,
+                  animationDuration: `${Math.random() * 10 + 10}s`,
+                  animationDelay: `-${Math.random() * 10}s`
+                }}
+              ></div>
+            );
+          })}
         </div>
 
         <div style={{ position: 'absolute', top: '2rem', left: '2rem', zIndex: 100 }}>
