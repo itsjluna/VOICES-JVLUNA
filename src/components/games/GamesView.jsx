@@ -121,15 +121,18 @@ export default function GamesView() {
               </motion.div>
             </div>
 
-            <motion.button 
-              className="games-play-btn"
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              onClick={() => setIsModalOpen(true)}
             >
-              <FaPlay size={16} /> {language === 'EN' ? 'PLAY GAME' : 'JUGAR AHORA'}
-            </motion.button>
+              <button 
+                className="games-play-btn"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <FaPlay style={{ fontSize: '0.9em' }} /> {language === 'EN' ? 'Play Game' : 'Jugar'}
+              </button>
+            </motion.div>
           </div>
 
           <div className="imac-container">
