@@ -24,21 +24,12 @@ css = css.replace(
 css = css.replace(/background: linear-gradient\(120deg, #74ebd5 0%, #9face6 100%\);/, "background: #f0f0f0; /* Temporary flat background */");
 css = css.replace(/background: linear-gradient\(120deg, #1b263b 0%, #415a77 100%\);/, "background: #111; /* Temporary flat background */");
 
-// 5. Mobile Layout Tweaks
-// Add a media query for mobile screens to override the CRT config
-const mediaQuery = \
-
-/* MOBILE CRT OVERRIDES */
-@media (max-width: 768px) {
-  .imac-screen {
-    /* Slightly tweak the mobile transform to fit the smaller screen constraints */
-    width: 44.5%;
-    height: 47%;
-    transform: perspective(35vw) translate3d(-85%, -69.2%, 0px) rotateX(2.5deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
-  }
-}
-\;
-
-css += mediaQuery;
+// Update CSS fallback to the new Desktop coordinates so the initial render is perfect
+css = css.replace(
+  /width: 39\.6%;\s*height: 39\.2%;\s*transform: perspective\(155vw\)[\s\S]*?;/,
+  \width: 45.4%;
+  height: 47.7%;
+  transform: perspective(39vw) translate3d(-84.8%, -68.7%, 0px) rotateX(2.5deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);\
+);
 
 fs.writeFileSync('src/components/games/GamesView.css', css, 'utf8');

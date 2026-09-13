@@ -290,13 +290,88 @@
 }
 
 
-
-/* MOBILE CRT OVERRIDES */
-@media (max-width: 768px) {
-  .imac-screen {
-    /* Slightly tweak the mobile transform to fit the smaller screen constraints */
-    width: 44.5%;
-    height: 47%;
-    transform: perspective(35vw) translate3d(-85%, -69.2%, 0px) rotateX(2.5deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
-  }
+/* DEV CONTROLS */
+.dev-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 1.5rem;
+  border-radius: 15px;
+  color: #00ff00;
+  font-family: monospace;
+  z-index: 999999;
+  border: 1px solid #00ff00;
+  box-shadow: 0 10px 30px rgba(0,255,0,0.2);
+  width: 300px;
+  max-height: 80vh;
+  overflow-y: auto;
+  cursor: grab;
+}
+.dev-controls:active {
+  cursor: grabbing;
+}
+.dev-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #00ff00;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+}
+.dev-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+.dev-header button {
+  background: transparent;
+  border: none;
+  color: #00ff00;
+  cursor: pointer;
+}
+.dev-slider {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.8rem;
+}
+.dev-slider label {
+  font-size: 0.85rem;
+  margin-bottom: 0.2rem;
+}
+.dev-slider input {
+  accent-color: #00ff00;
+}
+.dev-copy-btn {
+  width: 100%;
+  padding: 0.8rem;
+  background: #00ff00;
+  color: #000;
+  border: none;
+  font-weight: bold;
+  font-family: monospace;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.dev-toggle-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  padding: 0.8rem 1.2rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: monospace;
+  font-weight: bold;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
