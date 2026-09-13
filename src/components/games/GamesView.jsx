@@ -115,11 +115,11 @@ export default function GamesView() {
                   <FaGamepad style={{ marginRight: '0.5rem', fontSize: '1.1em', verticalAlign: 'text-bottom' }} />
                   {language === 'EN' ? 'Stealth Collectathon Parody' : 'Parodia de Sigilo y Recolección'}
                 </div>
-                <p>
-                  {language === 'EN' 
-                    ? "Play as a JAM-DOG (a dog with a jam head) on a mission to bring jams to other jam-dogs. Built in Unity using C#. Explore the neighborhood, sneak past the humans, and deliver the goods!"
-                    : "Juega como un JAM-DOG (un perro con cabeza de mermelada) en una misión para llevar mermeladas a otros jam-dogs. Construido en Unity usando C#. ¡Explora el vecindario, escabúllete de los humanos y entrega la mercancía!"}
-                </p>
+                  <p>
+                    {language === 'EN' 
+                      ? "JAM-DOG is a small proof-of-concept collectathon demo about a dog who has to collect the ingredients to make a peanut butter and jelly sandwich without his owner noticing, inspired by and acting as a parody of Metal Gear's stealth mechanics."
+                      : "JAM-DOG es una pequeña demo de prueba de concepto del genero collectathon sobre un perro que tiene que recolectar los ingredientes para hacer un sandwich de mantequilla de mani y mermelada sin que su dueño lo note, inspirado y siendo una parodia de las mecanicas de sigilo de Metal Gear."}
+                  </p>
               </motion.div>
             </div>
 
