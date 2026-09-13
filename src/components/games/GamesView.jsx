@@ -160,7 +160,7 @@ export default function GamesView() {
               <div className="imac-screen">
                 <iframe 
                   className="crt-video"
-                  src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&mute=1&loop=1&controls=0&playlist=ScMzIvxBSi4" 
+                  src="https://www.youtube.com/embed/YYUzG0kSPNc?autoplay=1&mute=1&loop=1&controls=0&playlist=YYUzG0kSPNc" 
                   title="Game Trailer"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
