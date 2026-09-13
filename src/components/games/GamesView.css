@@ -88,8 +88,6 @@
   flex-direction: column;
   gap: 1rem;
 }
-@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
-
 .games-title {
   font-family: 'Russo One', sans-serif;
   font-size: clamp(2.5rem, 6vw, 4.5rem);
