@@ -184,6 +184,10 @@ export default function GamesView() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsModalOpen(false)}
+            style={{ 
+              '--theme-p1': activeTheme.p1,
+              '--theme-p2': activeTheme.p2
+            }}
           >
             <motion.div 
               className="game-modal-content"
@@ -193,13 +197,33 @@ export default function GamesView() {
               onClick={e => e.stopPropagation()}
             >
               <button className="game-modal-close" onClick={() => setIsModalOpen(false)}>
-                <FaTimes size={20} />
+                <FaTimes />
               </button>
-              <iframe 
-                src="https://play.unity.com/api/v1/games/game/5b9d3b61-8f55-4209-87c5-d6989ecadd0b/build/latest/frame" 
-                className="game-iframe"
-                allowFullScreen
-              ></iframe>
+              
+              <div className="game-iframe-wrapper">
+                <iframe 
+                  src="https://play.unity.com/api/v1/games/game/5b9d3b61-8f55-4209-87c5-d6989ecadd0b/build/latest/frame" 
+                  className="game-iframe"
+                  allowFullScreen
+                ></iframe>
+              </div>
+
+              {/* Virtual Controllers for Mobile */}
+              <div className="mobile-virtual-controllers">
+                <div className="d-pad">
+                  <div className="d-pad-btn up"></div>
+                  <div className="d-pad-btn right"></div>
+                  <div className="d-pad-btn down"></div>
+                  <div className="d-pad-btn left"></div>
+                  <div className="d-pad-center"></div>
+                </div>
+                <div className="action-buttons">
+                  <div className="action-btn y">Y</div>
+                  <div className="action-btn x">X</div>
+                  <div className="action-btn a">A</div>
+                  <div className="action-btn b">B</div>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         )}
