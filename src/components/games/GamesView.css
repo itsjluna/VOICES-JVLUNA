@@ -1,4 +1,4 @@
-/* FRUTIGER AERO BACKGROUND */
+﻿/* FRUTIGER AERO BACKGROUND */
 .games-wall {
   min-height: 100vh;
   position: relative;
@@ -229,8 +229,8 @@
   border-radius: 0% / 0%;
   width: 46.1%;
   height: 47.7%;
-  -webkit-transform: perspective(37vw) translate3d(-82.6%, -68.7%, 0px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
-  transform: perspective(37vw) translate3d(-82.6%, -68.7%, 0px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
+  -webkit-transform: perspective(37vw) translate3d(-82.6%, -68.7%, -50px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
+  transform: perspective(37vw) translate3d(-82.6%, -68.7%, -50px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
 }
 
 /* If the user uses an iMac PNG, they need to make the screen part transparent 
@@ -547,8 +547,8 @@
     border-radius: 14% / 0%;
     width: 46.1%;
     height: 47.7%;
-    -webkit-transform: perspective(95vw) translate3d(-82.6%, -68.7%, 0px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
-    transform: perspective(95vw) translate3d(-82.6%, -68.7%, 0px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
+    -webkit-transform: perspective(95vw) translate3d(-82.6%, -68.7%, -50px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
+    transform: perspective(95vw) translate3d(-82.6%, -68.7%, -50px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
   }
 }
 
