@@ -217,17 +217,17 @@ export default function GamesView() {
               {/* Virtual Controllers for Mobile */}
               <div className="mobile-virtual-controllers">
                 <div className="d-pad">
-                  <div className="d-pad-btn up"></div>
-                  <div className="d-pad-btn right"></div>
-                  <div className="d-pad-btn down"></div>
-                  <div className="d-pad-btn left"></div>
+                  <motion.button className="d-pad-btn up" whileTap={{ scale: 0.8, filter: 'brightness(1.5)' }}></motion.button>
+                  <motion.button className="d-pad-btn right" whileTap={{ scale: 0.8, filter: 'brightness(1.5)' }}></motion.button>
+                  <motion.button className="d-pad-btn down" whileTap={{ scale: 0.8, filter: 'brightness(1.5)' }}></motion.button>
+                  <motion.button className="d-pad-btn left" whileTap={{ scale: 0.8, filter: 'brightness(1.5)' }}></motion.button>
                   <div className="d-pad-center"></div>
                 </div>
                 <div className="action-buttons">
-                  <div className="action-btn y frutiger-button circle">Y</div>
-                  <div className="action-btn x frutiger-button circle">X</div>
-                  <div className="action-btn b frutiger-button circle">B</div>
-                  <div className="action-btn a frutiger-button circle">A</div>
+                  <motion.button className="action-btn y frutiger-button circle" whileTap={{ scale: 0.8, filter: 'brightness(1.5)' }}>Y</motion.button>
+                  <motion.button className="action-btn x frutiger-button circle" whileTap={{ scale: 0.8, filter: 'brightness(1.5)' }}>X</motion.button>
+                  <motion.button className="action-btn b frutiger-button circle" whileTap={{ scale: 0.8, filter: 'brightness(1.5)' }}>B</motion.button>
+                  <motion.button className="action-btn a frutiger-button circle" whileTap={{ scale: 0.8, filter: 'brightness(1.5)' }}>A</motion.button>
                 </div>
               </div>
             </motion.div>

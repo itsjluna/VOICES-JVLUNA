@@ -70,6 +70,11 @@
     margin-bottom: 2rem;
     gap: 2rem;
   }
+  .imac-container {
+    width: 100%;
+    min-height: 300px;
+    flex: none;
+  }
 }
 
 /* INFO SECTION */
@@ -173,6 +178,7 @@
   justify-content: center;
   align-items: center;
   perspective: 1200px;
+  -webkit-perspective: 1200px;
 }
 .imac-wrapper {
   position: relative;
@@ -181,6 +187,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
 }
 
 .imac-image {
@@ -221,6 +229,7 @@
   border-radius: 0% / 0%;
   width: 46.1%;
   height: 47.7%;
+  -webkit-transform: perspective(37vw) translate3d(-82.6%, -68.7%, 0px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
   transform: perspective(37vw) translate3d(-82.6%, -68.7%, 0px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
 }
 
@@ -534,10 +543,11 @@
 }
 
 @media (max-width: 768px) {
-  .imac-screen {
+.imac-screen {
     border-radius: 14% / 0%;
     width: 46.1%;
     height: 47.7%;
+    -webkit-transform: perspective(95vw) translate3d(-82.6%, -68.7%, 0px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
     transform: perspective(95vw) translate3d(-82.6%, -68.7%, 0px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
   }
 }
