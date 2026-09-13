@@ -36,7 +36,26 @@ export default function GamesView() {
           '--theme-p2': activeTheme.p2
         }}
       >
-        <div className="games-fullbleed-bg"></div>
+        <div className="games-fullbleed-bg">
+          <div className="aero-bubbles">
+            {Array.from({ length: 15 }).map((_, i) => {
+              const size = `${Math.random() * 60 + 20}px`;
+              return (
+                <div 
+                  key={i} 
+                  className="aero-bubble"
+                  style={{
+                    width: size,
+                    height: size,
+                    left: `${Math.random() * 100}%`,
+                    animationDuration: `${Math.random() * 10 + 10}s`,
+                    animationDelay: `-${Math.random() * 10}s`
+                  }}
+                ></div>
+              );
+            })}
+          </div>
+        </div>
 
         {/* Theme Cycler */}
         <button className="theme-cycler-btn" onClick={cycleTheme}>
@@ -66,24 +85,7 @@ export default function GamesView() {
           <img src="/games/graphics/y2kshine.png" className="graphic-img" style={{ bottom: '5%', left: '45%', width: '60px', animationDelay: '0.8s' }} />
         </div>
 
-        <div className="aero-bubbles">
-          {Array.from({ length: 15 }).map((_, i) => {
-            const size = `${Math.random() * 60 + 20}px`;
-            return (
-              <div 
-                key={i} 
-                className="aero-bubble"
-                style={{
-                  width: size,
-                  height: size,
-                  left: `${Math.random() * 100}%`,
-                  animationDuration: `${Math.random() * 10 + 10}s`,
-                  animationDelay: `-${Math.random() * 10}s`
-                }}
-              ></div>
-            );
-          })}
-        </div>
+
 
         <div style={{ position: 'absolute', top: '2rem', left: '2rem', zIndex: 100 }}>
           <BackButton />
@@ -108,7 +110,8 @@ export default function GamesView() {
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
                 <div className="games-genre-tag">
-                  🎮 {language === 'EN' ? 'Stealth Collectathon Parody' : 'Parodia de Sigilo y Recolección'}
+                  <FaGamepad style={{ marginRight: '0.5rem', fontSize: '1.1em', verticalAlign: 'text-bottom' }} />
+                  {language === 'EN' ? 'Stealth Collectathon Parody' : 'Parodia de Sigilo y Recolección'}
                 </div>
                 <p>
                   {language === 'EN' 
