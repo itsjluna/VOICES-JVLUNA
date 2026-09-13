@@ -301,3 +301,28 @@
     transform: perspective(95vw) translate3d(-82.6%, -68.7%, 0px) rotateX(-0.1deg) rotateY(-15.2deg) rotateZ(14.3deg) scale(1, 1) skew(7.1deg, 2deg);
   }
 }
+
+/* CLUTTER AND GRAPHICS */
+.games-clutter, .games-graphics {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.clutter-img {
+  position: absolute;
+  opacity: 0.8;
+  transition: transform 0.3s ease;
+}
+.graphic-img {
+  position: absolute;
+  opacity: 0.6;
+  animation: floatGraphic 6s infinite ease-in-out;
+}
+@keyframes floatGraphic {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
+}
+
+.games-container { z-index: 10; }

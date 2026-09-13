@@ -15,6 +15,29 @@ export default function GamesView() {
       <div className="games-wall">
         {/* Frutiger Aero Background Elements */}
         <div className="aero-light"></div>
+        
+        {/* Background Clutter (Skeuomorphic Devices) */}
+        <div className="games-clutter">
+          <img src="/games/ps2.png" className="clutter-img" style={{ top: '5%', left: '5%', width: '300px', transform: 'rotate(-15deg)', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }} />
+          <img src="/games/dualshock2.png" className="clutter-img" style={{ bottom: '10%', right: '5%', width: '250px', transform: 'rotate(25deg)', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }} />
+          <img src="/games/bot-ster.png" className="clutter-img" style={{ bottom: '5%', left: '10%', width: '200px', transform: 'rotate(-5deg)', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }} />
+          <img src="/games/iphone.png" className="clutter-img" style={{ top: '15%', right: '15%', width: '150px', transform: 'rotate(15deg)', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }} />
+          <img src="/games/xperiax10.png" className="clutter-img" style={{ top: '50%', left: '2%', width: '120px', transform: 'rotate(-30deg)', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }} />
+        </div>
+
+        {/* Y2K Graphic Elements */}
+        <div className="games-graphics">
+          <img src="/games/graphics/y2kstar.png" className="graphic-img" style={{ top: '20%', left: '30%', width: '80px', animationDelay: '0s' }} />
+          <img src="/games/graphics/y2kheart.png" className="graphic-img" style={{ top: '10%', right: '35%', width: '90px', animationDelay: '1s' }} />
+          <img src="/games/graphics/y2ksphere.png" className="graphic-img" style={{ bottom: '20%', left: '25%', width: '120px', animationDelay: '2s' }} />
+          <img src="/games/graphics/y2kflower.png" className="graphic-img" style={{ bottom: '30%', right: '20%', width: '100px', animationDelay: '0.5s' }} />
+          <img src="/games/graphics/y2kstar2.png" className="graphic-img" style={{ top: '40%', right: '5%', width: '70px', animationDelay: '1.5s' }} />
+          <img src="/games/graphics/y2keart.png" className="graphic-img" style={{ bottom: '15%', right: '40%', width: '85px', animationDelay: '2.5s' }} />
+          <img src="/games/graphics/y2kclover.png" className="graphic-img" style={{ top: '60%', left: '15%', width: '95px', animationDelay: '0.2s' }} />
+          <img src="/games/graphics/y2kflag.png" className="graphic-img" style={{ top: '5%', left: '50%', width: '110px', animationDelay: '1.2s' }} />
+          <img src="/games/graphics/y2kshine.png" className="graphic-img" style={{ bottom: '5%', left: '45%', width: '60px', animationDelay: '0.8s' }} />
+        </div>
+
         <div className="aero-bubbles">
           {Array.from({ length: 15 }).map((_, i) => {
             const size = `${Math.random() * 60 + 20}px`;
