@@ -154,6 +154,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  container-type: inline-size;
 }
 
 .imac-image {
@@ -191,9 +192,9 @@
   box-shadow: inset 0 0 35px rgba(0,0,0,1), inset 0 0 15px rgba(0,0,0,0.8);
   z-index: 1;
   
-  width: 225px;
-  height: 223px;
-  transform: perspective(883px) translate3d(-182px, -150px, 0px) rotateX(5.9deg) rotateY(-16.4deg) rotateZ(14.5deg) scale(1, 1) skew(6.6deg, 2deg);
+  width: calc(225px * 100cqi / 568);
+  height: calc(223px * 100cqi / 568);
+  transform: perspective(calc(883px * 100cqi / 568)) translate3d(calc(-182px * 100cqi / 568), calc(-150px * 100cqi / 568), 0px) rotateX(5.9deg) rotateY(-16.4deg) rotateZ(14.5deg) scale(1, 1) skew(6.6deg, 2deg);
 }
 
 /* If the user uses an iMac PNG, they need to make the screen part transparent 

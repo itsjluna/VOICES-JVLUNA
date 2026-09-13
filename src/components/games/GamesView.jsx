@@ -38,10 +38,10 @@ export default function GamesView() {
   };
 
   const crtStyle = {
-    width: `${t.w}px`,
-    height: `${t.h}px`,
+    width: `calc(${t.w}px * 100cqi / 568)`,
+    height: `calc(${t.h}px * 100cqi / 568)`,
     borderRadius: `${t.brX}% / ${t.brY}%`,
-    transform: `perspective(${t.p}px) translate3d(${t.x}px, ${t.y}px, ${t.z}px) rotateX(${t.rx}deg) rotateY(${t.ry}deg) rotateZ(${t.rz}deg) scale(${t.sx}, ${t.sy}) skew(${t.skx}deg, ${t.sky}deg)`
+    transform: `perspective(calc(${t.p}px * 100cqi / 568)) translate3d(calc(${t.x}px * 100cqi / 568), calc(${t.y}px * 100cqi / 568), calc(${t.z}px * 100cqi / 568)) rotateX(${t.rx}deg) rotateY(${t.ry}deg) rotateZ(${t.rz}deg) scale(${t.sx}, ${t.sy}) skew(${t.skx}deg, ${t.sky}deg)`
   };
 
   return (
