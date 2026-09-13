@@ -3,14 +3,31 @@
   min-height: 100vh;
   position: relative;
   overflow: hidden;
-  background: #f0f0f0; /* Temporary flat background */
+  
+  /* Break out of .container */
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  
+  /* Animated Background */
+  background: linear-gradient(-45deg, #74ebd5, #9face6, #fbc2eb, #a18cd1);
+  background-size: 400% 400%;
+  animation: y2kBackground 15s ease infinite;
+  
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 :root.dark .games-wall {
-  background: #111; /* Temporary flat background */
+  background: linear-gradient(-45deg, #1b263b, #415a77, #0d1b2a, #1a2a6c);
+  background-size: 400% 400%;
+  animation: y2kBackground 15s ease infinite;
+}
+
+@keyframes y2kBackground {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .aero-bubbles {
