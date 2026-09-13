@@ -45,12 +45,28 @@ export default function GamesView() {
     }));
   }, []);
 
+  // Generate stable bubbles so they don't scramble on re-render
+  const aeroBubbles = React.useMemo(() => {
+    return Array.from({ length: 15 }).map(() => {
+      const size = `${Math.random() * 60 + 20}px`;
+      return {
+        size,
+        left: `${Math.random() * 100}%`,
+        duration: `${Math.random() * 10 + 10}s`,
+        delay: `-${Math.random() * 10}s`,
+        iriRot: `${Math.random() * 360}deg`,
+        iriHue: `${Math.random() * 90 - 45}deg`
+      };
+    });
+  }, []);
+
   const cycleTheme = () => {
     setThemeIdx((prev) => (prev + 1) % THEMES.length);
   };
 
   return (
-    <PageWrapper>
+    <PageWrapper className="games-page">
+      <BackButton color="rgba(255,255,255,0.8)" hoverColor="#fff" />
       <div 
         className="games-wall"
         style={{ 
@@ -84,24 +100,21 @@ export default function GamesView() {
             />
           ))}
           <div className="aero-bubbles">
-            {Array.from({ length: 15 }).map((_, i) => {
-              const size = `${Math.random() * 60 + 20}px`;
-              return (
-                <div 
-                  key={i} 
-                  className="aero-bubble"
-                  style={{
-                    width: size,
-                    height: size,
-                    left: `${Math.random() * 100}%`,
-                    animationDuration: `${Math.random() * 10 + 10}s`,
-                    animationDelay: `-${Math.random() * 10}s`,
-                    '--iri-rot': `${Math.random() * 360}deg`,
-                    '--iri-hue': `${Math.random() * 90 - 45}deg`
-                  }}
-                ></div>
-              );
-            })}
+            {aeroBubbles.map((bubble, i) => (
+              <div 
+                key={`bubble-${i}`}
+                className="aero-bubble"
+                style={{
+                  width: bubble.size,
+                  height: bubble.size,
+                  left: bubble.left,
+                  animationDuration: bubble.duration,
+                  animationDelay: bubble.delay,
+                  '--iri-rot': bubble.iriRot,
+                  '--iri-hue': bubble.iriHue
+                }}
+              />
+            ))}
           </div>
         </div>
 
@@ -133,9 +146,7 @@ export default function GamesView() {
 
 
 
-        <div style={{ position: 'absolute', top: '2rem', left: '2rem', zIndex: 100 }}>
-          <BackButton />
-        </div>
+        
 
         <div className="games-container">
           <div className="games-info">
@@ -157,7 +168,7 @@ export default function GamesView() {
               >
                 <div className="games-genre-tag">
                   <FaGamepad style={{ marginRight: '0.5rem', fontSize: '1.1em', verticalAlign: 'text-bottom' }} />
-                  {language === 'EN' ? 'Stealth Collectathon Parody' : 'Parodia de Sigilo y Recolección'}
+                  {language === "EN" ? "Stealth Collectathon Parody" : "Parodia de Sigilo y Recolección"}
                 </div>
                   <p>
                     {language === 'EN' 
