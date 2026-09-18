@@ -1,7 +1,7 @@
 {
   "name": "paths-by-j-violet-luna",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "concurrently \"vite\" \"node api/index.js\"",
