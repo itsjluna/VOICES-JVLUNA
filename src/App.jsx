@@ -82,12 +82,17 @@ function App() {
     
     const checkLock = () => {
       const isProd = import.meta.env.VITE_VERCEL_ENV === 'production' || process.env.VERCEL_ENV === 'production';
-      if (isProd) {
+      const path = window.location.pathname;
+      const isExemptRoute = path.startsWith('/admin') || path.startsWith('/dashboard');
+
+      if (isProd && !isExemptRoute) {
         if (Date.now() < launchDate) {
           setIsLocked(true);
         } else {
           setIsLocked(false);
         }
+      } else {
+        setIsLocked(false);
       }
     };
     
