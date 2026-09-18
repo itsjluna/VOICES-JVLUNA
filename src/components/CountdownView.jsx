@@ -58,31 +58,55 @@ export default function CountdownView() {
         backgroundColor: '#000',
         color: '#fff',
         zIndex: 9999,
-        fontFamily: 'monospace'
+        fontFamily: 'monospace',
+        padding: '2rem',
+        boxSizing: 'border-box'
       }}
     >
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'center', width: '100%', maxWidth: '600px' }}>
+        <motion.h1 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1, duration: 2 }}
+          style={{ 
+            fontFamily: "'Playfair Display', serif", 
+            fontStyle: 'italic',
+            fontSize: 'clamp(1.5rem, 5vw, 2.5rem)',
+            fontWeight: 400,
+            letterSpacing: '0.15em',
+            marginBottom: '3rem',
+            color: 'rgba(255, 255, 255, 0.8)',
+            textTransform: 'lowercase'
+          }}
+        >
+          a way out
+        </motion.h1>
 
         {hasTimeLeft ? (
-          <div style={{ display: 'flex', gap: '2rem', fontSize: '1.5rem' }}>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center',
+            gap: 'clamp(0.8rem, 4vw, 2.5rem)', 
+            fontSize: 'clamp(1.5rem, 6vw, 2.5rem)' 
+          }}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <span>{String(timeLeft.days).padStart(2, '0')}</span>
-              <span style={{ fontSize: '0.8rem', color: '#888', marginTop: '0.5rem' }}>DAYS</span>
+              <span style={{ fontSize: 'clamp(0.6rem, 2.5vw, 0.85rem)', color: '#888', marginTop: '0.8rem', letterSpacing: '0.1em' }}>DAYS</span>
             </div>
-            <span>:</span>
+            <span style={{ opacity: 0.5 }}>:</span>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <span>{String(timeLeft.hours).padStart(2, '0')}</span>
-              <span style={{ fontSize: '0.8rem', color: '#888', marginTop: '0.5rem' }}>HOURS</span>
+              <span style={{ fontSize: 'clamp(0.6rem, 2.5vw, 0.85rem)', color: '#888', marginTop: '0.8rem', letterSpacing: '0.1em' }}>HOURS</span>
             </div>
-            <span>:</span>
+            <span style={{ opacity: 0.5 }}>:</span>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <span>{String(timeLeft.minutes).padStart(2, '0')}</span>
-              <span style={{ fontSize: '0.8rem', color: '#888', marginTop: '0.5rem' }}>MINUTES</span>
+              <span style={{ fontSize: 'clamp(0.6rem, 2.5vw, 0.85rem)', color: '#888', marginTop: '0.8rem', letterSpacing: '0.1em' }}>MINUTES</span>
             </div>
-            <span>:</span>
+            <span style={{ opacity: 0.5 }}>:</span>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <span>{String(timeLeft.seconds).padStart(2, '0')}</span>
-              <span style={{ fontSize: '0.8rem', color: '#888', marginTop: '0.5rem' }}>SECONDS</span>
+              <span style={{ fontSize: 'clamp(0.6rem, 2.5vw, 0.85rem)', color: '#888', marginTop: '0.8rem', letterSpacing: '0.1em' }}>SECONDS</span>
             </div>
           </div>
         ) : null}
