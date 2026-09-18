@@ -548,7 +548,7 @@ app.get('/api/seo-bot', async (req, res) => {
   const path = req.query.path || '/';
   
   let ogTitle = 'PATHS By J Violet Luna';
-  let ogDescription = 'ART ANTHOLOGY first edition, ver 1.0.0';
+  let ogDescription = 'ART ANTHOLOGY first edition';
   let ogImage = '';
   
   const protocol = req.headers['x-forwarded-proto'] || 'https';
