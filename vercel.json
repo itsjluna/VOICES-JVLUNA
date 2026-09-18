@@ -1,6 +1,17 @@
 {
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/index.js" },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(bot|facebook|twitter|discord|slack|whatsapp|telegram|pinterest|linkedin|vkshare|yandex).*"
+        }
+      ],
+      "destination": "/api/seo-bot?path=/$1"
+    },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

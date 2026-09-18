@@ -539,6 +539,95 @@ app.get('/api/itunes/lookup', async (req, res) => {
   }
 });
 
+app.get('/api/seo-bot', async (req, res) => {
+  // Extract path from X-Forwarded-URI or req.url, but since Vercel rewrites preserve the original path in req.url in some cases,
+  // or we can pass it explicitly. Wait, Vercel rewrite preserves original path!
+  // But let's check req.headers['x-now-route-matches'] or similar? No, easiest is to pass it.
+  // Actually, wait, if we rewrite in vercel.json:
+  // destination: "/api/seo-bot?path=$1" (we need to pass the original path!)
+  const path = req.query.path || '/';
+  
+  let ogTitle = 'PATHS By J Violet Luna';
+  let ogDescription = 'ART ANTHOLOGY first edition, ver 1.0.0';
+  let ogImage = '';
+  
+  const protocol = req.headers['x-forwarded-proto'] || 'https';
+  const host = req.headers.host || 'paths.jvluna.com';
+  const baseUrl = `${protocol}://${host}`;
+  ogImage = `${baseUrl}/android-chrome-512x512.png`;
+
+  try {
+    if (path.startsWith('/chapter/')) {
+      const id = path.split('/')[2];
+      const chapter = await Chapter.findById(id);
+      if (chapter) {
+        ogTitle = `${chapter.titleEn || chapter.title} - PATHS`;
+        ogDescription = chapter.contentEn || chapter.content || ogDescription;
+        if (chapter.image) ogImage = chapter.image;
+      }
+    } else if (path.startsWith('/poem/')) {
+      const id = path.split('/')[2];
+      const poem = await Poem.findById(id);
+      if (poem) {
+        ogTitle = `${poem.titleEn || poem.title} - PATHS`;
+        ogDescription = poem.contentEn || poem.content || ogDescription;
+        if (poem.image) ogImage = poem.image;
+      }
+    } else if (path.startsWith('/vent/')) {
+      const id = path.split('/')[2];
+      const vent = await Chapter.findById(id);
+      if (vent) {
+        ogTitle = `${vent.titleEn || vent.title} - PATHS`;
+        ogDescription = vent.contentEn || vent.content || ogDescription;
+        if (vent.image) ogImage = vent.image;
+      }
+    } else if (path.startsWith('/visuals')) {
+      ogTitle = 'Visuals - PATHS By J Violet Luna';
+    } else if (path.startsWith('/games')) {
+      ogTitle = 'Games - PATHS By J Violet Luna';
+    } else if (path.startsWith('/music')) {
+      ogTitle = 'Music - PATHS By J Violet Luna';
+    } else if (path.startsWith('/video')) {
+      ogTitle = 'Video - PATHS By J Violet Luna';
+    }
+  } catch (e) {
+    console.error('Error fetching SEO data:', e);
+  }
+
+  if (ogDescription && ogDescription.length > 200) {
+    ogDescription = ogDescription.substring(0, 197) + '...';
+  }
+  if (ogDescription) {
+    ogDescription = ogDescription.replace(/<[^>]*>?/gm, '').trim();
+  }
+
+  const html = `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>${ogTitle}</title>
+    <meta name="description" content="${ogDescription}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="${baseUrl}${path}" />
+    <meta property="og:title" content="${ogTitle}" />
+    <meta property="og:description" content="${ogDescription}" />
+    <meta property="og:image" content="${ogImage}" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="${baseUrl}${path}" />
+    <meta property="twitter:title" content="${ogTitle}" />
+    <meta property="twitter:description" content="${ogDescription}" />
+    <meta property="twitter:image" content="${ogImage}" />
+  </head>
+  <body>
+    <h1>${ogTitle}</h1>
+    <p>${ogDescription}</p>
+  </body>
+</html>`;
+
+  res.setHeader('Content-Type', 'text/html');
+  res.status(200).send(html);
+});
+
 export default app;
 if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 3001;
