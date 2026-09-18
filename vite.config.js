@@ -12,6 +12,9 @@ export default defineConfig({
       }
     }
   },
+  define: {
+    'process.env.VERCEL_ENV': JSON.stringify(process.env.VERCEL_ENV || '')
+  },
   build: {
     rollupOptions: {
       output: {

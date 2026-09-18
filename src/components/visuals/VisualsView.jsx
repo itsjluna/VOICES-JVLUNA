@@ -130,10 +130,9 @@ function VisualsView() {
           ))}
         </div>
         
+        <BackButton />
+
         <div className="visuals-container">
-          <div style={{ position: 'relative', zIndex: 100 }}>
-            <BackButton />
-          </div>
           
           <div className="visuals-header">
             <motion.h1 

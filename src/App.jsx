@@ -66,23 +66,49 @@ function AnimatedRoutes() {
 }
 
 import GlobalAdvisory from './components/GlobalAdvisory';
+import CountdownView from './components/CountdownView';
 
 function App() {
+  const [isLocked, setIsLocked] = React.useState(false);
+
   React.useEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
   }, []);
 
+  React.useEffect(() => {
+    const launchDate = new Date('2026-09-25T00:00:00-06:00').getTime();
+    
+    const checkLock = () => {
+      const isProd = import.meta.env.VITE_VERCEL_ENV === 'production' || process.env.VERCEL_ENV === 'production';
+      if (isProd) {
+        if (Date.now() < launchDate) {
+          setIsLocked(true);
+        } else {
+          setIsLocked(false);
+        }
+      }
+    };
+    
+    checkLock();
+    const interval = setInterval(checkLock, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Router>
-      <GlobalAdvisory>
-        <FlashlightOverlay />
-        <DockNav />
-        <div className="container">
-          <AnimatedRoutes />
-        </div>
-      </GlobalAdvisory>
+      {isLocked ? (
+        <CountdownView />
+      ) : (
+        <GlobalAdvisory>
+          <FlashlightOverlay />
+          <DockNav />
+          <div className="container">
+            <AnimatedRoutes />
+          </div>
+        </GlobalAdvisory>
+      )}
     </Router>
   );
 }

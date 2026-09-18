@@ -430,6 +430,12 @@
   100% { transform: scale(1.2) translate(-5vw, 5vh); opacity: 0.8; }
 }
 
+@keyframes pulse-theme-btn {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-4px) scale(1.02); }
+  100% { transform: translateY(0) scale(1); }
+}
+
 .theme-cycler-btn {
   position: absolute;
   top: 2rem;
@@ -451,6 +457,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  animation: pulse-theme-btn 2.5s infinite ease-in-out;
 }
 :root.dark .theme-cycler-btn {
   background: linear-gradient(135deg, rgba(30, 30, 30, 0.9), rgba(10, 10, 10, 0.7));
@@ -460,6 +467,7 @@
 }
 
 .theme-cycler-btn:hover {
+  animation: none;
   transform: translateY(-5px) scale(1.05);
   box-shadow: 0 10px 25px rgba(0,0,0,0.3), inset 0 2px 10px rgba(255,255,255,0.9);
 }

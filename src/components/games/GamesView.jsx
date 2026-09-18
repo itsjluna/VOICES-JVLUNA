@@ -66,7 +66,7 @@ export default function GamesView() {
 
   return (
     <PageWrapper className="games-page">
-      <BackButton color="rgba(255,255,255,0.8)" hoverColor="#fff" />
+      <BackButton />
       <div 
         className="games-wall"
         style={{ 
