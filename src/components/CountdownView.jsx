@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const launchDate = new Date('2026-09-25T00:00:00-06:00').getTime();
+const launchDate = new Date('2026-10-01T23:00:00-06:00').getTime();
 
 export default function CountdownView() {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());

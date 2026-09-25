@@ -78,7 +78,7 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-    const launchDate = new Date('2026-09-25T00:00:00-06:00').getTime();
+    const launchDate = new Date('2026-10-01T23:00:00-06:00').getTime();
     
     const checkLock = () => {
       const isProd = import.meta.env.VITE_VERCEL_ENV === 'production' || process.env.VERCEL_ENV === 'production';
