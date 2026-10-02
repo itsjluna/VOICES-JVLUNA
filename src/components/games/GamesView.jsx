@@ -206,8 +206,9 @@ export default function GamesView() {
             <motion.div 
               className="imac-wrapper"
               initial={{ opacity: 0, rotateY: 30, scale: 0.8 }}
-              animate={{ opacity: 1, rotateY: 0, scale: 1 }}
+              animate={{ opacity: 1, rotateY: 0, scale: 1, z: 0 }}
               transition={{ duration: 1, type: "spring" }}
+              style={{ willChange: 'transform' }}
             >
               {/* Fallback box if imacg3.png is missing. Add your PNG to public/imacg3.png! */}
               <div className="imac-image-placeholder">
@@ -222,10 +223,10 @@ export default function GamesView() {
                 />
               </div>
 
-              <div className="imac-screen">
+              <div className="imac-screen" style={{ transform: 'translateZ(0)' }}>
                 <iframe 
                   className="crt-video"
-                  src="https://www.youtube.com/embed/YYUzG0kSPNc?autoplay=1&mute=1&loop=1&controls=0&playlist=YYUzG0kSPNc" 
+                  src="https://www.youtube.com/embed/YYUzG0kSPNc?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&playlist=YYUzG0kSPNc" 
                   title="Game Trailer"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

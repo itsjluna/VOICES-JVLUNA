@@ -256,6 +256,8 @@
   object-fit: cover;
   border: none;
   pointer-events: none;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .crt-glass {
@@ -301,11 +303,17 @@
   position: absolute;
   opacity: 0.8;
   transition: transform 0.3s ease;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 .graphic-img {
   position: absolute;
   opacity: 0.6;
   animation: floatGraphic 6s infinite ease-in-out;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 @keyframes floatGraphic {
   0%, 100% { transform: translateY(0) rotate(0deg); }
