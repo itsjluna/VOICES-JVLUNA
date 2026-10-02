@@ -53,6 +53,25 @@ function VisualsView() {
     return () => window.removeEventListener('resize', updateColumns);
   }, []);
 
+  useEffect(() => {
+    if (!showTapHint) return;
+    
+    const dismissHint = () => {
+      setShowTapHint(false);
+      localStorage.setItem('voices_visuals_hint_seen', 'true');
+    };
+
+    window.addEventListener('scroll', dismissHint, { passive: true });
+    window.addEventListener('touchstart', dismissHint, { passive: true });
+    window.addEventListener('mousedown', dismissHint, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', dismissHint);
+      window.removeEventListener('touchstart', dismissHint);
+      window.removeEventListener('mousedown', dismissHint);
+    };
+  }, [showTapHint]);
+
   const closeModal = () => setSelectedVisual(null);
 
   // Distribute items into columns (bulletproof masonry)
@@ -205,9 +224,9 @@ function VisualsView() {
                           {showTapHint && isFirst && (
                             <motion.div 
                               className="tutorial-pointer"
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -10 }}
+                              initial={{ opacity: 0, scale: 0.8, x: "-50%", y: "-50%" }}
+                              animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
+                              exit={{ opacity: 0, scale: 0.8, x: "-50%", y: "-50%" }}
                             >
                                 <FaHandPointDown className="tap-hint-icon" />
                               <p>{language === 'EN' ? 'Tap to view details' : 'Toca para ver detalles'}</p>
@@ -269,20 +288,7 @@ function VisualsView() {
           )}
         </AnimatePresence>
 
-        <AnimatePresence>
-          {showTapHint && (
-            <motion.div 
-              className="tutorial-overlay"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => {
-                setShowTapHint(false);
-                localStorage.setItem('voices_visuals_hint_seen', 'true');
-              }}
-            />
-          )}
-        </AnimatePresence>
+
 
         <AnimatePresence>
           {isSketchpadOpen && (
