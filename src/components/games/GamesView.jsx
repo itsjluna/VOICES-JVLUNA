@@ -223,7 +223,7 @@ export default function GamesView() {
                 />
               </div>
 
-              <div className="imac-screen" style={{ transform: 'translateZ(0)' }}>
+              <div className="imac-screen">
                 <iframe 
                   className="crt-video"
                   src="https://www.youtube.com/embed/YYUzG0kSPNc?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&playlist=YYUzG0kSPNc" 
