@@ -33,12 +33,19 @@
   filter: hue-rotate(var(--iri-hue, 0deg));
   backdrop-filter: blur(2px);
   animation: floatUp 15s infinite linear;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 @keyframes floatUp {
-  0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+  0% { transform: translate3d(0, 100vh, 0) scale(0.5); opacity: 0; }
   10% { opacity: 1; }
   90% { opacity: 1; }
-  100% { transform: translateY(-20vh) scale(1.2); opacity: 0; }
+  100% { transform: translate3d(0, -20vh, 0) scale(1.2); opacity: 0; }
 }
 
 .aero-light {
@@ -257,6 +264,8 @@
   border: none;
   pointer-events: none;
   will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
   transform: translateZ(0);
 }
 
@@ -306,6 +315,8 @@
   will-change: transform;
   backface-visibility: hidden;
   transform: translateZ(0);
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 .graphic-img {
   position: absolute;
@@ -314,9 +325,11 @@
   will-change: transform;
   backface-visibility: hidden;
   transform: translateZ(0);
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 @keyframes floatGraphic {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
   50% { transform: translateY(-15px) rotate(5deg); }
 }
 
@@ -342,6 +355,8 @@
   animation: floatOrb 20s infinite alternate ease-in-out;
   transition: background 1.5s ease;
   will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 .mesh-orb.orb-1 {
   background: var(--theme-c2);
@@ -363,10 +378,10 @@
 }
 
 @keyframes floatOrb {
-  0% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(15vw, 15vh) scale(1.1); }
-  66% { transform: translate(-10vw, 5vh) scale(0.9); }
-  100% { transform: translate(5vw, -10vh) scale(1.05); }
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(15vw, 15vh, 0) scale(1.1); }
+  66% { transform: translate3d(-10vw, 5vh, 0) scale(0.9); }
+  100% { transform: translate3d(5vw, -10vh, 0) scale(1.05); }
 }
 
 /* VISTA AURORA RAYS */
@@ -375,6 +390,8 @@
   pointer-events: none;
   mix-blend-mode: overlay;
   will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
   z-index: 1;
 }
 
@@ -420,28 +437,28 @@
 }
 
 @keyframes driftRay1 {
-  0% { transform: rotate(-35deg) translateY(0) scale(1); opacity: 0.7; }
-  100% { transform: rotate(-30deg) translateY(150px) scale(1.1); opacity: 1; }
+  0% { transform: rotate(-35deg) translate3d(0, 0, 0) scale(1); opacity: 0.7; }
+  100% { transform: rotate(-30deg) translate3d(0, 150px, 0) scale(1.1); opacity: 1; }
 }
 @keyframes driftRay2 {
-  0% { transform: rotate(-45deg) translateY(0) scale(1); opacity: 0.6; }
-  100% { transform: rotate(-50deg) translateY(-200px) scale(1.2); opacity: 0.9; }
+  0% { transform: rotate(-45deg) translate3d(0, 0, 0) scale(1); opacity: 0.6; }
+  100% { transform: rotate(-50deg) translate3d(0, -200px, 0) scale(1.2); opacity: 0.9; }
 }
 @keyframes randomRapidRay {
-  0% { transform: rotate(var(--ray-rot, -20deg)) translateX(-50vw); opacity: 0; }
+  0% { transform: rotate(var(--ray-rot, -20deg)) translate3d(-50vw, 0, 0); opacity: 0; }
   20% { opacity: 1; }
   80% { opacity: 1; }
-  100% { transform: rotate(var(--ray-rot, -20deg)) translateX(150vw); opacity: 0; }
+  100% { transform: rotate(var(--ray-rot, -20deg)) translate3d(150vw, 0, 0); opacity: 0; }
 }
 @keyframes pulseGlow {
   0% { transform: scale(1) translate(0, 0); opacity: 0.4; }
-  100% { transform: scale(1.2) translate(-5vw, 5vh); opacity: 0.8; }
+  100% { transform: scale(1.2) translate3d(-5vw, 5vh, 0); opacity: 0.8; }
 }
 
 @keyframes pulse-theme-btn {
-  0% { transform: translateY(0) scale(1); }
+  0% { transform: translate3d(0, 0, 0) scale(1); }
   50% { transform: translateY(-4px) scale(1.02); }
-  100% { transform: translateY(0) scale(1); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
 }
 
 .theme-cycler-btn {

@@ -60,6 +60,15 @@ export default function GamesView() {
     });
   }, []);
 
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIframeLoaded(true);
+    }, 1800);
+    return () => clearTimeout(timer);
+  }, []);
+
   const cycleTheme = () => {
     setThemeIdx((prev) => (prev + 1) % THEMES.length);
   };
@@ -249,7 +258,7 @@ export default function GamesView() {
               <div className="imac-screen">
                 <iframe 
                   className="crt-video"
-                  src="https://www.youtube.com/embed/YYUzG0kSPNc?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&playlist=YYUzG0kSPNc" 
+                  src={iframeLoaded ? "https://www.youtube.com/embed/YYUzG0kSPNc?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&playlist=YYUzG0kSPNc" : ""}
                   title="Game Trailer"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
