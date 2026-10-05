@@ -119,13 +119,13 @@ function IndexView() {
   })), []);
 
   const clouds = useMemo(() => {
-    return [...Array(12)].map((_, i) => ({
+    return [...Array(6)].map((_, i) => ({
       d: [
-        "M 30 70 A 20 20 0 0 1 25 35 A 25 25 0 0 1 65 20 A 25 25 0 0 1 95 35 A 20 20 0 0 1 100 70 Z",
-        "M 40 80 A 25 25 0 0 1 35 40 A 35 35 0 0 1 85 25 A 30 30 0 0 1 125 45 A 25 25 0 0 1 130 80 Z",
-        "M 35 65 A 20 20 0 0 1 25 35 A 30 30 0 0 1 70 15 A 25 25 0 0 1 105 30 A 25 25 0 0 1 120 65 Z"
+        "M 30 50 A 15 15 0 0 1 30 20 A 25 25 0 0 1 75 10 A 20 20 0 0 1 110 25 A 15 15 0 0 1 110 50 Z",
+        "M 35 55 A 18 18 0 0 1 35 19 A 28 28 0 0 1 85 7 A 22 22 0 0 1 120 25 A 18 18 0 0 1 120 55 Z",
+        "M 40 60 A 20 20 0 0 1 40 20 A 30 30 0 0 1 100 20 A 20 20 0 0 1 100 60 Z"
       ][i % 3],
-      scale: Math.random() * 2.5 + 1.5,
+      scale: Math.random() * 1.25 + 0.75,
       dur: Math.random() * 120 + 180, // Slower clouds
       begin: Math.random() * 120,
       y: Math.random() * 200 - 20
@@ -166,7 +166,7 @@ function IndexView() {
     }
 
     if (localWeather === 'cloudy' || localWeather === 'rain' || localWeather === 'snow' || (localWeather === 'clear' && (isDaytime || isDawn || isSunset))) {
-      const cloudCount = (localWeather === 'cloudy' || localWeather === 'rain' || localWeather === 'snow') ? 12 : 4;
+      const cloudCount = (localWeather === 'cloudy' || localWeather === 'rain' || localWeather === 'snow') ? 6 : 2;
       const opacity = localWeather === 'clear' ? 0.3 : (isDaytime ? 0.5 : 0.25);
       elements.push(clouds.slice(0, cloudCount).map((c, i) => (
         <g key={`cloud-${i}`}>
@@ -297,52 +297,65 @@ function IndexView() {
         flexShrink: 0,
         boxSizing: 'border-box'
       }}>
-        <div style={{ marginBottom: '3rem', display: 'flex', gap: isMobile ? '1rem' : '2rem', justifyContent: 'center' }}>
-          <div 
-            onClick={() => setActiveTab('poetry')}
-            style={{ 
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.8rem',
-              fontSize: 'clamp(0.85rem, 3vw, 1rem)', 
-              letterSpacing: '0.15em', 
-              textTransform: 'uppercase', 
-              cursor: 'pointer',
-              opacity: activeTab === 'poetry' ? 1 : 0.4,
-              backgroundColor: activeTab === 'poetry' ? 'rgba(128,128,128,0.1)' : 'transparent',
-              border: activeTab === 'poetry' ? '1px solid var(--text-color)' : '1px solid var(--border-color)',
-              borderRadius: '30px',
-              padding: isMobile ? '0.8rem' : '0.8rem 2rem',
-              transition: 'all 0.3s',
-              flex: isMobile ? 1 : 'initial'
-            }}
-          >
-            <FaBookOpen size={isMobile ? 22 : 16} />
-            {!isMobile && (language === 'EN' ? 'Index' : 'Índice')}
+        <div style={{ marginBottom: '3rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%' }}>
+          <div style={{ fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', opacity: 0.5 }}>
+            {language === 'EN' ? 'Section' : 'Sección'}
           </div>
-          <div 
-            onClick={() => setActiveTab('vents')}
-            style={{ 
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.8rem',
-              fontSize: 'clamp(0.85rem, 3vw, 1rem)', 
-              letterSpacing: '0.15em', 
-              textTransform: 'uppercase', 
-              cursor: 'pointer',
-              opacity: activeTab === 'vents' ? 1 : 0.4,
-              backgroundColor: activeTab === 'vents' ? 'rgba(128,128,128,0.1)' : 'transparent',
-              border: activeTab === 'vents' ? '1px solid var(--text-color)' : '1px solid var(--border-color)',
-              borderRadius: '30px',
-              padding: isMobile ? '0.8rem' : '0.8rem 2rem',
-              transition: 'all 0.3s',
-              flex: isMobile ? 1 : 'initial'
-            }}
-          >
-            <FaStickyNote size={isMobile ? 22 : 16} />
-            {!isMobile && 'Vents'}
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'space-between',
+            gap: '0.5rem',
+            width: '100%',
+            maxWidth: '400px'
+          }}>
+            <motion.div 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setActiveTab('poetry')}
+              style={{ 
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '0.8rem',
+                cursor: 'pointer',
+                opacity: activeTab === 'poetry' ? 1 : 0.3,
+                transition: 'opacity 0.3s',
+                flex: 1
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: 'clamp(0.85rem, 3vw, 1rem)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                <FaBookOpen size={16} />
+                <span>{language === 'EN' ? 'Letters' : 'Letras'}</span>
+              </div>
+              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: activeTab === 'poetry' ? 'var(--text-color)' : 'transparent', border: '1px solid var(--text-color)', transition: 'all 0.3s' }} />
+            </motion.div>
+
+            <div style={{ opacity: 0.2, display: 'flex', alignItems: 'center' }}>
+              <span style={{ fontSize: '1.5rem', letterSpacing: '-0.2em' }}>&mdash;</span>
+            </div>
+            
+            <motion.div 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setActiveTab('vents')}
+              style={{ 
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '0.8rem',
+                cursor: 'pointer',
+                opacity: activeTab === 'vents' ? 1 : 0.3,
+                transition: 'opacity 0.3s',
+                flex: 1
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: 'clamp(0.85rem, 3vw, 1rem)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                <FaStickyNote size={16} />
+                <span>Vents</span>
+              </div>
+              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: activeTab === 'vents' ? 'var(--text-color)' : 'transparent', border: '1px solid var(--text-color)', transition: 'all 0.3s' }} />
+            </motion.div>
           </div>
         </div>
         

@@ -152,7 +152,7 @@ function DockNav() {
             </div>
             <MenuButton 
               icon={<FaBookOpen size={16} />} 
-              label={language === 'EN' ? "Index" : "Índice"}
+              label={language === 'EN' ? "Letters" : "Letras"}
               active={location.pathname === '/index'} 
               onClick={() => { navigate('/index'); setIsArtMenuOpen(false); }} 
               isDark={isDark}
