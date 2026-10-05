@@ -174,7 +174,7 @@ function DockNav() {
               active={location.pathname === '/video'} 
               onClick={() => { navigate('/video'); setIsArtMenuOpen(false); }} 
               isDark={isDark}
-              status="soon"
+              status="available"
               language={language}
             />
             <MenuButton 
@@ -183,7 +183,7 @@ function DockNav() {
               active={location.pathname === '/gamedev'} 
               onClick={() => { navigate('/gamedev'); setIsArtMenuOpen(false); }} 
               isDark={isDark}
-              status="soon"
+              status="available"
               language={language}
             />
             <MenuButton 

@@ -11,10 +11,11 @@ function WelcomeScreen() {
   const [showSections, setShowSections] = useState(false);
 
   const sections = [
-    { id: 'poetry', path: '/index', labelEN: 'Index', labelES: 'Índice', status: 'available' },
-    { id: 'photography', path: '/visuals', labelEN: 'Visuals', labelES: 'Visuales', status: 'available' },
-    { id: 'video', path: '/video', labelEN: 'Videos', labelES: 'Videos', status: 'soon' },
-    { id: 'gamedev', path: '/gamedev', labelEN: 'Games', labelES: 'Juegos', status: 'soon' },
+    { id: 'index', path: '/index', labelEN: 'Index', labelES: 'Índice', status: 'available' },
+    { id: 'visuals', path: '/visuals', labelEN: 'Visuals', labelES: 'Visuales', status: 'available' },
+    { id: 'video', path: '/video', labelEN: 'Videos', labelES: 'Videos', status: 'available' },
+    { id: 'gamedev', path: '/gamedev', labelEN: 'Games', labelES: 'Juegos', status: 'available' },
+    { id: 'music', path: '/music', labelEN: 'Music', labelES: 'Música', status: 'available' },
   ];
 
   const renderStatusBadge = (status) => {
