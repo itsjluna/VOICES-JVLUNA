@@ -14,17 +14,7 @@ const THEMES = [
   { id: 'girlypop', name: 'Girlypop', icon: FaHeart, c1: '#ff0844', c2: '#ffb199', c3: '#fbc2eb', c4: '#a6c1ee', p1: '#ff0844', p2: '#ffb199' }
 ];
 
-const GRAPHICS = [
-  { src: 'y2kstar.png', style: { top: '20%', left: '30%', width: '80px', animationDelay: '0s' } },
-  { src: 'y2kheart.png', style: { top: '10%', right: '35%', width: '90px', animationDelay: '1s' } },
-  { src: 'y2ksphere.png', style: { bottom: '20%', left: '25%', width: '120px', animationDelay: '2s' } },
-  { src: 'y2kflower.png', style: { bottom: '30%', right: '20%', width: '100px', animationDelay: '0.5s' } },
-  { src: 'y2kstar2.png', style: { top: '40%', right: '5%', width: '70px', animationDelay: '1.5s' } },
-  { src: 'y2keart.png', style: { bottom: '15%', right: '40%', width: '85px', animationDelay: '2.5s' } },
-  { src: 'y2kclover.png', style: { top: '60%', left: '15%', width: '95px', animationDelay: '0.2s' } },
-  { src: 'y2kflag.png', style: { top: '5%', left: '50%', width: '110px', animationDelay: '1.2s' } },
-  { src: 'y2kshine.png', style: { bottom: '5%', left: '45%', width: '60px', animationDelay: '0.8s' } }
-];
+
 
 export default function GamesView() {
   const { language } = useLanguage();
@@ -72,6 +62,35 @@ export default function GamesView() {
   const cycleTheme = () => {
     setThemeIdx((prev) => (prev + 1) % THEMES.length);
   };
+
+  const [clutterItems, setClutterItems] = useState([]);
+  const [graphicItems, setGraphicItems] = useState([]);
+
+  useEffect(() => {
+    const isMobile = window.innerWidth < 900;
+    
+    // Dynamic positions for clutter
+    setClutterItems([
+      { src: '/games/ps2.png', top: isMobile ? '2%' : '5%', left: isMobile ? '2%' : '5%', width: isMobile ? '180px' : '300px', transform: 'rotate(-15deg)' },
+      { src: '/games/dualshock2.png', bottom: isMobile ? '5%' : '10%', right: isMobile ? '2%' : '5%', width: isMobile ? '150px' : '250px', transform: 'rotate(25deg)' },
+      { src: '/games/bot-ster.png', bottom: isMobile ? '2%' : '5%', left: isMobile ? '5%' : '10%', width: isMobile ? '120px' : '200px', transform: 'rotate(-5deg)' },
+      { src: '/games/iphone.png', top: isMobile ? '10%' : '15%', right: isMobile ? '5%' : '15%', width: isMobile ? '100px' : '150px', transform: 'rotate(15deg)' },
+      { src: '/games/xperiax10.png', top: isMobile ? '85%' : '50%', left: isMobile ? '2%' : '2%', width: isMobile ? '90px' : '120px', transform: 'rotate(-30deg)' }
+    ]);
+
+    // Dynamic positions for Y2K graphics
+    setGraphicItems([
+      { src: 'y2kstar.png', style: { top: isMobile ? '5%' : '20%', left: isMobile ? '80%' : '30%', width: '80px', animationDelay: '0s' } },
+      { src: 'y2kheart.png', style: { top: isMobile ? '15%' : '10%', right: isMobile ? '85%' : '35%', width: '90px', animationDelay: '1s' } },
+      { src: 'y2ksphere.png', style: { bottom: isMobile ? '15%' : '20%', left: isMobile ? '80%' : '25%', width: '120px', animationDelay: '2s' } },
+      { src: 'y2kflower.png', style: { bottom: isMobile ? '5%' : '30%', right: isMobile ? '85%' : '20%', width: '100px', animationDelay: '0.5s' } },
+      { src: 'y2kstar2.png', style: { top: isMobile ? '40%' : '40%', right: '5%', width: '70px', animationDelay: '1.5s' } },
+      { src: 'y2keart.png', style: { bottom: isMobile ? '40%' : '15%', right: isMobile ? '10%' : '40%', width: '85px', animationDelay: '2.5s' } },
+      { src: 'y2kclover.png', style: { top: isMobile ? '60%' : '60%', left: isMobile ? '5%' : '15%', width: '95px', animationDelay: '0.2s' } },
+      { src: 'y2kflag.png', style: { top: isMobile ? '2%' : '5%', left: '50%', width: '110px', animationDelay: '1.2s' } },
+      { src: 'y2kshine.png', style: { bottom: isMobile ? '2%' : '5%', left: '45%', width: '60px', animationDelay: '0.8s' } }
+    ]);
+  }, []);
 
   return (
     <PageWrapper className="games-page">
@@ -142,13 +161,7 @@ export default function GamesView() {
 
         {/* Background Clutter (Skeuomorphic Devices) */}
         <div className="games-clutter">
-          {[
-            { src: '/games/ps2.png', top: '5%', left: '5%', width: '300px', transform: 'rotate(-15deg)' },
-            { src: '/games/dualshock2.png', bottom: '10%', right: '5%', width: '250px', transform: 'rotate(25deg)' },
-            { src: '/games/bot-ster.png', bottom: '5%', left: '10%', width: '200px', transform: 'rotate(-5deg)' },
-            { src: '/games/iphone.png', top: '15%', right: '15%', width: '150px', transform: 'rotate(15deg)' },
-            { src: '/games/xperiax10.png', top: '50%', left: '2%', width: '120px', transform: 'rotate(-30deg)' }
-          ].map((item, i) => (
+          {clutterItems.map((item, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, scale: 0.5, filter: 'blur(10px)' }}
@@ -163,7 +176,7 @@ export default function GamesView() {
 
         {/* Y2K Graphic Elements */}
         <div className="games-graphics">
-          {GRAPHICS.map((g, i) => (
+          {graphicItems.map((g, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, scale: 0, filter: 'blur(10px)' }}
