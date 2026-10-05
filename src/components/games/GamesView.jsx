@@ -119,28 +119,55 @@ export default function GamesView() {
         </div>
 
         {/* Theme Cycler */}
-        <button 
-          className="theme-cycler-btn frutiger-button" 
-          onClick={cycleTheme}
-          style={{ '--theme-p1': activeTheme.p1, '--theme-p2': activeTheme.p2 }}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
+          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          transition={{ duration: 1, delay: 0.8, type: 'spring', bounce: 0.5 }}
+          style={{ position: 'relative', zIndex: 20 }}
         >
-          <ThemeIcon className="theme-icon" /> 
-          <span className="theme-text">Vibe: {activeTheme.name}</span>
-        </button>
+          <button 
+            className="theme-cycler-btn frutiger-button" 
+            onClick={cycleTheme}
+            style={{ '--theme-p1': activeTheme.p1, '--theme-p2': activeTheme.p2 }}
+          >
+            <ThemeIcon className="theme-icon" /> 
+            <span className="theme-text">Vibe: {activeTheme.name}</span>
+          </button>
+        </motion.div>
 
         {/* Background Clutter (Skeuomorphic Devices) */}
         <div className="games-clutter">
-          <img src="/games/ps2.png" className="clutter-img" style={{ top: '5%', left: '5%', width: '300px', transform: 'rotate(-15deg)', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }} />
-          <img src="/games/dualshock2.png" className="clutter-img" style={{ bottom: '10%', right: '5%', width: '250px', transform: 'rotate(25deg)', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }} />
-          <img src="/games/bot-ster.png" className="clutter-img" style={{ bottom: '5%', left: '10%', width: '200px', transform: 'rotate(-5deg)', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }} />
-          <img src="/games/iphone.png" className="clutter-img" style={{ top: '15%', right: '15%', width: '150px', transform: 'rotate(15deg)', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }} />
-          <img src="/games/xperiax10.png" className="clutter-img" style={{ top: '50%', left: '2%', width: '120px', transform: 'rotate(-30deg)', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' }} />
+          {[
+            { src: '/games/ps2.png', top: '5%', left: '5%', width: '300px', transform: 'rotate(-15deg)' },
+            { src: '/games/dualshock2.png', bottom: '10%', right: '5%', width: '250px', transform: 'rotate(25deg)' },
+            { src: '/games/bot-ster.png', bottom: '5%', left: '10%', width: '200px', transform: 'rotate(-5deg)' },
+            { src: '/games/iphone.png', top: '15%', right: '15%', width: '150px', transform: 'rotate(15deg)' },
+            { src: '/games/xperiax10.png', top: '50%', left: '2%', width: '120px', transform: 'rotate(-30deg)' }
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.5, filter: 'blur(10px)' }}
+              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              transition={{ duration: 1.2, delay: i * 0.15, type: 'spring', bounce: 0.4 }}
+              style={{ position: 'absolute', top: item.top, bottom: item.bottom, left: item.left, right: item.right, width: item.width }}
+            >
+              <img src={item.src} className="clutter-img" style={{ width: '100%', transform: item.transform, filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))', position: 'relative' }} />
+            </motion.div>
+          ))}
         </div>
 
         {/* Y2K Graphic Elements */}
         <div className="games-graphics">
           {GRAPHICS.map((g, i) => (
-            <img key={i} src={`/games/graphics/${g.src}`} className="graphic-img" style={g.style} />
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0, filter: 'blur(10px)' }}
+              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              transition={{ duration: 1, delay: 0.3 + i * 0.1, type: 'spring', bounce: 0.5 }}
+              style={{ position: 'absolute', top: g.style.top, bottom: g.style.bottom, left: g.style.left, right: g.style.right, width: g.style.width }}
+            >
+              <img src={`/games/graphics/${g.src}`} className="graphic-img" style={{ width: '100%', animationDelay: g.style.animationDelay, position: 'relative' }} />
+            </motion.div>
           ))}
         </div>
 
@@ -153,18 +180,18 @@ export default function GamesView() {
             <div className="games-text-content">
               <motion.h1 
                 className="games-title"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
+                initial={{ opacity: 0, y: -40, filter: 'blur(10px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 1, delay: 0.2, type: 'spring', bounce: 0.4 }}
               >
                 JAM-DOG
               </motion.h1>
               
               <motion.div 
                 className="games-desc"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
+                initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 1, delay: 0.4, type: 'spring', bounce: 0.4 }}
               >
                 <div className="games-genre-tag">
                   <FaGamepad style={{ marginRight: '0.5rem', fontSize: '1.1em', verticalAlign: 'text-bottom' }} />
@@ -179,9 +206,9 @@ export default function GamesView() {
             </div>
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+              initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
+              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              transition={{ duration: 1, delay: 0.6, type: 'spring', bounce: 0.5 }}
             >
               <button 
                 className="games-play-btn desktop-play-btn frutiger-button"
@@ -205,9 +232,9 @@ export default function GamesView() {
           <div className="imac-container">
             <motion.div 
               className="imac-wrapper"
-              initial={{ opacity: 0, rotateY: 30, scale: 0.8 }}
-              animate={{ opacity: 1, rotateY: 0, scale: 1, z: 0 }}
-              transition={{ duration: 1, type: "spring" }}
+              initial={{ opacity: 0, rotateY: -30, rotateX: 10, scale: 0.8, filter: 'blur(15px)' }}
+              animate={{ opacity: 1, rotateY: 0, rotateX: 0, scale: 1, filter: 'blur(0px)' }}
+              transition={{ duration: 1.5, delay: 0.3, type: "spring", bounce: 0.4 }}
               style={{ willChange: 'transform' }}
             >
               {/* Fallback box if imacg3.png is missing. Add your PNG to public/imacg3.png! */}
