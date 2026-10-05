@@ -119,21 +119,17 @@ export default function GamesView() {
         </div>
 
         {/* Theme Cycler */}
-        <motion.div
+        <motion.button 
+          className="theme-cycler-btn frutiger-button" 
+          onClick={cycleTheme}
+          style={{ '--theme-p1': activeTheme.p1, '--theme-p2': activeTheme.p2, zIndex: 20 }}
           initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
           animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
           transition={{ duration: 1, delay: 0.8, type: 'spring', bounce: 0.5 }}
-          style={{ position: 'relative', zIndex: 20 }}
         >
-          <button 
-            className="theme-cycler-btn frutiger-button" 
-            onClick={cycleTheme}
-            style={{ '--theme-p1': activeTheme.p1, '--theme-p2': activeTheme.p2 }}
-          >
-            <ThemeIcon className="theme-icon" /> 
-            <span className="theme-text">Vibe: {activeTheme.name}</span>
-          </button>
-        </motion.div>
+          <ThemeIcon className="theme-icon" /> 
+          <span className="theme-text">Vibe: {activeTheme.name}</span>
+        </motion.button>
 
         {/* Background Clutter (Skeuomorphic Devices) */}
         <div className="games-clutter">
