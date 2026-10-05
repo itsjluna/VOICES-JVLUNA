@@ -18,7 +18,7 @@ const TypewriterLoader = React.memo(({ text = "Opening journal..." }) => {
   }, [text]);
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column', background: 'var(--bg-color)', color: 'var(--text-color)' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column', background: 'var(--bg-color)', color: 'var(--text-color)', pointerEvents: 'none' }}>
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
