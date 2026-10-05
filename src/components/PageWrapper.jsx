@@ -28,7 +28,7 @@ const PageWrapper = ({ isLoading = false, loadingTextEn = "Loading...", loadingT
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.8 } }}
-            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 100, display: 'flex', flexDirection: 'column' }}
+            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 100, display: 'flex', flexDirection: 'column', pointerEvents: 'none' }}
           >
             <TypewriterLoader text={language === 'EN' ? loadingTextEn : loadingTextEs} />
           </motion.div>
