@@ -153,11 +153,12 @@ function VisualsView() {
 
         <div className="visuals-container">
           
-          <div className="visuals-header">
+          <div style={{ marginBottom: '2rem', textAlign: 'center', color: 'var(--text-color)', position: 'relative', zIndex: 10 }}>
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
+              style={{ fontSize: '3rem', fontFamily: 'var(--font-serif)', marginBottom: '0.5rem', fontWeight: 'normal', letterSpacing: 'normal', textTransform: 'none' }}
             >
               {language === 'EN' ? 'Visual Arts' : 'Artes Visuales'}
             </motion.h1>
@@ -165,6 +166,7 @@ function VisualsView() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.4 }}
+              style={{ opacity: 0.7, fontFamily: 'monospace', fontSize: '1rem', marginBottom: '1.5rem', letterSpacing: 'normal' }}
             >
               {language === 'EN' ? 'Paintings, Drawings & Digital Illustrations' : 'Pinturas, Dibujos e Ilustraciones Digitales'}
             </motion.p>

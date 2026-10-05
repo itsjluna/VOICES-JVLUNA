@@ -493,39 +493,50 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 1rem 1.5rem;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 1rem 1.8rem;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  gap: 0.8rem;
   color: #111;
   font-family: var(--font-sans);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   text-align: center;
   pointer-events: none;
   width: max-content;
   max-width: 90%;
   z-index: 9999;
+  --pulse-color: rgba(255, 255, 255, 0.6);
+  animation: pulseRing 2s infinite cubic-bezier(0.66, 0, 0, 1);
 }
 :root.dark .tutorial-pointer {
-  background: rgba(30, 30, 30, 0.85);
+  background: rgba(20, 20, 25, 0.95);
+  border-color: rgba(255, 255, 255, 0.15);
   color: #fff;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  --pulse-color: rgba(255, 255, 255, 0.15);
 }
 .tutorial-pointer p {
   margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 .tap-hint-icon {
-  font-size: 2.5rem;
-  margin-bottom: 5px;
-  animation: bounceHintDown 1.5s infinite;
+  font-size: 1.5rem;
+  color: inherit;
+  animation: tapFinger 1.5s infinite ease-in-out;
 }
-@keyframes bounceHintDown {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(5px); }
+@keyframes tapFinger {
+  0%, 100% { transform: scale(1) rotate(-15deg); }
+  50% { transform: scale(0.8) rotate(5deg); }
+}
+@keyframes pulseRing {
+  0% { box-shadow: 0 10px 40px rgba(0,0,0,0.3), 0 0 0 0 var(--pulse-color); }
+  70% { box-shadow: 0 10px 40px rgba(0,0,0,0.3), 0 0 0 25px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 10px 40px rgba(0,0,0,0.3), 0 0 0 0 rgba(255, 255, 255, 0); }
 }
