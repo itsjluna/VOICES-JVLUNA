@@ -19,13 +19,46 @@ export const IndexScatter = React.memo(() => {
     fetchImages();
   }, []);
 
-  const [positions] = useState(() => {
-    return [...Array(20)].map(() => ({
-      top: Math.random() * 90,
-      left: Math.random() * 90,
-      rotate: Math.random() * 60 - 30,
-    }));
-  });
+  const [positions, setPositions] = useState([]);
+
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    const newPositions = [...Array(25)].map(() => {
+      let top, left;
+      if (isMobile) {
+        // On mobile, card takes up middle 70% vertically. Place items at top 15% or bottom 15%.
+        if (Math.random() > 0.5) {
+          top = Math.random() * 12; // 0 to 12%
+        } else {
+          top = 80 + Math.random() * 15; // 80 to 95%
+        }
+        // Keep left/right within bounds to prevent horizontal overflow cropping
+        left = Math.random() * 70 + 5; // 5 to 75%
+      } else {
+        // On desktop, card is horizontally centered. Place items on left 20% or right 20%, or top/bottom edges
+        const side = Math.floor(Math.random() * 4);
+        if (side === 0) { // top
+          top = Math.random() * 15;
+          left = Math.random() * 85 + 5;
+        } else if (side === 1) { // bottom
+          top = 80 + Math.random() * 15;
+          left = Math.random() * 85 + 5;
+        } else if (side === 2) { // left
+          top = Math.random() * 85 + 5;
+          left = Math.random() * 20;
+        } else { // right
+          top = Math.random() * 85 + 5;
+          left = 75 + Math.random() * 20;
+        }
+      }
+      return {
+        top,
+        left,
+        rotate: Math.random() * 60 - 30,
+      };
+    });
+    setPositions(newPositions);
+  }, []);
 
   const polaroids = useMemo(() => {
     return randomImages.map((image, i) => {
@@ -211,7 +244,7 @@ export const IndexScatter = React.memo(() => {
   }, [positions]);
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'visible', pointerEvents: 'none', zIndex: 0 }}>
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'visible', pointerEvents: 'none', zIndex: 20 }}>
       {coffeeRings}
       {scribbles}
       {indexCards}
