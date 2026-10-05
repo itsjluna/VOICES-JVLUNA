@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaBookOpen, FaTicketAlt, FaSun, FaMoon, FaStickyNote, FaCloud, FaCloudRain, FaSnowflake, FaEye, FaEyeSlash, FaFilter } from 'react-icons/fa';
+import { FaBookOpen, FaTicketAlt, FaSun, FaMoon, FaStickyNote, FaCloud, FaCloudRain, FaSnowflake, FaEye, FaEyeSlash, FaFilter, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import api from '../api';
 import { useQuery } from '@tanstack/react-query';
 import { IndexScatter } from './IndexScatter';
@@ -32,11 +32,15 @@ function IndexView() {
   const [showSky, setShowSky] = useState(true);
   const [showQuote, setShowQuote] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
+  const [isExtraSmall, setIsExtraSmall] = useState(window.innerWidth < 325);
   const { language } = useLanguage();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 600);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 600);
+      setIsExtraSmall(window.innerWidth < 325);
+    };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -303,9 +307,10 @@ function IndexView() {
           </div>
           <div style={{ 
             display: 'flex', 
+            flexDirection: isExtraSmall ? 'column' : 'row',
             alignItems: 'center', 
-            justifyContent: 'space-between',
-            gap: '0.5rem',
+            justifyContent: isExtraSmall ? 'center' : 'space-between',
+            gap: isExtraSmall ? '2rem' : '0.5rem',
             width: '100%',
             maxWidth: '400px'
           }}>
@@ -321,19 +326,25 @@ function IndexView() {
                 cursor: 'pointer',
                 opacity: activeTab === 'poetry' ? 1 : 0.3,
                 transition: 'opacity 0.3s',
-                flex: 1
+                flex: isExtraSmall ? 'none' : 1
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: 'clamp(0.85rem, 3vw, 1rem)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
                 <FaBookOpen size={16} />
                 <span>{language === 'EN' ? 'Letters' : 'Letras'}</span>
               </div>
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: activeTab === 'poetry' ? 'var(--text-color)' : 'transparent', border: '1px solid var(--text-color)', transition: 'all 0.3s' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <FaChevronLeft size={10} style={{ opacity: activeTab === 'poetry' ? 1 : 0, transition: 'opacity 0.3s' }} />
+                <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: activeTab === 'poetry' ? 'var(--text-color)' : 'transparent', border: '1px solid var(--text-color)', transition: 'all 0.3s' }} />
+                <FaChevronRight size={10} style={{ opacity: activeTab === 'poetry' ? 1 : 0, transition: 'opacity 0.3s' }} />
+              </div>
             </motion.div>
 
-            <div style={{ opacity: 0.2, display: 'flex', alignItems: 'center' }}>
-              <span style={{ fontSize: '1.5rem', letterSpacing: '-0.2em' }}>&mdash;</span>
-            </div>
+            {!isExtraSmall && (
+              <div style={{ opacity: 0.2, display: 'flex', alignItems: 'center' }}>
+                <span style={{ fontSize: '1.5rem', letterSpacing: '-0.2em' }}>&mdash;</span>
+              </div>
+            )}
             
             <motion.div 
               whileHover={{ scale: 1.05 }}
@@ -347,14 +358,18 @@ function IndexView() {
                 cursor: 'pointer',
                 opacity: activeTab === 'vents' ? 1 : 0.3,
                 transition: 'opacity 0.3s',
-                flex: 1
+                flex: isExtraSmall ? 'none' : 1
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: 'clamp(0.85rem, 3vw, 1rem)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
                 <FaStickyNote size={16} />
                 <span>Vents</span>
               </div>
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: activeTab === 'vents' ? 'var(--text-color)' : 'transparent', border: '1px solid var(--text-color)', transition: 'all 0.3s' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <FaChevronLeft size={10} style={{ opacity: activeTab === 'vents' ? 1 : 0, transition: 'opacity 0.3s' }} />
+                <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: activeTab === 'vents' ? 'var(--text-color)' : 'transparent', border: '1px solid var(--text-color)', transition: 'all 0.3s' }} />
+                <FaChevronRight size={10} style={{ opacity: activeTab === 'vents' ? 1 : 0, transition: 'opacity 0.3s' }} />
+              </div>
             </motion.div>
           </div>
         </div>
