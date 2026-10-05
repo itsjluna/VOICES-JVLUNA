@@ -19,26 +19,12 @@ export const IndexScatter = React.memo(() => {
     fetchImages();
   }, []);
 
-  const [positions, setPositions] = useState(() => {
-    if (typeof window === 'undefined') {
-      return [...Array(25)].map(() => ({ top: 0, left: 0, rotate: 0 }));
-    }
-    const isMobile = window.innerWidth < 768;
-    return [...Array(25)].map(() => {
-      let top, left;
-      if (isMobile) {
-        if (Math.random() > 0.5) top = Math.random() * 12;
-        else top = 80 + Math.random() * 15;
-        left = Math.random() * 70 + 5;
-      } else {
-        const side = Math.floor(Math.random() * 4);
-        if (side === 0) { top = Math.random() * 15; left = Math.random() * 85 + 5; }
-        else if (side === 1) { top = 80 + Math.random() * 15; left = Math.random() * 85 + 5; }
-        else if (side === 2) { top = Math.random() * 85 + 5; left = Math.random() * 20; }
-        else { top = Math.random() * 85 + 5; left = 75 + Math.random() * 20; }
-      }
-      return { top, left, rotate: Math.random() * 60 - 30 };
-    });
+  const [positions] = useState(() => {
+    return [...Array(20)].map(() => ({
+      top: Math.random() * 90,
+      left: Math.random() * 90,
+      rotate: Math.random() * 60 - 30,
+    }));
   });
 
   const polaroids = useMemo(() => {
@@ -225,7 +211,7 @@ export const IndexScatter = React.memo(() => {
   }, [positions]);
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'visible', pointerEvents: 'none', zIndex: 20 }}>
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'visible', pointerEvents: 'none', zIndex: 0 }}>
       {coffeeRings}
       {scribbles}
       {indexCards}
