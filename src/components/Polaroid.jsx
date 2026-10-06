@@ -154,32 +154,30 @@ const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
       }}
     >
       <motion.div
+        layoutId={layoutIdId}
         className="polaroid-container"
+        transition={{ type: "spring", stiffness: 500, damping: 25, mass: 0.8 }}
         style={{
           rotateX: rotateX,
           rotateY: rotateY,
           transformStyle: 'preserve-3d',
           pointerEvents: 'auto',
-          background: '#fff',
-          padding: '1rem 1rem 3rem 1rem',
           boxShadow: '0 30px 60px rgba(0,0,0,0.5)',
           maxWidth: '90vw',
           maxHeight: '90vh'
         }}
       >
-        <motion.div 
-          layoutId={layoutIdId}
-          transition={{ type: "spring", stiffness: 500, damping: 25, mass: 0.8 }}
-          style={{ width: '100%', height: '100%', position: 'relative' }}
-        >
+        <div style={{ position: 'relative' }}>
           <img 
             src={src}
             alt={alt}
             style={{
-              width: '100%',
+              width: 'auto',
               height: 'auto',
-              maxHeight: 'calc(90vh - 4rem)',
-              objectFit: 'contain'
+              maxWidth: '100%',
+              maxHeight: '75vh',
+              objectFit: 'contain',
+              display: 'block'
             }}
           />
           {credit && (
@@ -197,7 +195,7 @@ const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
               {credit}
             </div>
           )}
-        </motion.div>
+        </div>
       </motion.div>
     </motion.div>
   );

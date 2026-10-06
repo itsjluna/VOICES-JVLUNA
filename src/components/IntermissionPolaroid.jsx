@@ -142,7 +142,7 @@ const PolaroidModal = ({ src, alt, credit, onClose }) => {
           position: 'relative'
         }}
       >
-        <img src={src} alt={alt} style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain', transform: 'translateZ(20px)' }} className="polaroid-img" loading="lazy" decoding="async" />
+        <img src={src} alt={alt} style={{ width: 'auto', maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain', transform: 'translateZ(20px)' }} className="polaroid-img" loading="lazy" decoding="async" />
         <div className="staple" style={{ transform: 'rotate(-15deg) translateZ(25px)' }}></div>
         {credit && (
           <div style={{
