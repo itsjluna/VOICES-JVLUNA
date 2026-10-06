@@ -451,6 +451,58 @@ function AdminDashboard() {
     await api.put('/chapters/reorder', { orderedIds: newChapters.map(c => c._id) });
   };
 
+  // --- Clean Formatting Helper ---
+  const cleanHtmlFormatting = (htmlString) => {
+    if (!htmlString) return '';
+    let cleaned = htmlString;
+    // Strip all inline styles and classes that mess up standard fonts
+    cleaned = cleaned.replace(/\s+(style|class)="[^"]*"/gi, '');
+    cleaned = cleaned.replace(/\s+(style|class)='[^']*'/gi, '');
+    
+    // Fix drop cap: if the text starts with empty paragraphs or divs, remove them
+    cleaned = cleaned.replace(/^(<(p|div|br)>(\s|&nbsp;|<br\/?\s*>)*<\/(p|div|br)>\s*)+/gi, '');
+    // Also remove standalone leading <br> tags
+    cleaned = cleaned.replace(/^(<br\/?\s*>\s*)+/gi, '');
+    
+    // Fix drop cap: ensure the first block element is a <p>
+    if (cleaned.trim().startsWith('<div')) {
+      cleaned = cleaned.trim().replace(/^<div/i, '<p').replace(/<\/div>/i, '</p>');
+    }
+    return cleaned;
+  };
+
+  const handleCleanPoem = () => {
+    setPoemForm({
+      ...poemForm,
+      content: cleanHtmlFormatting(poemForm.content),
+      contentEn: cleanHtmlFormatting(poemForm.contentEn)
+    });
+  };
+
+  const handleCleanChapter = () => {
+    setChapterForm({
+      ...chapterForm,
+      content: cleanHtmlFormatting(chapterForm.content),
+      contentEn: cleanHtmlFormatting(chapterForm.contentEn)
+    });
+  };
+
+  const handleCleanIntermission = () => {
+    setIntermissionForm({
+      ...intermissionForm,
+      content: cleanHtmlFormatting(intermissionForm.content),
+      contentEn: cleanHtmlFormatting(intermissionForm.contentEn)
+    });
+  };
+
+  const handleCleanVent = () => {
+    setVentForm({
+      ...ventForm,
+      content: cleanHtmlFormatting(ventForm.content),
+      contentEn: cleanHtmlFormatting(ventForm.contentEn)
+    });
+  };
+
   // --- Poem Actions ---
   const savePoem = async (e) => {
     e.preventDefault();
@@ -1136,6 +1188,10 @@ function AdminDashboard() {
                   </div>
                 </div>
 
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.5rem' }}>
+                  <button type="button" onClick={handleCleanPoem} style={{ background: '#333', color: '#fff', padding: '0.5rem 1rem', fontSize: '0.8rem', borderRadius: '4px', border: '1px solid #555' }} title="Removes inline fonts/sizes and fixes drop-cap issues while keeping bold/italics/linebreaks">✨ Standardize Typography</button>
+                </div>
+
                 <div style={{ background: 'white', color: 'black', marginBottom: '1.5rem', minHeight: '300px' }}>
                   <label style={{color: '#111'}}>Content (ES)</label>
                   <Editor value={poemForm.content} onChange={e => setPoemForm({...poemForm, content: e.target.value})} style={{ height: 'clamp(300px, 50vh, 600px)', overflowY: 'auto' }} />
@@ -1183,6 +1239,10 @@ function AdminDashboard() {
                   <option value="train-cherry">Train (Cherry Yum Yum)</option>
                 </select>
 
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.5rem', marginTop: '1rem' }}>
+                  <button type="button" onClick={handleCleanIntermission} style={{ background: '#333', color: '#fff', padding: '0.5rem 1rem', fontSize: '0.8rem', borderRadius: '4px', border: '1px solid #555' }} title="Removes inline fonts/sizes and fixes drop-cap issues while keeping bold/italics/linebreaks">✨ Standardize Typography</button>
+                </div>
+
                 <div style={{ background: 'white', color: 'black', margin: '1.5rem 0', minHeight: '300px' }}>
                   <label style={{color: '#111'}}>Content (ES)</label>
                   <Editor value={intermissionForm.content} onChange={e => setIntermissionForm({...intermissionForm, content: e.target.value})} style={{ height: 'clamp(300px, 50vh, 600px)', overflowY: 'auto' }} />
@@ -1226,6 +1286,10 @@ function AdminDashboard() {
                   <option value="notebook">Notebook (Stacked Pages)</option>
                   <option value="postits">Post-its (Scattered)</option>
                 </select>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.5rem', marginTop: '1rem' }}>
+                  <button type="button" onClick={handleCleanVent} style={{ background: '#333', color: '#fff', padding: '0.5rem 1rem', fontSize: '0.8rem', borderRadius: '4px', border: '1px solid #555' }} title="Removes inline fonts/sizes and fixes drop-cap issues while keeping bold/italics/linebreaks">✨ Standardize Typography</button>
+                </div>
 
                 <div style={{ background: 'white', color: 'black', margin: '1.5rem 0', minHeight: '300px' }}>
                   <label style={{color: '#111'}}>Content (ES)</label>
