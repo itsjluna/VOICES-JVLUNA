@@ -15,9 +15,18 @@ function VisualsView() {
   const [selectedVisual, setSelectedVisual] = useState(null);
   const [columnsCount, setColumnsCount] = useState(3);
   const [isSketchpadOpen, setIsSketchpadOpen] = useState(false);
+  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'));
   const [showTapHint, setShowTapHint] = useState(() => {
     return localStorage.getItem('voices_visuals_hint_seen') !== 'true';
   });
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
 
   const handleArtworkClick = (visual) => {
     setSelectedVisual(visual);
@@ -260,6 +269,15 @@ function VisualsView() {
                 exit={{ scale: 0.95, opacity: 0, y: 20 }}
                 transition={{ type: "spring", damping: 25, stiffness: 300 }}
                 onClick={e => e.stopPropagation()}
+                style={{
+                  background: isDark ? 'rgba(30, 30, 30, 0.65)' : 'rgba(255, 255, 255, 0.65)',
+                  backdropFilter: 'blur(25px)',
+                  WebkitBackdropFilter: 'blur(25px)',
+                  border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(255, 255, 255, 0.8)',
+                  boxShadow: isDark 
+                    ? '0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255,255,255,0.05)' 
+                    : '0 30px 60px -15px rgba(0, 0, 0, 0.3)',
+                }}
               >
                 <button className="visual-modal-close" onClick={closeModal}><FaTimes size={16} /></button>
                 <div className="visual-modal-image-container">
