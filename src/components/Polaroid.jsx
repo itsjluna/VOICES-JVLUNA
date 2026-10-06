@@ -163,6 +163,7 @@ const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
           background: '#fff',
           padding: '10px',
           display: 'inline-block',
+          width: 'auto',
           boxShadow: '0 30px 60px rgba(0,0,0,0.5)',
           maxWidth: '90vw',
           maxHeight: '90vh'
@@ -171,7 +172,7 @@ const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
         <motion.div 
           layoutId={layoutIdId}
           transition={{ type: "spring", stiffness: 500, damping: 25, mass: 0.8 }}
-          style={{ width: '100%', height: '100%', position: 'relative' }}
+          style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
         >
           <img 
             src={src}
@@ -181,7 +182,7 @@ const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
               height: 'auto',
               maxWidth: '100%',
               maxHeight: 'calc(90vh - 4rem)',
-              objectFit: 'contain'
+              display: 'block'
             }}
           />
           {credit && (
