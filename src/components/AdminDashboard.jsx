@@ -467,13 +467,11 @@ function AdminDashboard() {
     cleaned = cleaned.replace(/^(<p[^>]*>(\s|&nbsp;|<br\/?\s*>)*<\/p>\s*)+/gi, '');
     cleaned = cleaned.replace(/^(<br\/?\s*>\s*)+/gi, '');
     
-    // Fix poetry line-spacing (converting individual <p> lines into <br> inside stanzas)
-    // 1. Temporarily mark intentional empty stanza breaks with a token
-    cleaned = cleaned.replace(/<p[^>]*>(\s*|<br\/?\s*>|&nbsp;)*<\/p>/gi, '__STANZA__');
-    // 2. Merge consecutive <p> tags into a single <p> with a <br> between the lines
+    // Fix poetry line-spacing by merging all lines into a single <p> block
+    // 1. Empty paragraphs become completely empty (strip inner <br> or &nbsp;)
+    cleaned = cleaned.replace(/<p[^>]*>(\s*|<br\/?\s*>|&nbsp;)*<\/p>/gi, '<p></p>');
+    // 2. Merge adjacent closing and opening paragraphs with a single <br>
     cleaned = cleaned.replace(/<\/p>\s*<p[^>]*>/gi, '<br>');
-    // 3. Remove the token, which effectively leaves the original </p><p> stanza boundaries intact
-    cleaned = cleaned.replace(/__STANZA__/g, '');
     
     return cleaned;
   };
