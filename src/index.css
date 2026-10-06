@@ -39,7 +39,7 @@ body {
 }
 
 #root {
-  width: max-content;
+  width: 100%;
   position: relative;
   min-height: 100vh;
   overflow-x: clip;
@@ -62,7 +62,7 @@ a:hover {
 a::after {
   content: '';
   position: absolute;
-  width: max-content;
+  width: 100%;
   transform: scaleX(0);
   height: 2px;
   bottom: -2px;
@@ -113,11 +113,11 @@ button:hover {
 
 /* Polaroids */
 .polaroid-container {
-  padding: 12px 12px 45px 12px;
+  padding: 10px;
   background: #fff;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
   transition: transform 0.4s ease;
-  width: max-content;
+  width: 100%;
   max-width: 300px;
   margin: 0 auto 2rem;
   position: relative; /* Fixes staple floating away */
@@ -162,7 +162,7 @@ button:hover {
 .book-media {
   float: right;
   margin: 0 0 2rem 2rem;
-  width: max-content;
+  width: 100%;
   max-width: 320px;
 }
 
@@ -220,7 +220,7 @@ button:hover {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  width: max-content;
+  width: 100%;
   max-width: 900px;
   margin: auto;
   padding: 3rem;
@@ -269,7 +269,7 @@ button:hover {
 
 /* Boarding Ticket Intermissions */
 .ticket-container {
-  width: max-content;
+  width: 100%;
   max-width: 600px;
   background: #fff;
   color: #111;
@@ -379,7 +379,7 @@ button:hover {
   flex-direction: column-reverse; /* Puts the image before the ticket on mobile */
   align-items: center;
   gap: 3rem;
-  width: max-content;
+  width: 100%;
   position: relative;
   padding: 2rem 1rem;
 }
@@ -406,7 +406,7 @@ button:hover {
 
 @media (max-width: 1023px) {
   .ticket-container {
-    max-width: max-content;
+    max-width: 100%;
     margin: 0 auto;
   }
   .intermission-polaroid {
@@ -502,7 +502,7 @@ button:hover {
 }
 
 .post-it {
-  width: max-content;
+  width: 100%;
   height: 100%;
   overflow: hidden;
   background: #fdfd96;
@@ -577,7 +577,7 @@ button:hover {
     margin: 0 auto 3rem auto;
     display: flex;
     justify-content: center;
-    max-width: max-content;
+    max-width: 100%;
   }
   
   .bookmark-polaroid {
@@ -663,7 +663,7 @@ button:hover {
   color: #2c3e50;
   font-family: var(--font-serif);
   min-height: 100vh;
-  width: max-content;
+  width: 100%;
   padding: 2rem 3vw clamp(2rem, 5vw, 4rem) clamp(1.5rem, 10vw, 100px);
   position: relative;
 }
@@ -672,7 +672,7 @@ button:hover {
   background-color: #1a1a1a;
   background-image: radial-gradient(circle at 50% 50%, #2a2a2a 0%, #111 100%);
   min-height: 100vh;
-  width: max-content;
+  width: 100%;
   padding: 0 2vw clamp(2rem, 5vw, 4rem) 2vw;
   position: relative;
   display: flex;
@@ -817,7 +817,7 @@ button:hover {
   }
   
   .admin-list-item-actions {
-    width: max-content;
+    width: 100%;
     justify-content: space-between !important;
     padding-top: 1rem;
     border-top: 1px dashed var(--border-color);
@@ -830,7 +830,7 @@ button:hover {
   }
 
   .admin-list-poem-actions {
-    width: max-content;
+    width: 100%;
     justify-content: space-between !important;
     margin-top: 0.5rem;
   }
