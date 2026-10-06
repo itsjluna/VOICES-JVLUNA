@@ -43,6 +43,7 @@ function AdminDashboard() {
   const [selectedItems, setSelectedItems] = useState(new Set());
   const [activeTab, setActiveTab] = useState('main'); // 'main' or 'vents'
   const [previewImages, setPreviewImages] = useState({});
+  const [undoState, setUndoState] = useState(null);
 
   const togglePreview = async (type, id, e) => {
     e.stopPropagation();
@@ -477,7 +478,17 @@ function AdminDashboard() {
     return cleaned;
   };
 
+  const handleUndoClean = () => {
+    if (!undoState) return;
+    if (undoState.type === 'poem') setPoemForm(undoState.form);
+    if (undoState.type === 'chapter') setChapterForm(undoState.form);
+    if (undoState.type === 'intermission') setIntermissionForm(undoState.form);
+    if (undoState.type === 'vent') setVentForm(undoState.form);
+    setUndoState(null);
+  };
+
   const handleCleanPoem = () => {
+    setUndoState({ type: 'poem', form: { ...poemForm } });
     setPoemForm({
       ...poemForm,
       content: cleanHtmlFormatting(poemForm.content),
@@ -486,6 +497,7 @@ function AdminDashboard() {
   };
 
   const handleCleanChapter = () => {
+    setUndoState({ type: 'chapter', form: { ...chapterForm } });
     setChapterForm({
       ...chapterForm,
       content: cleanHtmlFormatting(chapterForm.content),
@@ -494,6 +506,7 @@ function AdminDashboard() {
   };
 
   const handleCleanIntermission = () => {
+    setUndoState({ type: 'intermission', form: { ...intermissionForm } });
     setIntermissionForm({
       ...intermissionForm,
       content: cleanHtmlFormatting(intermissionForm.content),
@@ -502,6 +515,7 @@ function AdminDashboard() {
   };
 
   const handleCleanVent = () => {
+    setUndoState({ type: 'vent', form: { ...ventForm } });
     setVentForm({
       ...ventForm,
       content: cleanHtmlFormatting(ventForm.content),
@@ -544,12 +558,14 @@ function AdminDashboard() {
   };
 
   const openPoemModalForNew = (chapterId) => {
+    setUndoState(null);
     setPoemForm(loadDraft('poem', { _id: null, title: '', titleEn: '', content: '', contentEn: '', chapterId: chapterId, image: '', imageCredit: '' }));
     setIsPoemModalOpen(true);
   };
 
   const openPoemModalForEdit = async (poem) => {
     const res = await api.get(`/poems/${poem._id}`);
+    setUndoState(null);
     setPoemForm(res.data);
     setIsPoemModalOpen(true);
   };
@@ -565,12 +581,14 @@ function AdminDashboard() {
   };
 
   const openIntermissionModalForNew = () => {
+    setUndoState(null);
     setIntermissionForm(loadDraft('intermission', { _id: null, title: '', titleEn: '', content: '', contentEn: '', image: '', imageCredit: '', isIntermission: true }));
     setIsIntermissionModalOpen(true);
   };
 
   const openIntermissionModalForEdit = async (chap) => {
     const res = await api.get(`/chapters/${chap._id}`);
+    setUndoState(null);
     setIntermissionForm(res.data);
     setIsIntermissionModalOpen(true);
   };
@@ -586,12 +604,14 @@ function AdminDashboard() {
   };
 
   const openVentModalForNew = () => {
+    setUndoState(null);
     setVentForm(loadDraft('vent', { _id: null, title: '', titleEn: '', content: '', contentEn: '', image: '', imageCredit: '', isVent: true }));
     setIsVentModalOpen(true);
   };
 
   const openVentModalForEdit = async (chap) => {
     const res = await api.get(`/chapters/${chap._id}`);
+    setUndoState(null);
     setVentForm(res.data);
     setIsVentModalOpen(true);
   };
@@ -1194,7 +1214,10 @@ function AdminDashboard() {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.5rem', marginTop: '1rem', gap: '0.5rem' }}>
+                  {undoState?.type === 'poem' && (
+                    <button type="button" onClick={handleUndoClean} style={{ background: '#555', color: '#fff', padding: '0.5rem 1rem', fontSize: '0.8rem', borderRadius: '4px', border: 'none' }}>Undo Rollback</button>
+                  )}
                   <button type="button" onClick={handleCleanPoem} style={{ background: '#333', color: '#fff', padding: '0.5rem 1rem', fontSize: '0.8rem', borderRadius: '4px', border: '1px solid #555' }} title="Removes inline fonts/sizes and fixes drop-cap issues while keeping bold/italics/linebreaks">✨ Standardize Typography</button>
                 </div>
 
@@ -1245,7 +1268,10 @@ function AdminDashboard() {
                   <option value="train-cherry">Train (Cherry Yum Yum)</option>
                 </select>
 
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.5rem', marginTop: '1rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.5rem', marginTop: '1rem', gap: '0.5rem' }}>
+                  {undoState?.type === 'intermission' && (
+                    <button type="button" onClick={handleUndoClean} style={{ background: '#555', color: '#fff', padding: '0.5rem 1rem', fontSize: '0.8rem', borderRadius: '4px', border: 'none' }}>Undo Rollback</button>
+                  )}
                   <button type="button" onClick={handleCleanIntermission} style={{ background: '#333', color: '#fff', padding: '0.5rem 1rem', fontSize: '0.8rem', borderRadius: '4px', border: '1px solid #555' }} title="Removes inline fonts/sizes and fixes drop-cap issues while keeping bold/italics/linebreaks">✨ Standardize Typography</button>
                 </div>
 
@@ -1293,7 +1319,10 @@ function AdminDashboard() {
                   <option value="postits">Post-its (Scattered)</option>
                 </select>
 
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.5rem', marginTop: '1rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.5rem', marginTop: '1rem', gap: '0.5rem' }}>
+                  {undoState?.type === 'vent' && (
+                    <button type="button" onClick={handleUndoClean} style={{ background: '#555', color: '#fff', padding: '0.5rem 1rem', fontSize: '0.8rem', borderRadius: '4px', border: 'none' }}>Undo Rollback</button>
+                  )}
                   <button type="button" onClick={handleCleanVent} style={{ background: '#333', color: '#fff', padding: '0.5rem 1rem', fontSize: '0.8rem', borderRadius: '4px', border: '1px solid #555' }} title="Removes inline fonts/sizes and fixes drop-cap issues while keeping bold/italics/linebreaks">✨ Standardize Typography</button>
                 </div>
 
