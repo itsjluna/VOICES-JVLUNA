@@ -161,7 +161,8 @@ const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
           transformStyle: 'preserve-3d',
           pointerEvents: 'auto',
           background: '#fff',
-          padding: '1rem 1rem 3rem 1rem',
+          padding: '10px',
+          display: 'inline-block',
           boxShadow: '0 30px 60px rgba(0,0,0,0.5)',
           maxWidth: '90vw',
           maxHeight: '90vh'
@@ -176,8 +177,9 @@ const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
             src={src}
             alt={alt}
             style={{
-              width: '100%',
+              width: 'auto',
               height: 'auto',
+              maxWidth: '100%',
               maxHeight: 'calc(90vh - 4rem)',
               objectFit: 'contain'
             }}
