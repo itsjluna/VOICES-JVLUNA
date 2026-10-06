@@ -583,44 +583,65 @@ app.get('/api/seo-bot', async (req, res) => {
       }
     } else if (path.startsWith('/visuals')) {
       ogTitle = 'Visuals - PATHS By J Violet Luna';
+      ogDescription = 'Digital Paintings, Drawings & Illustrations.';
     } else if (path.startsWith('/games')) {
       ogTitle = 'Games - PATHS By J Violet Luna';
+      ogDescription = 'Game Development Projects & Interactive Media.';
     } else if (path.startsWith('/music')) {
       ogTitle = 'Music - PATHS By J Violet Luna';
+      ogDescription = 'Music Production, Singles & Discography.';
     } else if (path.startsWith('/video')) {
       ogTitle = 'Video - PATHS By J Violet Luna';
+      ogDescription = 'Filmmaking, Cinematography & Video Projects.';
     }
   } catch (e) {
     console.error('Error fetching SEO data:', e);
   }
 
-  if (ogDescription && ogDescription.length > 200) {
-    ogDescription = ogDescription.substring(0, 197) + '...';
-  }
+  // Strip HTML tags FIRST so we don't accidentally cut a tag in half with substring
   if (ogDescription) {
-    ogDescription = ogDescription.replace(/<[^>]*>?/gm, '').trim();
+    ogDescription = ogDescription.replace(/<[^>]*>?/gm, '');
+    // Also remove newlines and excessive whitespace
+    ogDescription = ogDescription.replace(/\s+/g, ' ').trim();
   }
+
+  // Then clamp the string length for Discord/Twitter compatibility (typically ~150-200 chars)
+  if (ogDescription && ogDescription.length > 160) {
+    ogDescription = ogDescription.substring(0, 157) + '...';
+  }
+
+  // Escape quotes so we don't break the HTML meta tags
+  const safeTitle = ogTitle ? ogTitle.replace(/"/g, '&quot;') : '';
+  const safeDesc = ogDescription ? ogDescription.replace(/"/g, '&quot;') : '';
+  
+  let absoluteImage = ogImage;
+  if (absoluteImage && absoluteImage.startsWith('/')) {
+    absoluteImage = `${baseUrl}${absoluteImage}`;
+  }
+  const safeImage = absoluteImage ? absoluteImage.replace(/"/g, '&quot;') : '';
 
   const html = `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>${ogTitle}</title>
-    <meta name="description" content="${ogDescription}" />
+    <meta name="theme-color" content="#000000" />
+    <title>${safeTitle}</title>
+    <meta name="description" content="${safeDesc}" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="${baseUrl}${path}" />
-    <meta property="og:title" content="${ogTitle}" />
-    <meta property="og:description" content="${ogDescription}" />
-    <meta property="og:image" content="${ogImage}" />
+    <meta property="og:title" content="${safeTitle}" />
+    <meta property="og:description" content="${safeDesc}" />
+    <meta property="og:image" content="${safeImage}" />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="${baseUrl}${path}" />
-    <meta property="twitter:title" content="${ogTitle}" />
-    <meta property="twitter:description" content="${ogDescription}" />
-    <meta property="twitter:image" content="${ogImage}" />
+    <meta property="twitter:title" content="${safeTitle}" />
+    <meta property="twitter:description" content="${safeDesc}" />
+    <meta property="twitter:image" content="${safeImage}" />
   </head>
   <body>
-    <h1>${ogTitle}</h1>
-    <p>${ogDescription}</p>
+    <h1>${safeTitle}</h1>
+    <p>${safeDesc}</p>
+    <img src="${safeImage}" alt="Preview" style="max-width: 100%; height: auto;" />
   </body>
 </html>`;
 
