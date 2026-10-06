@@ -473,6 +473,11 @@ function AdminDashboard() {
     // 2. Merge adjacent closing and opening paragraphs with a single <br>
     cleaned = cleaned.replace(/<\/p>\s*<p[^>]*>/gi, '<br>');
     
+    // Ensure raw text is wrapped in a <p> tag for standard styling and drop-cap
+    if (cleaned.trim() !== '' && !cleaned.trim().startsWith('<p') && !cleaned.trim().startsWith('<h') && !cleaned.trim().startsWith('<div')) {
+      cleaned = `<p>${cleaned.trim()}</p>`;
+    }
+    
     return cleaned;
   };
 

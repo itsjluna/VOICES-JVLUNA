@@ -742,7 +742,8 @@ button:hover {
 /* --- Poem Typography Enhancements --- */
 
 /* Drop Cap for the first letter of poems */
-.drop-cap p:first-of-type::first-letter {
+.drop-cap p:first-of-type::first-letter,
+.drop-cap::first-letter {
   float: left;
   font-family: var(--font-serif);
   font-size: 3.5rem;
