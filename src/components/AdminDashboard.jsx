@@ -459,15 +459,21 @@ function AdminDashboard() {
     cleaned = cleaned.replace(/\s+(style|class)="[^"]*"/gi, '');
     cleaned = cleaned.replace(/\s+(style|class)='[^']*'/gi, '');
     
-    // Fix drop cap: if the text starts with empty paragraphs or divs, remove them
-    cleaned = cleaned.replace(/^(<(p|div|br)>(\s|&nbsp;|<br\/?\s*>)*<\/(p|div|br)>\s*)+/gi, '');
-    // Also remove standalone leading <br> tags
+    // Normalize divs to paragraphs (WYSIWYG sometimes uses divs)
+    cleaned = cleaned.replace(/<div/gi, '<p').replace(/<\/div>/gi, '</p>');
+    
+    // Fix drop cap: if the text starts with empty paragraphs or divs, remove them completely
+    cleaned = cleaned.replace(/^(<p[^>]*>(\s|&nbsp;|<br\/?\s*>)*<\/p>\s*)+/gi, '');
     cleaned = cleaned.replace(/^(<br\/?\s*>\s*)+/gi, '');
     
-    // Fix drop cap: ensure the first block element is a <p>
-    if (cleaned.trim().startsWith('<div')) {
-      cleaned = cleaned.trim().replace(/^<div/i, '<p').replace(/<\/div>/i, '</p>');
-    }
+    // Fix poetry line-spacing (converting individual <p> lines into <br> inside stanzas)
+    // 1. Temporarily mark intentional empty stanza breaks with a token
+    cleaned = cleaned.replace(/<p[^>]*>(\s*|<br\/?\s*>|&nbsp;)*<\/p>/gi, '__STANZA__');
+    // 2. Merge consecutive <p> tags into a single <p> with a <br> between the lines
+    cleaned = cleaned.replace(/<\/p>\s*<p[^>]*>/gi, '<br>');
+    // 3. Remove the token, which effectively leaves the original </p><p> stanza boundaries intact
+    cleaned = cleaned.replace(/__STANZA__/g, '');
+    
     return cleaned;
   };
 
