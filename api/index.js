@@ -10,6 +10,14 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
+// Middleware to intercept SEO bot rewrites from vercel.json
+app.use((req, res, next) => {
+  if (req.query.seo_bot === 'true') {
+    req.url = '/api/seo-bot';
+  }
+  next();
+});
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY

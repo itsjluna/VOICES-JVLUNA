@@ -10,7 +10,7 @@
           "value": "(?i).*(bot|facebook|twitter|discord|slack|whatsapp|telegram|pinterest|linkedin|vkshare|yandex|applebot|bingbot|baiduspider|skype|viber|snapchat|reddit|tumblr).*"
         }
       ],
-      "destination": "/api/seo-bot?path=/$1"
+      "destination": "/api/index.js?seo_bot=true&path=/$1"
     },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
