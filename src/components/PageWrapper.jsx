@@ -7,12 +7,12 @@ const PageWrapper = ({ isLoading = false, loadingTextEn = "Loading...", loadingT
   const { language } = useLanguage();
 
   React.useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    // window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, []);
 
   React.useEffect(() => {
     if (!isLoading) {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      // window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     }
   }, [isLoading]);
 
