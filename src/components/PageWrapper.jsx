@@ -7,18 +7,17 @@ const PageWrapper = ({ isLoading = false, loadingTextEn = "Loading...", loadingT
   const { language } = useLanguage();
 
   React.useEffect(() => {
-    // window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, []);
 
   React.useEffect(() => {
     if (!isLoading) {
-      // window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     }
   }, [isLoading]);
 
   return (
     <motion.div 
-      exit={{ opacity: 0, transition: { duration: 0.2 } }}
       style={{ position: 'relative', width: '100%', minHeight: '100vh', display: 'flex', flexDirection: 'column' }} 
     >
       <AnimatePresence>
