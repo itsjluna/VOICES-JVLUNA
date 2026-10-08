@@ -944,3 +944,16 @@ button {
 /* Fix mobile 300ms tap delay */
 button, a, input, select, textarea, [role="button"], .clickable { touch-action: manipulation; }
 
+
+/* Mobile active states (replicates hover styles on press) */
+@media (hover: none) {
+  a:active { filter: url('#ink-bleed'); }
+  a:active::after { transform: scaleX(1); transform-origin: bottom left; }
+  button:active { background: var(--text-color); color: var(--bg-color); }
+  .polaroid-container:active { transform: scale(1.02) !important; z-index: 10; }
+  .hover-opacity:active { opacity: 0.7; }
+  .chapter-list-item:active { background: rgba(0, 0, 0, 0.05); transform: translateX(5px); }
+  :root.dark .chapter-list-item:active { background: rgba(255, 255, 255, 0.05); }
+  :root:not(.dark) .vent-postit .back-button:active { background: #e0e0e0; color: #1a1a1a; }
+  .admin-list-poem-item:active { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+}

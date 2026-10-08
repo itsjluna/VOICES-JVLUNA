@@ -482,7 +482,7 @@ function ChapterView() {
 
       <div className="book-layout">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
+          initial={{ opacity: 0, y: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
           className="book-content"
           style={{ position: 'relative' }}
         >
@@ -490,7 +490,7 @@ function ChapterView() {
           
           {bookMediaContent}
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 1.5 }} className="glass-panel" style={{ marginTop: '3rem' }}>
+          <motion.div initial={{ opacity: 0, y: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 1.5 }} className="glass-panel" style={{ marginTop: '3rem' }}>
             <h3 style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', letterSpacing: '0.05em', marginBottom: '1.5rem', opacity: 0.8 }}>
               {language === 'EN' ? 'IN THIS CHAPTER' : 'EN ESTE CAPÍTULO'}
             </h3>
@@ -587,4 +587,5 @@ function ChapterView() {
 }
 
 export default ChapterView;
+
 

@@ -186,3 +186,9 @@
 .outline-button { background: transparent; color: var(--text-color); border: 1px solid var(--text-color); padding: 0.75rem 1.25rem; font-family: var(--font-sans); font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; outline: none; border-radius: 0; }@media (hover: hover) {  .outline-button:hover, .outline-button:focus  {  background: var(--text-color); color: var(--bg-color);  } }
 .sticker-shine-effect { background: linear-gradient(110deg, transparent 20%, rgba(255,255,255,0.8) 40%, rgba(255,255,255,0.8) 60%, transparent 80%); background-size: 200% 100%; animation: shine 0.8s forwards; } @keyframes shine { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
 
+
+/* Mobile active states */
+@media (hover: none) {
+  .back-button:active { background: var(--text-color); color: var(--bg-color); }
+  .outline-button:active, .outline-button:focus { background: var(--text-color); color: var(--bg-color); }
+}

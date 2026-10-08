@@ -18,8 +18,8 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, x: -20 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { duration: 0.8, ease: "easeOut" } }
 };
 
 function IndexView() {
@@ -416,9 +416,9 @@ function IndexView() {
                 <AnimatePresence>
                   {isDropdownOpen && (
                     <motion.div
-                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
                       transition={{ duration: 0.2 }}
                       className="glass-panel"
                       style={{
@@ -620,4 +620,6 @@ function IndexView() {
 }
 
 export default React.memo(IndexView);
+
+
 
