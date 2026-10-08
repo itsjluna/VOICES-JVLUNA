@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import CassetteModal from './CassetteModal';
 
 const CassetteItem = ({ track, animColor }) => {
+  const isHoverSupported = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches;
   const [isOpen, setIsOpen] = useState(false);
   const layoutIdId = `cassette-${track._id}`;
   
@@ -27,8 +28,7 @@ const CassetteItem = ({ track, animColor }) => {
       <motion.div
         layoutId={layoutIdId}
         onClick={() => setIsOpen(true)}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={isHoverSupported ? { scale: 1.05 } : undefined} whileTap={{ scale: isHoverSupported ? 0.95 : 1.05 }}
         style={{
           position: 'relative',
           width: '100%',
@@ -78,4 +78,5 @@ const CassetteItem = ({ track, animColor }) => {
 };
 
 export default CassetteItem;
+
 

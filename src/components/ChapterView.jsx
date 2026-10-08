@@ -17,6 +17,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 function ChapterView() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const isHoverSupported = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches;
 
   const { data: { chapter, poems } = {} } = useQuery({
     queryKey: ['chapter', id],
@@ -531,8 +532,7 @@ function ChapterView() {
           {(chapter.writersNote || chapter.writersNoteEn) && (
             <div style={{ marginTop: '3rem', display: 'flex', justifyContent: 'center' }}>
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={isHoverSupported ? { scale: 1.05 } : undefined} whileTap={{ scale: isHoverSupported ? 0.95 : 1.05 }}
                 onClick={() => setShowNote(!showNote)}
                 style={{
                   display: 'flex',
@@ -587,3 +587,4 @@ function ChapterView() {
 }
 
 export default ChapterView;
+
