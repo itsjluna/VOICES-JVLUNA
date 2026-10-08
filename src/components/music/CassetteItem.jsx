@@ -1,3 +1,4 @@
+const isHoverSupported = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches;
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
@@ -78,5 +79,6 @@ const CassetteItem = ({ track, animColor }) => {
 };
 
 export default CassetteItem;
+
 
 

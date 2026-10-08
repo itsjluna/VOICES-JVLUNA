@@ -1,3 +1,4 @@
+const isHoverSupported = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches;
 import React, { useMemo, useState, useEffect } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import api from '../api';
@@ -286,5 +287,6 @@ const PolaroidScatter = React.memo(({ top, left, rotate, index, image }) => {
     </motion.div>
   );
 });
+
 
 

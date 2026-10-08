@@ -1,3 +1,4 @@
+const isHoverSupported = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches;
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
@@ -191,4 +192,5 @@ const ScatteredModal = ({ src, alt, title, description, className, onClose, layo
 };
 
 export default ScatteredItem;
+
 

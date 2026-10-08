@@ -1,3 +1,4 @@
+const isHoverSupported = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches;
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import '../App.css';
@@ -60,4 +61,5 @@ const Sticker = React.memo(({ src, style }) => {
 });
 
 export default Sticker;
+
 
