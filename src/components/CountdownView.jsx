@@ -114,3 +114,4 @@ export default function CountdownView() {
     </motion.div>
   );
 }
+

@@ -212,3 +212,4 @@ const JewelCaseOverlay = ({ translateZ = '0px' }) => (
 );
 
 export default CDJewelCase;
+

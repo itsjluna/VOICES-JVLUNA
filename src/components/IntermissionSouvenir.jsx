@@ -170,3 +170,4 @@ const ScatteredModal = ({ src, alt, title, description, className, onClose }) =>
 };
 
 export default IntermissionSouvenir;
+

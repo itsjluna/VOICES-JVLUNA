@@ -55,7 +55,7 @@ const IntermissionPolaroid = React.memo(({ src, alt, credit, containerStyle = {}
             transformStyle: 'preserve-3d',
             transition: 'transform 0.1s ease-out'
           }}
-          whileHover={isHoverSupported ? { scale: 1.05, zIndex: 50  } : undefined} whileTap={{ scale: isHoverSupported ? 0.95 : 1.05 }}
+          whileHover={isHoverSupported ? { scale: 1.05, zIndex: 50  } : undefined} whileTap={{ scale: 0.95 }}
         >
           <img src={src} alt={alt} className="polaroid-img" style={{ transform: 'translateZ(10px)' }} loading="lazy" decoding="async" />
           {children}
@@ -167,5 +167,6 @@ const PolaroidModal = ({ src, alt, credit, onClose }) => {
 };
 
 export default IntermissionPolaroid;
+
 
 

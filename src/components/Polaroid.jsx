@@ -63,7 +63,7 @@ const Polaroid = React.memo(({ src, alt, credit, containerStyle = {}, wrapperCla
           initial={{ opacity: 0 }}
           animate={{ opacity: imgLoaded ? 1 : 0 }}
           transition={{ duration: 0.6 }}
-          whileHover={isHoverSupported ? { scale: 1.05, zIndex: 50  } : undefined} whileTap={{ scale: isHoverSupported ? 0.95 : 1.05 }}
+          whileHover={isHoverSupported ? { scale: 1.05, zIndex: 50  } : undefined} whileTap={{ scale: 0.95 }}
         >
           <img 
             src={src} 
@@ -208,5 +208,6 @@ const PolaroidModal = ({ src, alt, credit, layoutIdId, onClose }) => {
 };
 
 export default Polaroid;
+
 
 

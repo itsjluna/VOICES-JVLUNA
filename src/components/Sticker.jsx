@@ -22,7 +22,7 @@ const Sticker = React.memo(({ src, style }) => {
         ...style
       }}
       onClick={handleClick}
-      whileHover={isHoverSupported ? { scale: 1.05 } : undefined} whileTap={{ scale: isHoverSupported ? 0.95 : 1.05 }}
+      whileHover={isHoverSupported ? { scale: 1.05 } : undefined} whileTap={{ scale: 0.95 }}
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: imgLoaded ? 1 : 0, scale: imgLoaded ? 1 : 0 }}
       transition={{ type: 'spring', stiffness: 200, damping: 20, delay: Math.random() * 0.5, opacity: { duration: 0.4 } }}
@@ -61,5 +61,6 @@ const Sticker = React.memo(({ src, style }) => {
 });
 
 export default Sticker;
+
 
 

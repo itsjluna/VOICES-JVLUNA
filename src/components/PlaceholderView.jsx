@@ -62,3 +62,4 @@ function PlaceholderView({ title }) {
 }
 
 export default React.memo(PlaceholderView);
+

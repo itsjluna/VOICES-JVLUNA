@@ -238,3 +238,4 @@ export const TravelGraphics = React.memo(({ type }) => {
     </div>
   );
 });
+

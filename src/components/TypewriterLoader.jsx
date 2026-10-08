@@ -52,3 +52,4 @@ const TypewriterLoader = React.memo(({ text = "Opening journal..." }) => {
 });
 
 export default TypewriterLoader;
+

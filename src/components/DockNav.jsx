@@ -288,3 +288,4 @@ function MenuButton({ icon, label, active, onClick, isDark, status, language }) 
 }
 
 export default DockNav;
+

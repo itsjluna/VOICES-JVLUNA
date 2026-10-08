@@ -53,3 +53,4 @@ const PageWrapper = ({ isLoading = false, loadingTextEn = "Loading...", loadingT
 };
 
 export default PageWrapper;
+

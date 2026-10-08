@@ -261,7 +261,7 @@ const PolaroidScatter = React.memo(({ top, left, rotate, index, image }) => {
         zIndex: 4, perspective: 1000, rotate
       }}>
       <motion.div 
-        whileHover={isHoverSupported ? { scale: 1.05 } : undefined} whileTap={{ scale: isHoverSupported ? 0.95 : 1.05 }}
+        whileHover={isHoverSupported ? { scale: 1.05 } : undefined} whileTap={{ scale: 0.95 }}
         style={{
           width: '100%', height: '100%',
           backgroundColor: '#fafafa', boxShadow: '0 5px 15px rgba(0,0,0,0.1)', 
@@ -287,6 +287,7 @@ const PolaroidScatter = React.memo(({ top, left, rotate, index, image }) => {
     </motion.div>
   );
 });
+
 
 
 

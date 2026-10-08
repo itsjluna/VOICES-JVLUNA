@@ -54,7 +54,7 @@ const ScatteredItem = React.memo(({ src, alt, title, description, initialAnimati
         dragElastic={draggable ? 0.2 : undefined}
         whileDrag={draggable ? { scale: 1.1, cursor: 'grabbing', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.5))' } : undefined}
         onClick={handleOpen}
-        whileHover={isHoverSupported ? { scale: 1.05, filter: 'brightness(1.1)'  } : undefined} whileTap={{ scale: isHoverSupported ? 0.95 : 1.05 }}
+        whileHover={isHoverSupported ? { scale: 1.05, filter: 'brightness(1.1)'  } : undefined} whileTap={{ scale: 0.95 }}
         className={className}
       >
         <motion.img 
@@ -192,5 +192,6 @@ const ScatteredModal = ({ src, alt, title, description, className, onClose, layo
 };
 
 export default ScatteredItem;
+
 
 

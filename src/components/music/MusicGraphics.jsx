@@ -218,3 +218,4 @@ export const MusicGraphics = React.memo(({ color }) => {
     </div>
   );
 });
+

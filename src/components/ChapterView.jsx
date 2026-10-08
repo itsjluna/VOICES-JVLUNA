@@ -532,7 +532,7 @@ function ChapterView() {
           {(chapter.writersNote || chapter.writersNoteEn) && (
             <div style={{ marginTop: '3rem', display: 'flex', justifyContent: 'center' }}>
               <motion.button
-                whileHover={isHoverSupported ? { scale: 1.05 } : undefined} whileTap={{ scale: isHoverSupported ? 0.95 : 1.05 }}
+                whileHover={isHoverSupported ? { scale: 1.05 } : undefined} whileTap={{ scale: 0.95 }}
                 onClick={() => setShowNote(!showNote)}
                 style={{
                   display: 'flex',
@@ -587,5 +587,6 @@ function ChapterView() {
 }
 
 export default ChapterView;
+
 
 

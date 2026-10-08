@@ -235,3 +235,4 @@ const CassetteModal = ({ layoutIdId, track, animColor, onClose }) => {
 };
 
 export default CassetteModal;
+

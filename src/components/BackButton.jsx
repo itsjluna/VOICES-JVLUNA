@@ -26,3 +26,4 @@ const BackButton = ({ style, className }) => {
 };
 
 export default BackButton;
+

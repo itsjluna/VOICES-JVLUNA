@@ -141,3 +141,4 @@ function WelcomeScreen() {
 }
 
 export default React.memo(WelcomeScreen);
+

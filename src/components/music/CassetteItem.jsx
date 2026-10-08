@@ -29,7 +29,7 @@ const CassetteItem = ({ track, animColor }) => {
       <motion.div
         layoutId={layoutIdId}
         onClick={() => setIsOpen(true)}
-        whileHover={isHoverSupported ? { scale: 1.05 } : undefined} whileTap={{ scale: isHoverSupported ? 0.95 : 1.05 }}
+        whileHover={isHoverSupported ? { scale: 1.05 } : undefined} whileTap={{ scale: 0.95 }}
         style={{
           position: 'relative',
           width: '100%',
@@ -79,6 +79,7 @@ const CassetteItem = ({ track, animColor }) => {
 };
 
 export default CassetteItem;
+
 
 
 

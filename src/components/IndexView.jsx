@@ -316,7 +316,7 @@ function IndexView() {
             maxWidth: '400px'
           }}>
             <motion.div 
-              whileHover={isHoverSupported ? { scale: 1.05 } : undefined} whileTap={{ scale: isHoverSupported ? 0.95 : 1.05 }}
+              whileHover={isHoverSupported ? { scale: 1.05 } : undefined} whileTap={{ scale: 0.95 }}
               onClick={() => setActiveTab('poetry')}
               style={{ 
                 display: 'flex',
@@ -347,7 +347,7 @@ function IndexView() {
             )}
             
             <motion.div 
-              whileHover={isHoverSupported ? { scale: 1.05 } : undefined} whileTap={{ scale: isHoverSupported ? 0.95 : 1.05 }}
+              whileHover={isHoverSupported ? { scale: 1.05 } : undefined} whileTap={{ scale: 0.95 }}
               onClick={() => setActiveTab('vents')}
               style={{ 
                 display: 'flex',
@@ -377,7 +377,7 @@ function IndexView() {
           <motion.div variants={containerVariants} initial="hidden" animate="show" style={{ width: '100%' }}>
             <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
               <motion.button 
-                whileHover={isHoverSupported ? { scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' } : undefined} whileTap={{ scale: isHoverSupported ? 0.95 : 1.05, backgroundColor: isHoverSupported ? undefined : 'var(--text-color)', color: isHoverSupported ? undefined : 'var(--bg-color)' }}
+                whileHover={isHoverSupported ? { scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' } : undefined} whileTap={{ scale: 0.95, backgroundColor: isHoverSupported ? undefined : 'var(--text-color)', color: isHoverSupported ? undefined : 'var(--bg-color)'  }}
                 onClick={() => { setShowSky(!showSky); setShowQuote(true); }}
                 style={{
                   display: 'flex',
@@ -396,7 +396,7 @@ function IndexView() {
               <div style={{ position: 'relative' }}>
                 {activeTab === 'poetry' && (
                   <motion.button 
-                    whileHover={isHoverSupported ? { scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' } : undefined} whileTap={{ scale: isHoverSupported ? 0.95 : 1.05, backgroundColor: isHoverSupported ? undefined : 'var(--text-color)', color: isHoverSupported ? undefined : 'var(--bg-color)' }}
+                    whileHover={isHoverSupported ? { scale: 1.05, backgroundColor: 'var(--text-color)', color: 'var(--bg-color)' } : undefined} whileTap={{ scale: 0.95, backgroundColor: isHoverSupported ? undefined : 'var(--text-color)', color: isHoverSupported ? undefined : 'var(--bg-color)'  }}
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                     style={{
                       display: 'flex',
@@ -620,6 +620,7 @@ function IndexView() {
 }
 
 export default React.memo(IndexView);
+
 
 
 

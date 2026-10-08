@@ -187,3 +187,4 @@ function PoemView() {
 }
 
 export default React.memo(PoemView);
+

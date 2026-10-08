@@ -795,15 +795,7 @@ button {
   }
 }
 
-/* Vent Postit back button fix for light mode */
-:root:not(.dark) .vent-postit .back-button {
-  color: #e0e0e0;
-  border-color: #e0e0e0;
-}
-@media (hover: hover) { :root:not(.dark) .vent-postit .back-button:hover  { 
-  background: #e0e0e0;
-  color: #1a1a1a;
- } }
+
 /* Admin Dashboard Responsive Styles */
 @media (max-width: 768px) {
   .admin-list-item {
@@ -947,13 +939,43 @@ button, a, input, select, textarea, [role="button"], .clickable { touch-action: 
 
 /* Mobile active states (replicates hover styles on press) */
 @media (hover: none) {
-  a:active { filter: url('#ink-bleed'); }
+  /* a:active filter removed to prevent dropped touches */
   a:active::after { transform: scaleX(1); transform-origin: bottom left; }
   button:active { background: var(--text-color); color: var(--bg-color); }
-  .polaroid-container:active { transform: scale(1.02) !important; z-index: 10; }
+  .polaroid-container:active { z-index: 10; filter: brightness(1.1); }
   .hover-opacity:active { opacity: 0.7; }
-  .chapter-list-item:active { background: rgba(0, 0, 0, 0.05); transform: translateX(5px); }
+  .chapter-list-item:active { background: rgba(0, 0, 0, 0.05); }
   :root.dark .chapter-list-item:active { background: rgba(255, 255, 255, 0.05); }
-  :root:not(.dark) .vent-postit .back-button:active { background: #e0e0e0; color: #1a1a1a; }
-  .admin-list-poem-item:active { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+  
+  .admin-list-poem-item:active { box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+}
+
+
+
+
+/* Force Vent View back buttons to always be black text */
+:root .vent-notebook .back-button,
+:root.dark .vent-notebook .back-button,
+:root .vent-postit .back-button,
+:root.dark .vent-postit .back-button {
+  color: #1a1a1a !important;
+  border-color: #1a1a1a !important;
+}
+@media (hover: hover) {
+  :root .vent-notebook .back-button:hover,
+  :root.dark .vent-notebook .back-button:hover,
+  :root .vent-postit .back-button:hover,
+  :root.dark .vent-postit .back-button:hover {
+    background: #1a1a1a !important;
+    color: #f9f9f5 !important;
+  }
+}
+@media (hover: none) {
+  :root .vent-notebook .back-button:active,
+  :root.dark .vent-notebook .back-button:active,
+  :root .vent-postit .back-button:active,
+  :root.dark .vent-postit .back-button:active {
+    background: #1a1a1a !important;
+    color: #f9f9f5 !important;
+  }
 }

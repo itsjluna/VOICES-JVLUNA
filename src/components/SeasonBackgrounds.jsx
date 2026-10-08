@@ -1008,3 +1008,4 @@ export const ClassActress = React.memo(() => {
 
   return <WindowFrame timePhase={timePhase} skyColor={skyColor} bgLayer={bgLayer} midLayer={midLayer} fgLayer={fgLayer} weatherLayer={null} frameY={frameScrollY} mouseFrameX={mouseFrameX} mouseFrameY={mouseFrameY} />;
 });
+

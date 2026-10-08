@@ -104,3 +104,4 @@ const PostIt = React.memo(({ quote, author, color, initialAnimation, style }) =>
 });
 
 export default PostIt;
+
