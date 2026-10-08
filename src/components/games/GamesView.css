@@ -174,10 +174,10 @@
   align-items: center;
   gap: 0.5rem;
 }
-.games-play-btn:hover {
+@media (hover: hover) { .games-play-btn:hover  { 
   transform: translateY(-3px) scale(1.05);
   box-shadow: 0 8px 25px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.6);
-}
+ } }
 :root.dark .games-play-btn {
   border-color: rgba(255,255,255,0.5);
 }
@@ -490,14 +490,14 @@
   box-shadow: 0 5px 15px rgba(0,0,0,0.5), inset 0 2px 10px rgba(255,255,255,0.1);
 }
 
-.theme-cycler-btn:hover {
+@media (hover: hover) { .theme-cycler-btn:hover  { 
   animation: none;
   transform: translateY(-5px) scale(1.05);
   box-shadow: 0 10px 25px rgba(0,0,0,0.3), inset 0 2px 10px rgba(255,255,255,0.9);
-}
-:root.dark .theme-cycler-btn:hover {
+ } }
+@media (hover: hover) { :root.dark .theme-cycler-btn:hover  { 
   box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 2px 10px rgba(255,255,255,0.2);
-}
+ } }
 
 .theme-icon {
   font-size: 1.5rem;
@@ -591,10 +591,10 @@
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   transition: transform 0.2s, box-shadow 0.2s;
 }
-.game-modal-close:hover {
+@media (hover: hover) { .game-modal-close:hover  { 
   transform: scale(1.1);
   box-shadow: 0 6px 15px rgba(0,0,0,0.5);
-}
+ } }
 
 
 @keyframes staticNoise {
@@ -640,3 +640,4 @@
   .desktop-play-btn { display: none !important; }
   .mobile-play-btn { display: flex !important; }
 }
+
