@@ -6,6 +6,7 @@ import TypewriterLoader from './components/TypewriterLoader';
 import FlashlightOverlay from './components/FlashlightOverlay';
 import TapDiagnostics from './components/TapDiagnostics';
 import { TAP_DEBUG } from './perf';
+import { useMobileTapFix } from './hooks/useMobileTapFix';
 
 import WelcomeScreen from './components/WelcomeScreen'; // We can keep WelcomeScreen immediate since it's the root, or lazy it. Let's lazy it.
 const IndexView = React.lazy(() => import('./components/IndexView'));
@@ -71,6 +72,7 @@ import GlobalAdvisory from './components/GlobalAdvisory';
 import CountdownView from './components/CountdownView';
 
 function App() {
+  useMobileTapFix();
   const [isLocked, setIsLocked] = React.useState(false);
 
   React.useEffect(() => {
