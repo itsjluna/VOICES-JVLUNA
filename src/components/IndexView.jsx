@@ -538,7 +538,7 @@ function IndexView() {
                   <Link 
                     to={linkPath} 
                     onMouseEnter={() => {
-                      if (!isInt && !isVent) {
+                      if (!isInt && !isVent && window.matchMedia('(hover: hover)').matches) {
                         api.get(`/poems?chapterId=${chapter._id}&lean=true`);
                       }
                     }}

@@ -500,7 +500,7 @@ function ChapterView() {
                 <li key={poem._id} style={{ margin: '0' }}>
                   <Link 
                     to={`/poem/${poem._id}`} 
-                    onMouseEnter={() => api.get(`/poems/${poem._id}`)}
+                    onMouseEnter={() => { if (window.matchMedia('(hover: hover)').matches) api.get(`/poems/${poem._id}`); }}
                     style={{ 
                       display: 'flex', 
                       justifyContent: 'space-between',

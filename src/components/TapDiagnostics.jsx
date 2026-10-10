@@ -64,17 +64,27 @@ export default function TapDiagnostics() {
       rerender();
     };
 
-    const onUp = () => {
+    const onUp = (e) => {
       const p = s.pending;
       if (!p || p.moved) return;
+      
+      // Store target to manually trigger click if dropped
+      const target = e.target;
+
       setTimeout(() => {
         if (!p.clicked) {
           s.noClick += 1;
-          s.taps = [{ ...p, click: 'NONE' }, ...s.taps].slice(0, 5);
+          s.taps = [{ ...p, click: 'FORCED' }, ...s.taps].slice(0, 5);
           if (p === s.pending) s.pending = null;
           rerender();
+          
+          // The browser dropped the click (likely due to a 2px scroll or scale animation).
+          // Force it!
+          try {
+            target.click();
+          } catch (err) {}
         }
-      }, 1000);
+      }, 150);
     };
 
     const onClick = (e) => {
