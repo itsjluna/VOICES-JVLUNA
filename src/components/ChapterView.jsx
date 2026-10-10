@@ -6,6 +6,7 @@ import api from '../api';
 import { useQuery } from '@tanstack/react-query';
 import { Winter, Spring, Summer, Autumn } from './SeasonBackgrounds';
 import { SeasonDebris } from './SeasonDebris';
+import { PERF_LITE } from '../perf';
 import Polaroid from './Polaroid';
 import PostIt from './PostIt';
 import CDJewelCase from './CDJewelCase';
@@ -471,14 +472,14 @@ function ChapterView() {
     >
       {chapter && (
         <>
-      {renderSeason()}
+      {!PERF_LITE && renderSeason()}
       <BackButton />
 
       <div className="editorial-margin left">
         VOL. {id.slice(-4).toUpperCase()} — {language === 'EN' ? 'CHAPTER' : 'CAPÍTULO'}
       </div>
 
-      <SeasonDebris theme={chapter.theme} />
+      {!PERF_LITE && <SeasonDebris theme={chapter.theme} />}
 
       <div className="book-layout">
         <motion.div 

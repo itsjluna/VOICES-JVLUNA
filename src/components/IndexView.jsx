@@ -5,6 +5,7 @@ import { FaBookOpen, FaTicketAlt, FaSun, FaMoon, FaStickyNote, FaCloud, FaCloudR
 import api from '../api';
 import { useQuery } from '@tanstack/react-query';
 import { IndexScatter } from './IndexScatter';
+import { PERF_LITE } from '../perf';
 
 import { useLanguage } from '../contexts/LanguageContext';
 import PageWrapper from './PageWrapper';
@@ -158,7 +159,7 @@ function IndexView() {
   }), []);
 
   const renderWeatherEffects = () => {
-    if (localWeather === 'loading') return null;
+    if (localWeather === 'loading' || PERF_LITE) return null;
 
     const elements = [];
 
@@ -283,8 +284,9 @@ function IndexView() {
         </motion.svg>
 
         <motion.div 
-          animate={localWeather === 'clear' || localWeather === 'loading' ? { rotate: 360, opacity: showSky ? 0.15 : 0 } : { rotate: 0, opacity: showSky ? 0.15 : 0 }} 
-          transition={localWeather === 'clear' || localWeather === 'loading' ? { duration: 60, repeat: Infinity, ease: "linear" } : { duration: 0, ease: "linear" }}
+          className={(localWeather === 'clear' || localWeather === 'loading') && !PERF_LITE ? 'sky-icon-spin' : undefined}
+          animate={{ opacity: showSky ? 0.15 : 0 }} 
+          transition={{ duration: 0.6, ease: "linear" }}
           style={{ position: 'absolute', top: '15vh', right: '15vw', fontSize: '3.5rem', color: 'var(--text-color)', opacity: 0.15 }}
         >
           {skyIcon}

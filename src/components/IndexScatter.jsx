@@ -3,11 +3,13 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import api from '../api';
 import Sticker from './Sticker';
+import { PERF_LITE } from '../perf';
 
 export const IndexScatter = React.memo(() => {
   const [randomImages, setRandomImages] = useState([]);
 
   useEffect(() => {
+    if (PERF_LITE) return;
     async function fetchImages() {
       try {
         const count = 5 + Math.floor(Math.random() * 2); // 5 or 6
@@ -212,7 +214,7 @@ export const IndexScatter = React.memo(() => {
   }, [positions]);
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'visible', pointerEvents: 'none', zIndex: 0 }}>
+    PERF_LITE ? null : <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'visible', pointerEvents: 'none', zIndex: 0 }}>
       {coffeeRings}
       {scribbles}
       {indexCards}

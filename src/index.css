@@ -51,7 +51,7 @@ a {
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease, opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-  will-change: transform;
+  /* will-change removed: promoting every link/button to its own layer hurts mobile compositing */
   position: relative;
 }
 
@@ -94,7 +94,7 @@ button {
   letter-spacing: 0.1em;
   cursor: pointer;
   transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  will-change: transform;
+  /* will-change removed: promoting every link/button to its own layer hurts mobile compositing */
 }
 
 @media (hover: hover) { button:hover  { 
@@ -979,3 +979,27 @@ button, a, input, select, textarea, [role="button"], .clickable { touch-action: 
     color: #f9f9f5 !important;
   }
 }
+
+/* Sky icon slow spin (compositor-driven CSS instead of a JS-driven Framer `rotate` loop) */
+@keyframes sky-icon-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.sky-icon-spin {
+  animation: sky-icon-spin 60s linear infinite;
+}
+
+/* --- Diagnostic "lite" mode (?perf=lite, see src/perf.js) ---
+   Strips the expensive GPU/main-thread work so tap latency can be compared on-device. */
+html.perf-lite *,
+html.perf-lite *::before,
+html.perf-lite *::after {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  will-change: auto !important;
+  animation: none !important;
+}
+html.perf-lite .glass-panel { background: rgba(255, 255, 255, 0.95); }
+html.perf-lite.dark .glass-panel { background: rgba(15, 15, 15, 0.95); }

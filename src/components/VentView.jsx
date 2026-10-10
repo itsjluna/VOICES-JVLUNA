@@ -10,6 +10,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { FaLanguage } from 'react-icons/fa';
 import PageWrapper from './PageWrapper';
 import BackButton from './BackButton';
+import { PERF_LITE } from '../perf';
 
 function VentView() {
   const { id } = useParams();
@@ -242,7 +243,7 @@ function VentView() {
       {vent && (
         <>
       <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
-        {scatters}
+        {!PERF_LITE && scatters}
       </div>
 
       <BackButton />

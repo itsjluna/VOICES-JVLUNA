@@ -4,6 +4,8 @@ import { AnimatePresence } from 'framer-motion';
 import DockNav from './components/DockNav';
 import TypewriterLoader from './components/TypewriterLoader';
 import FlashlightOverlay from './components/FlashlightOverlay';
+import TapDiagnostics from './components/TapDiagnostics';
+import { TAP_DEBUG } from './perf';
 
 import WelcomeScreen from './components/WelcomeScreen'; // We can keep WelcomeScreen immediate since it's the root, or lazy it. Let's lazy it.
 const IndexView = React.lazy(() => import('./components/IndexView'));
@@ -101,8 +103,12 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
+  const location = window.location;
+  const isTapDebug = new URLSearchParams(location.search).get('tapdebug') === '1' || localStorage.getItem('tap_debug') === '1';
+
   return (
     <Router>
+      {isTapDebug && <TapDiagnostics />}
       {isLocked ? (
         <CountdownView />
       ) : (
