@@ -4,8 +4,6 @@
 //   ?perf=lite      -> disable heavy decorative layers (scatter, weather, season backgrounds,
 //                      vent debris, backdrop-filter, CSS filters). Diagnostic for main-thread/GPU load.
 //   ?perf=normal    -> back to default rendering
-//   ?tapdebug=1     -> show on-screen tap latency / jank overlay
-//   ?tapdebug=0     -> hide overlay
 
 function readFlag(param, storageKey) {
   if (typeof window === 'undefined') return null;
@@ -23,10 +21,8 @@ function readFlag(param, storageKey) {
 }
 
 const perfMode = readFlag('perf', 'perf_mode');
-const tapDebug = readFlag('tapdebug', 'tap_debug');
 
 export const PERF_LITE = perfMode === 'lite';
-export const TAP_DEBUG = tapDebug === '1';
 
 export const IS_TOUCH =
   typeof window !== 'undefined' &&
