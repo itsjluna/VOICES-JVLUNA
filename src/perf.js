@@ -1,18 +1,33 @@
-// Runtime performance utilities.
-// Clean up any stale diagnostic flags from previous performance tests.
-if (typeof window !== 'undefined') {
-  try {
-    localStorage.removeItem('perf_mode');
-    localStorage.removeItem('tap_debug');
-  } catch (e) {}
+// Runtime performance / diagnostics flags.
+//
+// Usage (works on any device, persists in localStorage until cleared):
+//   ?perf=lite      -> disable heavy decorative layers (scatter, weather, season backgrounds,
+//                      vent debris, backdrop-filter, CSS filters). Diagnostic for main-thread/GPU load.
+//   ?perf=normal    -> back to default rendering
 
-  if (typeof document !== 'undefined') {
-    document.documentElement.classList.remove('perf-lite');
+function readFlag(param, storageKey) {
+  if (typeof window === 'undefined') return null;
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has(param)) {
+      const value = params.get(param);
+      localStorage.setItem(storageKey, value);
+      return value;
+    }
+    return localStorage.getItem(storageKey);
+  } catch {
+    return null;
   }
 }
 
-export const PERF_LITE = false;
+const perfMode = readFlag('perf', 'perf_mode');
+
+export const PERF_LITE = perfMode === 'lite';
 
 export const IS_TOUCH =
   typeof window !== 'undefined' &&
   window.matchMedia('(hover: none), (pointer: coarse)').matches;
+
+if (typeof document !== 'undefined' && PERF_LITE) {
+  document.documentElement.classList.add('perf-lite');
+}

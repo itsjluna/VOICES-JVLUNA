@@ -6,7 +6,6 @@ import TypewriterLoader from './components/TypewriterLoader';
 import FlashlightOverlay from './components/FlashlightOverlay';
 
 import { useMobileTapFix } from './hooks/useMobileTapFix';
-import './perf';
 
 import WelcomeScreen from './components/WelcomeScreen'; // We can keep WelcomeScreen immediate since it's the root, or lazy it. Let's lazy it.
 const IndexView = React.lazy(() => import('./components/IndexView'));
