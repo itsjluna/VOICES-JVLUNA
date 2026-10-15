@@ -5,7 +5,7 @@ import { FaBookOpen, FaTicketAlt, FaSun, FaMoon, FaStickyNote, FaCloud, FaCloudR
 import api from '../api';
 import { useQuery } from '@tanstack/react-query';
 import { IndexScatter } from './IndexScatter';
-import { PERF_LITE } from '../perf';
+
 
 import { useLanguage } from '../contexts/LanguageContext';
 import PageWrapper from './PageWrapper';
@@ -284,7 +284,7 @@ function IndexView() {
         </motion.svg>
 
         <motion.div 
-          className={(localWeather === 'clear' || localWeather === 'loading') && !PERF_LITE ? 'sky-icon-spin' : undefined}
+          className={(localWeather === 'clear' || localWeather === 'loading') ? 'sky-icon-spin' : undefined}
           animate={{ opacity: showSky ? 0.15 : 0 }} 
           transition={{ duration: 0.6, ease: "linear" }}
           style={{ position: 'absolute', top: '15vh', right: '15vw', fontSize: '3.5rem', color: 'var(--text-color)', opacity: 0.15 }}

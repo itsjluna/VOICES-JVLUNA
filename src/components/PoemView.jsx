@@ -12,7 +12,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { FaLanguage } from 'react-icons/fa';
 import PageWrapper from './PageWrapper';
 import BackButton from './BackButton';
-import { PERF_LITE } from '../perf';
+
 
 function PoemView() {
   const { id } = useParams();
@@ -72,7 +72,7 @@ function PoemView() {
     >
       {poem && (
         <>
-      {!PERF_LITE && renderBackground()}
+      {renderBackground()}
       <BackButton />
 
       <div className="editorial-margin left">
